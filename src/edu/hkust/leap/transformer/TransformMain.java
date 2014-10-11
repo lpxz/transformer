@@ -23,7 +23,7 @@ public class TransformMain {
 //				+ " -x edu -x checkers -x org.xmlpull -x org.apache.xml"
 //				+ " -x org.apache.xpath -x soot -x org.jgrapht";
 	
-	public static String subjectname ;
+	public static String dacapoBenchmarkName ;
 	public static void main(String[] args) throws Exception{
 
 		// Visitor.setObserverClass("edu.hkust.leap.monitor.Monitor");
@@ -59,11 +59,11 @@ public class TransformMain {
 		}else {
 			//-keep-line-number -app -w -p cg.spark enabled -f c -p cg reflection-log:/home/lpxz/work/dacapo/out/avrora-small/refl.log -cp /home/lpxz/pool/jdk1.6.0_26/jre/lib/resources.jar:/home/lpxz/pool/jdk1.6.0_26/jre/lib/rt.jar:/home/lpxz/pool/jdk1.6.0_26/jre/lib/sunrsasign.jar:/home/lpxz/pool/jdk1.6.0_26/jre/lib/jsse.jar:/home/lpxz/pool/jdk1.6.0_26/jre/lib/jce.jar:/home/lpxz/pool/jdk1.6.0_26/jre/lib/charsets.jar:/home/lpxz/pool/jdk1.6.0_26/jre/lib/modules/jdk.boot.jar:/home/lpxz/pool/jdk1.6.0_26/jre/classes:/home/lpxz/eclipse/workspacePA_icse/predict-inst/bin:/home/lpxz/eclipse/workspacePA_icse/predict-engine/bin:/home/lpxz/eclipse/workspacePA_icse/predict-engine/lib/commons-cli-1.2.jar:/home/lpxz/eclipse/workspacePA_icse/predict-engine/lib/ant.jar:/home/lpxz/eclipse/workspacePA_icse/predict-engine/lib/jigsaw-sexpr.jar:/home/lpxz/eclipse/workspacePA_icse/predict-engine/lib/h2-1.3.171.jar:/home/lpxz/eclipse/workspacePA_icse/predict-engine/lib/xercesImpl.jar:/home/lpxz/eclipse/workspacePA_icse/predict-engine/lib/ant-launcher.jar:/home/lpxz/eclipse/workspacePA_icse/predict-inst/lib/soot-jeff.jar:/home/lpxz/work/dacapo/out/avrora-small -main-class Harness Harness -i org.apache -i org.w3c
 
-			subjectname = args[0];
+			dacapoBenchmarkName = args[0];
 			
 			outputFormat= "c";
 			path = Util.getTmpDirectory();// .replace("\\", "\\\\")
-			cpath="/home/lpxz/work/dacapo/out/"+subjectname+"-small";// TODO change folder directory.
+			cpath="/home/lpxz/work/dacapo/out/"+dacapoBenchmarkName+"-small";// TODO change folder directory.
 			mainClass = "Harness";
 	    	String excludeOption = "";
 			String includeOption = " -i org.apache -i org.w3c";    		
@@ -174,7 +174,7 @@ public class TransformMain {
 		
 		
 		
-        EntryPoints4Dacapo.setEntryPoints(subjectname);
+        EntryPoints4Dacapo.setEntryPoints(dacapoBenchmarkName);
 		 
 		
 		
@@ -187,13 +187,15 @@ public class TransformMain {
 		
 		Pack jtp = PackManager.v().getPack("jtp");		
 		if(AnalysisOptions.injectPhase){
-			
-			List<String> result = ReadWriteFile.readLineByLine(new File("./shared/" + subjectname));// pre-runpack checking
-			SharedWriteRecVisitor.sharedVariableWriteAccessSet.addAll(result);
-			if(result.size()==0 && !AnalysisOptions.sharedPhase)
-			{
-				throw new RuntimeException("should have the shared analysis phase or results of shared analysis");
+			if(dacapoBenchmarkName!=null){
+				List<String> result = ReadWriteFile.readLineByLine(new File("./shared/" + dacapoBenchmarkName));// pre-runpack checking
+				SharedWriteRecVisitor.sharedVariableWriteAccessSet.addAll(result);
+				if(result.size()==0 && !AnalysisOptions.sharedPhase)
+				{
+					throw new RuntimeException("should have the shared analysis phase or results of shared analysis");
+				}
 			}
+			
 			
 			jtp.add(new Transform("jtp.desugarSyncMethod", 	new DesugarSyncMethodTransformer()));// sync Method cannot be monitored, change it to sync block.
 			jtp.add(new Transform("jtp.Recorder",
@@ -208,7 +210,7 @@ public class TransformMain {
 			System.out.println("dumping shared information");
 	       List<String> result = new ArrayList<String>();
 	       result.addAll(SharedWriteRecVisitor.sharedVariableWriteAccessSet);
-	       ReadWriteFile.write2File(result, "./shared/" + subjectname);
+	       ReadWriteFile.write2File(result, "./shared/" + dacapoBenchmarkName);
 		}
 		
 		G.reset();
