@@ -1,0 +1,11 @@
+1 I add the debugging information for the replay!
+2 use the leap.transformer.arg and leap.recorder.arg to seamlessly pass the parameters.
+The advantage is that, you can use leap.transformer.arg and the classes
+with or without hte preprocessing applied.
+3 replayerdriver uses the reflection now as some main classes can not be invoked directly.
+4 package-level filter -> class-level filter
+5 synchronized method- > synchronized block!
+6 double guard to filter the unrelated classes.
+One is the excludeInclude string filter in the soot argument, the other is the shouldInstrument method.
+7 support the JDK library classes such as  hashmap/vector.
+

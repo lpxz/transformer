@@ -1,0 +1,10 @@
+given this= @this
+1 create r1 = this
+2 create entermonitor r1
+3 insert the above statements before firstNonIdentity
+4 when exiting, create and insert exitmonitor r1 (r1 is previously stored and can be directly used)
+5 when exiting, make sure the trap is from the firstNonIdentity otherwise the r1 in (r1=this) may not be initialized yet.
+
+
+When the synchronized method is empty, inject a nop before the return, otherwise,
+ the trap is from the return (line 10) to the exitmonitor (line 5), wrong order.

@@ -1,0 +1,17 @@
+    public void visitInstanceFieldRef(SootMethod sm, Chain units, Stmt s, InstanceFieldRef instanceFieldRef, RefContext context) {
+    
+        String sig = instanceFieldRef.getField().getDeclaringClass().getName()+"."+instanceFieldRef.getField().getName();
+    	
+
+        if (context != RHSContextImpl.getInstance())
+        {
+            if(!Visitor.tlo.isObjectThreadLocal(instanceFieldRef, sm))
+        	{
+            	sharedVariableWriteAccessSet.add(sig);
+            	
+        	}
+        }
+        nextVisitor.visitInstanceFieldRef(sm, units, s, instanceFieldRef, context);
+        
+sharedwrite is an optimization which allows removing logging of the accesses of a shared variable whose accesses are all read.
+But I think it rarely helps, as the shared variable must be updated once. !!

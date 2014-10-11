@@ -1,0 +1,8 @@
+1 why do we need to distinguish the object?
+consider the array or hashmap,
+if you think all the arraries are the same, then there would be high contention of the accesses of the indices.
+Actually, the accesses map to different arraries and hence do not need synchronization!
+The original implementation ignores the array!!!
+
+2 change the synchronized method to syncrhonized blocks!
+Otherwise, no way to control the monitor. (sm is a runtime mechanism of JVM)

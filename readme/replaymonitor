@@ -1,0 +1,55 @@
+		setUp();
+
+		new Thread("leap-main"){
+			public void run(){
+				// load arguments
+				String[] mainargs = {};
+				try {
+					example.Example.main(mainargs);// main thread. explicitly
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
+
+		(new Scheduler()).start();// scheduler thread
+//================================================		
+		In the setup, the trace data are reloaded by the TraceReader: 				
+		        case 1:
+					accessVector = (Vector<Long>[]) Serializer.loadObject(fr);
+					//printAccessVector();
+					break;
+				case 2:
+					threadNameToIdMap = (HashMap<String,Long>) Serializer.loadObject(fr);//
+					break;
+//==============================================thread ids are assinged by the jvm:
+current thread name:Thread-0
+current threadid:10
+Note that the name can be set, but the id can not be.
+Validity: The implementation relies on the mapping between the name and id. So if the application change the name, possibly the 
+whole tool does not work.
+validity:  Thread[] tList = new Thread[Thread.activeCount()];
+the activeCount returns only the number of active threads within a given thread group.
+
+//==================
+accessSPE now turns to replaycontroler.control();
+//================validity:
+    In the  periodic helping method: how to judge whether a threaed is an active thread?
+       public static void breakAnyStall() {        	
+                if (tList[i] != Thread.currentThread()
+                		&& activeThreadIds.contains(tList[i].getId())
+                        && (tList[i].getState() == Thread.State.RUNNABLE
+                        || tList[i].getState() == Thread.State.TIMED_WAITING
+                        || tList[i].getState() == Thread.State.NEW
+  //============================
+  blocking:
+    blockedThreadCheckers.add(p.checker);
+    p.sem.acquire();
+  unblocking:
+    blockedThreadCheckers.remove(this);
+    sem.release(milliSeconds);
+    
+ Note that the checker is stored as follows (each thread has a checker for blocking itself from running): 
+  Pair p = (Pair) threadToTimeSemaphoreChecker.get(Thread.currentThread());
+                              
+		

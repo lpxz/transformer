@@ -1,0 +1,39 @@
+1 java.util.Vector can be introduced as other application classes.
+But it can easily introduce other unrelated classes if the filter is not properly set.
+
+For precise filtering, we modify the soot's package-level filter into the class-level filter
+As follows, first exclude some, then include. The include has the final effect.
+note that the excludedPackages contains both the predefined and the specified ones.
+
+                for( Iterator<String> pkgIt = excludedPackages.iterator(); pkgIt.hasNext(); ) {
+                    final String pkg = (String) pkgIt.next();
+                    if (s.isApplicationClass()
+                    && (s.getName()+".").startsWith(pkg)) {// why use the package? directly use the class s.getPackageName()+".").startsWith(pkg)
+                            s.setLibraryClass();
+                    }
+                }
+                for( Iterator<String> pkgIt = Options.v().include().iterator(); pkgIt.hasNext(); ) {
+                    final String pkg = (String) pkgIt.next();
+                    if ((s.getName()+".").startsWith(pkg))//s.getPackageName()+".").startsWith(pkg)
+                        s.setApplicationClass();
+                }
+                
+2 I choose not to generalize the analysis to include the JDK library classes.
+ There are two reasons:
+ 1) Due to the context merging, the fields in a hashmap can be easily judged as shared (once one hashmap
+ is shared), and as a result, the accesses of such fields are instrumented, even the unshared hashmap
+ needs to invoke the instrumented version which is costly. In short, the analysis and the transformation
+ does not distinguish the contexts and take the most conservative actions which are very costly.
+ 
+ 2) Recursive calling problem. For example, if we use vector.add(), it calls RecordMonitor.accessInstanceField
+ which transitively invokes a vector.add() method (We can invoke another customized vector to stop the recursive calls)
+. The recursive calls never stop.
+
+Instead, we model the hashmap.set() as hashmap.fakedField= y. (See Xu's pldi paper, he also did this)
+After all, we only want replay the order of the action sequences on the hashmap faithfully.
+We can treat the get/set as a large atomic read/write, then record the orders by introducing the 
+faked fields.
+
+//====================If you are not interested in any JDK lib, just set the stub list as null.
+If you are interested in System.out, just add it to the stub list.
+

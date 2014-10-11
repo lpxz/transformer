@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="Transformer">
+    <property environment="env"/>
+    <property name="soot-One.location" value="../../soot-One"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+    <path id="soot-One.classpath">
+        <pathelement location="${soot-One.location}/classes"/>
+        <pathelement location="${soot-One.location}/lib/jasminclasses-2.5.0.jar"/>
+        <pathelement location="${soot-One.location}/lib/polyglotclasses-1.3.5.jar"/>
+    </path>
+    <path id="Transformer.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/xpp3_min-1.1.3.4.O.jar"/>
+        <pathelement location="lib/xstream-1.3.1.jar"/>
+        <pathelement location="lib/jasmin-2.3.0.jar"/>
+        <pathelement location="lib/polyglot.jar"/>
+        <pathelement location="lib/java_cup.jar"/>
+        <path refid="soot-One.classpath"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+                <exclude name="edu/hkust/leap/transformer/AddInterestEvent/TransformerForLoops.java"/>
+                <exclude name="edu/hkust/leap/transformer/loop/"/>
+                <exclude name="edu/hkust/leap/transformer/SharedWriteRec/UnknownASTNodeException.java"/>
+                <exclude name="edu/hkust/leap/transformer/AddInterestEvent/UnknownASTNodeException.java"/>
+                <exclude name="edu/hkust/leap/tloax/"/>
+                <exclude name="edu/hkust/leap/transformer/SharedWriteRec/TransformerForInstrumentation.java"/>
+                <exclude name="edu/hkust/leap/LEAPTransform.java"/>
+                <exclude name="edu/hkust/leap/transformer/method2tn/MethodLocker.java"/>
+                <exclude name="edu/hkust/leap/transformer/TransformMainLP.java"/>
+                <exclude name="edu/hkust/leap/monitor/RecordMonitorLP.java"/>
+                <exclude name="edu/hkust/leap/monitor/ReplayMonitorLP.java"/>
+                <exclude name="edu/hkust/leap/monitor/Monitor.java"/>
+                <exclude name="edu/hkust/leap/transformer/AddAllocmarkNMonitorRec/"/>
+                <exclude name="edu/hkust/leap/transformer/SharedMonitor/"/>
+                <exclude name="edu/hkust/leap/transformer/TransformPreprocess.java"/>
+                <exclude name="edu/hkust/leap/syncMethodDesugar/CopyOfMethodLocker.java"/>
+                <exclude name="edu/hkust/leap/syncMethodDesugar/InstrumentUtility.java"/>
+                <exclude name="edu/hkust/leap/syncMethodDesugar/MethodInstr.java"/>
+                <exclude name="edu/hkust/leap/transformer/DacapoTransformPreprocess.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="test">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir=".">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+                <exclude name="lib/"/>
+                <exclude name="old/"/>
+                <exclude name="readme/"/>
+                <exclude name="sootOutput"/>
+                <exclude name="src/"/>
+                <exclude name="test/"/>
+                <exclude name="tmp/"/>
+                <exclude name="shared/"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall">
+        <ant antfile="build.xml" dir="${soot-One.location}" inheritAll="false" target="clean"/>
+    </target>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects">
+        <ant antfile="build.xml" dir="${soot-One.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+    </target>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <src path="test"/>
+            <src path="."/>
+            <exclude name="edu/hkust/leap/transformer/AddInterestEvent/TransformerForLoops.java"/>
+            <exclude name="edu/hkust/leap/transformer/loop/"/>
+            <exclude name="edu/hkust/leap/transformer/SharedWriteRec/UnknownASTNodeException.java"/>
+            <exclude name="edu/hkust/leap/transformer/AddInterestEvent/UnknownASTNodeException.java"/>
+            <exclude name="edu/hkust/leap/tloax/"/>
+            <exclude name="edu/hkust/leap/transformer/SharedWriteRec/TransformerForInstrumentation.java"/>
+            <exclude name="edu/hkust/leap/LEAPTransform.java"/>
+            <exclude name="edu/hkust/leap/transformer/method2tn/MethodLocker.java"/>
+            <exclude name="edu/hkust/leap/transformer/TransformMainLP.java"/>
+            <exclude name="edu/hkust/leap/monitor/RecordMonitorLP.java"/>
+            <exclude name="edu/hkust/leap/monitor/ReplayMonitorLP.java"/>
+            <exclude name="edu/hkust/leap/monitor/Monitor.java"/>
+            <exclude name="edu/hkust/leap/transformer/AddAllocmarkNMonitorRec/"/>
+            <exclude name="edu/hkust/leap/transformer/SharedMonitor/"/>
+            <exclude name="edu/hkust/leap/transformer/TransformPreprocess.java"/>
+            <exclude name="edu/hkust/leap/syncMethodDesugar/CopyOfMethodLocker.java"/>
+            <exclude name="edu/hkust/leap/syncMethodDesugar/InstrumentUtility.java"/>
+            <exclude name="edu/hkust/leap/syncMethodDesugar/MethodInstr.java"/>
+            <exclude name="edu/hkust/leap/transformer/DacapoTransformPreprocess.java"/>
+            <exclude name="lib/"/>
+            <exclude name="old/"/>
+            <exclude name="readme/"/>
+            <exclude name="sootOutput"/>
+            <exclude name="src/"/>
+            <exclude name="test/"/>
+            <exclude name="tmp/"/>
+            <exclude name="shared/"/>
+            <classpath refid="Transformer.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="DacapoTransformMain">
+        <java classname="edu.hkust.leap.transformer.DacapoTransformMain" failonerror="true" fork="yes">
+            <arg line="avrora"/>
+            <classpath refid="Transformer.classpath"/>
+        </java>
+    </target>
+
+
+
+    <target name="TransformPreprocess">
+        <java classname="edu.hkust.leap.transformer.TransformPreprocess" failonerror="true" fork="yes">
+            <classpath refid="Transformer.classpath"/>
+        </java>
+    </target>
+    <target name="DesugarSyncMethodDemo (1)">
+        <java classname="edu.hkust.leap.syncMethodDesugar.DesugarSyncMethodDemo" failonerror="true" fork="yes">
+            <classpath refid="Transformer.classpath"/>
+        </java>
+    </target>
+
+
+	<!--avrora batik eclipse fop h2 jython luindex lusearch pmd sunflow tomcat xalan-->
+    <target name="TransformMain">
+        <java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx13g"/>
+            <arg line="avrora"/>
+            <classpath refid="Transformer.classpath"/>
+        </java>
+    	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+    	            <jvmarg line="-Xmx13g"/>
+    	            <arg line="batik"/>
+    	            <classpath refid="Transformer.classpath"/>
+    	        </java>
+        	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+        	            <jvmarg line="-Xmx13g"/>
+        	            <arg line="eclipse"/>
+        	            <classpath refid="Transformer.classpath"/>
+        	        </java>
+        	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+        	            <jvmarg line="-Xmx13g"/>
+        	            <arg line="fop"/>
+        	            <classpath refid="Transformer.classpath"/>
+        	        </java>
+            	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+            	            <jvmarg line="-Xmx13g"/>
+            	            <arg line="h2"/>
+            	            <classpath refid="Transformer.classpath"/>
+            	        </java>
+            	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+            	            <jvmarg line="-Xmx13g"/>
+            	            <arg line="jython"/>
+            	            <classpath refid="Transformer.classpath"/>
+            	        </java>
+            	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+            	            <jvmarg line="-Xmx13g"/>
+            	            <arg line="luindex"/>
+            	            <classpath refid="Transformer.classpath"/>
+            	        </java>
+        	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+        	            <jvmarg line="-Xmx13g"/>
+        	            <arg line="lusearch"/>
+        	            <classpath refid="Transformer.classpath"/>
+        	        </java>
+        	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+        	            <jvmarg line="-Xmx13g"/>
+        	            <arg line="pmd"/>
+        	            <classpath refid="Transformer.classpath"/>
+        	        </java>
+    	
+    	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+    	        	            <jvmarg line="-Xmx13g"/>
+    	        	            <arg line="sunflow"/>
+    	        	            <classpath refid="Transformer.classpath"/>
+    	        	        </java>
+        		<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+        		        	            <jvmarg line="-Xmx13g"/>
+        		        	            <arg line="tomcat"/>
+        		        	            <classpath refid="Transformer.classpath"/>
+        		        	        </java>
+        		<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+        		        	            <jvmarg line="-Xmx13g"/>
+        		        	            <arg line="xalan"/>
+        		        	            <classpath refid="Transformer.classpath"/>
+        		        	        </java>
+    </target>
+
+</project>

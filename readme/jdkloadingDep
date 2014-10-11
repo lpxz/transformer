@@ -1,0 +1,2 @@
+1 when loading jdk, e.g., vecctor from the rt.jar, the recordmonitor class is needed, and should also placed in the
+xbootclasspath/p, otherwise, illegalMonitorStateException

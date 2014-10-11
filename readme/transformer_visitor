@@ -1,0 +1,7 @@
+[realv] can be SharedWriteRecVisitor, for example.
+1 transformer:
+  setvisitor: rv= new RV(null) pv = new RealV(rv), rv.setvisitor(pv), transformer.setvisitor(rv)
+2 intertransform method:
+   for stmt:
+      transformer.visitor.visit(stmt);
+3 have a closer look at the realv implementation.

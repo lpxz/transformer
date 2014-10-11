@@ -1,0 +1,59 @@
+		accessVector = new Vector[VECARRAYSIZE];
+		for(int i=0;i<VECARRAYSIZE;i++)
+		{
+			accessVector[i] = new Vector<Long>();//new MyAccessVector();
+		}
+		
+//=======================================================================
+working mechanism:
+instance.f=> Class.f=> lookup the harecoded id in the hashmap
+// note  this map is not  checkpointed, we transform the code so that the invocation directly 
+// calls the proper integer in both record/replay version.
+// the proper integer is computed and stored in a hashmap which crosses over two soot runs (separeted by G.reset())
+then in the replay, instance.f=>class.f=> lookup the id=> accessvector[id].add(tid);
+
+
+//=======================================================================
+how to get the tid?
+1inject the monitor variable: tid
+2 accessSPE.invoke(...tid)
+3 tid will be assigned a runtime value and enables the invocation.
+
+//=======================================================================
+
+
+public static void readBeforeInstance(Object o, int index, long tid) {
+        accessSPE(index,tid);			
+   }
+// the base object is not used!
+
+//=============================
+对于新增和删除操作add和remove，LinedList比较占优势，因为ArrayList要移动数据。
+
+But linkedlist suffers from the recursive persistence, we make it 
+implement an externalizable interface and write a specific writeObject method.
+
+Do not worry, originally, the JDK writes its own writeObject implementation
+
+Besides, I create a Linkedlist because I want to apply client-side locks!
+
+LinkedList and Vector are quite different, we planned to choose type in an on-demand style at runtime.
+But, you should decide at the compile-time which type to choose, so hardcode it.
+
+//===========================change back to Vector! Specjbb:
+t=3
+vector: 558 bops/s  LinkedList 132 bops/s
+t=4 
+vector: 723 bops/s  LinkedList 143 bops/s
+Reason is: linkedlist needs to create a new entry each time the element is inserted.
+The Vector only performs bad when the vector's capabity is not big enough.
+
+//============================aRRAYlIST is different from vector
+Although it is faster (no synchronization), but it can easily lead to outofmemory exception.
+When t=3, it throws the exception. However, vector only throws the exception when t=5.
+
+//============================The comparison of vector and arraylist
+Synchronization
+Vectors are synchronized. Any method that touches the Vector's contents is thread safe. ArrayList, on the other hand, is unsynchronized, making them, therefore, not thread safe. With that difference in mind, using synchronization will incur a performance hit. So if you don't need a thread-safe collection, use the ArrayList. Why pay the price of synchronization unnecessarily?
+Data growth
+Internally, both the ArrayList and Vector hold onto their contents using an Array. You need to keep this fact in mind while using either in your programs. When you insert an element into an ArrayList or a Vector, the object will need to expand its internal array if it runs out of room. A Vector defaults to doubling the size of its array, while the ArrayList increases its array size by 50 percent. Depending on how you use these classes, you could end up taking a large performance hit while adding new elements. It's always best to set the object's initial capacity to the largest capacity that your program will need. By carefully setting the capacity, you can avoid paying the penalty needed to resize the internal array later. If you don't know how much data you'll have, but you do know the rate at which it grows, Vector does possess a slight advantage since you can set the increment value. 

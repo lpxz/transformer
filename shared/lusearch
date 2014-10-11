@@ -1,0 +1,10 @@
+org.apache.lucene.store.FSDirectory.disableLocks
+org.apache.lucene.analysis.standard.StandardAnalyzer.defaultReplaceInvalidAcronym
+org.apache.lucene.index.SegmentInfos.defaultGenFileRetryPauseMsec
+org.apache.lucene.index.SegmentInfos.defaultGenFileRetryCount
+org.apache.lucene.index.SegmentInfos.infoStream
+org.apache.lucene.search.Similarity.defaultImpl
+org.apache.lucene.search.BooleanQuery.maxClauseCount
+org.apache.lucene.index.SegmentInfos.defaultGenLookaheadCount
+org.apache.lucene.analysis.StopFilter.ENABLE_POSITION_INCREMENTS_DEFAULT
+org.apache.lucene.search.BooleanQuery.allowDocsOutOfOrder

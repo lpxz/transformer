@@ -1,0 +1,67 @@
+//=======================code:
+    public void visitStmtEnterMonitor(SootMethod sm, Chain units, EnterMonitorStmt enterMonitorStmt) 
+    {
+    	Visitor.sharedaccessnum++;
+    	Visitor.totalaccessnum++; 	
+    	Visitor.instrusharedaccessnum++;
+    	
+    	Value op = enterMonitorStmt.getOp();
+    	Type type = op.getType();
+    	String sig = type.toString();
+    	Value memory = StringConstant.v(sig);
+    	
+		Visitor.addCallAccessSyncObjInstance(sm, units, enterMonitorStmt, "enterMonitorAfter", op,memory, false);
+		if(Parameters.isReplay)
+			units.remove(enterMonitorStmt);
+			
+// in the replaying phase, the synchronization communication is removed.
+// 	similarly, the wait(), notify is removed.	
+
+            if (sig.equals("void wait()")||sig.equals("void wait(long)") || sig.equals("void wait(long,int)")) 
+            {        	
+
+        		Visitor.addCallAccessSyncObjInstance(sm, units, s, "waitAfter", base,memory, false);
+            	Visitor.instrusharedaccessnum++;
+            	Visitor.sharedaccessnum++;
+            	Visitor.totalaccessnum++;
+            	
+            	if(Parameters.isReplay)
+        			units.remove(s);
+//=====================jimple code:
+    public void parse(java.lang.String)// record phase
+    {
+        example.URLParse this, l2;
+        java.lang.String key, val;
+        boolean $z0;
+        java.lang.Throwable $r1;
+        long tid_parse;
+        java.lang.Thread thread_parse;
+
+        this := @this: example.URLParse;
+        key := @parameter0: java.lang.String;
+        thread_parse = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_parse = virtualinvoke thread_parse.<java.lang.Thread: long getId()>();
+        l2 = this;
+        entermonitor this;// HERE
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(this, 0, tid_parse);
+ 	
+ 	    public void parse(java.lang.String)
+    {
+        example.URLParse r0, r3;
+        java.lang.String r1, r4;
+        boolean $z0, $z1;
+        java.lang.Throwable $r5;
+        long tid_parse;
+        java.lang.Thread thread_parse;
+
+        r0 := @this: example.URLParse;
+        r1 := @parameter0: java.lang.String;
+        thread_parse = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_parse = virtualinvoke thread_parse.<java.lang.Thread: long getId()>();
+        r3 = r0;// note that no entermonitor is present!
+        staticinvoke <edu.hkust.leap.monitor.ReplayMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(r0, 0, tid_parse);
+ 			
+ //==================problem:
+ 1 performance is not accurate as the notify is removed
+ 2 any logging of the communication methods is not necessary as they are removed and hence not enforced.
+ 

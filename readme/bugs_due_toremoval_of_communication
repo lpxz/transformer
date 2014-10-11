@@ -1,0 +1,31 @@
+ 1 In specjbb, you need to pass the test.
+ However, if you remove the wait(), the testing fails.
+ 
+    String testWaitNull() {
+        out.print("testWaitNull: ");
+        try {
+            ((java.lang.Object) null).wait(43);
+        } catch (java.lang.Exception e) {
+            if (e.getClass().getName().equals("java.lang.NullPointerException")) return null;
+            return "error: " + e;
+        }
+        return "error: missing exception";
+    }
+    2 they directly remove "synchronized", and hte notify is not protected any more. To avoid this, I preprocess the 
+    classes to change the synchronzation method to synchronization blocks
+    synchronized void putForks(int id) {
+//        System.out.println(id + " putforks");
+        forks[id] = forks[(id + 1) % Philo.NUM_PHIL] = true;
+        notify();
+//        System.out.println(id + " notify done");
+    }
+    
+    
+    Exception in thread "Thread-0" java.lang.IllegalMonitorStateException
+	at java.lang.Object.notify(Native Method)
+	at benchmarks.philo.Table.putForks(Philo.java:35)
+	at benchmarks.philo.Philo.run(Philo.java:64)
+Exception in thread "Thread-1" java.lang.IllegalMonitorStateException
+	at java.lang.Object.notify(Native Method)
+	at benchmarks.philo.Table.putForks(Philo.java:35)
+	at benchmarks.philo.Philo.run(Philo.java:64)

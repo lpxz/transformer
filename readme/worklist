@@ -1,0 +1,7 @@
+1 shared write statistic
+2 add interesting event:
+    2.1 instance field read/write
+    2.2 static field read/write
+    2.3 communication methods removal
+    2.4 main entry/run entry injection
+    2.5 synchronized method injection 

@@ -1,0 +1,34 @@
+RecordMain first initializes the necessary data structures in the RecordMonitor, even before invoking the application main method.
+1 accessvectors 2 threadNameToIdMap
+
+Then, in the invocation of main or run, we update the threadNameToIdMap
+In the accesses of shared data, we update the accessvectors
+
+
+update the threadNameToIdMap:
+	public static void threadStartRun(long threadId)
+	{
+		threadNameToIdMap.put(Thread.currentThread().getName(),threadId);
+	}
+	put the main/run method-tid mapping into a map.
+update the accessvectors:
+    accessSPE(index,tid);	
+    
+    //=================
+    the original implementation is problematic, as it purposely remove the correct locks.
+    Some application which worked previously do not work after the removal!
+    
+    	//should be synchronized                                       
+	public  void parse(String key)                                            
+	{           
+		synchronized (this) //if I commet this line, it crashes, otherwise, it wont.
+		{
+			
+		
+    	String val = getVal(key);
+    	if(val.equals("Alice"))
+    		replaceVal(key,"A");
+    	if(val.equals("Bob"))
+    		replaceVal(key,"B");
+		}
+	}

@@ -1,0 +1,8 @@
+1 add parameters to the leap.transformer.arg, then run TransformPreprocess, the new classes are put 
+to the tmp/IntermediateCP, and the new parameters are refreshed into leap.transformer.arg
+2 run TransformMain, it generates the SPE size and writes it to the leap.recorder.arg
+Also, the classes for the recording version and replaying version are generated.
+3 run the RecordMain, its argument is in the leap.recorder.arg, however, you may add the arglist manually
+for extra arguments.
+4 refresh the replay project
+5 run the ReplayDriver

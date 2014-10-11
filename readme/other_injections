@@ -1,0 +1,32 @@
+    	if(Parameters.isMethodMain||Parameters.isMethodRunnable)
+    	{
+    		if(Parameters.isRecord)
+    		{
+    			//DO OR DO NOT CATCH EXCEPTION??
+    			//Visitor.addCallCatchException(body);
+    		}
+    		
+    		if(Parameters.isMethodMain)
+    		{
+    			Visitor.addCallMainMethodEnterInsert(thisMethod, units);// injection to the main method
+    			// jimple code: staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStartRun(long,java.lang.String,java.lang.String[])>(tid_main, "example.Example.main", args);
+    		}
+    		else
+    		{
+    			Visitor.addCallRunMethodEnterInsert(thisMethod, units);// injection to the run method
+    			// jimple code:    staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void threadStartRun(long)>(tid_run);
+    		}
+        }
+    	
+    	if(Parameters.isMethodSynchronized)
+    	{
+    		thisMethod.setModifiers(thisMethod.getModifiers()&~Modifier.SYNCHRONIZED);
+    		Visitor.addCallMonitorEntryExit(body);// where to exit???, This branch is of no use, currently do not touch it
+    	}
+    	
+    	
+    	//==========callee:
+       public static void addCallMainMethodEnterInsert(SootMethod sm, Chain units) {
+
+		LinkedList args = new LinkedList();
+		args.addLast(getTIDLocal(sm));// look at this statement, this must introduce the currentThread.threadID()

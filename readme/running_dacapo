@@ -1,0 +1,13 @@
+clear the intermediateCP and tmp/ first
+Take avrora for example:
+1 run it with the jvm argument: -javaagent:/home/lpxz/eclipse/workspace/soot24/lib/poa.jar=out/avrora-small
+2 fill the leap.transformer.arg with the classpath and also the main class
+the classpath should be the absolute path, e.g., "c /home/lpxz/eclipse/workspace/avrora/out/avrora-small AvroraMainHarness"
+Note that, some classes may be missed and soot can not pass, just make soot24 references the original project, and "-pp" option will 
+help solving the class-loading problem.
+3 Run DacapoTransformPreprocess, it is similar to TransformPreprocess, but with "-p cg reflection-log:*.log"
+the output is placed in the intermediateCP (the referenced classes should all be there) as usual.
+4 Run TransformMain, it parses the classes in the intermediateCP folder, and generates the final output in the "tmp/record".
+
+5 When recording, you may need to copy certain data to the current usr.dir of the recorder project. 
+Note that, "." corresponds to the project/ instead of project/bin/

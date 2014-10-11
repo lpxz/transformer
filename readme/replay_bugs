@@ -1,0 +1,125 @@
+1 data race inside leap:
+reading access vector can result in the null exception.
+As one thread sets it, the other thread concurrently uses it (may be null yet).
+
+1.5 atomicity violation in replay:
+the read wanted_id may be a stale value!
+You should protect them in a big atomic region!
+		wanted_id = vector.get(0);
+			while(curthreadId!=wanted_id)// main-part
+			{
+			
+			
+2 name2id
+one detailed example is:
+originally, leap-main, thread-0, thread-1
+now main, leap-main thread-1 thread-2 scheduler.
+Note that the names can not be mapped correctly.
+However, as name-> id   name'->id',
+we need to guarantee that name should be equal to name' so that the id=id'
+, and further, the wanted id sequence can be correctly recovered!.
+
+
+I merge the leap-main thread with the main thread (by moving the leap-main code to the main body, and 
+setting the name of the main thread to "leap-main"). As a result, thread-1 and thread-2 now turn to thread-0 and thread-1
+correct!
+also, I adjust the position of 
+(new Scheduler()).start();
+otherwise, the scheduler never runs.
+
+Still, the naming scheme is risky, which may introduce further problems.
+
+
+using the name to identify the id is not reliable! The name can change!!!
+public class ReplayControl {
+	
+	public static void check(int index) {
+
+
+		Vector<Long>[] accessVector = TraceReader.getAccessVector();
+		if(accessVector!=null)
+		{
+			String threadName = Thread.currentThread().getName();			
+			HashMap<String,Long> localMap = TraceReader.getThreadNameToIDMap();
+
+			try {
+				if(localMap.get(threadName) ==null)
+				{
+					System.out.println("haha");
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			long curthreadId = localMap.get(threadName);
+			
+			
+3 wait()-> sleep pattern
+the scheduler should run periodically! why use the lock.wait()? nobody wakes you up!  
+   public void run() {
+    
+        Object lock = new Object();
+     //   synchronized (lock) //
+        {
+            try {
+                while (true) {
+                 //   lock.wait(stallCheckerInterval);// wait for who?
+                    Thread.currentThread().sleep(stallCheckerInterval);
+                    breakAnyStall();
+                }
+            } catch (InterruptedException e) {
+            }
+        }
+4 synchronization bug:
+activechecker.lock is used to synchronize the accesses of the vector between the application threads.
+blockedThreadCheckers is protected by the "synchronized" keyword in the methods.
+
+    public static boolean unblockAThread() {
+      //  synchronized (lock) // no need!
+        {
+            //System.out.println("Blockedthreads size "+ blockedThreads.size());
+            if (blockedThreadCheckers.size() == 0) return false;
+            //int randNum = rand.nextInt(blockedThreads.size());
+            //ActiveChecker ac = blockedThreads.get(0);
+            
+            blockedThreadCheckers.remove(0).unblock(0);
+
+            //blockedThreads.get(0).unblock(0);//randNum
+            return true;
+        }
+ 4.1 the bug fix is also buggy:
+ 
+     	//	synchronized (ActiveChecker.lock)// originally there is a big bug! Note that lock is protecting vector! blockedThreadCheckers is protected by synchronzied keyword in the method
+			// still there is a bug in the fix, as the other thread can not enter the following region (the lock is not released)
+		          
+ 4.2 My final decision is to,
+ use lock to protect the vector and make the decision,
+ after the decision is made, we exit the critical region and block if necessary! However, the decision at the blocking time
+ may be stale, I have no better choice. Note that, even the decision is stale, it do not affect the correctness,
+ it only affects the efficiency. 
+ 
+ 5 array accesses are not taken into account, the SPE number is 0!!! unacceptable.
+     
+     
+6 
+In the recordMain, the main method can not be invoked if it is in the public class, or the main method is a private method
+in a public class. (public method public class , OK)
+		    Method main = c.getDeclaredMethod("main", argTypes);
+		    if(!main.isAccessible())
+		    {
+		    
+		    
+		    	main.setAccessible(true);
+		    }
+		    
+7 bugs: If "==" directly pass the check!
+				if(curthreadId==wanted_id)//sential bookkeeping..
+				{
+					vector.remove(0);
+					return;
+				}
+				else
+				{
+					(new ActiveChecker(index)).registerChecker();// register the checker for the current thread
+				}
+				
+		       

@@ -1,0 +1,9 @@
+essentially:
+class.f1: t1 t4 t5...
+class.f2: t2 t4...
+class.f3: t3 t4...
+
+after encoding (map the field signature to the integer):
+1: t1 t2 t3
+2: t2 t4
+3: t3 t4                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
