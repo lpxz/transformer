@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="edu/hkust/leap/transformer/AddInterestEvent/TransformerForLoops.java|edu/hkust/leap/transformer/loop/|edu/hkust/leap/transformer/SharedWriteRec/UnknownASTNodeException.java|edu/hkust/leap/transformer/AddInterestEvent/UnknownASTNodeException.java|edu/hkust/leap/tloax/|edu/hkust/leap/transformer/SharedWriteRec/TransformerForInstrumentation.java|edu/hkust/leap/LEAPTransform.java|edu/hkust/leap/transformer/method2tn/MethodLocker.java|edu/hkust/leap/transformer/TransformMainLP.java|edu/hkust/leap/monitor/RecordMonitorLP.java|edu/hkust/leap/monitor/ReplayMonitorLP.java|edu/hkust/leap/monitor/Monitor.java|edu/hkust/leap/transformer/AddAllocmarkNMonitorRec/|edu/hkust/leap/transformer/SharedMonitor/|edu/hkust/leap/transformer/TransformPreprocess.java|edu/hkust/leap/syncMethodDesugar/CopyOfMethodLocker.java|edu/hkust/leap/syncMethodDesugar/InstrumentUtility.java|edu/hkust/leap/syncMethodDesugar/MethodInstr.java|edu/hkust/leap/transformer/DacapoTransformPreprocess.java" kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry excluding="lib/|old/|readme/|sootOutput|src/|test/|tmp/|shared/" kind="src" path=""/>
+	<classpathentry kind="lib" path="lib/xpp3_min-1.1.3.4.O.jar"/>
+	<classpathentry kind="lib" path="lib/xstream-1.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/jasmin-2.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/polyglot.jar"/>
+	<classpathentry kind="lib" path="lib/java_cup.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/soot-One"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
