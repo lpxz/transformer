@@ -156,70 +156,160 @@
         </java>
     </target>
 
+		
 
-	<!--avrora batik eclipse fop h2 jython luindex lusearch pmd sunflow tomcat xalan-->
-    <target name="TransformMain">
+
+
+		<!--target name="doit_API_all">	
+			<doittogether projectname="Avrora"/>
+			 <doittogether projectname="Bayes"/>
+			<doittogether projectname="Cache4j"/>
+			 <doittogether projectname="Derby"/>
+			 <doittogether projectname="Ftpserver"/>
+			 <doittogether projectname="Hedc"/>
+			 <doittogether projectname="Jigsaw"/>
+			<doittogether projectname="Jspider"/>
+			 <doittogether projectname="Laby"/>
+			 <doittogether projectname="Lucene"/>
+			<doittogether projectname="Mail"/>
+			<doittogether projectname="mtrt"/>
+			<doittogether projectname="Openjms"/>
+			<doittogether projectname="Raytracer"/>
+			 <doittogether projectname="Specjbb"/>
+			<doittogether projectname="Tomcat"/>
+				<doittogether projectname="Tuple"/>
+			 	<doittogether projectname="Vacation"/>
+			 <doittogether projectname="Weblech"/>
+		</target-->
+	
+	
+
+	
+    <target name="avrora">
         <java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
             <jvmarg line="-Xmx13g"/>
             <arg line="avrora"/>
             <classpath refid="Transformer.classpath"/>
         </java>
-    	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
-    	            <jvmarg line="-Xmx13g"/>
-    	            <arg line="batik"/>
-    	            <classpath refid="Transformer.classpath"/>
-    	        </java>
-        	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
-        	            <jvmarg line="-Xmx13g"/>
-        	            <arg line="eclipse"/>
-        	            <classpath refid="Transformer.classpath"/>
-        	        </java>
-        	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
-        	            <jvmarg line="-Xmx13g"/>
-        	            <arg line="fop"/>
-        	            <classpath refid="Transformer.classpath"/>
-        	        </java>
-            	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
-            	            <jvmarg line="-Xmx13g"/>
-            	            <arg line="h2"/>
-            	            <classpath refid="Transformer.classpath"/>
-            	        </java>
-            	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
-            	            <jvmarg line="-Xmx13g"/>
-            	            <arg line="jython"/>
-            	            <classpath refid="Transformer.classpath"/>
-            	        </java>
-            	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
-            	            <jvmarg line="-Xmx13g"/>
-            	            <arg line="luindex"/>
-            	            <classpath refid="Transformer.classpath"/>
-            	        </java>
-        	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
-        	            <jvmarg line="-Xmx13g"/>
-        	            <arg line="lusearch"/>
-        	            <classpath refid="Transformer.classpath"/>
-        	        </java>
-        	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
-        	            <jvmarg line="-Xmx13g"/>
-        	            <arg line="pmd"/>
-        	            <classpath refid="Transformer.classpath"/>
-        	        </java>
+    </target>
+	
+    <target name="batik">
+        <java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx13g"/>
+            <arg line="batik"/>
+            <classpath refid="Transformer.classpath"/>
+        </java>
+    </target>
     	
-    	<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
-    	        	            <jvmarg line="-Xmx13g"/>
-    	        	            <arg line="sunflow"/>
-    	        	            <classpath refid="Transformer.classpath"/>
-    	        	        </java>
-        		<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
-        		        	            <jvmarg line="-Xmx13g"/>
-        		        	            <arg line="tomcat"/>
-        		        	            <classpath refid="Transformer.classpath"/>
-        		        	        </java>
-        		<java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
-        		        	            <jvmarg line="-Xmx13g"/>
-        		        	            <arg line="xalan"/>
-        		        	            <classpath refid="Transformer.classpath"/>
-        		        	        </java>
+    <target name="eclipse">
+        <java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx13g"/>
+            <arg line="eclipse"/>
+            <classpath refid="Transformer.classpath"/>
+        </java>
+    </target>
+    	
+    <target name="fop">
+    	
+        <java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx13g"/>
+            <arg line="fop"/>
+            <classpath refid="Transformer.classpath"/>
+        </java>
+    </target>
+    	
+        <target name="h2">
+            <java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+                <jvmarg line="-Xmx13g"/>
+                <arg line="h2"/>
+                <classpath refid="Transformer.classpath"/>
+            </java>
+        </target>
+    	
+        <target name="jython">
+            <java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+                <jvmarg line="-Xmx13g"/>
+                <arg line="jython"/>
+                <classpath refid="Transformer.classpath"/>
+            </java>
+        </target>
+            	
+            	
+                <target name="luindex">
+                    <java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+                        <jvmarg line="-Xmx13g"/>
+                        <arg line="luindex"/>
+                        <classpath refid="Transformer.classpath"/>
+                    </java>
+                </target>
+            	
+                <target name="lusearch">
+                    <java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+                        <jvmarg line="-Xmx13g"/>
+                        <arg line="lusearch"/>
+                        <classpath refid="Transformer.classpath"/>
+                    </java>
+                </target>
+            	
+                <target name="pmd">
+                    <java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+                        <jvmarg line="-Xmx13g"/>
+                        <arg line="pmd"/>
+                        <classpath refid="Transformer.classpath"/>
+                    </java>
+                </target>
+            	
+            	
+                <target name="sunflow">
+                    <java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+                        <jvmarg line="-Xmx13g"/>
+                        <arg line="sunflow"/>
+                        <classpath refid="Transformer.classpath"/>
+                    </java>
+                </target>
+            	
+            	
+                <target name="tomcat">
+                    <java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+                        <jvmarg line="-Xmx13g"/>
+                        <arg line="tomcat"/>
+                        <classpath refid="Transformer.classpath"/>
+                    </java>
+                </target>
+            	
+    <target name="xalan">
+        <java classname="edu.hkust.leap.transformer.TransformMain" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx13g"/>
+            <arg line="xalan"/>
+            <classpath refid="Transformer.classpath"/>
+        </java>
+    </target>
+	
+	
+	<!--avrora batik eclipse fop h2 jython luindex lusearch pmd sunflow tomcat xalan-->
+    <target name="TransformMain">
+    	<trycatch property="error.message">
+    	  <try>
+    	    <antcall target="avrora"/>    	   
+    	  </try>
+
+    	  <catch>
+    	    <echo message="exception in handling it"/>
+    	  </catch>
+    	</trycatch>
+    	
+    
+    	<antcall target="batik"/>
+    	<antcall target="eclipse"/>
+    		<antcall target="fop"/>
+    		<antcall target="h2"/>
+    		<antcall target="jython"/>
+    		<antcall target="luindex"/>
+    	<antcall target="lusearch"/>
+    		<antcall target="pmd"/>
+    	<antcall target="sunflow"/>
+    			<antcall target="tomcat"/>
+    			<antcall target="xalan"/>
     </target>
 
 </project>

@@ -67,7 +67,17 @@ public class EntryPoints4Dacapo {
 				 List entryPoints = null;
 				 entryPoints=Scene.v().getEntryPoints();
 				 SootClass c =Scene.v().getSootClass("org.eclipse.core.runtime.adaptor.EclipseStarter");
-				 SootMethod method = c.getMethodByName("run");		
+				 
+//				 for(SootMethod sm: c.getMethods())
+//				 {
+//					 if(sm.getName().equals("run"))
+//					 {
+//						 System.out.println(sm.getSignature());
+//						 System.out.println(sm.getSubSignature());
+//					 }
+//				 }				 
+				 
+				 SootMethod method = c.getMethod("java.lang.Object run(java.lang.Object)");		
 				 entryPoints.add(method);
 				 Scene.v().setEntryPoints(entryPoints);					
 			}else if (dacapoBenchmarkName.equals("fop")) {

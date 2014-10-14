@@ -20,7 +20,7 @@ public class AnalysisOptions {
 
 	public static boolean handlingArray= true;
 	public static boolean modelJDKcalls = false;
-	public static boolean dacapoBench = false;
+	public static boolean dacapoBench = true;
 	
 	public static boolean sharedPhase = true;
 	public static boolean injectPhase= true;
