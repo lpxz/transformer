@@ -5,6 +5,12 @@
               directory with the processing instruction <?eclipse.ant.import?>
               as the first entry and export the buildfile again. -->
 <project basedir="." default="build" name="Transformer">
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+        <classpath>
+            <pathelement location="/home/lpxz/eclipse/workspace/soot24/lib/ant-contrib.jar"/>
+        </classpath>
+    </taskdef>
+	
     <property environment="env"/>
     <property name="soot-One.location" value="../../soot-One"/>
     <property name="debuglevel" value="source,lines,vars"/>
@@ -298,18 +304,118 @@
     	  </catch>
     	</trycatch>
     	
+    	<trycatch property="error.message">
+    	    	  <try>
+    	    	    <antcall target="batik"/>    	   
+    	    	  </try>
+
+    	    	  <catch>
+    	    	    <echo message="exception in handling it"/>
+    	    	  </catch>
+    	    	</trycatch>
+    		
+    	<trycatch property="error.message">
+    	    	    	  <try>
+    	    	    	    <antcall target="eclipse"/>    	   
+    	    	    	  </try>
+
+    	    	    	  <catch>
+    	    	    	    <echo message="exception in handling it"/>
+    	    	    	  </catch>
+    	    	    	</trycatch>
+    	    		
+    		
+    	<trycatch property="error.message">
+    	    	    	    	  <try>
+    	    	    	    	    <antcall target="fop"/>    	   
+    	    	    	    	  </try>
+
+    	    	    	    	  <catch>
+    	    	    	    	    <echo message="exception in handling it"/>
+    	    	    	    	  </catch>
+    	    	    	    	</trycatch>
+    	
+    	<trycatch property="error.message">
+    	    	    	    	    	  <try>
+    	    	    	    	    	    <antcall target="h2"/>    	   
+    	    	    	    	    	  </try>
+
+    	    	    	    	    	  <catch>
+    	    	    	    	    	    <echo message="exception in handling it"/>
+    	    	    	    	    	  </catch>
+    	    	    	    	    	</trycatch>
+
+    	<trycatch property="error.message">
+    	    	    	    	    	  <try>
+    	    	    	    	    	    <antcall target="jython"/>    	   
+    	    	    	    	    	  </try>
+
+    	    	    	    	    	  <catch>
+    	    	    	    	    	    <echo message="exception in handling it"/>
+    	    	    	    	    	  </catch>
+    	    	    	    	    	</trycatch>
     
-    	<antcall target="batik"/>
-    	<antcall target="eclipse"/>
-    		<antcall target="fop"/>
-    		<antcall target="h2"/>
-    		<antcall target="jython"/>
-    		<antcall target="luindex"/>
-    	<antcall target="lusearch"/>
-    		<antcall target="pmd"/>
-    	<antcall target="sunflow"/>
-    			<antcall target="tomcat"/>
-    			<antcall target="xalan"/>
+    	
+    	<trycatch property="error.message">
+    	    	    	    	    	    	  <try>
+    	    	    	    	    	    	    <antcall target="luindex"/>    	   
+    	    	    	    	    	    	  </try>
+
+    	    	    	    	    	    	  <catch>
+    	    	    	    	    	    	    <echo message="exception in handling it"/>
+    	    	    	    	    	    	  </catch>
+    	    	    	    	    	    	</trycatch>
+    	
+    	<trycatch property="error.message">
+    	    	    	    	    	    	    	  <try>
+    	    	    	    	    	    	    	    <antcall target="lusearch"/>    	   
+    	    	    	    	    	    	    	  </try>
+
+    	    	    	    	    	    	    	  <catch>
+    	    	    	    	    	    	    	    <echo message="exception in handling it"/>
+    	    	    	    	    	    	    	  </catch>
+    	    	    	    	    	    	    	</trycatch>
+    	
+    	
+    	<trycatch property="error.message">
+    	    	    	    	    	    	    	    	  <try>
+    	    	    	    	    	    	    	    	    <antcall target="pmd"/>    	   
+    	    	    	    	    	    	    	    	  </try>
+
+    	    	    	    	    	    	    	    	  <catch>
+    	    	    	    	    	    	    	    	    <echo message="exception in handling it"/>
+    	    	    	    	    	    	    	    	  </catch>
+    	    	    	    	    	    	    	    	</trycatch>
+    	<trycatch property="error.message">
+    	    	    	    	    	    	    	    	    	  <try>
+    	    	    	    	    	    	    	    	    	    <antcall target="sunflow"/>    	   
+    	    	    	    	    	    	    	    	    	  </try>
+
+    	    	    	    	    	    	    	    	    	  <catch>
+    	    	    	    	    	    	    	    	    	    <echo message="exception in handling it"/>
+    	    	    	    	    	    	    	    	    	  </catch>
+    	    	    	    	    	    	    	    	    	</trycatch>	
+    	<trycatch property="error.message">
+        	    	    	    	    	    	    	    	    	  <try>
+        	    	    	    	    	    	    	    	    	    <antcall target="tomcat"/>    	   
+        	    	    	    	    	    	    	    	    	  </try>
+
+        	    	    	    	    	    	    	    	    	  <catch>
+        	    	    	    	    	    	    	    	    	    <echo message="exception in handling it"/>
+        	    	    	    	    	    	    	    	    	  </catch>
+        	    	    	    	    	    	    	    	    	</trycatch>	
+    	
+    	<trycatch property="error.message">
+            	    	    	    	    	    	    	    	    	  <try>
+            	    	    	    	    	    	    	    	    	    <antcall target="xalan"/>    	   
+            	    	    	    	    	    	    	    	    	  </try>
+
+            	    	    	    	    	    	    	    	    	  <catch>
+            	    	    	    	    	    	    	    	    	    <echo message="exception in handling it"/>
+            	    	    	    	    	    	    	    	    	  </catch>
+            	    	    	    	    	    	    	    	    	</trycatch>	
+    		
+    		
     </target>
 
 </project>
