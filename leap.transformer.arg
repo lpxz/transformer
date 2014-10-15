@@ -1,4 +1,5 @@
 # SPENO  mainclass args (to added manually)
 #J /home/lpxz/eclipse/workspacePA_icse/benchmarks/bin demo.Example
 #c /home/lpxz/eclipse/workspacePA_icse/cache4j/bin net.sf.cache4j.test.BlockingCacheTest
-c /home/lpxz/eclipse/workspacePA_icse/benchmarks/bin demo.Example
+#c /home/lpxz/eclipse/workspacePA_icse/benchmarks/bin demo.Example
+c /home/lpxz/eclipse/workspacePA_icse/specjbb2005/bin spec.jbb.JBBmain

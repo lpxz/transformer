@@ -203,7 +203,7 @@ public class TransformMain {
 		}
 
 		PackManager.v().runPacks();// 1
-//		PackManager.v().writeOutputExcept(excludeList);
+		PackManager.v().writeOutputExcept(excludeList);
 		
 		if(AnalysisOptions.sharedPhase)
 		{
