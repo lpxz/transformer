@@ -1,0 +1,91 @@
+public final enum class spec.jbb.Company$runModes extends java.lang.Enum
+{
+    public static final enum spec.jbb.Company$runModes DEFAULT_MODE;
+    public static final enum spec.jbb.Company$runModes MULTI_RAMP;
+    public static final enum spec.jbb.Company$runModes RAMP_UP;
+    public static final enum spec.jbb.Company$runModes RECORDING;
+    public static final enum spec.jbb.Company$runModes RAMP_DOWN;
+    public static final enum spec.jbb.Company$runModes STOP;
+    private static final spec.jbb.Company$runModes[] ENUM$VALUES;
+
+    static void <clinit>()
+    {
+        spec.jbb.Company$runModes $r0, $r2;
+        spec.jbb.Company$runModes[] $r1;
+
+        $r0 = new spec.jbb.Company$runModes;
+        specialinvoke $r0.<spec.jbb.Company$runModes: void <init>(java.lang.String,int)>("DEFAULT_MODE", 0);
+        <spec.jbb.Company$runModes: spec.jbb.Company$runModes DEFAULT_MODE> = $r0;
+        $r0 = new spec.jbb.Company$runModes;
+        specialinvoke $r0.<spec.jbb.Company$runModes: void <init>(java.lang.String,int)>("MULTI_RAMP", 1);
+        <spec.jbb.Company$runModes: spec.jbb.Company$runModes MULTI_RAMP> = $r0;
+        $r0 = new spec.jbb.Company$runModes;
+        specialinvoke $r0.<spec.jbb.Company$runModes: void <init>(java.lang.String,int)>("RAMP_UP", 2);
+        <spec.jbb.Company$runModes: spec.jbb.Company$runModes RAMP_UP> = $r0;
+        $r0 = new spec.jbb.Company$runModes;
+        specialinvoke $r0.<spec.jbb.Company$runModes: void <init>(java.lang.String,int)>("RECORDING", 3);
+        <spec.jbb.Company$runModes: spec.jbb.Company$runModes RECORDING> = $r0;
+        $r0 = new spec.jbb.Company$runModes;
+        specialinvoke $r0.<spec.jbb.Company$runModes: void <init>(java.lang.String,int)>("RAMP_DOWN", 4);
+        <spec.jbb.Company$runModes: spec.jbb.Company$runModes RAMP_DOWN> = $r0;
+        $r0 = new spec.jbb.Company$runModes;
+        specialinvoke $r0.<spec.jbb.Company$runModes: void <init>(java.lang.String,int)>("STOP", 5);
+        <spec.jbb.Company$runModes: spec.jbb.Company$runModes STOP> = $r0;
+        $r1 = newarray (spec.jbb.Company$runModes)[6];
+        $r2 = <spec.jbb.Company$runModes: spec.jbb.Company$runModes DEFAULT_MODE>;
+        $r1[0] = $r2;
+        $r2 = <spec.jbb.Company$runModes: spec.jbb.Company$runModes MULTI_RAMP>;
+        $r1[1] = $r2;
+        $r2 = <spec.jbb.Company$runModes: spec.jbb.Company$runModes RAMP_UP>;
+        $r1[2] = $r2;
+        $r2 = <spec.jbb.Company$runModes: spec.jbb.Company$runModes RECORDING>;
+        $r1[3] = $r2;
+        $r2 = <spec.jbb.Company$runModes: spec.jbb.Company$runModes RAMP_DOWN>;
+        $r1[4] = $r2;
+        $r2 = <spec.jbb.Company$runModes: spec.jbb.Company$runModes STOP>;
+        $r1[5] = $r2;
+        <spec.jbb.Company$runModes: spec.jbb.Company$runModes[] ENUM$VALUES> = $r1;
+        return;
+    }
+
+    private void <init>(java.lang.String, int)
+    {
+        spec.jbb.Company$runModes this;
+        java.lang.String l1;
+        int l2;
+
+        this := @this: spec.jbb.Company$runModes;
+        l1 := @parameter0: java.lang.String;
+        l2 := @parameter1: int;
+        specialinvoke this.<java.lang.Enum: void <init>(java.lang.String,int)>(l1, l2);
+        return;
+    }
+
+    public static spec.jbb.Company$runModes[] values()
+    {
+        spec.jbb.Company$runModes[] $r0, l0, l2, $r1;
+        int l1, $i0;
+
+        nop;
+        $r0 = <spec.jbb.Company$runModes: spec.jbb.Company$runModes[] ENUM$VALUES>;
+        l0 = $r0;
+        $i0 = lengthof l0;
+        l1 = $i0;
+        $r1 = newarray (spec.jbb.Company$runModes)[$i0];
+        l2 = $r1;
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r0, 0, $r1, 0, l1);
+        return l2;
+    }
+
+    public static spec.jbb.Company$runModes valueOf(java.lang.String)
+    {
+        java.lang.String l0;
+        java.lang.Enum $r0;
+        spec.jbb.Company$runModes $r1;
+
+        l0 := @parameter0: java.lang.String;
+        $r0 = staticinvoke <java.lang.Enum: java.lang.Enum valueOf(java.lang.Class,java.lang.String)>(class "spec/jbb/Company$runModes", l0);
+        $r1 = (spec.jbb.Company$runModes) $r0;
+        return $r1;
+    }
+}

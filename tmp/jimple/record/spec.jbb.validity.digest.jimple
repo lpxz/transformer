@@ -1,0 +1,157 @@
+public class spec.jbb.validity.digest extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+    boolean debug;
+
+    public void <init>()
+    {
+        spec.jbb.validity.digest this;
+
+        this := @this: spec.jbb.validity.digest;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<spec.jbb.validity.digest: boolean debug> = 0;
+        return;
+    }
+
+    public boolean crunch_jar(java.lang.String)
+    {
+        spec.jbb.validity.digest this;
+        java.lang.String name, path, jar_name, $r6;
+        boolean correct, $z0;
+        int index_jar, index_separator, count, i, $i0, $i3;
+        java.io.FileInputStream the_jar, $r1;
+        spec.jbb.validity.digestExpected e, $r2;
+        byte[] expected, a;
+        java.security.MessageDigest md;
+        java.security.DigestInputStream dis, $r3;
+        java.io.PrintStream $r0;
+        char $c1, $c2;
+        java.io.File $r4;
+        long $l4, tid_crunch_jar;
+        java.lang.StringBuilder $r5;
+        byte $b6, $b7, $b8;
+        java.lang.Exception $r7, e;
+        java.lang.Thread thread_crunch_jar;
+
+        this := @this: spec.jbb.validity.digest;
+        name := @parameter0: java.lang.String;
+        thread_crunch_jar = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_crunch_jar = virtualinvoke thread_crunch_jar.<java.lang.Thread: long getId()>();
+        correct = 1;
+        path = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("java.class.path");
+        index_jar = virtualinvoke path.<java.lang.String: int indexOf(java.lang.String)>("jbb.jar");
+        jar_name = "jbb.jar";
+        if index_jar >= 0 goto label0;
+
+        correct = 0;
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>("jbb.jar not in CLASSPATH");
+        return 0;
+
+     label0:
+        if index_jar <= 0 goto label3;
+
+        $i0 = index_jar - 1;
+        $c1 = virtualinvoke path.<java.lang.String: char charAt(int)>($i0);
+        $c2 = <java.io.File: char separatorChar>;
+        if $c1 == $c2 goto label1;
+
+        correct = 0;
+        return 0;
+
+     label1:
+        $c2 = <java.io.File: char pathSeparatorChar>;
+        index_separator = virtualinvoke path.<java.lang.String: int indexOf(int)>($c2);
+        if index_separator >= index_jar goto label2;
+
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>("fails validation because something is before jbb.jar in CLASSPATH");
+        correct = 0;
+        return 0;
+
+     label2:
+        $i3 = index_jar + 7;
+        jar_name = virtualinvoke path.<java.lang.String: java.lang.String substring(int,int)>(0, $i3);
+
+     label3:
+        $r1 = new java.io.FileInputStream;
+        specialinvoke $r1.<java.io.FileInputStream: void <init>(java.lang.String)>(jar_name);
+        the_jar = $r1;
+        $r2 = new spec.jbb.validity.digestExpected;
+        specialinvoke $r2.<spec.jbb.validity.digestExpected: void <init>()>();
+        e = $r2;
+        expected = virtualinvoke e.<spec.jbb.validity.digestExpected: byte[] getArray()>();
+        md = staticinvoke <java.security.MessageDigest: java.security.MessageDigest getInstance(java.lang.String)>("SHA");
+        $r3 = new java.security.DigestInputStream;
+        specialinvoke $r3.<java.security.DigestInputStream: void <init>(java.io.InputStream,java.security.MessageDigest)>(the_jar, md);
+        dis = $r3;
+        $r4 = new java.io.File;
+        specialinvoke $r4.<java.io.File: void <init>(java.lang.String)>(jar_name);
+        $l4 = virtualinvoke $r4.<java.io.File: long length()>();
+        count = (int) $l4;
+        i = 0;
+        goto label5;
+
+     label4:
+        virtualinvoke dis.<java.security.DigestInputStream: int read()>();
+        i = i + 1;
+
+     label5:
+        if i < count goto label4;
+
+        a = virtualinvoke md.<java.security.MessageDigest: byte[] digest()>();
+        i = 0;
+        goto label9;
+
+     label6:
+        $z0 = this.<spec.jbb.validity.digest: boolean debug>;
+        if $z0 == 0 goto label7;
+
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r5 = new java.lang.StringBuilder;
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>(java.lang.String)>(", ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(a, 59, tid_crunch_jar, "spec.jbb.validity.digest", 76, i, $b6);
+        $b6 = a[i];
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($b6);
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r6);
+
+     label7:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(a, 59, tid_crunch_jar, "spec.jbb.validity.digest", 77, i, $b7);
+        $b7 = a[i];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(expected, 59, tid_crunch_jar, "spec.jbb.validity.digest", 77, i, $b8);
+        $b8 = expected[i];
+        if $b7 == $b8 goto label8;
+
+        correct = 0;
+
+     label8:
+        i = i + 1;
+
+     label9:
+        if i < 10 goto label6;
+
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r5 = new java.lang.StringBuilder;
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>(java.lang.String)>("jar validity is ");
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>(correct);
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r6);
+
+     label10:
+        return correct;
+
+     label11:
+        $r7 := @caughtexception;
+        e = $r7;
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r5 = new java.lang.StringBuilder;
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>(java.lang.String)>("digest:  caught exception ");
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(e);
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r6);
+        return 0;
+
+        catch java.lang.Exception from label3 to label10 with label11;
+    }
+}

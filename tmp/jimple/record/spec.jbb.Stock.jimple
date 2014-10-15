@@ -1,0 +1,249 @@
+public class spec.jbb.Stock extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+    private spec.jbb.Company company;
+    private java.lang.String[] district_text;
+    private java.lang.String data;
+    private int id;
+    private int quantity;
+    private java.math.BigInteger ytd;
+    private short orderCount;
+    private short remoteCount;
+    private short warehouseId;
+
+    public void <init>(spec.jbb.Company, int, short)
+    {
+        spec.jbb.Stock this;
+        spec.jbb.Company inCompany;
+        int itemId;
+        short wId;
+
+        this := @this: spec.jbb.Stock;
+        inCompany := @parameter0: spec.jbb.Company;
+        itemId := @parameter1: int;
+        wId := @parameter2: short;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        virtualinvoke this.<spec.jbb.Stock: void initStock(spec.jbb.Company,int,short)>(inCompany, itemId, wId);
+        return;
+    }
+
+    public void initStock(spec.jbb.Company, int, short)
+    {
+        spec.jbb.Stock this;
+        spec.jbb.Company inCompany, $r4;
+        int itemId, district, $i0;
+        short wId, maxDistricts, $s1;
+        java.lang.Integer hit, $r1;
+        java.math.BigInteger $r0;
+        java.lang.String $r2, $r7;
+        char[] $r3, $r8;
+        java.lang.String[] $r5, $r6;
+        long tid_initStock;
+        java.lang.Thread thread_initStock;
+
+        this := @this: spec.jbb.Stock;
+        inCompany := @parameter0: spec.jbb.Company;
+        itemId := @parameter1: int;
+        wId := @parameter2: short;
+        thread_initStock = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_initStock = virtualinvoke thread_initStock.<java.lang.Thread: long getId()>();
+        $i0 = staticinvoke <spec.jbb.JBButil: int random(int,int,short)>(10, 100, wId);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 130, tid_initStock, "spec.jbb.Stock", 53, $i0);
+        this.<spec.jbb.Stock: int quantity> = $i0;
+        $r0 = <java.math.BigInteger: java.math.BigInteger ZERO>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 131, tid_initStock, "spec.jbb.Stock", 54, $r0);
+        this.<spec.jbb.Stock: java.math.BigInteger ytd> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 132, tid_initStock, "spec.jbb.Stock", 55, 0);
+        this.<spec.jbb.Stock: short orderCount> = 0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 133, tid_initStock, "spec.jbb.Stock", 56, 0);
+        this.<spec.jbb.Stock: short remoteCount> = 0;
+        $r1 = new java.lang.Integer;
+        specialinvoke $r1.<java.lang.Integer: void <init>(int)>(0);
+        hit = $r1;
+        $r2 = new java.lang.String;
+        $r3 = staticinvoke <spec.jbb.JBButil: char[] create_a_string_with_original(int,int,float,java.lang.Integer,short)>(26, 50, 10.0F, hit, wId);
+        specialinvoke $r2.<java.lang.String: void <init>(char[])>($r3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 134, tid_initStock, "spec.jbb.Stock", 58, $r2);
+        this.<spec.jbb.Stock: java.lang.String data> = $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 135, tid_initStock, "spec.jbb.Stock", 60, inCompany);
+        this.<spec.jbb.Stock: spec.jbb.Company company> = inCompany;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 136, tid_initStock, "spec.jbb.Stock", 61, itemId);
+        this.<spec.jbb.Stock: int id> = itemId;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 137, tid_initStock, "spec.jbb.Stock", 62, wId);
+        this.<spec.jbb.Stock: short warehouseId> = wId;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 135, tid_initStock, "spec.jbb.Stock", 63, $r4);
+        $r4 = this.<spec.jbb.Stock: spec.jbb.Company company>;
+        maxDistricts = virtualinvoke $r4.<spec.jbb.Company: short getMaxDistrictsPerWarehouse()>();
+        $r5 = newarray (java.lang.String)[maxDistricts];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 138, tid_initStock, "spec.jbb.Stock", 64, $r5);
+        this.<spec.jbb.Stock: java.lang.String[] district_text> = $r5;
+        district = 0;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 138, tid_initStock, "spec.jbb.Stock", 66, $r6);
+        $r6 = this.<spec.jbb.Stock: java.lang.String[] district_text>;
+        $r7 = new java.lang.String;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 137, tid_initStock, "spec.jbb.Stock", 67, $s1);
+        $s1 = this.<spec.jbb.Stock: short warehouseId>;
+        $r8 = staticinvoke <spec.jbb.JBButil: char[] create_random_a_string(int,int,short)>(25, 25, $s1);
+        specialinvoke $r7.<java.lang.String: void <init>(char[])>($r8);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r6, 23, tid_initStock, "spec.jbb.Stock", 66, district, $r7);
+        $r6[district] = $r7;
+        district = district + 1;
+
+     label1:
+        if district < maxDistricts goto label0;
+
+        return;
+    }
+
+    public int getQuantity()
+    {
+        spec.jbb.Stock this;
+        int temp;
+        long tid_getQuantity;
+        java.lang.Thread thread_getQuantity;
+
+        this := @this: spec.jbb.Stock;
+        thread_getQuantity = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getQuantity = virtualinvoke thread_getQuantity.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 130, tid_getQuantity, "spec.jbb.Stock", 72, temp);
+        temp = this.<spec.jbb.Stock: int quantity>;
+        return temp;
+    }
+
+    public void changeQuantity(int)
+    {
+        spec.jbb.Stock this;
+        int delta, $i0;
+        long tid_changeQuantity;
+        java.lang.Thread thread_changeQuantity;
+
+        this := @this: spec.jbb.Stock;
+        delta := @parameter0: int;
+        thread_changeQuantity = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_changeQuantity = virtualinvoke thread_changeQuantity.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 130, tid_changeQuantity, "spec.jbb.Stock", 77, $i0);
+        $i0 = this.<spec.jbb.Stock: int quantity>;
+        $i0 = $i0 + delta;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 130, tid_changeQuantity, "spec.jbb.Stock", 77, $i0);
+        this.<spec.jbb.Stock: int quantity> = $i0;
+        return;
+    }
+
+    public void incrementOrderCount()
+    {
+        spec.jbb.Stock this;
+        short $s0;
+        int $i1;
+        long tid_incrementOrderCount;
+        java.lang.Thread thread_incrementOrderCount;
+
+        this := @this: spec.jbb.Stock;
+        thread_incrementOrderCount = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_incrementOrderCount = virtualinvoke thread_incrementOrderCount.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 132, tid_incrementOrderCount, "spec.jbb.Stock", 81, $s0);
+        $s0 = this.<spec.jbb.Stock: short orderCount>;
+        $i1 = $s0 + 1;
+        $s0 = (short) $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 132, tid_incrementOrderCount, "spec.jbb.Stock", 81, $s0);
+        this.<spec.jbb.Stock: short orderCount> = $s0;
+        return;
+    }
+
+    public void incrementRemoteCount()
+    {
+        spec.jbb.Stock this;
+        short $s0;
+        int $i1;
+        long tid_incrementRemoteCount;
+        java.lang.Thread thread_incrementRemoteCount;
+
+        this := @this: spec.jbb.Stock;
+        thread_incrementRemoteCount = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_incrementRemoteCount = virtualinvoke thread_incrementRemoteCount.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 133, tid_incrementRemoteCount, "spec.jbb.Stock", 85, $s0);
+        $s0 = this.<spec.jbb.Stock: short remoteCount>;
+        $i1 = $s0 + 1;
+        $s0 = (short) $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 133, tid_incrementRemoteCount, "spec.jbb.Stock", 85, $s0);
+        this.<spec.jbb.Stock: short remoteCount> = $s0;
+        return;
+    }
+
+    public int getId()
+    {
+        spec.jbb.Stock this;
+        int temp;
+        long tid_getId;
+        java.lang.Thread thread_getId;
+
+        this := @this: spec.jbb.Stock;
+        thread_getId = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getId = virtualinvoke thread_getId.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 136, tid_getId, "spec.jbb.Stock", 89, temp);
+        temp = this.<spec.jbb.Stock: int id>;
+        return temp;
+    }
+
+    public java.lang.String getDistrictInfo(byte)
+    {
+        spec.jbb.Stock this;
+        byte districtId;
+        java.lang.String[] $r0;
+        int $i0;
+        java.lang.String $r1;
+        long tid_getDistrictInfo;
+        java.lang.Thread thread_getDistrictInfo;
+
+        this := @this: spec.jbb.Stock;
+        districtId := @parameter0: byte;
+        thread_getDistrictInfo = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getDistrictInfo = virtualinvoke thread_getDistrictInfo.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 138, tid_getDistrictInfo, "spec.jbb.Stock", 94, $r0);
+        $r0 = this.<spec.jbb.Stock: java.lang.String[] district_text>;
+        $i0 = districtId - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_getDistrictInfo, "spec.jbb.Stock", 94, $i0, $r1);
+        $r1 = $r0[$i0];
+        return $r1;
+    }
+
+    public java.lang.String getData()
+    {
+        spec.jbb.Stock this;
+        java.lang.String $r0, temp, $r1;
+        long tid_getData;
+        java.lang.Thread thread_getData;
+
+        this := @this: spec.jbb.Stock;
+        thread_getData = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getData = virtualinvoke thread_getData.<java.lang.Thread: long getId()>();
+        $r0 = new java.lang.String;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 134, tid_getData, "spec.jbb.Stock", 98, $r1);
+        $r1 = this.<spec.jbb.Stock: java.lang.String data>;
+        specialinvoke $r0.<java.lang.String: void <init>(java.lang.String)>($r1);
+        temp = $r0;
+        return temp;
+    }
+
+    public void incrementYTD(short)
+    {
+        spec.jbb.Stock this;
+        short ol_quantity;
+        java.math.BigInteger $r0, $r1;
+        long $l0, tid_incrementYTD;
+        java.lang.Thread thread_incrementYTD;
+
+        this := @this: spec.jbb.Stock;
+        ol_quantity := @parameter0: short;
+        thread_incrementYTD = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_incrementYTD = virtualinvoke thread_incrementYTD.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 131, tid_incrementYTD, "spec.jbb.Stock", 103, $r0);
+        $r0 = this.<spec.jbb.Stock: java.math.BigInteger ytd>;
+        $l0 = (long) ol_quantity;
+        $r1 = staticinvoke <java.math.BigInteger: java.math.BigInteger valueOf(long)>($l0);
+        virtualinvoke $r0.<java.math.BigInteger: java.math.BigInteger add(java.math.BigInteger)>($r1);
+        return;
+    }
+}

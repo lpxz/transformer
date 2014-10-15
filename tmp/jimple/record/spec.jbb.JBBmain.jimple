@@ -1,0 +1,2121 @@
+public class spec.jbb.JBBmain extends java.lang.Object implements java.lang.Runnable
+{
+    static final java.lang.String COPYRIGHT;
+    public static final java.lang.String Version;
+    public static final java.lang.String VersionDate;
+    public static final java.lang.String[] Header;
+    public static final java.lang.String[] TPC_FAIR_USE;
+    private static long deterministic_seed;
+    public static final short NON_NUMERIC_ENTRY;
+    public static spec.jbb.Company myCompany;
+    public java.util.Vector threadList;
+    public java.util.Vector whIdStack;
+    private int testnum;
+    private int warehousePopulationBase;
+    private int orderlinesPerOrder;
+    private int waitTimePercent;
+    private boolean forceGC;
+    private boolean screenWriteFlag;
+    private boolean steadyStateFlag;
+    public static boolean uniformRandomItems;
+    public static int overrideItemTableSize;
+    public static int maxWh;
+    private static java.io.PrintStream outResultsFile;
+    private static java.io.PrintStream outRawFile;
+    private static java.io.PrintStream outDeliveriesFile;
+    public static boolean multiJVMMode;
+    public static int instanceId;
+    public static int port;
+    public static java.io.BufferedReader socIn;
+    public static java.io.PrintWriter socOut;
+    public static java.lang.String defaultOutputDir;
+    public static java.lang.String defaultPropsFileName;
+    spec.jbb.JBBProperties prop;
+
+    static void <clinit>()
+    {
+        java.lang.String[] $r0;
+
+        $r0 = newarray (java.lang.String)[4];
+        $r0[0] = "";
+        $r0[1] = "Licensed Materials - Property of SPEC";
+        $r0[2] = "SPECjbb2005";
+        $r0[3] = "Copyright (c) 2005 Standard Performance Evaluation Corporation (SPEC),All rights reserved,";
+        <spec.jbb.JBBmain: java.lang.String[] Header> = $r0;
+        $r0 = newarray (java.lang.String)[13];
+        $r0[0] = "";
+        $r0[1] = "Licensed Materials - Property of SPEC";
+        $r0[2] = "SPECjbb2005";
+        $r0[3] = "Copyright (c) 2005 Standard Performance Evaluation Corporation (SPEC),All rights reserved,(C) Copyright IBM Corp., 1996 - 2005All rights reserved,";
+        $r0[4] = "This source code is provided as is, without any express or implied warranty.";
+        $r0[5] = "";
+        $r0[6] = "TPC Fair Use policy:";
+        $r0[7] = "";
+        $r0[8] = "SPECjbb2005 is not a TPC Benchmark. SPECjbb2005 results are not comparable with";
+        $r0[9] = "any TPC Benchmark results. The workload used by SPECjbb2005 is inspired";
+        $r0[10] = "by the TPC-C specification, TPC Benchmark C , Standard Specification,";
+        $r0[11] = "Revision 3.2, August 27 1996. TPC Benchmark is a trademark of the Transaction";
+        $r0[12] = "Processing Performance Council.";
+        <spec.jbb.JBBmain: java.lang.String[] TPC_FAIR_USE> = $r0;
+        <spec.jbb.JBBmain: long deterministic_seed> = 2108417082252868L;
+        <spec.jbb.JBBmain: spec.jbb.Company myCompany> = null;
+        <spec.jbb.JBBmain: int overrideItemTableSize> = 0;
+        <spec.jbb.JBBmain: int maxWh> = 2;
+        <spec.jbb.JBBmain: java.io.PrintStream outResultsFile> = null;
+        <spec.jbb.JBBmain: java.io.PrintStream outRawFile> = null;
+        <spec.jbb.JBBmain: java.io.PrintStream outDeliveriesFile> = null;
+        <spec.jbb.JBBmain: boolean multiJVMMode> = 0;
+        <spec.jbb.JBBmain: int instanceId> = -1;
+        <spec.jbb.JBBmain: int port> = 1500;
+        <spec.jbb.JBBmain: java.lang.String defaultOutputDir> = "results";
+        <spec.jbb.JBBmain: java.lang.String defaultPropsFileName> = "SPECjbb.props";
+        return;
+    }
+
+    public void <init>()
+    {
+        spec.jbb.JBBmain this;
+
+        this := @this: spec.jbb.JBBmain;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<spec.jbb.JBBmain: int testnum> = 0;
+        return;
+    }
+
+    public void run()
+    {
+        spec.jbb.JBBmain this;
+        null_type transMgr;
+        short wId, $s0, $s1;
+        java.util.Vector $r0;
+        java.lang.Object $r1;
+        java.lang.Short $r2;
+        spec.jbb.Company $r3, $r4, $r8;
+        spec.jbb.TransactionManager $r5, transMgr;
+        java.util.logging.Logger $r6;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r9;
+        long tid_run;
+        java.lang.Thread thread_run;
+
+        this := @this: spec.jbb.JBBmain;
+        thread_run = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_run = virtualinvoke thread_run.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void threadStartRun(long)>(tid_run);
+        transMgr = null;
+        $r0 = this.<spec.jbb.JBBmain: java.util.Vector whIdStack>;
+        $r1 = virtualinvoke $r0.<java.util.Vector: java.lang.Object remove(int)>(0);
+        $r2 = (java.lang.Short) $r1;
+        wId = virtualinvoke $r2.<java.lang.Short: short shortValue()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_run, "spec.jbbspec.jbb.JBBmain", 121, $r3);
+        $r3 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        virtualinvoke $r3.<spec.jbb.Company: short getMaxWarehouses()>();
+        if wId <= 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_run, "spec.jbbspec.jbb.JBBmain", 122, $r4);
+        $r4 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        $s0 = virtualinvoke $r4.<spec.jbb.Company: short getMaxWarehouses()>();
+        if wId > $s0 goto label0;
+
+        $r5 = new spec.jbb.TransactionManager;
+        specialinvoke $r5.<spec.jbb.TransactionManager: void <init>()>();
+        transMgr = $r5;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_run, "spec.jbbspec.jbb.JBBmain", 124, $r4);
+        $r4 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        virtualinvoke transMgr.<spec.jbb.TransactionManager: void initTransactionManager(spec.jbb.Company,short)>($r4, wId);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_run, "spec.jbbspec.jbb.JBBmain", 126, $r3);
+        $r3 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        virtualinvoke $r3.<spec.jbb.Company: void addWarehouseThread(spec.jbb.TransactionManager)>(transMgr);
+        virtualinvoke transMgr.<spec.jbb.TransactionManager: void go()>();
+        goto label1;
+
+     label0:
+        $r6 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r7 = new java.lang.StringBuilder;
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>(java.lang.String)>("IMPOSSIBLE ERROR: Invalid Warehouse passed in.  Value was ");
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(wId);
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" and should be between 1 and ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_run, "spec.jbbspec.jbb.JBBmain", 133, $r8);
+        $r8 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        $s1 = virtualinvoke $r8.<spec.jbb.Company: short getMaxWarehouses()>();
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s1);
+        $r9 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r6.<java.util.logging.Logger: void warning(java.lang.String)>($r9);
+        staticinvoke <spec.jbb.JBButil: void SecondsToSleep(long)>(15L);
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void threadExitRun(long)>(tid_run);
+        return;
+    }
+
+    public void startJBBthread(short)
+    {
+        spec.jbb.JBBmain this;
+        short whID;
+        java.util.Vector $r0, $r1;
+        java.lang.Thread whThread, $r2, thread_startJBBthread;
+        java.lang.Short $r3;
+        java.lang.Object localthislockstartJBBthread;
+        java.lang.Throwable throwableLocal0;
+        long tid_startJBBthread;
+
+        this := @this: spec.jbb.JBBmain;
+        whID := @parameter0: short;
+        thread_startJBBthread = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_startJBBthread = virtualinvoke thread_startJBBthread.<java.lang.Thread: long getId()>();
+        localthislockstartJBBthread = this;
+
+     label0:
+        entermonitor localthislockstartJBBthread;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockstartJBBthread, 0, tid_startJBBthread);
+        $r1 = this.<spec.jbb.JBBmain: java.util.Vector threadList>;
+        if $r1 != null goto label1;
+
+        $r0 = new java.util.Vector;
+        specialinvoke $r0.<java.util.Vector: void <init>()>();
+        this.<spec.jbb.JBBmain: java.util.Vector threadList> = $r0;
+
+     label1:
+        $r1 = this.<spec.jbb.JBBmain: java.util.Vector whIdStack>;
+        if $r1 != null goto label2;
+
+        $r0 = new java.util.Vector;
+        specialinvoke $r0.<java.util.Vector: void <init>()>();
+        this.<spec.jbb.JBBmain: java.util.Vector whIdStack> = $r0;
+
+     label2:
+        $r2 = new java.lang.Thread;
+        specialinvoke $r2.<java.lang.Thread: void <init>(java.lang.Runnable)>(this);
+        whThread = $r2;
+        $r1 = this.<spec.jbb.JBBmain: java.util.Vector threadList>;
+        virtualinvoke $r1.<java.util.Vector: boolean add(java.lang.Object)>(whThread);
+        $r1 = this.<spec.jbb.JBBmain: java.util.Vector whIdStack>;
+        $r3 = staticinvoke <java.lang.Short: java.lang.Short valueOf(short)>(whID);
+        virtualinvoke $r1.<java.util.Vector: boolean add(java.lang.Object)>($r3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void startRunThreadBefore(java.lang.Thread,long)>(whThread, tid_startJBBthread);
+        virtualinvoke whThread.<java.lang.Thread: void start()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstartJBBthread, 0, tid_startJBBthread);
+        exitmonitor localthislockstartJBBthread;
+        goto label3;
+
+     label3:
+        return;
+
+     label4:
+        throwableLocal0 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstartJBBthread, 0, tid_startJBBthread);
+        exitmonitor localthislockstartJBBthread;
+
+     label6:
+        throw throwableLocal0;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void stopJBBthread()
+    {
+        spec.jbb.JBBmain this;
+        java.util.NoSuchElementException e, $r3;
+        java.util.Vector $r0;
+        java.lang.Object $r1, localthislockstopJBBthread;
+        java.lang.Thread $r2, thread_stopJBBthread;
+        boolean $z0;
+        java.io.PrintStream $r4;
+        java.lang.Throwable throwableLocal1;
+        long tid_stopJBBthread;
+
+        this := @this: spec.jbb.JBBmain;
+        thread_stopJBBthread = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_stopJBBthread = virtualinvoke thread_stopJBBthread.<java.lang.Thread: long getId()>();
+        localthislockstopJBBthread = this;
+
+     label0:
+        entermonitor localthislockstopJBBthread;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockstopJBBthread, 0, tid_stopJBBthread);
+        goto label5;
+
+     label1:
+        staticinvoke <spec.jbb.JBButil: void SecondsToSleep(long)>(1L);
+
+     label2:
+        $r0 = this.<spec.jbb.JBBmain: java.util.Vector threadList>;
+        $r1 = virtualinvoke $r0.<java.util.Vector: java.lang.Object firstElement()>();
+        $r2 = (java.lang.Thread) $r1;
+        $z0 = virtualinvoke $r2.<java.lang.Thread: boolean isAlive()>();
+        if $z0 != 0 goto label1;
+
+        $r0 = this.<spec.jbb.JBBmain: java.util.Vector threadList>;
+        virtualinvoke $r0.<java.util.Vector: java.lang.Object remove(int)>(0);
+
+     label3:
+        goto label5;
+
+     label4:
+        $r3 := @caughtexception;
+        e = $r3;
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>("No first element in the thread list: ");
+        virtualinvoke e.<java.util.NoSuchElementException: void printStackTrace()>();
+
+     label5:
+        $r0 = this.<spec.jbb.JBBmain: java.util.Vector threadList>;
+        $z0 = virtualinvoke $r0.<java.util.Vector: boolean isEmpty()>();
+        if $z0 == 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstopJBBthread, 0, tid_stopJBBthread);
+        exitmonitor localthislockstopJBBthread;
+        goto label6;
+
+     label6:
+        return;
+
+     label7:
+        throwableLocal1 := @caughtexception;
+
+     label8:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstopJBBthread, 0, tid_stopJBBthread);
+        exitmonitor localthislockstopJBBthread;
+
+     label9:
+        throw throwableLocal1;
+
+        catch java.lang.Throwable from label0 to label6 with label7;
+        catch java.lang.Throwable from label8 to label9 with label7;
+        catch java.util.NoSuchElementException from label1 to label3 with label4;
+    }
+
+    public void DoARun(spec.jbb.Company, short, int, int)
+    {
+        spec.jbb.JBBmain this;
+        spec.jbb.Company myCompany;
+        short number_of_warehouses, whID;
+        int rampup_time, measurement_time, $i0, $i1, $i2;
+        java.util.logging.Logger $r0;
+        java.lang.String msg, $r3;
+        java.lang.ThreadDeath e, $r6;
+        java.lang.OutOfMemoryError oome, $r8, $r9, e, $r10;
+        java.lang.StringBuilder $r2, $r5;
+        java.io.PrintStream $r4;
+        java.util.logging.Level $r7;
+        spec.jbb.JBBProperties $r11;
+        boolean $z0;
+        long tid_DoARun;
+        java.lang.Thread thread_DoARun;
+
+        this := @this: spec.jbb.JBBmain;
+        myCompany := @parameter0: spec.jbb.Company;
+        number_of_warehouses := @parameter1: short;
+        rampup_time := @parameter2: int;
+        measurement_time := @parameter3: int;
+        thread_DoARun = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_DoARun = virtualinvoke thread_DoARun.<java.lang.Thread: long getId()>();
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void entering(java.lang.String,java.lang.String)>("spec.jbb.JBBmain", "DoARun");
+        $i0 = this.<spec.jbb.JBBmain: int testnum>;
+        $i0 = $i0 + 1;
+        this.<spec.jbb.JBBmain: int testnum> = $i0;
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.test");
+        $i1 = this.<spec.jbb.JBBmain: int testnum>;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke myCompany.<spec.jbb.Company: void setPropOutputPrefix(java.lang.String)>($r3);
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>("Start User Threads");
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void info(java.lang.String)>("Start User Threads");
+        virtualinvoke myCompany.<spec.jbb.Company: void prepareForStart()>();
+
+     label0:
+        whID = 1;
+        goto label2;
+
+     label1:
+        virtualinvoke myCompany.<spec.jbb.Company: void startAutomated(short,int,int)>(whID, rampup_time, measurement_time);
+        virtualinvoke this.<spec.jbb.JBBmain: void startJBBthread(short)>(whID);
+        $r5 = new java.lang.StringBuilder;
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>(java.lang.String)>("  started user thread for Warehouse ");
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(whID);
+        msg = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>(msg);
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void info(java.lang.String)>(msg);
+        $i2 = whID + 1;
+        whID = (short) $i2;
+
+     label2:
+        if whID <= number_of_warehouses goto label1;
+
+     label3:
+        goto label12;
+
+     label4:
+        $r6 := @caughtexception;
+        e = $r6;
+
+     label5:
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r7 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        virtualinvoke $r0.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r7, "ERROR:  A thread died, probably out of memory.  Increase the heap size and run again", e);
+
+     label6:
+        goto label12;
+
+     label7:
+        $r8 := @caughtexception;
+        oome = $r8;
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  A thread died, probably out of memory.  Increase the heap size and run again");
+        virtualinvoke e.<java.lang.ThreadDeath: void printStackTrace()>();
+        goto label12;
+
+     label8:
+        $r9 := @caughtexception;
+        e = $r9;
+
+     label9:
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r7 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        virtualinvoke $r0.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r7, "ERROR:  Out of memory error caught!   Increase the heap size and run again.", e);
+
+     label10:
+        goto label12;
+
+     label11:
+        $r10 := @caughtexception;
+        oome = $r10;
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  Out of memory error caught!   Increase the heap size and run again.");
+        virtualinvoke e.<java.lang.OutOfMemoryError: void printStackTrace()>();
+
+     label12:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_DoARun, "spec.jbb.JBBmain", 222, $r11);
+        $r11 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r11, 2, tid_DoARun, "spec.jbb.JBBmain", 222, $z0);
+        $z0 = $r11.<spec.jbb.JBBProperties: boolean showWarehouseDetail>;
+        virtualinvoke myCompany.<spec.jbb.Company: void displayResultTotals(boolean)>($z0);
+        virtualinvoke this.<spec.jbb.JBBmain: void stopJBBthread()>();
+        return;
+
+        catch java.lang.ThreadDeath from label0 to label3 with label4;
+        catch java.lang.OutOfMemoryError from label5 to label6 with label7;
+        catch java.lang.OutOfMemoryError from label0 to label3 with label8;
+        catch java.lang.OutOfMemoryError from label9 to label10 with label11;
+    }
+
+    public boolean DoAValidationRun(spec.jbb.Company)
+    {
+        spec.jbb.JBBmain this;
+        spec.jbb.Company myCompany;
+        spec.jbb.TransactionManager transMgr, $r0;
+        boolean $z0;
+
+        this := @this: spec.jbb.JBBmain;
+        myCompany := @parameter0: spec.jbb.Company;
+        virtualinvoke myCompany.<spec.jbb.Company: void prepareForStart()>();
+        virtualinvoke myCompany.<spec.jbb.Company: void startValidation(short)>(1);
+        $r0 = new spec.jbb.TransactionManager;
+        specialinvoke $r0.<spec.jbb.TransactionManager: void <init>()>();
+        transMgr = $r0;
+        virtualinvoke transMgr.<spec.jbb.TransactionManager: void initTransactionManager(spec.jbb.Company,short)>(myCompany, 1);
+        $z0 = virtualinvoke transMgr.<spec.jbb.TransactionManager: boolean goValidate()>();
+        return $z0;
+    }
+
+    public void doIt()
+    {
+        spec.jbb.JBBmain this;
+        java.util.logging.Logger $r0;
+        float min_btps, $f0, $f1, $f2;
+        int cur_warehouses, num_wh, seqndx, $i0, $i1, $i3;
+        spec.jbb.JBBProperties $r1, $r2, $r4;
+        double $d0, $d1;
+        spec.jbb.Company $r3;
+        boolean $z0;
+        long $l2, $l4, tid_doIt;
+        int[] $r5, $r6;
+        java.lang.Thread thread_doIt;
+
+        this := @this: spec.jbb.JBBmain;
+        thread_doIt = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_doIt = virtualinvoke thread_doIt.<java.lang.Thread: long getId()>();
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void entering(java.lang.String,java.lang.String)>("spec.jbb.JBBmain", "DOIT");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 243, $r1);
+        $r1 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>($r1, 3, tid_doIt, "spec.jbb.JBBmain", 243, $f0);
+        $f0 = $r1.<spec.jbb.JBBProperties: float minBTPSRatio>;
+        $d0 = (double) $f0;
+        $d0 = $d0 * 100.0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 243, $r2);
+        $r2 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r2, 4, tid_doIt, "spec.jbb.JBBmain", 243, $i0);
+        $i0 = $r2.<spec.jbb.JBBProperties: int waitTimePercent>;
+        $d1 = (double) $i0;
+        $d0 = $d0 / $d1;
+        $d0 = $d0 * 2.3;
+        $d0 = $d0 / 60.0;
+        min_btps = (float) $d0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 244, $r1);
+        $r1 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 5, tid_doIt, "spec.jbb.JBBmain", 244, $i1);
+        $i1 = $r1.<spec.jbb.JBBProperties: int orderlinesPerOrder>;
+        staticinvoke <spec.jbb.Transaction: void setOrderLineCount(int)>($i1);
+        $r3 = new spec.jbb.Company;
+        specialinvoke $r3.<spec.jbb.Company: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_doIt, "spec.jbbspec.jbb.JBBmain", 245, $r3);
+        <spec.jbb.JBBmain: spec.jbb.Company myCompany> = $r3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 247, $r1);
+        $r1 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r1, 6, tid_doIt, "spec.jbb.JBBmain", 247, $z0);
+        $z0 = $r1.<spec.jbb.JBBProperties: boolean deterministicRandomSeed>;
+        if $z0 == 0 goto label0;
+
+        $l2 = <spec.jbb.JBBmain: long deterministic_seed>;
+        staticinvoke <spec.jbb.JBButil: void set_random_seed(long)>($l2);
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_doIt, "spec.jbbspec.jbb.JBBmain", 250, $r3);
+        $r3 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 250, $r4);
+        $r4 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r4, 7, tid_doIt, "spec.jbb.JBBmain", 250, $i3);
+        $i3 = $r4.<spec.jbb.JBBProperties: int jvm_instances>;
+        $l4 = (long) $i3;
+        virtualinvoke $r3.<spec.jbb.Company: void setJVMInstanceValues(long)>($l4);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_doIt, "spec.jbbspec.jbb.JBBmain", 251, $r3);
+        $r3 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 251, $r4);
+        $r4 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>($r4, 8, tid_doIt, "spec.jbb.JBBmain", 251, $f1);
+        $f1 = $r4.<spec.jbb.JBBProperties: float per_jvm_warehouse_rampup>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 251, $r2);
+        $r2 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>($r2, 9, tid_doIt, "spec.jbb.JBBmain", 251, $f2);
+        $f2 = $r2.<spec.jbb.JBBProperties: float per_jvm_warehouse_rampdown>;
+        virtualinvoke $r3.<spec.jbb.Company: void setMultiJVMRampingValues(float,float)>($f1, $f2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_doIt, "spec.jbbspec.jbb.JBBmain", 252, $r3);
+        $r3 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 252, $r4);
+        $r4 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r4, 10, tid_doIt, "spec.jbb.JBBmain", 252, $i3);
+        $i3 = $r4.<spec.jbb.JBBProperties: int warehousePopulationBase>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(11, tid_doIt, "spec.jbbspec.jbb.JBBmain", 253, $i0);
+        $i0 = <spec.jbb.JBBProperties: int overrideItemTableSize>;
+        virtualinvoke $r3.<spec.jbb.Company: void setPopulationValues(int,int)>($i3, $i0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 254, $r1);
+        $r1 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r1, 12, tid_doIt, "spec.jbb.JBBmain", 254, $z0);
+        $z0 = $r1.<spec.jbb.JBBProperties: boolean screenWriteFlag>;
+        staticinvoke <spec.jbb.Transaction: void setLogWrite(boolean)>($z0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 255, $r1);
+        $r1 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r1, 13, tid_doIt, "spec.jbb.JBBmain", 255, $z0);
+        $z0 = $r1.<spec.jbb.JBBProperties: boolean steadyStateFlag>;
+        staticinvoke <spec.jbb.Transaction: void setSteadyState(boolean)>($z0);
+        cur_warehouses = 0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 258, $r1);
+        $r1 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r1, 14, tid_doIt, "spec.jbb.JBBmain", 258, $r5);
+        $r5 = $r1.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses>;
+        if $r5 != null goto label4;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 259, $r1);
+        $r1 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 15, tid_doIt, "spec.jbb.JBBmain", 259, num_wh);
+        num_wh = $r1.<spec.jbb.JBBProperties: int startingNumberWarehouses>;
+        goto label3;
+
+     label1:
+        $z0 = virtualinvoke this.<spec.jbb.JBBmain: boolean runWarehouse(int,int,float)>(cur_warehouses, num_wh, min_btps);
+        if $z0 != 0 goto label2;
+
+        goto label8;
+
+     label2:
+        cur_warehouses = num_wh;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 259, $r4);
+        $r4 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r4, 16, tid_doIt, "spec.jbb.JBBmain", 259, $i3);
+        $i3 = $r4.<spec.jbb.JBBProperties: int incrementNumberWarehouses>;
+        num_wh = num_wh + $i3;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 259, $r4);
+        $r4 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r4, 17, tid_doIt, "spec.jbb.JBBmain", 259, $i3);
+        $i3 = $r4.<spec.jbb.JBBProperties: int endingNumberWarehouses>;
+        if num_wh <= $i3 goto label1;
+
+        goto label8;
+
+     label4:
+        seqndx = 0;
+        goto label7;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 267, $r1);
+        $r1 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r1, 14, tid_doIt, "spec.jbb.JBBmain", 267, $r5);
+        $r5 = $r1.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r5, 18, tid_doIt, "spec.jbb.JBBmain", 267, seqndx, num_wh);
+        num_wh = $r5[seqndx];
+        $z0 = virtualinvoke this.<spec.jbb.JBBmain: boolean runWarehouse(int,int,float)>(cur_warehouses, num_wh, min_btps);
+        if $z0 != 0 goto label6;
+
+        goto label8;
+
+     label6:
+        cur_warehouses = num_wh;
+        seqndx = seqndx + 1;
+
+     label7:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_doIt, "spec.jbb.JBBmain", 266, $r4);
+        $r4 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r4, 14, tid_doIt, "spec.jbb.JBBmain", 266, $r6);
+        $r6 = $r4.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses>;
+        $i3 = lengthof $r6;
+        if seqndx < $i3 goto label5;
+
+     label8:
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void exiting(java.lang.String,java.lang.String)>("spec.jbb.JBBmain", "DOIT");
+        return;
+    }
+
+    public boolean doItForValidation()
+    {
+        spec.jbb.JBBmain this;
+        long validationSeed, tid_doItForValidation;
+        boolean runValid, $z0;
+        int $i0, $i1, $i2;
+        spec.jbb.Company $r0, $r1;
+        java.lang.Thread thread_doItForValidation;
+
+        this := @this: spec.jbb.JBBmain;
+        thread_doItForValidation = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_doItForValidation = virtualinvoke thread_doItForValidation.<java.lang.Thread: long getId()>();
+        $i0 = this.<spec.jbb.JBBmain: int orderlinesPerOrder>;
+        staticinvoke <spec.jbb.Transaction: void setOrderLineCount(int)>($i0);
+        $r0 = new spec.jbb.Company;
+        specialinvoke $r0.<spec.jbb.Company: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_doItForValidation, "spec.jbbspec.jbb.JBBmain", 278, $r0);
+        <spec.jbb.JBBmain: spec.jbb.Company myCompany> = $r0;
+        validationSeed = 528562479389981L;
+        staticinvoke <spec.jbb.JBButil: void set_random_seed(long)>(validationSeed);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_doItForValidation, "spec.jbbspec.jbb.JBBmain", 281, $r0);
+        $r0 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        $i1 = this.<spec.jbb.JBBmain: int warehousePopulationBase>;
+        virtualinvoke $r0.<spec.jbb.Company: void setPopulationValues(int)>($i1);
+        $z0 = this.<spec.jbb.JBBmain: boolean screenWriteFlag>;
+        staticinvoke <spec.jbb.Transaction: void setLogWrite(boolean)>($z0);
+        $z0 = this.<spec.jbb.JBBmain: boolean steadyStateFlag>;
+        staticinvoke <spec.jbb.Transaction: void setSteadyState(boolean)>($z0);
+        staticinvoke <spec.jbb.Transaction: void setValidation(boolean)>(1);
+        $i2 = this.<spec.jbb.JBBmain: int waitTimePercent>;
+        specialinvoke this.<spec.jbb.JBBmain: void increaseNumWarehouses(int,int,int)>(0, 1, $i2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_doItForValidation, "spec.jbbspec.jbb.JBBmain", 286, $r1);
+        $r1 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        runValid = virtualinvoke this.<spec.jbb.JBBmain: boolean DoAValidationRun(spec.jbb.Company)>($r1);
+        staticinvoke <spec.jbb.Transaction: void setValidation(boolean)>(0);
+        return runValid;
+    }
+
+    private void increaseNumWarehouses(int, int, int)
+    {
+        spec.jbb.JBBmain this;
+        int current, next, waitTimePercent, i;
+        java.util.logging.Logger $r0;
+        spec.jbb.Company $r1;
+        short $s0;
+        spec.jbb.TimerData $r2;
+        long tid_increaseNumWarehouses;
+        java.lang.Thread thread_increaseNumWarehouses;
+
+        this := @this: spec.jbb.JBBmain;
+        current := @parameter0: int;
+        next := @parameter1: int;
+        waitTimePercent := @parameter2: int;
+        thread_increaseNumWarehouses = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_increaseNumWarehouses = virtualinvoke thread_increaseNumWarehouses.<java.lang.Thread: long getId()>();
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void entering(java.lang.String,java.lang.String)>("spec.jbb.JBBmain", "increaseNumWarehouses");
+        i = current + 1;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_increaseNumWarehouses, "spec.jbbspec.jbb.JBBmain", 295, $r1);
+        $r1 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        $s0 = (short) i;
+        virtualinvoke $r1.<spec.jbb.Company: void primeWithDummyData(short,int)>($s0, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_increaseNumWarehouses, "spec.jbbspec.jbb.JBBmain", 296, $r1);
+        $r1 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        $s0 = (short) i;
+        $r2 = virtualinvoke $r1.<spec.jbb.Company: spec.jbb.TimerData getTimerDataPtr(short)>($s0);
+        virtualinvoke $r2.<spec.jbb.TimerData: void useWaitTimesPercentage(int)>(waitTimePercent);
+        i = i + 1;
+
+     label1:
+        if i <= next goto label0;
+
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void exiting(java.lang.String,java.lang.String)>("spec.jbb.JBBmain", "increaseNumWarehouses");
+        return;
+    }
+
+    public boolean runWarehouse(int, int, float)
+    {
+        spec.jbb.JBBmain this;
+        int cur_warehouses, num_wh, $i0, $i1, $i3;
+        float min_btps, $f0, $f1;
+        java.util.logging.Logger $r0;
+        boolean measurementSeconds, $z0;
+        spec.jbb.TimerData companyTimerDataPtr;
+        double result, $d0;
+        java.io.PrintStream $r1;
+        spec.jbb.JBBProperties $r2, $r3, $r6, $r7;
+        spec.jbb.Company $r4, $r5, $r8;
+        short $s2;
+        byte $b4;
+        long tid_runWarehouse;
+        java.lang.Thread thread_runWarehouse;
+
+        this := @this: spec.jbb.JBBmain;
+        cur_warehouses := @parameter0: int;
+        num_wh := @parameter1: int;
+        min_btps := @parameter2: float;
+        thread_runWarehouse = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_runWarehouse = virtualinvoke thread_runWarehouse.<java.lang.Thread: long getId()>();
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void entering(java.lang.String,java.lang.String)>("spec.jbb.JBBmain", "runWarehouse");
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_runWarehouse, "spec.jbb.JBBmain", 306, $r2);
+        $r2 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r2, 4, tid_runWarehouse, "spec.jbb.JBBmain", 306, $i0);
+        $i0 = $r2.<spec.jbb.JBBProperties: int waitTimePercent>;
+        specialinvoke this.<spec.jbb.JBBmain: void increaseNumWarehouses(int,int,int)>(cur_warehouses, num_wh, $i0);
+        measurementSeconds = 0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_runWarehouse, "spec.jbb.JBBmain", 308, $r3);
+        $r3 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r3, 19, tid_runWarehouse, "spec.jbb.JBBmain", 308, $i1);
+        $i1 = $r3.<spec.jbb.JBBProperties: int expectedPeakWarehouse>;
+        if num_wh >= $i1 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_runWarehouse, "spec.jbbspec.jbb.JBBmain", 309, $r4);
+        $r4 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_runWarehouse, "spec.jbbspec.jbb.JBBmain", 309, $r5);
+        $r5 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        $s2 = virtualinvoke $r5.<spec.jbb.Company: short getMaxWarehouses()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_runWarehouse, "spec.jbb.JBBmain", 310, $r6);
+        $r6 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r6, 20, tid_runWarehouse, "spec.jbb.JBBmain", 310, $i3);
+        $i3 = $r6.<spec.jbb.JBBProperties: int rampupSeconds>;
+        virtualinvoke this.<spec.jbb.JBBmain: void DoARun(spec.jbb.Company,short,int,int)>($r4, $s2, 0, $i3);
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_runWarehouse, "spec.jbbspec.jbb.JBBmain", 313, $r4);
+        $r4 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_runWarehouse, "spec.jbbspec.jbb.JBBmain", 313, $r5);
+        $r5 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        $s2 = virtualinvoke $r5.<spec.jbb.Company: short getMaxWarehouses()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_runWarehouse, "spec.jbb.JBBmain", 314, $r6);
+        $r6 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r6, 21, tid_runWarehouse, "spec.jbb.JBBmain", 314, $i3);
+        $i3 = $r6.<spec.jbb.JBBProperties: int measurementSeconds>;
+        virtualinvoke this.<spec.jbb.JBBmain: void DoARun(spec.jbb.Company,short,int,int)>($r4, $s2, 0, $i3);
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_runWarehouse, "spec.jbb.JBBmain", 317, $r7);
+        $r7 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r7, 22, tid_runWarehouse, "spec.jbb.JBBmain", 317, $z0);
+        $z0 = $r7.<spec.jbb.JBBProperties: boolean checkThroughput>;
+        if $z0 == 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(0, tid_runWarehouse, "spec.jbbspec.jbb.JBBmain", 318, $r8);
+        $r8 = <spec.jbb.JBBmain: spec.jbb.Company myCompany>;
+        companyTimerDataPtr = virtualinvoke $r8.<spec.jbb.Company: spec.jbb.TimerData getTimerDataPtr(short)>(0);
+        result = virtualinvoke companyTimerDataPtr.<spec.jbb.TimerData: double getBTPS()>();
+        $f0 = (float) num_wh;
+        $f1 = min_btps * $f0;
+        $d0 = (double) $f1;
+        $b4 = result cmpg $d0;
+        if $b4 >= 0 goto label2;
+
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>("result below min for warehouse");
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void exiting(java.lang.String,java.lang.String)>("spec.jbb.JBBmain", "runWarehouse");
+        return 0;
+
+     label2:
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void exiting(java.lang.String,java.lang.String)>("spec.jbb.JBBmain", "runWarehouse");
+        return 1;
+    }
+
+    public java.lang.String commandLineParser(java.lang.String[])
+    {
+        spec.jbb.JBBmain this;
+        java.lang.String[] args;
+        java.lang.String s, $r0, $r3, $r4;
+        int $i0;
+        boolean $z0;
+        java.io.PrintStream $r1;
+        java.lang.StringBuilder $r2;
+        long tid_commandLineParser;
+        java.lang.Thread thread_commandLineParser;
+
+        this := @this: spec.jbb.JBBmain;
+        args := @parameter0: java.lang.String[];
+        thread_commandLineParser = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_commandLineParser = virtualinvoke thread_commandLineParser.<java.lang.Thread: long getId()>();
+        s = null;
+        $i0 = lengthof args;
+        if $i0 != 0 goto label0;
+
+        s = <spec.jbb.JBBmain: java.lang.String defaultPropsFileName>;
+        goto label6;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 23, tid_commandLineParser, "spec.jbb.JBBmain", 336, 0, $r0);
+        $r0 = args[0];
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>("-id");
+        if $z0 == 0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 23, tid_commandLineParser, "spec.jbb.JBBmain", 337, 1, $r0);
+        $r0 = args[1];
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(24, tid_commandLineParser, "spec.jbbspec.jbb.JBBmain", 337, $i0);
+        <spec.jbb.JBBmain: int instanceId> = $i0;
+        goto label6;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 23, tid_commandLineParser, "spec.jbb.JBBmain", 339, 0, $r0);
+        $r0 = args[0];
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>("-propfile");
+        if $z0 == 0 goto label5;
+
+        $i0 = lengthof args;
+        if $i0 != 2 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 23, tid_commandLineParser, "spec.jbb.JBBmain", 341, 1, s);
+        s = args[1];
+        goto label6;
+
+     label2:
+        $i0 = lengthof args;
+        if $i0 != 1 goto label3;
+
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>("Missing properties file name");
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>("   Parameters:  -propfile <properties_file_name> [-id <instance_id>]");
+        goto label6;
+
+     label3:
+        $i0 = lengthof args;
+        if $i0 != 4 goto label4;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 23, tid_commandLineParser, "spec.jbb.JBBmain", 349, 2, $r0);
+        $r0 = args[2];
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>("-id");
+        if $z0 == 0 goto label4;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 23, tid_commandLineParser, "spec.jbb.JBBmain", 350, 1, s);
+        s = args[1];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 23, tid_commandLineParser, "spec.jbb.JBBmain", 351, 3, $r0);
+        $r0 = args[3];
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(24, tid_commandLineParser, "spec.jbbspec.jbb.JBBmain", 351, $i0);
+        <spec.jbb.JBBmain: int instanceId> = $i0;
+        goto label6;
+
+     label4:
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>("Too many parameters");
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>("   Parameters:  -propfile <properties_file_name> [-id <instance_id>]");
+        goto label6;
+
+     label5:
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("Unrecognized command line parameter:  ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 23, tid_commandLineParser, "spec.jbb.JBBmain", 362, 0, $r3);
+        $r3 = args[0];
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>($r4);
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>("   Parameters:  -propfile <properties_file_name>");
+
+     label6:
+        return s;
+    }
+
+    public boolean initOutputDir(java.lang.String)
+    {
+        spec.jbb.JBBmain this;
+        java.lang.String outputDir, $r3;
+        java.io.File output_directory_file, $r0;
+        boolean $z0;
+        java.io.PrintStream $r1;
+        java.lang.StringBuilder $r2;
+
+        this := @this: spec.jbb.JBBmain;
+        outputDir := @parameter0: java.lang.String;
+        if outputDir != null goto label0;
+
+        outputDir = <spec.jbb.JBBmain: java.lang.String defaultOutputDir>;
+
+     label0:
+        $r0 = new java.io.File;
+        specialinvoke $r0.<java.io.File: void <init>(java.lang.String)>(outputDir);
+        output_directory_file = $r0;
+        $z0 = virtualinvoke output_directory_file.<java.io.File: boolean exists()>();
+        if $z0 == 0 goto label1;
+
+        $z0 = virtualinvoke output_directory_file.<java.io.File: boolean isDirectory()>();
+        if $z0 != 0 goto label2;
+
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("ERROR:  Specified input.output_directory is not a directory:  ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(outputDir);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>($r3);
+        return 0;
+
+     label1:
+        $z0 = virtualinvoke output_directory_file.<java.io.File: boolean mkdirs()>();
+        if $z0 != 0 goto label2;
+
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("ERROR:  Cannot create input.output_directory:  ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(outputDir);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>($r3);
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    public void callReporter(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+    {
+        spec.jbb.JBBmain this;
+        java.lang.String output_directory, outRawFile_name, outRawPrefix, sequenceNumber, msg, optr, optl, opto, file_Ascii, s, $r3, $r4, $r14;
+        boolean opte, opth, opts, optv;
+        null_type optn, optc, optS;
+        spec.reporter.TextiReport ar, $r5;
+        java.lang.Exception l18, e, $r6, $r8;
+        spec.reporter.Report r, $r7;
+        java.io.BufferedReader AscBr, $r12;
+        java.util.logging.Logger $r0;
+        java.io.PrintStream $r1;
+        java.lang.StringBuilder $r2, $r17;
+        java.lang.InternalError $r9, e;
+        java.lang.UnsatisfiedLinkError $r10, e;
+        java.lang.Error $r11, e;
+        java.io.FileReader $r13;
+        java.io.IOException $r15, e;
+        java.util.logging.Level $r16;
+
+        this := @this: spec.jbb.JBBmain;
+        output_directory := @parameter0: java.lang.String;
+        outRawFile_name := @parameter1: java.lang.String;
+        outRawPrefix := @parameter2: java.lang.String;
+        sequenceNumber := @parameter3: java.lang.String;
+        msg = "Calling Reporter";
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void info(java.lang.String)>(msg);
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println()>();
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println()>();
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>(msg);
+        opte = 1;
+        opth = 0;
+        optr = outRawFile_name;
+        optl = sequenceNumber;
+        opts = 0;
+        optn = null;
+        $r2 = new java.lang.StringBuilder;
+        $r3 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(output_directory);
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>($r3);
+        $r4 = <java.io.File: java.lang.String separator>;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(outRawPrefix);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(sequenceNumber);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".html");
+        opto = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r2 = new java.lang.StringBuilder;
+        $r3 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(output_directory);
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>($r3);
+        $r4 = <java.io.File: java.lang.String separator>;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(outRawPrefix);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(sequenceNumber);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".txt");
+        file_Ascii = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        optc = null;
+        optS = null;
+        optv = 0;
+
+     label0:
+        $r5 = new spec.reporter.TextiReport;
+        specialinvoke $r5.<spec.reporter.TextiReport: void <init>(java.lang.String,java.lang.String,boolean)>(optn, optr, opts);
+        ar = $r5;
+        virtualinvoke ar.<spec.reporter.TextiReport: void print(java.lang.String)>(file_Ascii);
+
+     label1:
+        goto label3;
+
+     label2:
+        $r6 := @caughtexception;
+        l18 = $r6;
+
+     label3:
+        $r7 = new spec.reporter.Report;
+        specialinvoke $r7.<spec.reporter.Report: void <init>(boolean,boolean,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,boolean,java.lang.String)>(opte, opts, optn, optr, optv, optc, optl, opth, output_directory);
+        r = $r7;
+
+     label4:
+        goto label9;
+
+     label5:
+        $r8 := @caughtexception;
+        e = $r8;
+        opth = 1;
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void warning(java.lang.String)>("Producing html chart in report instead of JPEG; see Users\' Guide");
+        $r7 = new spec.reporter.Report;
+        specialinvoke $r7.<spec.reporter.Report: void <init>(boolean,boolean,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,boolean,java.lang.String)>(opte, opts, optn, optr, optv, optc, optl, opth, output_directory);
+        r = $r7;
+        goto label9;
+
+     label6:
+        $r9 := @caughtexception;
+        e = $r9;
+        opth = 1;
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void warning(java.lang.String)>("Producing html chart in report instead of JPEG; see Users\' Guide");
+        $r7 = new spec.reporter.Report;
+        specialinvoke $r7.<spec.reporter.Report: void <init>(boolean,boolean,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,boolean,java.lang.String)>(opte, opts, optn, optr, optv, optc, optl, opth, output_directory);
+        r = $r7;
+        goto label9;
+
+     label7:
+        $r10 := @caughtexception;
+        e = $r10;
+        opth = 1;
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void warning(java.lang.String)>("Producing html chart in report instead of JPEG; see Users\' Guide");
+        $r7 = new spec.reporter.Report;
+        specialinvoke $r7.<spec.reporter.Report: void <init>(boolean,boolean,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,boolean,java.lang.String)>(opte, opts, optn, optr, optv, optc, optl, opth, output_directory);
+        r = $r7;
+        goto label9;
+
+     label8:
+        $r11 := @caughtexception;
+        e = $r11;
+        opth = 1;
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void warning(java.lang.String)>("Producing html chart in report instead of JPEG; see Users\' Guide");
+        $r7 = new spec.reporter.Report;
+        specialinvoke $r7.<spec.reporter.Report: void <init>(boolean,boolean,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,boolean,java.lang.String)>(opte, opts, optn, optr, optv, optc, optl, opth, output_directory);
+        r = $r7;
+
+     label9:
+        virtualinvoke r.<spec.reporter.Report: void print(java.lang.String)>(opto);
+
+     label10:
+        $r12 = new java.io.BufferedReader;
+        $r13 = new java.io.FileReader;
+        specialinvoke $r13.<java.io.FileReader: void <init>(java.lang.String)>(file_Ascii);
+        specialinvoke $r12.<java.io.BufferedReader: void <init>(java.io.Reader)>($r13);
+        AscBr = $r12;
+        goto label12;
+
+     label11:
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>(s);
+
+     label12:
+        $r14 = virtualinvoke AscBr.<java.io.BufferedReader: java.lang.String readLine()>();
+        s = $r14;
+        if $r14 != null goto label11;
+
+     label13:
+        goto label15;
+
+     label14:
+        $r15 := @caughtexception;
+        e = $r15;
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r16 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        virtualinvoke $r0.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r16, "Error opening ASCII output file", e);
+
+     label15:
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        $r17 = new java.lang.StringBuilder;
+        specialinvoke $r17.<java.lang.StringBuilder: void <init>(java.lang.String)>("Output files: ");
+        $r17 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(file_Ascii);
+        $r17 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+        $r17 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(outRawFile_name);
+        $r17 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+        $r17 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(opto);
+        $r4 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>($r4);
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println()>();
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println()>();
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>("Reporter messages:");
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        $r4 = virtualinvoke r.<spec.reporter.Report: java.lang.String messages()>();
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>($r4);
+        return;
+
+        catch java.lang.Exception from label0 to label1 with label2;
+        catch java.lang.Exception from label3 to label4 with label5;
+        catch java.lang.InternalError from label3 to label4 with label6;
+        catch java.lang.UnsatisfiedLinkError from label3 to label4 with label7;
+        catch java.lang.Error from label3 to label4 with label8;
+        catch java.io.IOException from label10 to label13 with label14;
+    }
+
+    public static void main(java.lang.String[])
+    {
+        java.lang.String[] args, l22, $r21;
+        boolean whID, tID, passed_200_check, passed_validation, _999_checkit, trySucceeded, $z0;
+        java.lang.String outRawPrefix, outRawSuffix, output_directory, parentDir, sequenceNumber, n, outResultsFile_name, outRawFile_name, outDeliveriesFile_name, logFile_name, str, value, msg, propsKey, svalue, exitMsg, mesg, $r7, $r8, $r15, $r17;
+        spec.jbb.JBBmain main, $r1;
+        java.io.PrintStream scratch1, scratch2, $r4, $r20;
+        java.io.FileOutputStream $r0;
+        java.io.IOException e, $r5, $r19;
+        java.io.File tfile, $r9;
+        java.util.logging.Handler[] handlers, l33;
+        int l32, l31, returnStringLength, l21, l20, tries, i, $i0, $i1, $i2, $i3, $i4;
+        java.util.logging.Handler logHandler;
+        spec.jbb.RunSequencer currentDirRS, rs, $r16;
+        spec.jbb.validity.digest d, $r27;
+        java.net.Socket soc, $r28;
+        java.util.Properties props;
+        java.util.Set keys;
+        java.util.Vector keyvec, $r38;
+        java.lang.NullPointerException l25, $r40;
+        java.lang.Throwable l28, $r43;
+        java.util.logging.Logger $r2;
+        java.util.logging.Level $r3;
+        java.lang.StringBuilder $r6, $r13, $r18;
+        null_type main;
+        spec.jbb.JBBProperties $r10, $r11, $r14;
+        int[] $r22, $r23;
+        java.text.DateFormat $r24;
+        java.util.Date $r25;
+        java.lang.Boolean $r26;
+        java.lang.Exception $r29, e, $r33, $r37, $r42;
+        java.io.BufferedReader $r30;
+        java.io.InputStreamReader $r31;
+        java.io.InputStream $r32;
+        java.io.PrintWriter $r34;
+        java.io.OutputStreamWriter $r35;
+        java.io.OutputStream $r36;
+        java.lang.Object $r39;
+        java.net.SocketException $r41, l25;
+        long tid_main;
+        java.lang.Thread thread_main;
+
+        args := @parameter0: java.lang.String[];
+        thread_main = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_main = virtualinvoke thread_main.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStartRun(long,java.lang.String,java.lang.String[])>(tid_main, "spec.jbb.JBBmain.main", args);
+        whID = 0;
+        tID = 0;
+        outRawPrefix = "SPECjbb.";
+        outRawSuffix = ".raw";
+        passed_200_check = 1;
+        $r1 = new spec.jbb.JBBmain;
+        specialinvoke $r1.<spec.jbb.JBBmain: void <init>()>();
+        main = $r1;
+        main.<spec.jbb.JBBmain: int warehousePopulationBase> = 30;
+        main.<spec.jbb.JBBmain: int orderlinesPerOrder> = 10;
+        main.<spec.jbb.JBBmain: int waitTimePercent> = 0;
+        main.<spec.jbb.JBBmain: boolean forceGC> = 0;
+        main.<spec.jbb.JBBmain: boolean screenWriteFlag> = 0;
+        main.<spec.jbb.JBBmain: boolean steadyStateFlag> = 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(25, tid_main, "spec.jbbspec.jbb.JBBmain", 501, 1);
+        <spec.jbb.JBBmain: boolean uniformRandomItems> = 1;
+        staticinvoke <java.lang.System: java.lang.String setProperty(java.lang.String,java.lang.String)>("java.awt.headless", "true");
+        scratch1 = null;
+        scratch2 = null;
+        $r2 = staticinvoke <java.util.logging.Logger: java.util.logging.Logger getLogger(java.lang.String)>("global");
+        staticinvoke <spec.jbb.JBButil: void setLog(java.util.logging.Logger)>($r2);
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r3 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        virtualinvoke $r2.<java.util.logging.Logger: void setLevel(java.util.logging.Level)>($r3);
+
+     label0:
+        $r4 = new java.io.PrintStream;
+        $r0 = new java.io.FileOutputStream;
+        specialinvoke $r0.<java.io.FileOutputStream: void <init>(java.lang.String)>("JBB.temp.scratch1");
+        specialinvoke $r4.<java.io.PrintStream: void <init>(java.io.OutputStream)>($r0);
+        scratch1 = $r4;
+        $r4 = new java.io.PrintStream;
+        $r0 = new java.io.FileOutputStream;
+        specialinvoke $r0.<java.io.FileOutputStream: void <init>(java.lang.String)>("JBB.temp.scratch2");
+        specialinvoke $r4.<java.io.PrintStream: void <init>(java.io.OutputStream)>($r0);
+        scratch2 = $r4;
+
+     label1:
+        goto label3;
+
+     label2:
+        $r5 := @caughtexception;
+        e = $r5;
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r3 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r6 = new java.lang.StringBuilder;
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>(java.lang.String)>("VALIDATION ERROR:  IOException: ");
+        $r7 = virtualinvoke e.<java.io.IOException: java.lang.String getMessage()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r3, $r8, e);
+
+     label3:
+        staticinvoke <spec.jbb.Company: void setOutputs(java.io.PrintStream,java.io.PrintStream)>(scratch1, scratch2);
+        passed_validation = 1;
+        main = null;
+        virtualinvoke scratch1.<java.io.PrintStream: void close()>();
+        virtualinvoke scratch2.<java.io.PrintStream: void close()>();
+        $r9 = new java.io.File;
+        specialinvoke $r9.<java.io.File: void <init>(java.lang.String)>("JBB.temp.scratch1");
+        tfile = $r9;
+        virtualinvoke tfile.<java.io.File: boolean delete()>();
+        $r9 = new java.io.File;
+        specialinvoke $r9.<java.io.File: void <init>(java.lang.String)>("JBB.temp.scratch2");
+        tfile = $r9;
+        virtualinvoke tfile.<java.io.File: boolean delete()>();
+        $r1 = new spec.jbb.JBBmain;
+        specialinvoke $r1.<spec.jbb.JBBmain: void <init>()>();
+        main = $r1;
+        $r10 = new spec.jbb.JBBProperties;
+        $r7 = virtualinvoke main.<spec.jbb.JBBmain: java.lang.String commandLineParser(java.lang.String[])>(args);
+        specialinvoke $r10.<spec.jbb.JBBProperties: void <init>(java.lang.String)>($r7);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 542, $r10);
+        main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop> = $r10;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 543, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        $z0 = virtualinvoke $r11.<spec.jbb.JBBProperties: boolean getProps()>();
+        if $z0 != 0 goto label7;
+
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  Properties File error; please start again");
+
+     label4:
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void info(java.lang.String)>("Logging ended");
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        handlers = virtualinvoke $r2.<java.util.logging.Logger: java.util.logging.Handler[] getHandlers()>();
+        l33 = handlers;
+        l32 = lengthof handlers;
+        l31 = 0;
+        goto label6;
+
+     label5:
+        logHandler = l33[l31];
+        virtualinvoke logHandler.<java.util.logging.Handler: void close()>();
+        l31 = l31 + 1;
+
+     label6:
+        if l31 < l32 goto label5;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "spec.jbb.JBBmain.main", args);
+        return;
+
+     label7:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 556, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r11, 7, tid_main, "spec.jbb.JBBmain", 556, $i0);
+        $i0 = $r11.<spec.jbb.JBBProperties: int jvm_instances>;
+        if $i0 <= 1 goto label8;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(26, tid_main, "spec.jbbspec.jbb.JBBmain", 557, 1);
+        <spec.jbb.JBBmain: boolean multiJVMMode> = 1;
+
+     label8:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(26, tid_main, "spec.jbbspec.jbb.JBBmain", 559, $z0);
+        $z0 = <spec.jbb.JBBmain: boolean multiJVMMode>;
+        if $z0 != 0 goto label12;
+
+        $r13 = new java.lang.StringBuilder;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 560, $r14);
+        $r14 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        $r8 = virtualinvoke $r14.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>("input.output_directory");
+        $r8 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r8);
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>(java.lang.String)>($r8);
+        $r15 = <java.io.File: java.lang.String separator>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r15);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SPECjbbSingleJVM");
+        output_directory = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+        $z0 = virtualinvoke main.<spec.jbb.JBBmain: boolean initOutputDir(java.lang.String)>(output_directory);
+        if $z0 != 0 goto label13;
+
+     label9:
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void info(java.lang.String)>("Logging ended");
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        handlers = virtualinvoke $r2.<java.util.logging.Logger: java.util.logging.Handler[] getHandlers()>();
+        l33 = handlers;
+        l32 = lengthof handlers;
+        l31 = 0;
+        goto label11;
+
+     label10:
+        logHandler = l33[l31];
+        virtualinvoke logHandler.<java.util.logging.Handler: void close()>();
+        l31 = l31 + 1;
+
+     label11:
+        if l31 < l32 goto label10;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "spec.jbb.JBBmain.main", args);
+        return;
+
+     label12:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 568, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        parentDir = virtualinvoke $r11.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>("input.output_directory");
+        $r16 = new spec.jbb.RunSequencer;
+        specialinvoke $r16.<spec.jbb.RunSequencer: void <init>(java.lang.String,java.lang.String,java.lang.String)>(parentDir, "SPECjbbMultiJVM.", "");
+        currentDirRS = $r16;
+        $r13 = new java.lang.StringBuilder;
+        $r8 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(parentDir);
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>(java.lang.String)>($r8);
+        $r15 = <java.io.File: java.lang.String separator>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r15);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SPECjbbMultiJVM.");
+        $i1 = virtualinvoke currentDirRS.<spec.jbb.RunSequencer: int getSeq()>();
+        $i1 = $i1 - 1;
+        $r15 = virtualinvoke currentDirRS.<spec.jbb.RunSequencer: java.lang.String padNumber(int)>($i1);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r15);
+        output_directory = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label13:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 577, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r11, 7, tid_main, "spec.jbb.JBBmain", 577, $i0);
+        $i0 = $r11.<spec.jbb.JBBProperties: int jvm_instances>;
+        if $i0 <= 1 goto label15;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(24, tid_main, "spec.jbbspec.jbb.JBBmain", 578, $i0);
+        $i0 = <spec.jbb.JBBmain: int instanceId>;
+        $r17 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i0);
+        sequenceNumber = $r17;
+        n = $r17;
+        $r13 = new java.lang.StringBuilder;
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(n);
+        sequenceNumber = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+        returnStringLength = virtualinvoke sequenceNumber.<java.lang.String: int length()>();
+        if returnStringLength != 1 goto label14;
+
+        $r13 = new java.lang.StringBuilder;
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>(java.lang.String)>("00");
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(sequenceNumber);
+        sequenceNumber = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label14:
+        if returnStringLength != 2 goto label16;
+
+        $r13 = new java.lang.StringBuilder;
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>(java.lang.String)>("0");
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(sequenceNumber);
+        sequenceNumber = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+        goto label16;
+
+     label15:
+        $r16 = new spec.jbb.RunSequencer;
+        specialinvoke $r16.<spec.jbb.RunSequencer: void <init>(java.lang.String,java.lang.String,java.lang.String)>(output_directory, outRawPrefix, outRawSuffix);
+        rs = $r16;
+        sequenceNumber = virtualinvoke rs.<spec.jbb.RunSequencer: java.lang.String getSeqString()>();
+
+     label16:
+        $r13 = new java.lang.StringBuilder;
+        $r8 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(output_directory);
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>(java.lang.String)>($r8);
+        $r15 = <java.io.File: java.lang.String separator>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r15);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SPECjbb.");
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(sequenceNumber);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".results");
+        outResultsFile_name = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r13 = new java.lang.StringBuilder;
+        $r8 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(output_directory);
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>(java.lang.String)>($r8);
+        $r15 = <java.io.File: java.lang.String separator>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r15);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(outRawPrefix);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(sequenceNumber);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(outRawSuffix);
+        outRawFile_name = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r13 = new java.lang.StringBuilder;
+        $r8 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(output_directory);
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>(java.lang.String)>($r8);
+        $r15 = <java.io.File: java.lang.String separator>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r15);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SPECjbb.");
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(sequenceNumber);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".deliveries");
+        outDeliveriesFile_name = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r13 = new java.lang.StringBuilder;
+        $r8 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(output_directory);
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>(java.lang.String)>($r8);
+        $r15 = <java.io.File: java.lang.String separator>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r15);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SPECjbb.");
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(sequenceNumber);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".log");
+        logFile_name = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        $r18 = new java.lang.StringBuilder;
+        specialinvoke $r18.<java.lang.StringBuilder: void <init>(java.lang.String)>("The results will be in: ");
+        $r18 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(outRawFile_name);
+        $r15 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>($r15);
+
+     label17:
+        staticinvoke <spec.jbb.SaveOutput: void start(java.lang.String)>(outResultsFile_name);
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        $r18 = new java.lang.StringBuilder;
+        specialinvoke $r18.<java.lang.StringBuilder: void <init>(java.lang.String)>("Opened ");
+        $r18 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(outResultsFile_name);
+        $r15 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>($r15);
+        $r4 = new java.io.PrintStream;
+        $r0 = new java.io.FileOutputStream;
+        specialinvoke $r0.<java.io.FileOutputStream: void <init>(java.lang.String)>(outRawFile_name);
+        specialinvoke $r4.<java.io.PrintStream: void <init>(java.io.OutputStream)>($r0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(27, tid_main, "spec.jbbspec.jbb.JBBmain", 605, $r4);
+        <spec.jbb.JBBmain: java.io.PrintStream outRawFile> = $r4;
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        $r18 = new java.lang.StringBuilder;
+        specialinvoke $r18.<java.lang.StringBuilder: void <init>(java.lang.String)>("Opened ");
+        $r18 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(outRawFile_name);
+        $r15 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>($r15);
+        $r4 = new java.io.PrintStream;
+        $r0 = new java.io.FileOutputStream;
+        specialinvoke $r0.<java.io.FileOutputStream: void <init>(java.lang.String)>(outDeliveriesFile_name);
+        specialinvoke $r4.<java.io.PrintStream: void <init>(java.io.OutputStream)>($r0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(28, tid_main, "spec.jbbspec.jbb.JBBmain", 608, $r4);
+        <spec.jbb.JBBmain: java.io.PrintStream outDeliveriesFile> = $r4;
+
+     label18:
+        goto label20;
+
+     label19:
+        $r19 := @caughtexception;
+        e = $r19;
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r3 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r6 = new java.lang.StringBuilder;
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>(java.lang.String)>("ERROR:  IOException: ");
+        $r7 = virtualinvoke e.<java.io.IOException: java.lang.String getMessage()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r3, $r8, e);
+
+     label20:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(27, tid_main, "spec.jbbspec.jbb.JBBmain", 617, $r4);
+        $r4 = <spec.jbb.JBBmain: java.io.PrintStream outRawFile>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(28, tid_main, "spec.jbbspec.jbb.JBBmain", 617, $r20);
+        $r20 = <spec.jbb.JBBmain: java.io.PrintStream outDeliveriesFile>;
+        staticinvoke <spec.jbb.Company: void setOutputs(java.io.PrintStream,java.io.PrintStream)>($r4, $r20);
+        $r21 = <spec.jbb.JBBmain: java.lang.String[] Header>;
+        l22 = $r21;
+        l21 = lengthof $r21;
+        l20 = 0;
+        goto label22;
+
+     label21:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(l22, 23, tid_main, "spec.jbb.JBBmain", 620, l20, str);
+        str = l22[l20];
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>(str);
+        l20 = l20 + 1;
+
+     label22:
+        if l20 < l21 goto label21;
+
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>("");
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>("Benchmark SPECjbb2005 1.07 now Opening");
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>("");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 627, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r11, 14, tid_main, "spec.jbb.JBBmain", 627, $r22);
+        $r22 = $r11.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses>;
+        if $r22 != null goto label23;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 628, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r11, 17, tid_main, "spec.jbb.JBBmain", 628, $i0);
+        $i0 = $r11.<spec.jbb.JBBProperties: int endingNumberWarehouses>;
+        $i0 = $i0 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(29, tid_main, "spec.jbbspec.jbb.JBBmain", 628, $i0);
+        <spec.jbb.JBBmain: int maxWh> = $i0;
+        goto label24;
+
+     label23:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 631, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r11, 14, tid_main, "spec.jbb.JBBmain", 631, $r22);
+        $r22 = $r11.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 631, $r10);
+        $r10 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r10, 14, tid_main, "spec.jbb.JBBmain", 631, $r23);
+        $r23 = $r10.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses>;
+        $i2 = lengthof $r23;
+        $i2 = $i2 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r22, 18, tid_main, "spec.jbb.JBBmain", 631, $i2, $i0);
+        $i0 = $r22[$i2];
+        $i0 = $i0 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(29, tid_main, "spec.jbbspec.jbb.JBBmain", 631, $i0);
+        <spec.jbb.JBBmain: int maxWh> = $i0;
+
+     label24:
+        $z0 = specialinvoke main.<spec.jbb.JBBmain: boolean initApplicationLogging(java.lang.String)>(logFile_name);
+        if $z0 != 0 goto label28;
+
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  Logging initialization failed!");
+
+     label25:
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void info(java.lang.String)>("Logging ended");
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        handlers = virtualinvoke $r2.<java.util.logging.Logger: java.util.logging.Handler[] getHandlers()>();
+        l33 = handlers;
+        l32 = lengthof handlers;
+        l31 = 0;
+        goto label27;
+
+     label26:
+        logHandler = l33[l31];
+        virtualinvoke logHandler.<java.util.logging.Handler: void close()>();
+        l31 = l31 + 1;
+
+     label27:
+        if l31 < l32 goto label26;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "spec.jbb.JBBmain.main", args);
+        return;
+
+     label28:
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void info(java.lang.String)>("Logging started");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 640, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        virtualinvoke $r11.<spec.jbb.JBBProperties: java.lang.String setProp(java.lang.String,java.lang.String)>("config.benchmark_version", "SPECjbb2005 1.07");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 641, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        virtualinvoke $r11.<spec.jbb.JBBProperties: java.lang.String setProp(java.lang.String,java.lang.String)>("config.benchmark_versionDate", "March 15, 2006");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 642, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        $r24 = staticinvoke <java.text.DateFormat: java.text.DateFormat getDateInstance()>();
+        $r25 = new java.util.Date;
+        specialinvoke $r25.<java.util.Date: void <init>()>();
+        $r8 = virtualinvoke $r24.<java.text.DateFormat: java.lang.String format(java.util.Date)>($r25);
+        virtualinvoke $r11.<spec.jbb.JBBProperties: java.lang.String setProp(java.lang.String,java.lang.String)>("config.test.date", $r8);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 644, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(27, tid_main, "spec.jbbspec.jbb.JBBmain", 644, $r20);
+        $r20 = <spec.jbb.JBBmain: java.io.PrintStream outRawFile>;
+        $z0 = virtualinvoke $r11.<spec.jbb.JBBProperties: boolean copyPropsToOutput(java.io.PrintStream)>($r20);
+        if $z0 != 0 goto label32;
+
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  Properties File error; please start again");
+
+     label29:
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void info(java.lang.String)>("Logging ended");
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        handlers = virtualinvoke $r2.<java.util.logging.Logger: java.util.logging.Handler[] getHandlers()>();
+        l33 = handlers;
+        l32 = lengthof handlers;
+        l31 = 0;
+        goto label31;
+
+     label30:
+        logHandler = l33[l31];
+        virtualinvoke logHandler.<java.util.logging.Handler: void close()>();
+        l31 = l31 + 1;
+
+     label31:
+        if l31 < l32 goto label30;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "spec.jbb.JBBmain.main", args);
+        return;
+
+     label32:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 649, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        $r26 = new java.lang.Boolean;
+        specialinvoke $r26.<java.lang.Boolean: void <init>(boolean)>(passed_200_check);
+        $r8 = virtualinvoke $r26.<java.lang.Boolean: java.lang.String toString()>();
+        value = virtualinvoke $r11.<spec.jbb.JBBProperties: java.lang.String setProp(java.lang.String,java.lang.String)>("result.validity.200_check", $r8);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(27, tid_main, "spec.jbbspec.jbb.JBBmain", 651, $r4);
+        $r4 = <spec.jbb.JBBmain: java.io.PrintStream outRawFile>;
+        $r18 = new java.lang.StringBuilder;
+        specialinvoke $r18.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.validity.200_check=");
+        $r18 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(value);
+        $r15 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>($r15);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 652, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        $r26 = new java.lang.Boolean;
+        specialinvoke $r26.<java.lang.Boolean: void <init>(boolean)>(passed_validation);
+        $r8 = virtualinvoke $r26.<java.lang.Boolean: java.lang.String toString()>();
+        value = virtualinvoke $r11.<spec.jbb.JBBProperties: java.lang.String setProp(java.lang.String,java.lang.String)>("result.validity.jbb_operation", $r8);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(27, tid_main, "spec.jbbspec.jbb.JBBmain", 654, $r4);
+        $r4 = <spec.jbb.JBBmain: java.io.PrintStream outRawFile>;
+        $r18 = new java.lang.StringBuilder;
+        specialinvoke $r18.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.validity.jbb_operation=");
+        $r18 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(value);
+        $r15 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>($r15);
+        $r27 = new spec.jbb.validity.digest;
+        specialinvoke $r27.<spec.jbb.validity.digest: void <init>()>();
+        d = $r27;
+        _999_checkit = virtualinvoke d.<spec.jbb.validity.digest: boolean crunch_jar(java.lang.String)>("jbb.jar");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 657, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        $r26 = new java.lang.Boolean;
+        specialinvoke $r26.<java.lang.Boolean: void <init>(boolean)>(_999_checkit);
+        $r8 = virtualinvoke $r26.<java.lang.Boolean: java.lang.String toString()>();
+        value = virtualinvoke $r11.<spec.jbb.JBBProperties: java.lang.String setProp(java.lang.String,java.lang.String)>("result.validity.999_checkit", $r8);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(27, tid_main, "spec.jbbspec.jbb.JBBmain", 659, $r4);
+        $r4 = <spec.jbb.JBBmain: java.io.PrintStream outRawFile>;
+        $r18 = new java.lang.StringBuilder;
+        specialinvoke $r18.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.validity.999_checkit=");
+        $r18 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(value);
+        $r15 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>($r15);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(main, 1, tid_main, "spec.jbb.JBBmain", 660, $r11);
+        $r11 = main.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        virtualinvoke $r11.<spec.jbb.JBBProperties: void checkCompliance()>();
+        specialinvoke main.<spec.jbb.JBBmain: void flushLog()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(26, tid_main, "spec.jbbspec.jbb.JBBmain", 664, $z0);
+        $z0 = <spec.jbb.JBBmain: boolean multiJVMMode>;
+        if $z0 == 0 goto label54;
+
+        $r13 = new java.lang.StringBuilder;
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>(java.lang.String)>("Running Multi-JVM Test: socket ");
+        $i2 = <spec.jbb.JBBmain: int port>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(24, tid_main, "spec.jbbspec.jbb.JBBmain", 666, $i1);
+        $i1 = <spec.jbb.JBBmain: int instanceId>;
+        $i2 = $i2 + $i1;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        msg = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void info(java.lang.String)>(msg);
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>(msg);
+        soc = null;
+        trySucceeded = 0;
+        tries = 0;
+        goto label37;
+
+     label33:
+        tries = tries + 1;
+        if tries <= 1 goto label34;
+
+        staticinvoke <java.lang.Thread: void sleep(long)>(5000L);
+
+     label34:
+        $r28 = new java.net.Socket;
+        $i3 = <spec.jbb.JBBmain: int port>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(24, tid_main, "spec.jbbspec.jbb.JBBmain", 678, $i4);
+        $i4 = <spec.jbb.JBBmain: int instanceId>;
+        $i3 = $i3 + $i4;
+        specialinvoke $r28.<java.net.Socket: void <init>(java.lang.String,int)>("localhost", $i3);
+        soc = $r28;
+        trySucceeded = 1;
+
+     label35:
+        goto label37;
+
+     label36:
+        $r29 := @caughtexception;
+        e = $r29;
+        trySucceeded = 0;
+
+     label37:
+        if trySucceeded != 0 goto label38;
+
+        if tries < 10 goto label33;
+
+     label38:
+        if tries != 10 goto label42;
+
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void warning(java.lang.String)>("10 failed socket connection attempts. Exiting..");
+
+     label39:
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void info(java.lang.String)>("Logging ended");
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        handlers = virtualinvoke $r2.<java.util.logging.Logger: java.util.logging.Handler[] getHandlers()>();
+        l33 = handlers;
+        l32 = lengthof handlers;
+        l31 = 0;
+        goto label41;
+
+     label40:
+        logHandler = l33[l31];
+        virtualinvoke logHandler.<java.util.logging.Handler: void close()>();
+        l31 = l31 + 1;
+
+     label41:
+        if l31 < l32 goto label40;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "spec.jbb.JBBmain.main", args);
+        return;
+
+     label42:
+        $r30 = new java.io.BufferedReader;
+        $r31 = new java.io.InputStreamReader;
+        $r32 = virtualinvoke soc.<java.net.Socket: java.io.InputStream getInputStream()>();
+        specialinvoke $r31.<java.io.InputStreamReader: void <init>(java.io.InputStream)>($r32);
+        specialinvoke $r30.<java.io.BufferedReader: void <init>(java.io.Reader)>($r31);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(30, tid_main, "spec.jbbspec.jbb.JBBmain", 695, $r30);
+        <spec.jbb.JBBmain: java.io.BufferedReader socIn> = $r30;
+
+     label43:
+        goto label48;
+
+     label44:
+        $r33 := @caughtexception;
+        e = $r33;
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r3 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r6 = new java.lang.StringBuilder;
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(e);
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": error in setting socket input");
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r3, $r8, e);
+
+     label45:
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void info(java.lang.String)>("Logging ended");
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        handlers = virtualinvoke $r2.<java.util.logging.Logger: java.util.logging.Handler[] getHandlers()>();
+        l33 = handlers;
+        l32 = lengthof handlers;
+        l31 = 0;
+        goto label47;
+
+     label46:
+        logHandler = l33[l31];
+        virtualinvoke logHandler.<java.util.logging.Handler: void close()>();
+        l31 = l31 + 1;
+
+     label47:
+        if l31 < l32 goto label46;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "spec.jbb.JBBmain.main", args);
+        return;
+
+     label48:
+        $r34 = new java.io.PrintWriter;
+        $r35 = new java.io.OutputStreamWriter;
+        $r36 = virtualinvoke soc.<java.net.Socket: java.io.OutputStream getOutputStream()>();
+        specialinvoke $r35.<java.io.OutputStreamWriter: void <init>(java.io.OutputStream)>($r36);
+        specialinvoke $r34.<java.io.PrintWriter: void <init>(java.io.Writer)>($r35);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(31, tid_main, "spec.jbbspec.jbb.JBBmain", 704, $r34);
+        <spec.jbb.JBBmain: java.io.PrintWriter socOut> = $r34;
+
+     label49:
+        goto label54;
+
+     label50:
+        $r37 := @caughtexception;
+        e = $r37;
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r3 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r6 = new java.lang.StringBuilder;
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(e);
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": error in setting socket out");
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r3, $r8, e);
+
+     label51:
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void info(java.lang.String)>("Logging ended");
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        handlers = virtualinvoke $r2.<java.util.logging.Logger: java.util.logging.Handler[] getHandlers()>();
+        l33 = handlers;
+        l32 = lengthof handlers;
+        l31 = 0;
+        goto label53;
+
+     label52:
+        logHandler = l33[l31];
+        virtualinvoke logHandler.<java.util.logging.Handler: void close()>();
+        l31 = l31 + 1;
+
+     label53:
+        if l31 < l32 goto label52;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "spec.jbb.JBBmain.main", args);
+        return;
+
+     label54:
+        virtualinvoke main.<spec.jbb.JBBmain: void doIt()>();
+        specialinvoke main.<spec.jbb.JBBmain: void flushLog()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(32, tid_main, "spec.jbbspec.jbb.JBBmain", 718, $z0);
+        $z0 = <spec.jbb.JBBProperties: boolean printPropertiesAndArgs>;
+        if $z0 == 0 goto label59;
+
+        props = staticinvoke <java.lang.System: java.util.Properties getProperties()>();
+        keys = virtualinvoke props.<java.util.Properties: java.util.Set keySet()>();
+        $r38 = new java.util.Vector;
+        specialinvoke $r38.<java.util.Vector: void <init>(java.util.Collection)>(keys);
+        keyvec = $r38;
+        staticinvoke <java.util.Collections: void sort(java.util.List)>(keyvec);
+        i = 0;
+        goto label56;
+
+     label55:
+        $r39 = virtualinvoke keyvec.<java.util.Vector: java.lang.Object elementAt(int)>(i);
+        propsKey = (java.lang.String) $r39;
+        svalue = virtualinvoke props.<java.util.Properties: java.lang.String getProperty(java.lang.String)>(propsKey);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(27, tid_main, "spec.jbbspec.jbb.JBBmain", 727, $r4);
+        $r4 = <spec.jbb.JBBmain: java.io.PrintStream outRawFile>;
+        $r18 = new java.lang.StringBuilder;
+        $r7 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(propsKey);
+        specialinvoke $r18.<java.lang.StringBuilder: void <init>(java.lang.String)>($r7);
+        $r18 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("=");
+        $r18 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(svalue);
+        $r15 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>($r15);
+        i = i + 1;
+
+     label56:
+        $i2 = virtualinvoke keyvec.<java.util.Vector: int size()>();
+        if i < $i2 goto label55;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(27, tid_main, "spec.jbbspec.jbb.JBBmain", 730, $r4);
+        $r4 = <spec.jbb.JBBmain: java.io.PrintStream outRawFile>;
+        virtualinvoke $r4.<java.io.PrintStream: void print(java.lang.String)>("input.cmdline=");
+        i = 0;
+        goto label58;
+
+     label57:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(27, tid_main, "spec.jbbspec.jbb.JBBmain", 732, $r4);
+        $r4 = <spec.jbb.JBBmain: java.io.PrintStream outRawFile>;
+        $r18 = new java.lang.StringBuilder;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 23, tid_main, "spec.jbb.JBBmain", 732, i, $r7);
+        $r7 = args[i];
+        $r7 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r7);
+        specialinvoke $r18.<java.lang.StringBuilder: void <init>(java.lang.String)>($r7);
+        $r18 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+        $r15 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<java.io.PrintStream: void print(java.lang.String)>($r15);
+        i = i + 1;
+
+     label58:
+        $i2 = lengthof args;
+        if i < $i2 goto label57;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(27, tid_main, "spec.jbbspec.jbb.JBBmain", 734, $r4);
+        $r4 = <spec.jbb.JBBmain: java.io.PrintStream outRawFile>;
+        virtualinvoke $r4.<java.io.PrintStream: void println()>();
+
+     label59:
+        virtualinvoke main.<spec.jbb.JBBmain: void callReporter(java.lang.String,java.lang.String,java.lang.String,java.lang.String)>(output_directory, outRawFile_name, outRawPrefix, sequenceNumber);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(28, tid_main, "spec.jbbspec.jbb.JBBmain", 738, $r4);
+        $r4 = <spec.jbb.JBBmain: java.io.PrintStream outDeliveriesFile>;
+        virtualinvoke $r4.<java.io.PrintStream: void close()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(27, tid_main, "spec.jbbspec.jbb.JBBmain", 739, $r4);
+        $r4 = <spec.jbb.JBBmain: java.io.PrintStream outRawFile>;
+        virtualinvoke $r4.<java.io.PrintStream: void close()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(26, tid_main, "spec.jbbspec.jbb.JBBmain", 741, $z0);
+        $z0 = <spec.jbb.JBBmain: boolean multiJVMMode>;
+        if $z0 == 0 goto label71;
+
+        $r13 = new java.lang.StringBuilder;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(24, tid_main, "spec.jbbspec.jbb.JBBmain", 742, $i1);
+        $i1 = <spec.jbb.JBBmain: int instanceId>;
+        $r8 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i1);
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>(java.lang.String)>($r8);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":FINISHED");
+        msg = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r13 = new java.lang.StringBuilder;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(24, tid_main, "spec.jbbspec.jbb.JBBmain", 743, $i1);
+        $i1 = <spec.jbb.JBBmain: int instanceId>;
+        $r8 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i1);
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>(java.lang.String)>($r8);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":EXIT");
+        exitMsg = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void info(java.lang.String)>(msg);
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>(msg);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(31, tid_main, "spec.jbbspec.jbb.JBBmain", 746, $r34);
+        $r34 = <spec.jbb.JBBmain: java.io.PrintWriter socOut>;
+        virtualinvoke $r34.<java.io.PrintWriter: void println(java.lang.String)>(msg);
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>("Sent FINISHED message");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(31, tid_main, "spec.jbbspec.jbb.JBBmain", 748, $r34);
+        $r34 = <spec.jbb.JBBmain: java.io.PrintWriter socOut>;
+        virtualinvoke $r34.<java.io.PrintWriter: void flush()>();
+        mesg = "NULL";
+
+     label60:
+        goto label62;
+
+     label61:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(30, tid_main, "spec.jbbspec.jbb.JBBmain", 752, $r30);
+        $r30 = <spec.jbb.JBBmain: java.io.BufferedReader socIn>;
+        mesg = virtualinvoke $r30.<java.io.BufferedReader: java.lang.String readLine()>();
+
+     label62:
+        if mesg == null goto label70;
+
+        $z0 = virtualinvoke mesg.<java.lang.String: boolean matches(java.lang.String)>(exitMsg);
+        if $z0 == 0 goto label61;
+
+     label63:
+        goto label70;
+
+     label64:
+        $r40 := @caughtexception;
+        l25 = $r40;
+        goto label70;
+
+     label65:
+        $r41 := @caughtexception;
+        l25 = $r41;
+        goto label70;
+
+     label66:
+        $r42 := @caughtexception;
+        e = $r42;
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r3 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r6 = new java.lang.StringBuilder;
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(e);
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": error awaiting final exit message");
+        $r8 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r3, $r8, e);
+
+     label67:
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void info(java.lang.String)>("Logging ended");
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        handlers = virtualinvoke $r2.<java.util.logging.Logger: java.util.logging.Handler[] getHandlers()>();
+        l33 = handlers;
+        l32 = lengthof handlers;
+        l31 = 0;
+        goto label69;
+
+     label68:
+        logHandler = l33[l31];
+        virtualinvoke logHandler.<java.util.logging.Handler: void close()>();
+        l31 = l31 + 1;
+
+     label69:
+        if l31 < l32 goto label68;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "spec.jbb.JBBmain.main", args);
+        return;
+
+     label70:
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>("Final EXIT reached");
+
+     label71:
+        staticinvoke <spec.jbb.SaveOutput: void stop()>();
+        goto label75;
+
+     label72:
+        $r43 := @caughtexception;
+        l28 = $r43;
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void info(java.lang.String)>("Logging ended");
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        handlers = virtualinvoke $r2.<java.util.logging.Logger: java.util.logging.Handler[] getHandlers()>();
+        l33 = handlers;
+        l32 = lengthof handlers;
+        l31 = 0;
+        goto label74;
+
+     label73:
+        logHandler = l33[l31];
+        virtualinvoke logHandler.<java.util.logging.Handler: void close()>();
+        l31 = l31 + 1;
+
+     label74:
+        if l31 < l32 goto label73;
+
+        throw l28;
+
+     label75:
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void info(java.lang.String)>("Logging ended");
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        handlers = virtualinvoke $r2.<java.util.logging.Logger: java.util.logging.Handler[] getHandlers()>();
+        l33 = handlers;
+        l32 = lengthof handlers;
+        l31 = 0;
+        goto label77;
+
+     label76:
+        logHandler = l33[l31];
+        virtualinvoke logHandler.<java.util.logging.Handler: void close()>();
+        l31 = l31 + 1;
+
+     label77:
+        if l31 < l32 goto label76;
+
+        staticinvoke <java.lang.System: void exit(int)>(0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "spec.jbb.JBBmain.main", args);
+        return;
+
+        catch java.io.IOException from label0 to label1 with label2;
+        catch java.io.IOException from label17 to label18 with label19;
+        catch java.lang.Exception from label33 to label35 with label36;
+        catch java.lang.Exception from label42 to label43 with label44;
+        catch java.lang.Exception from label48 to label49 with label50;
+        catch java.lang.NullPointerException from label60 to label63 with label64;
+        catch java.net.SocketException from label60 to label63 with label65;
+        catch java.lang.Exception from label60 to label63 with label66;
+        catch java.lang.Throwable from label0 to label4 with label72;
+        catch java.lang.Throwable from label7 to label9 with label72;
+        catch java.lang.Throwable from label12 to label25 with label72;
+        catch java.lang.Throwable from label28 to label29 with label72;
+        catch java.lang.Throwable from label32 to label39 with label72;
+        catch java.lang.Throwable from label42 to label45 with label72;
+        catch java.lang.Throwable from label48 to label51 with label72;
+        catch java.lang.Throwable from label54 to label67 with label72;
+        catch java.lang.Throwable from label70 to label72 with label72;
+    }
+
+    private boolean initApplicationLogging(java.lang.String)
+    {
+        spec.jbb.JBBmain this;
+        java.lang.String logFileName, $r7;
+        null_type handler;
+        java.io.FileOutputStream $r0;
+        java.io.FileNotFoundException fnfe, $r3;
+        java.util.logging.ConsoleHandler errHandler, $r9;
+        java.util.logging.Logger appLog, $r4;
+        java.util.logging.StreamHandler $r1, handler;
+        spec.jbb.JBBLogFormatter $r2;
+        java.util.logging.Level $r5;
+        java.lang.StringBuilder $r6;
+        spec.jbb.JBBProperties $r8;
+        long tid_initApplicationLogging;
+        java.lang.Thread thread_initApplicationLogging;
+
+        this := @this: spec.jbb.JBBmain;
+        logFileName := @parameter0: java.lang.String;
+        thread_initApplicationLogging = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_initApplicationLogging = virtualinvoke thread_initApplicationLogging.<java.lang.Thread: long getId()>();
+        handler = null;
+
+     label0:
+        $r1 = new java.util.logging.StreamHandler;
+        $r0 = new java.io.FileOutputStream;
+        specialinvoke $r0.<java.io.FileOutputStream: void <init>(java.lang.String)>(logFileName);
+        $r2 = new spec.jbb.JBBLogFormatter;
+        specialinvoke $r2.<spec.jbb.JBBLogFormatter: void <init>()>();
+        specialinvoke $r1.<java.util.logging.StreamHandler: void <init>(java.io.OutputStream,java.util.logging.Formatter)>($r0, $r2);
+        handler = $r1;
+
+     label1:
+        goto label3;
+
+     label2:
+        $r3 := @caughtexception;
+        fnfe = $r3;
+        $r4 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r5 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r6 = new java.lang.StringBuilder;
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>(java.lang.String)>("ERROR:  Unable to open logging file ");
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(logFileName);
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r5, $r7, fnfe);
+        return 0;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_initApplicationLogging, "spec.jbb.JBBmain", 795, $r8);
+        $r8 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        $r5 = virtualinvoke $r8.<spec.jbb.JBBProperties: java.util.logging.Level getApplicationLoggingLevel()>();
+        virtualinvoke handler.<java.util.logging.StreamHandler: void setLevel(java.util.logging.Level)>($r5);
+        $r9 = new java.util.logging.ConsoleHandler;
+        specialinvoke $r9.<java.util.logging.ConsoleHandler: void <init>()>();
+        errHandler = $r9;
+        $r5 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        virtualinvoke errHandler.<java.util.logging.ConsoleHandler: void setLevel(java.util.logging.Level)>($r5);
+        appLog = staticinvoke <java.util.logging.Logger: java.util.logging.Logger getLogger(java.lang.String)>("spec.jbb");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_initApplicationLogging, "spec.jbb.JBBmain", 805, $r8);
+        $r8 = this.<spec.jbb.JBBmain: spec.jbb.JBBProperties prop>;
+        $r5 = virtualinvoke $r8.<spec.jbb.JBBProperties: java.util.logging.Level getApplicationLoggingLevel()>();
+        virtualinvoke appLog.<java.util.logging.Logger: void setLevel(java.util.logging.Level)>($r5);
+        virtualinvoke appLog.<java.util.logging.Logger: void setUseParentHandlers(boolean)>(0);
+        virtualinvoke appLog.<java.util.logging.Logger: void addHandler(java.util.logging.Handler)>(handler);
+        virtualinvoke appLog.<java.util.logging.Logger: void addHandler(java.util.logging.Handler)>(errHandler);
+        specialinvoke this.<spec.jbb.JBBmain: void flushLog()>();
+        staticinvoke <spec.jbb.JBButil: void setLog(java.util.logging.Logger)>(appLog);
+        return 1;
+
+        catch java.io.FileNotFoundException from label0 to label1 with label2;
+    }
+
+    private void flushLog()
+    {
+        spec.jbb.JBBmain this;
+        java.util.logging.Logger $r0;
+        java.util.logging.Handler[] handlers, l5;
+        int l4, l3;
+        java.util.logging.Handler logHandler;
+
+        this := @this: spec.jbb.JBBmain;
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        handlers = virtualinvoke $r0.<java.util.logging.Logger: java.util.logging.Handler[] getHandlers()>();
+        l5 = handlers;
+        l4 = lengthof handlers;
+        l3 = 0;
+        goto label1;
+
+     label0:
+        logHandler = l5[l3];
+        virtualinvoke logHandler.<java.util.logging.Handler: void flush()>();
+        l3 = l3 + 1;
+
+     label1:
+        if l3 < l4 goto label0;
+
+        return;
+    }
+}

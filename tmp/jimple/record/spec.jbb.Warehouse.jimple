@@ -1,0 +1,604 @@
+public class spec.jbb.Warehouse extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+    private java.lang.String name;
+    private spec.jbb.Address address;
+    private java.math.BigDecimal taxRate;
+    private java.math.BigDecimal ytd;
+    private short warehouseId;
+    private spec.jbb.Company company;
+    private spec.jbb.JBBDataStorage stockTable;
+    private spec.jbb.JBBDataStorage itemTable;
+    private java.lang.Object[] districts;
+    private int distCount;
+    private java.util.Random per_wh_r;
+    private spec.jbb.JBBDataStorage historyTable;
+    private long historyCount;
+    private long oldestHistory;
+    private java.lang.Object updateHistorySynch;
+    private java.lang.Object removeOldestHistorySynch;
+
+    public void <init>(spec.jbb.Company, spec.jbb.JBBDataStorage)
+    {
+        spec.jbb.Warehouse this;
+        spec.jbb.Company inCompany;
+        spec.jbb.JBBDataStorage inItemTable, $r2;
+        java.lang.Object $r0;
+        java.lang.Object[] $r1;
+        spec.jbb.Address $r3;
+        spec.jbb.JBBSortedStorage $r4;
+        java.math.BigDecimal $r5;
+
+        this := @this: spec.jbb.Warehouse;
+        inCompany := @parameter0: spec.jbb.Company;
+        inItemTable := @parameter1: spec.jbb.JBBDataStorage;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new java.lang.Object;
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+        this.<spec.jbb.Warehouse: java.lang.Object updateHistorySynch> = $r0;
+        $r0 = new java.lang.Object;
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+        this.<spec.jbb.Warehouse: java.lang.Object removeOldestHistorySynch> = $r0;
+        this.<spec.jbb.Warehouse: spec.jbb.Company company> = inCompany;
+        $r1 = newarray (java.lang.Object)[20];
+        this.<spec.jbb.Warehouse: java.lang.Object[] districts> = $r1;
+        $r2 = staticinvoke <spec.jbb.Infrastructure: spec.jbb.JBBDataStorage createStorage()>();
+        this.<spec.jbb.Warehouse: spec.jbb.JBBDataStorage stockTable> = $r2;
+        this.<spec.jbb.Warehouse: spec.jbb.JBBDataStorage itemTable> = inItemTable;
+        $r3 = new spec.jbb.Address;
+        specialinvoke $r3.<spec.jbb.Address: void <init>()>();
+        this.<spec.jbb.Warehouse: spec.jbb.Address address> = $r3;
+        $r4 = staticinvoke <spec.jbb.Infrastructure: spec.jbb.JBBSortedStorage createSortedStorage()>();
+        this.<spec.jbb.Warehouse: spec.jbb.JBBDataStorage historyTable> = $r4;
+        this.<spec.jbb.Warehouse: long historyCount> = 0L;
+        this.<spec.jbb.Warehouse: long oldestHistory> = 0L;
+        $r5 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long,int)>(0L, 2);
+        this.<spec.jbb.Warehouse: java.math.BigDecimal ytd> = $r5;
+        virtualinvoke this.<spec.jbb.Warehouse: void loadStockTable()>();
+        return;
+    }
+
+    public void <init>()
+    {
+        spec.jbb.Warehouse this;
+        java.lang.Object $r0;
+
+        this := @this: spec.jbb.Warehouse;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new java.lang.Object;
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+        this.<spec.jbb.Warehouse: java.lang.Object updateHistorySynch> = $r0;
+        $r0 = new java.lang.Object;
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+        this.<spec.jbb.Warehouse: java.lang.Object removeOldestHistorySynch> = $r0;
+        return;
+    }
+
+    public void initWarehouse(spec.jbb.Company, spec.jbb.JBBDataStorage, short)
+    {
+        spec.jbb.Warehouse this;
+        spec.jbb.Company inCompany;
+        spec.jbb.JBBDataStorage inItemTable, $r3;
+        short warehouseId;
+        java.util.Random $r0;
+        java.math.BigDecimal $r1;
+        java.lang.Object[] $r2;
+        spec.jbb.Address $r4;
+        spec.jbb.JBBSortedStorage $r5;
+        long tid_initWarehouse;
+        java.lang.Thread thread_initWarehouse;
+
+        this := @this: spec.jbb.Warehouse;
+        inCompany := @parameter0: spec.jbb.Company;
+        inItemTable := @parameter1: spec.jbb.JBBDataStorage;
+        warehouseId := @parameter2: short;
+        thread_initWarehouse = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_initWarehouse = virtualinvoke thread_initWarehouse.<java.lang.Thread: long getId()>();
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.Random derived_random_init(short)>(warehouseId);
+        this.<spec.jbb.Warehouse: java.util.Random per_wh_r> = $r0;
+        $r0 = this.<spec.jbb.Warehouse: java.util.Random per_wh_r>;
+        staticinvoke <spec.jbb.JBButil: void register_warehouse_Random_stream(short,java.util.Random)>(warehouseId, $r0);
+        this.<spec.jbb.Warehouse: short warehouseId> = warehouseId;
+        $r1 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long,int)>(0L, 2);
+        this.<spec.jbb.Warehouse: java.math.BigDecimal ytd> = $r1;
+        this.<spec.jbb.Warehouse: spec.jbb.Company company> = inCompany;
+        $r2 = newarray (java.lang.Object)[20];
+        this.<spec.jbb.Warehouse: java.lang.Object[] districts> = $r2;
+        $r3 = staticinvoke <spec.jbb.Infrastructure: spec.jbb.JBBDataStorage createStorage()>();
+        this.<spec.jbb.Warehouse: spec.jbb.JBBDataStorage stockTable> = $r3;
+        this.<spec.jbb.Warehouse: spec.jbb.JBBDataStorage itemTable> = inItemTable;
+        $r4 = new spec.jbb.Address;
+        specialinvoke $r4.<spec.jbb.Address: void <init>()>();
+        this.<spec.jbb.Warehouse: spec.jbb.Address address> = $r4;
+        $r5 = staticinvoke <spec.jbb.Infrastructure: spec.jbb.JBBSortedStorage createSortedStorage()>();
+        this.<spec.jbb.Warehouse: spec.jbb.JBBDataStorage historyTable> = $r5;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 87, tid_initWarehouse, "spec.jbb.Warehouse", 80, 0L);
+        this.<spec.jbb.Warehouse: long historyCount> = 0L;
+        this.<spec.jbb.Warehouse: long oldestHistory> = 0L;
+        $r1 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long,int)>(0L, 2);
+        this.<spec.jbb.Warehouse: java.math.BigDecimal ytd> = $r1;
+        virtualinvoke this.<spec.jbb.Warehouse: void loadStockTable()>();
+        return;
+    }
+
+    public boolean validDistrict(byte)
+    {
+        spec.jbb.Warehouse this;
+        byte inDistrictId;
+        int i, $i0, $i1;
+        spec.jbb.District currentDistrict;
+        java.lang.Object[] $r0;
+        java.lang.Object $r1;
+        long tid_validDistrict;
+        java.lang.Thread thread_validDistrict;
+
+        this := @this: spec.jbb.Warehouse;
+        inDistrictId := @parameter0: byte;
+        thread_validDistrict = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_validDistrict = virtualinvoke thread_validDistrict.<java.lang.Thread: long getId()>();
+        i = 0;
+        goto label2;
+
+     label0:
+        $r0 = this.<spec.jbb.Warehouse: java.lang.Object[] districts>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 49, tid_validDistrict, "spec.jbb.Warehouse", 90, i, $r1);
+        $r1 = $r0[i];
+        currentDistrict = (spec.jbb.District) $r1;
+        $i0 = virtualinvoke currentDistrict.<spec.jbb.District: int getId()>();
+        if $i0 != inDistrictId goto label1;
+
+        return 1;
+
+     label1:
+        i = i + 1;
+
+     label2:
+        $i1 = this.<spec.jbb.Warehouse: int distCount>;
+        if i < $i1 goto label0;
+
+        return 0;
+    }
+
+    public short getId()
+    {
+        spec.jbb.Warehouse this;
+        short $s0;
+
+        this := @this: spec.jbb.Warehouse;
+        $s0 = this.<spec.jbb.Warehouse: short warehouseId>;
+        return $s0;
+    }
+
+    public java.math.BigDecimal getTaxRate()
+    {
+        spec.jbb.Warehouse this;
+        java.math.BigDecimal $r0;
+
+        this := @this: spec.jbb.Warehouse;
+        $r0 = this.<spec.jbb.Warehouse: java.math.BigDecimal taxRate>;
+        return $r0;
+    }
+
+    public spec.jbb.Address getAddress()
+    {
+        spec.jbb.Warehouse this;
+        spec.jbb.Address $r0;
+
+        this := @this: spec.jbb.Warehouse;
+        $r0 = this.<spec.jbb.Warehouse: spec.jbb.Address address>;
+        return $r0;
+    }
+
+    public spec.jbb.District getDistrictPtr(byte, boolean)
+    {
+        spec.jbb.Warehouse this;
+        byte inDistrictId, inDistrictId;
+        boolean lockFlag;
+        spec.jbb.District result;
+        int $i0, $i1;
+        java.lang.Object[] $r0;
+        java.lang.Object $r1;
+        long tid_getDistrictPtr;
+        java.lang.Thread thread_getDistrictPtr;
+
+        this := @this: spec.jbb.Warehouse;
+        inDistrictId := @parameter0: byte;
+        lockFlag := @parameter1: boolean;
+        thread_getDistrictPtr = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getDistrictPtr = virtualinvoke thread_getDistrictPtr.<java.lang.Thread: long getId()>();
+        result = null;
+        if inDistrictId <= 0 goto label0;
+
+        $i0 = inDistrictId - 1;
+        inDistrictId = (byte) $i0;
+        $i1 = this.<spec.jbb.Warehouse: int distCount>;
+        if inDistrictId >= $i1 goto label0;
+
+        $r0 = this.<spec.jbb.Warehouse: java.lang.Object[] districts>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 49, tid_getDistrictPtr, "spec.jbb.Warehouse", 114, inDistrictId, $r1);
+        $r1 = $r0[inDistrictId];
+        result = (spec.jbb.District) $r1;
+
+     label0:
+        return result;
+    }
+
+    public spec.jbb.Stock retrieveStock(int)
+    {
+        spec.jbb.Warehouse this;
+        int inItemId;
+        spec.jbb.JBBDataStorage $r0;
+        java.lang.Integer $r1;
+        java.lang.Object $r2;
+        spec.jbb.Stock $r3;
+
+        this := @this: spec.jbb.Warehouse;
+        inItemId := @parameter0: int;
+        $r0 = this.<spec.jbb.Warehouse: spec.jbb.JBBDataStorage stockTable>;
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(inItemId);
+        $r2 = interfaceinvoke $r0.<spec.jbb.JBBDataStorage: java.lang.Object get(java.lang.Object)>($r1);
+        $r3 = (spec.jbb.Stock) $r2;
+        return $r3;
+    }
+
+    public spec.jbb.Item retrieveItem(int)
+    {
+        spec.jbb.Warehouse this;
+        int inItemId;
+        spec.jbb.JBBDataStorage $r0;
+        java.lang.Integer $r1;
+        java.lang.Object $r2;
+        spec.jbb.Item $r3;
+
+        this := @this: spec.jbb.Warehouse;
+        inItemId := @parameter0: int;
+        $r0 = this.<spec.jbb.Warehouse: spec.jbb.JBBDataStorage itemTable>;
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(inItemId);
+        $r2 = interfaceinvoke $r0.<spec.jbb.JBBDataStorage: java.lang.Object get(java.lang.Object)>($r1);
+        $r3 = (spec.jbb.Item) $r2;
+        return $r3;
+    }
+
+    public void receivePayment(java.math.BigDecimal)
+    {
+        spec.jbb.Warehouse this;
+        java.math.BigDecimal paymentAmount, $r0;
+
+        this := @this: spec.jbb.Warehouse;
+        paymentAmount := @parameter0: java.math.BigDecimal;
+        $r0 = this.<spec.jbb.Warehouse: java.math.BigDecimal ytd>;
+        $r0 = virtualinvoke $r0.<java.math.BigDecimal: java.math.BigDecimal add(java.math.BigDecimal)>(paymentAmount);
+        this.<spec.jbb.Warehouse: java.math.BigDecimal ytd> = $r0;
+        return;
+    }
+
+    public spec.jbb.District getDistrict(int)
+    {
+        spec.jbb.Warehouse this;
+        int distId, distId, $i0;
+        spec.jbb.District result;
+        java.lang.Object[] $r0;
+        java.lang.Object $r1;
+        long tid_getDistrict;
+        java.lang.Thread thread_getDistrict;
+
+        this := @this: spec.jbb.Warehouse;
+        distId := @parameter0: int;
+        thread_getDistrict = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getDistrict = virtualinvoke thread_getDistrict.<java.lang.Thread: long getId()>();
+        result = null;
+        if distId <= 0 goto label0;
+
+        distId = distId + -1;
+        $i0 = this.<spec.jbb.Warehouse: int distCount>;
+        if distId >= $i0 goto label0;
+
+        $r0 = this.<spec.jbb.Warehouse: java.lang.Object[] districts>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 49, tid_getDistrict, "spec.jbb.Warehouse", 137, distId, $r1);
+        $r1 = $r0[distId];
+        result = (spec.jbb.District) $r1;
+
+     label0:
+        return result;
+    }
+
+    public int getDistrictCount()
+    {
+        spec.jbb.Warehouse this;
+        int $i0;
+
+        this := @this: spec.jbb.Warehouse;
+        $i0 = this.<spec.jbb.Warehouse: int distCount>;
+        return $i0;
+    }
+
+    public void trimOrdersForSteadyState()
+    {
+        spec.jbb.Warehouse this;
+        int initialOrders, initialNewOrders;
+        spec.jbb.Company $r0;
+
+        this := @this: spec.jbb.Warehouse;
+        $r0 = this.<spec.jbb.Warehouse: spec.jbb.Company company>;
+        initialOrders = virtualinvoke $r0.<spec.jbb.Company: int getInitialOrders()>();
+        $r0 = this.<spec.jbb.Warehouse: spec.jbb.Company company>;
+        initialNewOrders = virtualinvoke $r0.<spec.jbb.Company: int getInitialNewOrders()>();
+        virtualinvoke this.<spec.jbb.Warehouse: void trimOrdersForSteadyState(int,int)>(initialOrders, initialNewOrders);
+        return;
+    }
+
+    public void trimOrdersForSteadyState(int, int)
+    {
+        spec.jbb.Warehouse this;
+        int initialOrders, initialNewOrders, distCount, distId, $i0;
+        spec.jbb.District currentDistrict;
+        boolean $z0;
+        long tid_trimOrdersForSteadyState;
+        java.lang.Thread thread_trimOrdersForSteadyState;
+
+        this := @this: spec.jbb.Warehouse;
+        initialOrders := @parameter0: int;
+        initialNewOrders := @parameter1: int;
+        thread_trimOrdersForSteadyState = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_trimOrdersForSteadyState = virtualinvoke thread_trimOrdersForSteadyState.<java.lang.Thread: long getId()>();
+        distCount = virtualinvoke this.<spec.jbb.Warehouse: int getDistrictCount()>();
+        distId = 1;
+        goto label2;
+
+     label0:
+        currentDistrict = virtualinvoke this.<spec.jbb.Warehouse: spec.jbb.District getDistrict(int)>(distId);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(56, tid_trimOrdersForSteadyState, "spec.jbbspec.jbb.Warehouse", 161, $z0);
+        $z0 = <spec.jbb.Transaction: boolean steadyStateMem>;
+        if $z0 == 0 goto label1;
+
+        $i0 = initialOrders - initialNewOrders;
+        virtualinvoke currentDistrict.<spec.jbb.District: void removeOldNewOrders(int)>($i0);
+        virtualinvoke currentDistrict.<spec.jbb.District: void removeOldOrders(int)>(initialOrders);
+
+     label1:
+        distId = distId + 1;
+
+     label2:
+        if distId <= distCount goto label0;
+
+        return;
+    }
+
+    public void setUsingRandom(short)
+    {
+        spec.jbb.Warehouse this;
+        short inWarehouseId, $s0, $s2;
+        float temp;
+        int i, $i1, $i3;
+        byte newDistrictId;
+        spec.jbb.District newDistrict, $r8;
+        java.lang.String $r0;
+        java.util.Random $r1, $r4, $r5;
+        char[] $r2;
+        spec.jbb.Address $r3;
+        java.math.BigDecimal $r6;
+        double $d0;
+        spec.jbb.Company $r7;
+        java.lang.Object[] $r9;
+        long tid_setUsingRandom;
+        java.lang.Thread thread_setUsingRandom;
+
+        this := @this: spec.jbb.Warehouse;
+        inWarehouseId := @parameter0: short;
+        thread_setUsingRandom = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setUsingRandom = virtualinvoke thread_setUsingRandom.<java.lang.Thread: long getId()>();
+        this.<spec.jbb.Warehouse: short warehouseId> = inWarehouseId;
+        $r0 = new java.lang.String;
+        $r1 = this.<spec.jbb.Warehouse: java.util.Random per_wh_r>;
+        $r2 = staticinvoke <spec.jbb.JBButil: char[] create_random_a_string(int,int,java.util.Random)>(6, 10, $r1);
+        specialinvoke $r0.<java.lang.String: void <init>(char[])>($r2);
+        this.<spec.jbb.Warehouse: java.lang.String name> = $r0;
+        $r3 = this.<spec.jbb.Warehouse: spec.jbb.Address address>;
+        $r4 = this.<spec.jbb.Warehouse: java.util.Random per_wh_r>;
+        virtualinvoke $r3.<spec.jbb.Address: void setUsingRandom(java.util.Random)>($r4);
+        $r5 = this.<spec.jbb.Warehouse: java.util.Random per_wh_r>;
+        temp = staticinvoke <spec.jbb.JBButil: float create_random_float_val_return(float,float,float,java.util.Random)>(0.0F, 0.2F, 1.0E-4F, $r5);
+        $r6 = new java.math.BigDecimal;
+        $d0 = (double) temp;
+        specialinvoke $r6.<java.math.BigDecimal: void <init>(double)>($d0);
+        $r6 = virtualinvoke $r6.<java.math.BigDecimal: java.math.BigDecimal setScale(int,int)>(4, 4);
+        this.<spec.jbb.Warehouse: java.math.BigDecimal taxRate> = $r6;
+        $r6 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long,int)>(30000000L, 2);
+        this.<spec.jbb.Warehouse: java.math.BigDecimal ytd> = $r6;
+        $r7 = this.<spec.jbb.Warehouse: spec.jbb.Company company>;
+        $s0 = virtualinvoke $r7.<spec.jbb.Company: short getMaxDistrictsPerWarehouse()>();
+        this.<spec.jbb.Warehouse: int distCount> = $s0;
+        i = 0;
+        goto label1;
+
+     label0:
+        $i1 = i + 1;
+        newDistrictId = (byte) $i1;
+        $r8 = new spec.jbb.District;
+        $s2 = this.<spec.jbb.Warehouse: short warehouseId>;
+        specialinvoke $r8.<spec.jbb.District: void <init>(short,byte)>($s2, newDistrictId);
+        newDistrict = $r8;
+        virtualinvoke newDistrict.<spec.jbb.District: void setUsingRandom()>();
+        $r9 = this.<spec.jbb.Warehouse: java.lang.Object[] districts>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r9, 49, tid_setUsingRandom, "spec.jbb.Warehouse", 184, i, newDistrict);
+        $r9[i] = newDistrict;
+        i = i + 1;
+
+     label1:
+        $i3 = this.<spec.jbb.Warehouse: int distCount>;
+        if i < $i3 goto label0;
+
+        return;
+    }
+
+    public java.lang.String getName()
+    {
+        spec.jbb.Warehouse this;
+        java.lang.String $r0, $r1;
+
+        this := @this: spec.jbb.Warehouse;
+        $r0 = new java.lang.String;
+        $r1 = this.<spec.jbb.Warehouse: java.lang.String name>;
+        specialinvoke $r0.<java.lang.String: void <init>(java.lang.String)>($r1);
+        return $r0;
+    }
+
+    public void loadStockTable()
+    {
+        spec.jbb.Warehouse this;
+        int numItems, i, $i0, $i2;
+        spec.jbb.Item currItem;
+        spec.jbb.Stock newStock, $r3;
+        spec.jbb.JBBDataStorage $r0;
+        java.lang.Integer $r1;
+        java.lang.Object $r2;
+        spec.jbb.Company $r4;
+        short $s1;
+
+        this := @this: spec.jbb.Warehouse;
+        $r0 = this.<spec.jbb.Warehouse: spec.jbb.JBBDataStorage itemTable>;
+        numItems = interfaceinvoke $r0.<spec.jbb.JBBDataStorage: int size()>();
+        i = 1;
+        goto label1;
+
+     label0:
+        $r0 = this.<spec.jbb.Warehouse: spec.jbb.JBBDataStorage itemTable>;
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(i);
+        $r2 = interfaceinvoke $r0.<spec.jbb.JBBDataStorage: java.lang.Object get(java.lang.Object)>($r1);
+        currItem = (spec.jbb.Item) $r2;
+        $r3 = new spec.jbb.Stock;
+        $r4 = this.<spec.jbb.Warehouse: spec.jbb.Company company>;
+        $i0 = virtualinvoke currItem.<spec.jbb.Item: int getId()>();
+        $s1 = this.<spec.jbb.Warehouse: short warehouseId>;
+        specialinvoke $r3.<spec.jbb.Stock: void <init>(spec.jbb.Company,int,short)>($r4, $i0, $s1);
+        newStock = $r3;
+        $r0 = this.<spec.jbb.Warehouse: spec.jbb.JBBDataStorage stockTable>;
+        $i2 = virtualinvoke newStock.<spec.jbb.Stock: int getId()>();
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i2);
+        interfaceinvoke $r0.<spec.jbb.JBBDataStorage: java.lang.Object put(java.lang.Object,java.lang.Object)>($r1, newStock);
+        i = i + 1;
+
+     label1:
+        if i <= numItems goto label0;
+
+        return;
+    }
+
+    public void updateHistory(spec.jbb.History)
+    {
+        spec.jbb.Warehouse this;
+        spec.jbb.History inHistory;
+        long $l0, tid_updateHistory;
+        spec.jbb.JBBDataStorage $r1;
+        java.lang.Long $r2;
+        java.lang.Thread thread_updateHistory;
+
+        this := @this: spec.jbb.Warehouse;
+        inHistory := @parameter0: spec.jbb.History;
+        thread_updateHistory = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_updateHistory = virtualinvoke thread_updateHistory.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 87, tid_updateHistory, "spec.jbb.Warehouse", 209, $l0);
+        $l0 = this.<spec.jbb.Warehouse: long historyCount>;
+        $l0 = $l0 + 1L;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 87, tid_updateHistory, "spec.jbb.Warehouse", 209, $l0);
+        this.<spec.jbb.Warehouse: long historyCount> = $l0;
+        $r1 = this.<spec.jbb.Warehouse: spec.jbb.JBBDataStorage historyTable>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 87, tid_updateHistory, "spec.jbb.Warehouse", 210, $l0);
+        $l0 = this.<spec.jbb.Warehouse: long historyCount>;
+        $r2 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+        interfaceinvoke $r1.<spec.jbb.JBBDataStorage: java.lang.Object put(java.lang.Object,java.lang.Object)>($r2, inHistory);
+        return;
+    }
+
+    public void removeOldestHistory()
+    {
+        spec.jbb.Warehouse this;
+        long $l0;
+        spec.jbb.JBBDataStorage $r1;
+        java.lang.Long $r2;
+
+        this := @this: spec.jbb.Warehouse;
+        $l0 = this.<spec.jbb.Warehouse: long oldestHistory>;
+        $l0 = $l0 + 1L;
+        this.<spec.jbb.Warehouse: long oldestHistory> = $l0;
+        $r1 = this.<spec.jbb.Warehouse: spec.jbb.JBBDataStorage historyTable>;
+        $l0 = this.<spec.jbb.Warehouse: long oldestHistory>;
+        $r2 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+        interfaceinvoke $r1.<spec.jbb.JBBDataStorage: java.lang.Object remove(java.lang.Object)>($r2);
+        return;
+    }
+
+    public void loadHistoryTable()
+    {
+        spec.jbb.Warehouse this;
+        byte districtId, $b2;
+        short customerId, $s0, $s1, $s3;
+        long uniqueCustomerNumber;
+        spec.jbb.Customer customerPtr;
+        java.math.BigDecimal amount;
+        java.lang.String historyData, $r1;
+        java.util.Date creation_time, $r3;
+        spec.jbb.History newHistory, $r4;
+        spec.jbb.Company $r0, $r5;
+        char[] $r2;
+        int $i4, $i5;
+
+        this := @this: spec.jbb.Warehouse;
+        districtId = 1;
+        goto label3;
+
+     label0:
+        customerId = 1;
+        goto label2;
+
+     label1:
+        $r0 = this.<spec.jbb.Warehouse: spec.jbb.Company company>;
+        $s0 = this.<spec.jbb.Warehouse: short warehouseId>;
+        uniqueCustomerNumber = virtualinvoke $r0.<spec.jbb.Company: long buildUniqueCustomerKey(short,byte,short)>($s0, districtId, customerId);
+        $r0 = this.<spec.jbb.Warehouse: spec.jbb.Company company>;
+        customerPtr = virtualinvoke $r0.<spec.jbb.Company: spec.jbb.Customer getCustomer(long,boolean)>(uniqueCustomerNumber, 0);
+        amount = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long,int)>(1000L, 2);
+        $r1 = new java.lang.String;
+        $s1 = this.<spec.jbb.Warehouse: short warehouseId>;
+        $r2 = staticinvoke <spec.jbb.JBButil: char[] create_random_a_string(int,int,short)>(12, 25, $s1);
+        specialinvoke $r1.<java.lang.String: void <init>(char[])>($r2);
+        historyData = $r1;
+        $r3 = new java.util.Date;
+        specialinvoke $r3.<java.util.Date: void <init>()>();
+        creation_time = $r3;
+        $r4 = new spec.jbb.History;
+        $b2 = virtualinvoke customerPtr.<spec.jbb.Customer: byte getDistrictId()>();
+        $s1 = virtualinvoke customerPtr.<spec.jbb.Customer: short getWarehouseId()>();
+        $s3 = this.<spec.jbb.Warehouse: short warehouseId>;
+        specialinvoke $r4.<spec.jbb.History: void <init>(short,byte,short,byte,short,java.util.Date,java.math.BigDecimal,java.lang.String)>(customerId, $b2, $s1, districtId, $s3, creation_time, amount, historyData);
+        newHistory = $r4;
+        virtualinvoke this.<spec.jbb.Warehouse: void updateHistory(spec.jbb.History)>(newHistory);
+        $i4 = customerId + 1;
+        customerId = (short) $i4;
+
+     label2:
+        $r5 = this.<spec.jbb.Warehouse: spec.jbb.Company company>;
+        $i5 = virtualinvoke $r5.<spec.jbb.Company: int getMaxCustomersPerDistrict()>();
+        if customerId <= $i5 goto label1;
+
+        $i4 = districtId + 1;
+        districtId = (byte) $i4;
+
+     label3:
+        $r5 = this.<spec.jbb.Warehouse: spec.jbb.Company company>;
+        $s0 = virtualinvoke $r5.<spec.jbb.Company: short getMaxDistrictsPerWarehouse()>();
+        if districtId <= $s0 goto label0;
+
+        return;
+    }
+
+    public spec.jbb.JBBDataStorage getHistoryTable()
+    {
+        spec.jbb.Warehouse this;
+        spec.jbb.JBBDataStorage $r0;
+
+        this := @this: spec.jbb.Warehouse;
+        $r0 = this.<spec.jbb.Warehouse: spec.jbb.JBBDataStorage historyTable>;
+        return $r0;
+    }
+}

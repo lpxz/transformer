@@ -1,0 +1,262 @@
+class spec.jbb.Infrastructure$SynchronizedJBBDataStorage extends java.lang.Object implements spec.jbb.JBBDataStorage
+{
+    spec.jbb.JBBDataStorage s;
+
+    void <init>(spec.jbb.JBBDataStorage)
+    {
+        spec.jbb.Infrastructure$SynchronizedJBBDataStorage this;
+        spec.jbb.JBBDataStorage s;
+
+        this := @this: spec.jbb.Infrastructure$SynchronizedJBBDataStorage;
+        s := @parameter0: spec.jbb.JBBDataStorage;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<spec.jbb.Infrastructure$SynchronizedJBBDataStorage: spec.jbb.JBBDataStorage s> = s;
+        return;
+    }
+
+    public boolean containsKey(java.lang.Object)
+    {
+        spec.jbb.Infrastructure$SynchronizedJBBDataStorage this;
+        java.lang.Object o;
+        spec.jbb.JBBDataStorage l2, $r0;
+        boolean $z0;
+        java.lang.Throwable $r1;
+        long tid_containsKey;
+        java.lang.Thread thread_containsKey;
+
+        this := @this: spec.jbb.Infrastructure$SynchronizedJBBDataStorage;
+        o := @parameter0: java.lang.Object;
+        thread_containsKey = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_containsKey = virtualinvoke thread_containsKey.<java.lang.Thread: long getId()>();
+        $r0 = this.<spec.jbb.Infrastructure$SynchronizedJBBDataStorage: spec.jbb.JBBDataStorage s>;
+        l2 = $r0;
+        entermonitor $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r0, 2, tid_containsKey);
+
+     label0:
+        $r0 = this.<spec.jbb.Infrastructure$SynchronizedJBBDataStorage: spec.jbb.JBBDataStorage s>;
+        $z0 = interfaceinvoke $r0.<spec.jbb.JBBDataStorage: boolean containsKey(java.lang.Object)>(o);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l2, 2, tid_containsKey);
+        exitmonitor l2;
+
+     label1:
+        return $z0;
+
+     label2:
+        $r1 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l2, 2, tid_containsKey);
+        exitmonitor l2;
+
+     label4:
+        throw $r1;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public java.lang.Object get(java.lang.Object)
+    {
+        spec.jbb.Infrastructure$SynchronizedJBBDataStorage this;
+        java.lang.Object o, $r1;
+        spec.jbb.JBBDataStorage l2, $r0;
+        java.lang.Throwable $r2;
+        long tid_get;
+        java.lang.Thread thread_get;
+
+        this := @this: spec.jbb.Infrastructure$SynchronizedJBBDataStorage;
+        o := @parameter0: java.lang.Object;
+        thread_get = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_get = virtualinvoke thread_get.<java.lang.Thread: long getId()>();
+        $r0 = this.<spec.jbb.Infrastructure$SynchronizedJBBDataStorage: spec.jbb.JBBDataStorage s>;
+        l2 = $r0;
+        entermonitor $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r0, 2, tid_get);
+
+     label0:
+        $r0 = this.<spec.jbb.Infrastructure$SynchronizedJBBDataStorage: spec.jbb.JBBDataStorage s>;
+        $r1 = interfaceinvoke $r0.<spec.jbb.JBBDataStorage: java.lang.Object get(java.lang.Object)>(o);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l2, 2, tid_get);
+        exitmonitor l2;
+
+     label1:
+        return $r1;
+
+     label2:
+        $r2 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l2, 2, tid_get);
+        exitmonitor l2;
+
+     label4:
+        throw $r2;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public java.lang.Object put(java.lang.Object, java.lang.Object)
+    {
+        spec.jbb.Infrastructure$SynchronizedJBBDataStorage this;
+        java.lang.Object key, value, $r1;
+        spec.jbb.JBBDataStorage l3, $r0;
+        java.lang.Throwable $r2;
+        long tid_put;
+        java.lang.Thread thread_put;
+
+        this := @this: spec.jbb.Infrastructure$SynchronizedJBBDataStorage;
+        key := @parameter0: java.lang.Object;
+        value := @parameter1: java.lang.Object;
+        thread_put = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_put = virtualinvoke thread_put.<java.lang.Thread: long getId()>();
+        $r0 = this.<spec.jbb.Infrastructure$SynchronizedJBBDataStorage: spec.jbb.JBBDataStorage s>;
+        l3 = $r0;
+        entermonitor $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r0, 2, tid_put);
+
+     label0:
+        $r0 = this.<spec.jbb.Infrastructure$SynchronizedJBBDataStorage: spec.jbb.JBBDataStorage s>;
+        $r1 = interfaceinvoke $r0.<spec.jbb.JBBDataStorage: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, value);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 2, tid_put);
+        exitmonitor l3;
+
+     label1:
+        return $r1;
+
+     label2:
+        $r2 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 2, tid_put);
+        exitmonitor l3;
+
+     label4:
+        throw $r2;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public java.lang.Object remove(java.lang.Object)
+    {
+        spec.jbb.Infrastructure$SynchronizedJBBDataStorage this;
+        java.lang.Object o, $r1;
+        spec.jbb.JBBDataStorage l2, $r0;
+        java.lang.Throwable $r2;
+        long tid_remove;
+        java.lang.Thread thread_remove;
+
+        this := @this: spec.jbb.Infrastructure$SynchronizedJBBDataStorage;
+        o := @parameter0: java.lang.Object;
+        thread_remove = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_remove = virtualinvoke thread_remove.<java.lang.Thread: long getId()>();
+        $r0 = this.<spec.jbb.Infrastructure$SynchronizedJBBDataStorage: spec.jbb.JBBDataStorage s>;
+        l2 = $r0;
+        entermonitor $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r0, 2, tid_remove);
+
+     label0:
+        $r0 = this.<spec.jbb.Infrastructure$SynchronizedJBBDataStorage: spec.jbb.JBBDataStorage s>;
+        $r1 = interfaceinvoke $r0.<spec.jbb.JBBDataStorage: java.lang.Object remove(java.lang.Object)>(o);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l2, 2, tid_remove);
+        exitmonitor l2;
+
+     label1:
+        return $r1;
+
+     label2:
+        $r2 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l2, 2, tid_remove);
+        exitmonitor l2;
+
+     label4:
+        throw $r2;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public int size()
+    {
+        spec.jbb.Infrastructure$SynchronizedJBBDataStorage this;
+        spec.jbb.JBBDataStorage l1, $r0;
+        int $i0;
+        java.lang.Throwable $r1;
+        long tid_size;
+        java.lang.Thread thread_size;
+
+        this := @this: spec.jbb.Infrastructure$SynchronizedJBBDataStorage;
+        thread_size = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_size = virtualinvoke thread_size.<java.lang.Thread: long getId()>();
+        $r0 = this.<spec.jbb.Infrastructure$SynchronizedJBBDataStorage: spec.jbb.JBBDataStorage s>;
+        l1 = $r0;
+        entermonitor $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r0, 2, tid_size);
+
+     label0:
+        $r0 = this.<spec.jbb.Infrastructure$SynchronizedJBBDataStorage: spec.jbb.JBBDataStorage s>;
+        $i0 = interfaceinvoke $r0.<spec.jbb.JBBDataStorage: int size()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l1, 2, tid_size);
+        exitmonitor l1;
+
+     label1:
+        return $i0;
+
+     label2:
+        $r1 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l1, 2, tid_size);
+        exitmonitor l1;
+
+     label4:
+        throw $r1;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public java.util.Iterator elements()
+    {
+        spec.jbb.Infrastructure$SynchronizedJBBDataStorage this;
+        spec.jbb.JBBDataStorage l1, $r0;
+        java.util.Iterator $r1;
+        java.lang.Throwable $r2;
+        long tid_elements;
+        java.lang.Thread thread_elements;
+
+        this := @this: spec.jbb.Infrastructure$SynchronizedJBBDataStorage;
+        thread_elements = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_elements = virtualinvoke thread_elements.<java.lang.Thread: long getId()>();
+        $r0 = this.<spec.jbb.Infrastructure$SynchronizedJBBDataStorage: spec.jbb.JBBDataStorage s>;
+        l1 = $r0;
+        entermonitor $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r0, 2, tid_elements);
+
+     label0:
+        $r0 = this.<spec.jbb.Infrastructure$SynchronizedJBBDataStorage: spec.jbb.JBBDataStorage s>;
+        $r1 = interfaceinvoke $r0.<spec.jbb.JBBDataStorage: java.util.Iterator elements()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l1, 2, tid_elements);
+        exitmonitor l1;
+
+     label1:
+        return $r1;
+
+     label2:
+        $r2 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l1, 2, tid_elements);
+        exitmonitor l1;
+
+     label4:
+        throw $r2;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+}

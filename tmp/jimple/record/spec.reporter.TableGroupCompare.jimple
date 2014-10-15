@@ -1,0 +1,292 @@
+public class spec.reporter.TableGroupCompare extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+    public static final int MAXGROUPS;
+    public static final int MAXROWS;
+    public static final int MAXCOLUMNS;
+    spec.reporter.Table[][][] tables;
+    int[][] rows;
+    boolean[][] anyEntry;
+    private spec.reporter.ReportProps props;
+    private spec.reporter.ReportProps props_2;
+    private static java.lang.String tableBegin;
+    private static java.lang.String firstColumn;
+    private static java.lang.String otherColumn;
+    private static java.lang.String tableEnd;
+
+    static void <clinit>()
+    {
+        <spec.reporter.TableGroupCompare: java.lang.String tableBegin> = "<TABLE WIDTH=\"100%\" BORDER=0 CELLSPACING=0 CELLPADDING=2>\n";
+        <spec.reporter.TableGroupCompare: java.lang.String firstColumn> = "<TR><TD WIDTH=\"50%\" VALIGN=\"TOP\">\n";
+        <spec.reporter.TableGroupCompare: java.lang.String otherColumn> = "</TD><TD WIDTH=\"50%\" VALIGN=\"TOP\">\n";
+        <spec.reporter.TableGroupCompare: java.lang.String tableEnd> = "</TD></TR></TABLE>";
+        return;
+    }
+
+    void <init>(java.io.BufferedReader, java.io.BufferedReader, spec.reporter.ReportProps, spec.reporter.ReportProps, spec.reporter.ReportProps) throws java.lang.IllegalArgumentException
+    {
+        spec.reporter.TableGroupCompare this;
+        java.io.BufferedReader in, in_2;
+        spec.reporter.ReportProps props, props_2, titles;
+        java.lang.String tableTitle, line, $r3, $r5;
+        java.util.StringTokenizer token, $r4;
+        int group, column, row, $i0, $i2, $i3;
+        boolean freeForm, $z0;
+        java.io.IOException e, $r15;
+        spec.reporter.Table[][][] $r0, $r9;
+        int[][] $r1, $r7;
+        boolean[][] $r2, $r13;
+        java.lang.IllegalArgumentException $r6;
+        int[] $r8;
+        spec.reporter.Table[][] $r10;
+        spec.reporter.Table[] $r11;
+        spec.reporter.Table $r12;
+        boolean[] $r14;
+        java.util.logging.Logger $r16;
+        java.util.logging.Level $r17;
+        java.lang.StringBuilder $r18;
+
+        this := @this: spec.reporter.TableGroupCompare;
+        in := @parameter0: java.io.BufferedReader;
+        in_2 := @parameter1: java.io.BufferedReader;
+        props := @parameter2: spec.reporter.ReportProps;
+        props_2 := @parameter3: spec.reporter.ReportProps;
+        titles := @parameter4: spec.reporter.ReportProps;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = newmultiarray (spec.reporter.Table)[10][3][10];
+        this.<spec.reporter.TableGroupCompare: spec.reporter.Table[][][] tables> = $r0;
+        $r1 = newmultiarray (int)[10][3];
+        this.<spec.reporter.TableGroupCompare: int[][] rows> = $r1;
+        $r2 = newmultiarray (boolean)[10][3];
+        this.<spec.reporter.TableGroupCompare: boolean[][] anyEntry> = $r2;
+        this.<spec.reporter.TableGroupCompare: spec.reporter.ReportProps props> = props;
+        this.<spec.reporter.TableGroupCompare: spec.reporter.ReportProps props_2> = props_2;
+        tableTitle = "Untitled";
+
+     label0:
+        goto label10;
+
+     label1:
+        virtualinvoke in_2.<java.io.BufferedReader: java.lang.String readLine()>();
+        $z0 = virtualinvoke line.<java.lang.String: boolean startsWith(java.lang.String)>("Title");
+        if $z0 == 0 goto label2;
+
+        $r3 = virtualinvoke line.<java.lang.String: java.lang.String substring(int)>(5);
+        tableTitle = virtualinvoke $r3.<java.lang.String: java.lang.String trim()>();
+        goto label10;
+
+     label2:
+        $z0 = virtualinvoke line.<java.lang.String: boolean startsWith(java.lang.String)>("Table");
+        if $z0 == 0 goto label10;
+
+        $r4 = new java.util.StringTokenizer;
+        $r5 = virtualinvoke line.<java.lang.String: java.lang.String substring(int)>(5);
+        specialinvoke $r4.<java.util.StringTokenizer: void <init>(java.lang.String)>($r5);
+        token = $r4;
+        $r3 = virtualinvoke token.<java.util.StringTokenizer: java.lang.String nextToken()>();
+        group = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r3);
+        $r3 = virtualinvoke token.<java.util.StringTokenizer: java.lang.String nextToken()>();
+        column = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r3);
+        $r3 = virtualinvoke token.<java.util.StringTokenizer: java.lang.String nextToken()>();
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r3);
+        if $i0 != 1 goto label3;
+
+        $z0 = 1;
+        goto label4;
+
+     label3:
+        $z0 = 0;
+
+     label4:
+        freeForm = $z0;
+        if group < 0 goto label5;
+
+        if group >= 10 goto label5;
+
+        if column < 0 goto label5;
+
+        if column < 3 goto label6;
+
+     label5:
+        $r6 = new java.lang.IllegalArgumentException;
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>(tableTitle);
+        throw $r6;
+
+     label6:
+        $r7 = this.<spec.reporter.TableGroupCompare: int[][] rows>;
+        $r8 = $r7[group];
+        $i2 = $r8[column];
+        $i3 = $i2 + 1;
+        $r8[column] = $i3;
+        row = $i2;
+        if row < 0 goto label7;
+
+        if row < 10 goto label8;
+
+     label7:
+        $r6 = new java.lang.IllegalArgumentException;
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>(tableTitle);
+        throw $r6;
+
+     label8:
+        if props_2 == null goto label9;
+
+        $r9 = this.<spec.reporter.TableGroupCompare: spec.reporter.Table[][][] tables>;
+        $r10 = $r9[group];
+        $r11 = $r10[0];
+        $r12 = new spec.reporter.Table;
+        specialinvoke $r12.<spec.reporter.Table: void <init>(java.lang.String,java.io.BufferedReader,spec.reporter.ReportProps,spec.reporter.ReportProps,boolean)>(tableTitle, in, props, titles, freeForm);
+        $r11[row] = $r12;
+        $r9 = this.<spec.reporter.TableGroupCompare: spec.reporter.Table[][][] tables>;
+        $r10 = $r9[group];
+        $r11 = $r10[1];
+        $r12 = new spec.reporter.Table;
+        specialinvoke $r12.<spec.reporter.Table: void <init>(java.lang.String,java.io.BufferedReader,spec.reporter.ReportProps,spec.reporter.ReportProps,boolean)>(tableTitle, in_2, props_2, titles, freeForm);
+        $r11[row] = $r12;
+        $r13 = this.<spec.reporter.TableGroupCompare: boolean[][] anyEntry>;
+        $r14 = $r13[group];
+        $r14[0] = 1;
+        $r13 = this.<spec.reporter.TableGroupCompare: boolean[][] anyEntry>;
+        $r14 = $r13[group];
+        $r14[1] = 1;
+        goto label10;
+
+     label9:
+        $r9 = this.<spec.reporter.TableGroupCompare: spec.reporter.Table[][][] tables>;
+        $r10 = $r9[group];
+        $r11 = $r10[column];
+        $r12 = new spec.reporter.Table;
+        specialinvoke $r12.<spec.reporter.Table: void <init>(java.lang.String,java.io.BufferedReader,spec.reporter.ReportProps,spec.reporter.ReportProps,boolean)>(tableTitle, in, props, titles, freeForm);
+        $r11[row] = $r12;
+        $r13 = this.<spec.reporter.TableGroupCompare: boolean[][] anyEntry>;
+        $r14 = $r13[group];
+        $r14[column] = 1;
+
+     label10:
+        $r3 = virtualinvoke in.<java.io.BufferedReader: java.lang.String readLine()>();
+        line = $r3;
+        if $r3 != null goto label1;
+
+     label11:
+        goto label13;
+
+     label12:
+        $r15 := @caughtexception;
+        e = $r15;
+        $r16 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r17 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r18 = new java.lang.StringBuilder;
+        specialinvoke $r18.<java.lang.StringBuilder: void <init>(java.lang.String)>("Error: ");
+        $r18 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(e);
+        $r5 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r16.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r17, $r5, e);
+
+     label13:
+        return;
+
+        catch java.io.IOException from label0 to label11 with label12;
+    }
+
+    public java.lang.String toString()
+    {
+        spec.reporter.TableGroupCompare this;
+        java.lang.StringBuffer $r0, buf;
+        java.lang.String $r1, $r4, $r8;
+        int ig, ir, ic;
+        spec.reporter.Table t;
+        boolean[][] $r2;
+        boolean[] $r3;
+        boolean $z0;
+        spec.reporter.Table[][][] $r5;
+        spec.reporter.Table[][] $r6;
+        spec.reporter.Table[] $r7;
+
+        this := @this: spec.reporter.TableGroupCompare;
+        $r0 = new java.lang.StringBuffer;
+        $r1 = <spec.reporter.TableGroupCompare: java.lang.String tableBegin>;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(java.lang.String)>($r1);
+        buf = $r0;
+        ig = 0;
+        goto label13;
+
+     label0:
+        $r2 = this.<spec.reporter.TableGroupCompare: boolean[][] anyEntry>;
+        $r3 = $r2[ig];
+        $z0 = $r3[0];
+        if $z0 != 0 goto label1;
+
+        goto label12;
+
+     label1:
+        $r4 = <spec.reporter.TableGroupCompare: java.lang.String firstColumn>;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        ir = 0;
+        goto label4;
+
+     label2:
+        $r5 = this.<spec.reporter.TableGroupCompare: spec.reporter.Table[][][] tables>;
+        $r6 = $r5[ig];
+        $r7 = $r6[0];
+        t = $r7[ir];
+        if t == null goto label3;
+
+        $r4 = virtualinvoke t.<spec.reporter.Table: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+
+     label3:
+        ir = ir + 1;
+
+     label4:
+        if ir < 10 goto label2;
+
+        ic = 1;
+        goto label11;
+
+     label5:
+        $r2 = this.<spec.reporter.TableGroupCompare: boolean[][] anyEntry>;
+        $r3 = $r2[ig];
+        $z0 = $r3[ic];
+        if $z0 != 0 goto label6;
+
+        goto label10;
+
+     label6:
+        $r4 = <spec.reporter.TableGroupCompare: java.lang.String otherColumn>;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        ir = 0;
+        goto label9;
+
+     label7:
+        $r5 = this.<spec.reporter.TableGroupCompare: spec.reporter.Table[][][] tables>;
+        $r6 = $r5[ig];
+        $r7 = $r6[ic];
+        t = $r7[ir];
+        if t == null goto label8;
+
+        $r4 = virtualinvoke t.<spec.reporter.Table: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+
+     label8:
+        ir = ir + 1;
+
+     label9:
+        if ir < 10 goto label7;
+
+     label10:
+        ic = ic + 1;
+
+     label11:
+        if ic < 3 goto label5;
+
+     label12:
+        ig = ig + 1;
+
+     label13:
+        if ig < 10 goto label0;
+
+        $r4 = <spec.reporter.TableGroupCompare: java.lang.String tableEnd>;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r8 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r8;
+    }
+}

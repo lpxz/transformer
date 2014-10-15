@@ -1,0 +1,121 @@
+public class spec.jbb.TreeMapDataStorage extends spec.jbb.MapDataStorage implements spec.jbb.JBBSortedStorage
+{
+    private static final long serialVersionUID;
+    static final java.lang.String COPYRIGHT;
+
+    void <init>()
+    {
+        spec.jbb.TreeMapDataStorage this;
+        java.util.TreeMap $r0;
+
+        this := @this: spec.jbb.TreeMapDataStorage;
+        $r0 = new java.util.TreeMap;
+        specialinvoke $r0.<java.util.TreeMap: void <init>()>();
+        specialinvoke this.<spec.jbb.MapDataStorage: void <init>(java.util.Map)>($r0);
+        return;
+    }
+
+    public boolean deleteFirstEntities(int)
+    {
+        spec.jbb.TreeMapDataStorage this;
+        int quant, i;
+        java.util.Iterator iter;
+        java.util.Map $r0;
+        java.util.Collection $r1;
+        boolean $z0;
+
+        this := @this: spec.jbb.TreeMapDataStorage;
+        quant := @parameter0: int;
+        $r0 = this.<spec.jbb.TreeMapDataStorage: java.util.Map data>;
+        $r1 = interfaceinvoke $r0.<java.util.Map: java.util.Collection values()>();
+        iter = interfaceinvoke $r1.<java.util.Collection: java.util.Iterator iterator()>();
+        i = 1;
+        goto label3;
+
+     label0:
+        $z0 = interfaceinvoke iter.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        interfaceinvoke iter.<java.util.Iterator: java.lang.Object next()>();
+        interfaceinvoke iter.<java.util.Iterator: void remove()>();
+        goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        i = i + 1;
+
+     label3:
+        if i <= quant goto label0;
+
+        return 1;
+    }
+
+    public boolean deleteFirstEntities()
+    {
+        spec.jbb.TreeMapDataStorage this;
+        boolean $z0;
+
+        this := @this: spec.jbb.TreeMapDataStorage;
+        $z0 = virtualinvoke this.<spec.jbb.TreeMapDataStorage: boolean deleteFirstEntities(int)>(1);
+        return $z0;
+    }
+
+    public java.lang.Object removeFirstElem()
+    {
+        spec.jbb.TreeMapDataStorage this;
+        int size;
+        java.util.Map $r0;
+        java.util.SortedMap $r1;
+        java.lang.Object $r2, $r3;
+
+        this := @this: spec.jbb.TreeMapDataStorage;
+        size = virtualinvoke this.<spec.jbb.TreeMapDataStorage: int size()>();
+        if size <= 0 goto label0;
+
+        $r0 = this.<spec.jbb.TreeMapDataStorage: java.util.Map data>;
+        $r1 = (java.util.SortedMap) $r0;
+        $r2 = interfaceinvoke $r1.<java.util.SortedMap: java.lang.Object firstKey()>();
+        $r3 = virtualinvoke this.<spec.jbb.TreeMapDataStorage: java.lang.Object remove(java.lang.Object)>($r2);
+        return $r3;
+
+     label0:
+        return null;
+    }
+
+    public java.lang.Object getMedianValue(java.lang.Object, java.lang.Object)
+    {
+        spec.jbb.TreeMapDataStorage this;
+        java.lang.Object firstKey, lastKey, avgValue;
+        java.util.SortedMap subMap, $r1;
+        int size, i, $i0;
+        java.util.Iterator iter;
+        java.util.Map $r0;
+        java.util.Collection $r2;
+
+        this := @this: spec.jbb.TreeMapDataStorage;
+        firstKey := @parameter0: java.lang.Object;
+        lastKey := @parameter1: java.lang.Object;
+        avgValue = null;
+        $r0 = this.<spec.jbb.TreeMapDataStorage: java.util.Map data>;
+        $r1 = (java.util.SortedMap) $r0;
+        subMap = interfaceinvoke $r1.<java.util.SortedMap: java.util.SortedMap subMap(java.lang.Object,java.lang.Object)>(firstKey, lastKey);
+        size = interfaceinvoke subMap.<java.util.SortedMap: int size()>();
+        $r2 = interfaceinvoke subMap.<java.util.SortedMap: java.util.Collection values()>();
+        iter = interfaceinvoke $r2.<java.util.Collection: java.util.Iterator iterator()>();
+        i = 1;
+        goto label1;
+
+     label0:
+        avgValue = interfaceinvoke iter.<java.util.Iterator: java.lang.Object next()>();
+        i = i + 1;
+
+     label1:
+        $i0 = size + 1;
+        $i0 = $i0 / 2;
+        if i <= $i0 goto label0;
+
+        return avgValue;
+    }
+}

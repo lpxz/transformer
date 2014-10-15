@@ -1,0 +1,598 @@
+public class spec.jbb.Customer extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+    private static final java.lang.String bad_credit;
+    private static final java.lang.String good_credit;
+    private spec.jbb.Order lastOrder;
+    private java.lang.String firstName;
+    private java.lang.String middleName;
+    private java.lang.String lastName;
+    private spec.jbb.Address address;
+    private java.lang.String phone;
+    private java.util.Date since;
+    private java.lang.String data;
+    private java.math.BigDecimal creditLimit;
+    private java.math.BigDecimal discount;
+    private java.math.BigDecimal balance;
+    private java.math.BigDecimal ytd;
+    private char credit1;
+    private char credit2;
+    private short customerId;
+    private short paymentCount;
+    private short deliveryCount;
+    private byte districtId;
+    private short warehouseId;
+
+    public void <init>()
+    {
+        spec.jbb.Customer this;
+        spec.jbb.Address $r0;
+        java.util.Date $r1;
+        java.math.BigDecimal $r2;
+
+        this := @this: spec.jbb.Customer;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new spec.jbb.Address;
+        specialinvoke $r0.<spec.jbb.Address: void <init>()>();
+        this.<spec.jbb.Customer: spec.jbb.Address address> = $r0;
+        $r1 = new java.util.Date;
+        specialinvoke $r1.<java.util.Date: void <init>()>();
+        this.<spec.jbb.Customer: java.util.Date since> = $r1;
+        $r2 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long,int)>(0L, 2);
+        this.<spec.jbb.Customer: java.math.BigDecimal creditLimit> = $r2;
+        $r2 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long,int)>(0L, 2);
+        this.<spec.jbb.Customer: java.math.BigDecimal balance> = $r2;
+        $r2 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long,int)>(0L, 2);
+        this.<spec.jbb.Customer: java.math.BigDecimal ytd> = $r2;
+        this.<spec.jbb.Customer: short paymentCount> = 0;
+        this.<spec.jbb.Customer: short deliveryCount> = 0;
+        this.<spec.jbb.Customer: spec.jbb.Order lastOrder> = null;
+        return;
+    }
+
+    public short getId()
+    {
+        spec.jbb.Customer this;
+        short $s0;
+        long tid_getId;
+        java.lang.Thread thread_getId;
+
+        this := @this: spec.jbb.Customer;
+        thread_getId = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getId = virtualinvoke thread_getId.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 88, tid_getId, "spec.jbb.Customer", 74, $s0);
+        $s0 = this.<spec.jbb.Customer: short customerId>;
+        return $s0;
+    }
+
+    public void display()
+    {
+        spec.jbb.Customer this;
+        java.io.PrintStream $r0;
+        java.lang.StringBuilder $r1;
+        short $s0;
+        java.lang.String $r2, $r3;
+        byte $b1;
+        spec.jbb.Address $r4;
+        long tid_display;
+        java.lang.Thread thread_display;
+
+        this := @this: spec.jbb.Customer;
+        thread_display = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_display = virtualinvoke thread_display.<java.lang.Thread: long getId()>();
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>("Customer Display *********************************");
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("customerId =================> ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 88, tid_display, "spec.jbb.Customer", 80, $s0);
+        $s0 = this.<spec.jbb.Customer: short customerId>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s0);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("district ID ========> ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 89, tid_display, "spec.jbb.Customer", 81, $b1);
+        $b1 = this.<spec.jbb.Customer: byte districtId>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($b1);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("warehouse ID========> ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 90, tid_display, "spec.jbb.Customer", 82, $s0);
+        $s0 = this.<spec.jbb.Customer: short warehouseId>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s0);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("firstname===========> ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 91, tid_display, "spec.jbb.Customer", 83, $r3);
+        $r3 = this.<spec.jbb.Customer: java.lang.String firstName>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("middlename =========> ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 92, tid_display, "spec.jbb.Customer", 84, $r3);
+        $r3 = this.<spec.jbb.Customer: java.lang.String middleName>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("lastname ===========> ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 93, tid_display, "spec.jbb.Customer", 85, $r3);
+        $r3 = this.<spec.jbb.Customer: java.lang.String lastName>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r4 = this.<spec.jbb.Customer: spec.jbb.Address address>;
+        virtualinvoke $r4.<spec.jbb.Address: void display()>();
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>("END ****Customer Display *********************************");
+        return;
+    }
+
+    public void addOrder(spec.jbb.Order)
+    {
+        spec.jbb.Customer this;
+        spec.jbb.Order thisOrder;
+        long tid_addOrder;
+        java.lang.Thread thread_addOrder;
+
+        this := @this: spec.jbb.Customer;
+        thisOrder := @parameter0: spec.jbb.Order;
+        thread_addOrder = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addOrder = virtualinvoke thread_addOrder.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 94, tid_addOrder, "spec.jbb.Customer", 92, thisOrder);
+        this.<spec.jbb.Customer: spec.jbb.Order lastOrder> = thisOrder;
+        return;
+    }
+
+    public spec.jbb.Order getLatestOrder()
+    {
+        spec.jbb.Customer this;
+        spec.jbb.Order order;
+        long tid_getLatestOrder;
+        java.lang.Thread thread_getLatestOrder;
+
+        this := @this: spec.jbb.Customer;
+        thread_getLatestOrder = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getLatestOrder = virtualinvoke thread_getLatestOrder.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 94, tid_getLatestOrder, "spec.jbb.Customer", 96, order);
+        order = this.<spec.jbb.Customer: spec.jbb.Order lastOrder>;
+        return order;
+    }
+
+    public java.lang.String getFirstName()
+    {
+        spec.jbb.Customer this;
+        java.lang.String $r0;
+        long tid_getFirstName;
+        java.lang.Thread thread_getFirstName;
+
+        this := @this: spec.jbb.Customer;
+        thread_getFirstName = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getFirstName = virtualinvoke thread_getFirstName.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 91, tid_getFirstName, "spec.jbb.Customer", 101, $r0);
+        $r0 = this.<spec.jbb.Customer: java.lang.String firstName>;
+        return $r0;
+    }
+
+    public java.lang.String getMiddleName()
+    {
+        spec.jbb.Customer this;
+        java.lang.String $r0;
+        long tid_getMiddleName;
+        java.lang.Thread thread_getMiddleName;
+
+        this := @this: spec.jbb.Customer;
+        thread_getMiddleName = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getMiddleName = virtualinvoke thread_getMiddleName.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 92, tid_getMiddleName, "spec.jbb.Customer", 105, $r0);
+        $r0 = this.<spec.jbb.Customer: java.lang.String middleName>;
+        return $r0;
+    }
+
+    public java.lang.String getLastName()
+    {
+        spec.jbb.Customer this;
+        java.lang.String $r0;
+        long tid_getLastName;
+        java.lang.Thread thread_getLastName;
+
+        this := @this: spec.jbb.Customer;
+        thread_getLastName = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getLastName = virtualinvoke thread_getLastName.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 93, tid_getLastName, "spec.jbb.Customer", 109, $r0);
+        $r0 = this.<spec.jbb.Customer: java.lang.String lastName>;
+        return $r0;
+    }
+
+    public spec.jbb.Address getAddress()
+    {
+        spec.jbb.Customer this;
+        spec.jbb.Address $r0;
+
+        this := @this: spec.jbb.Customer;
+        $r0 = this.<spec.jbb.Customer: spec.jbb.Address address>;
+        return $r0;
+    }
+
+    public java.math.BigDecimal getDiscountRate()
+    {
+        spec.jbb.Customer this;
+        java.math.BigDecimal $r0;
+        long tid_getDiscountRate;
+        java.lang.Thread thread_getDiscountRate;
+
+        this := @this: spec.jbb.Customer;
+        thread_getDiscountRate = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getDiscountRate = virtualinvoke thread_getDiscountRate.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 95, tid_getDiscountRate, "spec.jbb.Customer", 117, $r0);
+        $r0 = this.<spec.jbb.Customer: java.math.BigDecimal discount>;
+        return $r0;
+    }
+
+    public java.lang.String getCreditStatus()
+    {
+        spec.jbb.Customer this;
+        java.lang.String result;
+        char $c0;
+        long tid_getCreditStatus;
+        java.lang.Thread thread_getCreditStatus;
+
+        this := @this: spec.jbb.Customer;
+        thread_getCreditStatus = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getCreditStatus = virtualinvoke thread_getCreditStatus.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,char)>(this, 96, tid_getCreditStatus, "spec.jbb.Customer", 122, $c0);
+        $c0 = this.<spec.jbb.Customer: char credit1>;
+        if $c0 != 71 goto label0;
+
+        result = "GC";
+        goto label1;
+
+     label0:
+        result = "BC";
+
+     label1:
+        return result;
+    }
+
+    public short getWarehouseId()
+    {
+        spec.jbb.Customer this;
+        short $s0;
+        long tid_getWarehouseId;
+        java.lang.Thread thread_getWarehouseId;
+
+        this := @this: spec.jbb.Customer;
+        thread_getWarehouseId = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getWarehouseId = virtualinvoke thread_getWarehouseId.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 90, tid_getWarehouseId, "spec.jbb.Customer", 130, $s0);
+        $s0 = this.<spec.jbb.Customer: short warehouseId>;
+        return $s0;
+    }
+
+    public byte getDistrictId()
+    {
+        spec.jbb.Customer this;
+        byte $b0;
+        long tid_getDistrictId;
+        java.lang.Thread thread_getDistrictId;
+
+        this := @this: spec.jbb.Customer;
+        thread_getDistrictId = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getDistrictId = virtualinvoke thread_getDistrictId.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 89, tid_getDistrictId, "spec.jbb.Customer", 134, $b0);
+        $b0 = this.<spec.jbb.Customer: byte districtId>;
+        return $b0;
+    }
+
+    public java.math.BigDecimal getBalance()
+    {
+        spec.jbb.Customer this;
+        java.math.BigDecimal temp;
+        long tid_getBalance;
+        java.lang.Thread thread_getBalance;
+
+        this := @this: spec.jbb.Customer;
+        thread_getBalance = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getBalance = virtualinvoke thread_getBalance.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 97, tid_getBalance, "spec.jbb.Customer", 138, temp);
+        temp = this.<spec.jbb.Customer: java.math.BigDecimal balance>;
+        return temp;
+    }
+
+    public java.math.BigDecimal getCreditLimit()
+    {
+        spec.jbb.Customer this;
+        java.math.BigDecimal $r0;
+        long tid_getCreditLimit;
+        java.lang.Thread thread_getCreditLimit;
+
+        this := @this: spec.jbb.Customer;
+        thread_getCreditLimit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getCreditLimit = virtualinvoke thread_getCreditLimit.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 98, tid_getCreditLimit, "spec.jbb.Customer", 143, $r0);
+        $r0 = this.<spec.jbb.Customer: java.math.BigDecimal creditLimit>;
+        return $r0;
+    }
+
+    public void adjustBalance(java.math.BigDecimal)
+    {
+        spec.jbb.Customer this;
+        java.math.BigDecimal amount, $r0;
+        long tid_adjustBalance;
+        java.lang.Thread thread_adjustBalance;
+
+        this := @this: spec.jbb.Customer;
+        amount := @parameter0: java.math.BigDecimal;
+        thread_adjustBalance = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_adjustBalance = virtualinvoke thread_adjustBalance.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 97, tid_adjustBalance, "spec.jbb.Customer", 147, $r0);
+        $r0 = this.<spec.jbb.Customer: java.math.BigDecimal balance>;
+        $r0 = virtualinvoke $r0.<java.math.BigDecimal: java.math.BigDecimal add(java.math.BigDecimal)>(amount);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 97, tid_adjustBalance, "spec.jbb.Customer", 147, $r0);
+        this.<spec.jbb.Customer: java.math.BigDecimal balance> = $r0;
+        return;
+    }
+
+    public void increaseYTD(java.math.BigDecimal)
+    {
+        spec.jbb.Customer this;
+        java.math.BigDecimal amount, $r0;
+        long tid_increaseYTD;
+        java.lang.Thread thread_increaseYTD;
+
+        this := @this: spec.jbb.Customer;
+        amount := @parameter0: java.math.BigDecimal;
+        thread_increaseYTD = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_increaseYTD = virtualinvoke thread_increaseYTD.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 99, tid_increaseYTD, "spec.jbb.Customer", 151, $r0);
+        $r0 = this.<spec.jbb.Customer: java.math.BigDecimal ytd>;
+        $r0 = virtualinvoke $r0.<java.math.BigDecimal: java.math.BigDecimal add(java.math.BigDecimal)>(amount);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 99, tid_increaseYTD, "spec.jbb.Customer", 151, $r0);
+        this.<spec.jbb.Customer: java.math.BigDecimal ytd> = $r0;
+        return;
+    }
+
+    public void incrementPaymentCount()
+    {
+        spec.jbb.Customer this;
+        short $s0;
+        int $i1;
+        long tid_incrementPaymentCount;
+        java.lang.Thread thread_incrementPaymentCount;
+
+        this := @this: spec.jbb.Customer;
+        thread_incrementPaymentCount = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_incrementPaymentCount = virtualinvoke thread_incrementPaymentCount.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 100, tid_incrementPaymentCount, "spec.jbb.Customer", 155, $s0);
+        $s0 = this.<spec.jbb.Customer: short paymentCount>;
+        $i1 = $s0 + 1;
+        $s0 = (short) $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 100, tid_incrementPaymentCount, "spec.jbb.Customer", 155, $s0);
+        this.<spec.jbb.Customer: short paymentCount> = $s0;
+        return;
+    }
+
+    public void incrementDeliveryCount()
+    {
+        spec.jbb.Customer this;
+        short $s0;
+        int $i1;
+        long tid_incrementDeliveryCount;
+        java.lang.Thread thread_incrementDeliveryCount;
+
+        this := @this: spec.jbb.Customer;
+        thread_incrementDeliveryCount = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_incrementDeliveryCount = virtualinvoke thread_incrementDeliveryCount.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 101, tid_incrementDeliveryCount, "spec.jbb.Customer", 159, $s0);
+        $s0 = this.<spec.jbb.Customer: short deliveryCount>;
+        $i1 = $s0 + 1;
+        $s0 = (short) $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 101, tid_incrementDeliveryCount, "spec.jbb.Customer", 159, $s0);
+        this.<spec.jbb.Customer: short deliveryCount> = $s0;
+        return;
+    }
+
+    public void updateCustomerData(java.lang.String)
+    {
+        spec.jbb.Customer this;
+        java.lang.String newData, oldData, shiftData, $r1, $r2, $r3, $r4;
+        java.lang.StringBuilder $r0;
+        int $i0, $i1, $i2, $i3;
+        long tid_updateCustomerData;
+        java.lang.Thread thread_updateCustomerData;
+
+        this := @this: spec.jbb.Customer;
+        newData := @parameter0: java.lang.String;
+        thread_updateCustomerData = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_updateCustomerData = virtualinvoke thread_updateCustomerData.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 102, tid_updateCustomerData, "spec.jbb.Customer", 165, oldData);
+        oldData = this.<spec.jbb.Customer: java.lang.String data>;
+        $i0 = virtualinvoke oldData.<java.lang.String: int length()>();
+        $i1 = virtualinvoke newData.<java.lang.String: int length()>();
+        $i0 = $i0 + $i1;
+        if $i0 > 500 goto label0;
+
+        $r1 = new java.lang.String;
+        $r0 = new java.lang.StringBuilder;
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(newData);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 102, tid_updateCustomerData, "spec.jbb.Customer", 167, $r3);
+        $r3 = this.<spec.jbb.Customer: java.lang.String data>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r4 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke $r1.<java.lang.String: void <init>(java.lang.String)>($r4);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 102, tid_updateCustomerData, "spec.jbb.Customer", 167, $r1);
+        this.<spec.jbb.Customer: java.lang.String data> = $r1;
+        goto label1;
+
+     label0:
+        $i2 = virtualinvoke newData.<java.lang.String: int length()>();
+        $i3 = 500 - $i2;
+        shiftData = virtualinvoke oldData.<java.lang.String: java.lang.String substring(int,int)>(0, $i3);
+        $r1 = new java.lang.String;
+        $r0 = new java.lang.StringBuilder;
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(newData);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r2);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(shiftData);
+        $r4 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke $r1.<java.lang.String: void <init>(java.lang.String)>($r4);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 102, tid_updateCustomerData, "spec.jbb.Customer", 171, $r1);
+        this.<spec.jbb.Customer: java.lang.String data> = $r1;
+
+     label1:
+        return;
+    }
+
+    public void setUsingRandom(short, short, byte)
+    {
+        spec.jbb.Customer this;
+        short inCustomerId, inWarehouseId, $s0, $s1, $s2, $s4;
+        byte inDistrictId;
+        float temp;
+        java.lang.String $r0;
+        char[] $r1;
+        spec.jbb.Address $r2;
+        int $i3;
+        java.math.BigDecimal $r3;
+        double $d0;
+        long tid_setUsingRandom;
+        java.lang.Thread thread_setUsingRandom;
+
+        this := @this: spec.jbb.Customer;
+        inCustomerId := @parameter0: short;
+        inWarehouseId := @parameter1: short;
+        inDistrictId := @parameter2: byte;
+        thread_setUsingRandom = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setUsingRandom = virtualinvoke thread_setUsingRandom.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 88, tid_setUsingRandom, "spec.jbb.Customer", 177, inCustomerId);
+        this.<spec.jbb.Customer: short customerId> = inCustomerId;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 89, tid_setUsingRandom, "spec.jbb.Customer", 178, inDistrictId);
+        this.<spec.jbb.Customer: byte districtId> = inDistrictId;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 90, tid_setUsingRandom, "spec.jbb.Customer", 179, inWarehouseId);
+        this.<spec.jbb.Customer: short warehouseId> = inWarehouseId;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 90, tid_setUsingRandom, "spec.jbb.Customer", 180, $s0);
+        $s0 = this.<spec.jbb.Customer: short warehouseId>;
+        $r0 = staticinvoke <spec.jbb.JBButil: java.lang.String create_random_last_name(int,short)>(inCustomerId, $s0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 93, tid_setUsingRandom, "spec.jbb.Customer", 180, $r0);
+        this.<spec.jbb.Customer: java.lang.String lastName> = $r0;
+        $r0 = new java.lang.String;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 90, tid_setUsingRandom, "spec.jbb.Customer", 182, $s1);
+        $s1 = this.<spec.jbb.Customer: short warehouseId>;
+        $r1 = staticinvoke <spec.jbb.JBButil: char[] create_random_a_string(int,int,short)>(8, 16, $s1);
+        specialinvoke $r0.<java.lang.String: void <init>(char[])>($r1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 91, tid_setUsingRandom, "spec.jbb.Customer", 181, $r0);
+        this.<spec.jbb.Customer: java.lang.String firstName> = $r0;
+        $r0 = new java.lang.String;
+        specialinvoke $r0.<java.lang.String: void <init>(java.lang.String)>("OE");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 92, tid_setUsingRandom, "spec.jbb.Customer", 183, $r0);
+        this.<spec.jbb.Customer: java.lang.String middleName> = $r0;
+        $r2 = this.<spec.jbb.Customer: spec.jbb.Address address>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 90, tid_setUsingRandom, "spec.jbb.Customer", 184, $s2);
+        $s2 = this.<spec.jbb.Customer: short warehouseId>;
+        virtualinvoke $r2.<spec.jbb.Address: void setUsingRandom(short)>($s2);
+        $r0 = new java.lang.String;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 90, tid_setUsingRandom, "spec.jbb.Customer", 185, $s1);
+        $s1 = this.<spec.jbb.Customer: short warehouseId>;
+        $r1 = staticinvoke <spec.jbb.JBButil: char[] create_random_n_string(int,int,short)>(16, 16, $s1);
+        specialinvoke $r0.<java.lang.String: void <init>(char[])>($r1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 103, tid_setUsingRandom, "spec.jbb.Customer", 185, $r0);
+        this.<spec.jbb.Customer: java.lang.String phone> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 90, tid_setUsingRandom, "spec.jbb.Customer", 186, $s0);
+        $s0 = this.<spec.jbb.Customer: short warehouseId>;
+        $i3 = staticinvoke <spec.jbb.JBButil: int random(int,int,short)>(1, 10, $s0);
+        if $i3 <= 1 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 96, tid_setUsingRandom, "spec.jbb.Customer", 187, 71);
+        this.<spec.jbb.Customer: char credit1> = 71;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 104, tid_setUsingRandom, "spec.jbb.Customer", 188, 67);
+        this.<spec.jbb.Customer: char credit2> = 67;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 96, tid_setUsingRandom, "spec.jbb.Customer", 191, 66);
+        this.<spec.jbb.Customer: char credit1> = 66;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 104, tid_setUsingRandom, "spec.jbb.Customer", 192, 67);
+        this.<spec.jbb.Customer: char credit2> = 67;
+
+     label1:
+        $r3 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long,int)>(5000000L, 2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 98, tid_setUsingRandom, "spec.jbb.Customer", 195, $r3);
+        this.<spec.jbb.Customer: java.math.BigDecimal creditLimit> = $r3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 90, tid_setUsingRandom, "spec.jbb.Customer", 197, $s4);
+        $s4 = this.<spec.jbb.Customer: short warehouseId>;
+        temp = staticinvoke <spec.jbb.JBButil: float create_random_float_val_return(float,float,float,short)>(0.0F, 0.5F, 1.0E-4F, $s4);
+        $r3 = new java.math.BigDecimal;
+        $d0 = (double) temp;
+        specialinvoke $r3.<java.math.BigDecimal: void <init>(double)>($d0);
+        $r3 = virtualinvoke $r3.<java.math.BigDecimal: java.math.BigDecimal setScale(int,int)>(4, 4);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 95, tid_setUsingRandom, "spec.jbb.Customer", 198, $r3);
+        this.<spec.jbb.Customer: java.math.BigDecimal discount> = $r3;
+        $r3 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long,int)>(-1000L, 2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 97, tid_setUsingRandom, "spec.jbb.Customer", 199, $r3);
+        this.<spec.jbb.Customer: java.math.BigDecimal balance> = $r3;
+        $r3 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long,int)>(1000L, 2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 99, tid_setUsingRandom, "spec.jbb.Customer", 200, $r3);
+        this.<spec.jbb.Customer: java.math.BigDecimal ytd> = $r3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 100, tid_setUsingRandom, "spec.jbb.Customer", 201, 1);
+        this.<spec.jbb.Customer: short paymentCount> = 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 101, tid_setUsingRandom, "spec.jbb.Customer", 202, 0);
+        this.<spec.jbb.Customer: short deliveryCount> = 0;
+        $r0 = new java.lang.String;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 90, tid_setUsingRandom, "spec.jbb.Customer", 203, $s1);
+        $s1 = this.<spec.jbb.Customer: short warehouseId>;
+        $r1 = staticinvoke <spec.jbb.JBButil: char[] create_random_a_string(int,int,short)>(300, 500, $s1);
+        specialinvoke $r0.<java.lang.String: void <init>(char[])>($r1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 102, tid_setUsingRandom, "spec.jbb.Customer", 203, $r0);
+        this.<spec.jbb.Customer: java.lang.String data> = $r0;
+        return;
+    }
+
+    public java.lang.String getPhone()
+    {
+        spec.jbb.Customer this;
+        java.lang.String $r0;
+        long tid_getPhone;
+        java.lang.Thread thread_getPhone;
+
+        this := @this: spec.jbb.Customer;
+        thread_getPhone = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getPhone = virtualinvoke thread_getPhone.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 103, tid_getPhone, "spec.jbb.Customer", 207, $r0);
+        $r0 = this.<spec.jbb.Customer: java.lang.String phone>;
+        return $r0;
+    }
+
+    public java.util.Date getSince()
+    {
+        spec.jbb.Customer this;
+        java.util.Date $r0;
+
+        this := @this: spec.jbb.Customer;
+        $r0 = this.<spec.jbb.Customer: java.util.Date since>;
+        return $r0;
+    }
+
+    public java.lang.String getCustomerDataParts()
+    {
+        spec.jbb.Customer this;
+        java.lang.String temp;
+        long tid_getCustomerDataParts;
+        java.lang.Thread thread_getCustomerDataParts;
+
+        this := @this: spec.jbb.Customer;
+        thread_getCustomerDataParts = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getCustomerDataParts = virtualinvoke thread_getCustomerDataParts.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 102, tid_getCustomerDataParts, "spec.jbb.Customer", 215, temp);
+        temp = this.<spec.jbb.Customer: java.lang.String data>;
+        return temp;
+    }
+}

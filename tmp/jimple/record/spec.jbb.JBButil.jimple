@@ -1,0 +1,1002 @@
+public class spec.jbb.JBButil extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+    private static final java.lang.String originalText;
+    private static java.util.Random r;
+    private static final java.lang.String[] last_name_parts;
+    private static final char[] alnum;
+    public static final short A_C_LAST;
+    public static final short C_C_LAST;
+    public static final short A_C_ID;
+    public static final short C_C_ID;
+    public static final short A_OL_I_ID;
+    public static final short C_OL_I_ID;
+    public static final byte MaxOrderLines;
+    private static java.util.Random[] warehouse_random_stream;
+    private static java.util.logging.Logger appLog;
+
+    static void <clinit>()
+    {
+        java.lang.String[] $r0;
+        java.lang.String $r1;
+        char[] $r2;
+
+        $r0 = newarray (java.lang.String)[10];
+        $r0[0] = "BAR";
+        $r0[1] = "OUGHT";
+        $r0[2] = "ABLE";
+        $r0[3] = "PRI";
+        $r0[4] = "PRES";
+        $r0[5] = "ESE";
+        $r0[6] = "ANTI";
+        $r0[7] = "CALLY";
+        $r0[8] = "ATION";
+        $r0[9] = "EING";
+        <spec.jbb.JBButil: java.lang.String[] last_name_parts> = $r0;
+        $r1 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $r2 = virtualinvoke $r1.<java.lang.String: char[] toCharArray()>();
+        <spec.jbb.JBButil: char[] alnum> = $r2;
+        return;
+    }
+
+    public void <init>()
+    {
+        spec.jbb.JBButil this;
+
+        this := @this: spec.jbb.JBButil;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public static long currentFreeMem()
+    {
+        long result;
+        java.lang.Runtime $r0;
+
+        nop;
+        result = 0L;
+        $r0 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+        result = virtualinvoke $r0.<java.lang.Runtime: long freeMemory()>();
+        return result;
+    }
+
+    public static long currentTotalMem()
+    {
+        long result;
+        java.lang.Runtime $r0;
+
+        nop;
+        result = 0L;
+        $r0 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+        result = virtualinvoke $r0.<java.lang.Runtime: long totalMemory()>();
+        return result;
+    }
+
+    public static long currentUsedMem()
+    {
+        long result, $l0;
+        java.lang.Runtime $r0, $r1;
+
+        nop;
+        result = 0L;
+        $r1 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+        result = virtualinvoke $r1.<java.lang.Runtime: long totalMemory()>();
+        $r0 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+        $l0 = virtualinvoke $r0.<java.lang.Runtime: long freeMemory()>();
+        result = result - $l0;
+        return result;
+    }
+
+    public static void random_init(int)
+    {
+        int num_warehouse_streams;
+        java.util.Random $r0;
+        long $l0, tid_random_init;
+        java.util.Random[] $r1;
+        java.lang.Thread thread_random_init;
+
+        num_warehouse_streams := @parameter0: int;
+        thread_random_init = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_random_init = virtualinvoke thread_random_init.<java.lang.Thread: long getId()>();
+        $r0 = new java.util.Random;
+        specialinvoke $r0.<java.util.Random: void <init>(long)>(0L);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(81, tid_random_init, "spec.jbbspec.jbb.JBButil", 96, $r0);
+        <spec.jbb.JBButil: java.util.Random r> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(81, tid_random_init, "spec.jbbspec.jbb.JBButil", 97, $r0);
+        $r0 = <spec.jbb.JBButil: java.util.Random r>;
+        $l0 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+        virtualinvoke $r0.<java.util.Random: void setSeed(long)>($l0);
+        $r1 = newarray (java.util.Random)[num_warehouse_streams];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(82, tid_random_init, "spec.jbbspec.jbb.JBButil", 99, $r1);
+        <spec.jbb.JBButil: java.util.Random[] warehouse_random_stream> = $r1;
+        return;
+    }
+
+    public static void set_random_seed(long)
+    {
+        long seed, tid_set_random_seed;
+        java.util.Random $r0;
+        java.lang.Thread thread_set_random_seed;
+
+        seed := @parameter0: long;
+        thread_set_random_seed = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_set_random_seed = virtualinvoke thread_set_random_seed.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(81, tid_set_random_seed, "spec.jbbspec.jbb.JBButil", 103, $r0);
+        $r0 = <spec.jbb.JBButil: java.util.Random r>;
+        virtualinvoke $r0.<java.util.Random: void setSeed(long)>(seed);
+        return;
+    }
+
+    public static java.util.Random derived_random_init(short)
+    {
+        short warehouseId;
+        java.util.Random $r0, r1, $r1;
+        int $i0;
+        long $l1, $l2, tid_derived_random_init;
+        java.lang.Thread thread_derived_random_init;
+
+        warehouseId := @parameter0: short;
+        thread_derived_random_init = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_derived_random_init = virtualinvoke thread_derived_random_init.<java.lang.Thread: long getId()>();
+        $r0 = new java.util.Random;
+        specialinvoke $r0.<java.util.Random: void <init>(long)>(0L);
+        r1 = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(81, tid_derived_random_init, "spec.jbbspec.jbb.JBButil", 110, $r1);
+        $r1 = <spec.jbb.JBButil: java.util.Random r>;
+        $i0 = virtualinvoke $r1.<java.util.Random: int nextInt()>();
+        $i0 = $i0 & 2147483647;
+        $l1 = (long) $i0;
+        $l2 = (long) warehouseId;
+        $l1 = $l1 * $l2;
+        virtualinvoke r1.<java.util.Random: void setSeed(long)>($l1);
+        return r1;
+    }
+
+    public static void register_warehouse_Random_stream(short, java.util.Random)
+    {
+        short warehouseId;
+        java.util.Random per_wh_r, $r1;
+        java.util.Random[] $r0;
+        java.io.PrintStream $r2;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r4;
+        long tid_register_warehouse_Random_stream;
+        java.lang.Thread thread_register_warehouse_Random_stream;
+
+        warehouseId := @parameter0: short;
+        per_wh_r := @parameter1: java.util.Random;
+        thread_register_warehouse_Random_stream = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_register_warehouse_Random_stream = virtualinvoke thread_register_warehouse_Random_stream.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(82, tid_register_warehouse_Random_stream, "spec.jbbspec.jbb.JBButil", 117, $r0);
+        $r0 = <spec.jbb.JBButil: java.util.Random[] warehouse_random_stream>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 83, tid_register_warehouse_Random_stream, "spec.jbb.JBButil", 117, warehouseId, $r1);
+        $r1 = $r0[warehouseId];
+        if $r1 == null goto label0;
+
+        $r2 = <java.lang.System: java.io.PrintStream out>;
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>("Warning:  reregistering Random stream for warehouse ");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(warehouseId);
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<java.io.PrintStream: void println(java.lang.String)>($r4);
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(82, tid_register_warehouse_Random_stream, "spec.jbbspec.jbb.JBButil", 122, $r0);
+        $r0 = <spec.jbb.JBButil: java.util.Random[] warehouse_random_stream>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 83, tid_register_warehouse_Random_stream, "spec.jbb.JBButil", 122, warehouseId, per_wh_r);
+        $r0[warehouseId] = per_wh_r;
+        return;
+    }
+
+    public static int random(int, int)
+    {
+        int low, high, $i0, $i1;
+        java.util.Random $r0;
+        long tid_random;
+        java.lang.Thread thread_random;
+
+        low := @parameter0: int;
+        high := @parameter1: int;
+        thread_random = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_random = virtualinvoke thread_random.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(81, tid_random, "spec.jbbspec.jbb.JBButil", 126, $r0);
+        $r0 = <spec.jbb.JBButil: java.util.Random r>;
+        $i0 = virtualinvoke $r0.<java.util.Random: int nextInt()>();
+        $i0 = $i0 & 2147483647;
+        $i1 = high - low;
+        $i1 = $i1 + 1;
+        $i0 = $i0 % $i1;
+        $i0 = $i0 + low;
+        return $i0;
+    }
+
+    public static int random(int, int, java.util.Random)
+    {
+        int low, high, $i0, $i1;
+        java.util.Random r;
+
+        low := @parameter0: int;
+        high := @parameter1: int;
+        r := @parameter2: java.util.Random;
+        $i0 = virtualinvoke r.<java.util.Random: int nextInt()>();
+        $i0 = $i0 & 2147483647;
+        $i1 = high - low;
+        $i1 = $i1 + 1;
+        $i0 = $i0 % $i1;
+        $i0 = $i0 + low;
+        return $i0;
+    }
+
+    public static int random(int, int, short)
+    {
+        int low, high, $i0, $i1;
+        short warehouseId;
+        java.util.Random[] $r0;
+        java.util.Random r;
+        long tid_random;
+        java.lang.Thread thread_random;
+
+        low := @parameter0: int;
+        high := @parameter1: int;
+        warehouseId := @parameter2: short;
+        thread_random = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_random = virtualinvoke thread_random.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(82, tid_random, "spec.jbbspec.jbb.JBButil", 136, $r0);
+        $r0 = <spec.jbb.JBButil: java.util.Random[] warehouse_random_stream>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 83, tid_random, "spec.jbb.JBButil", 136, warehouseId, r);
+        r = $r0[warehouseId];
+        $i0 = virtualinvoke r.<java.util.Random: int nextInt()>();
+        $i0 = $i0 & 2147483647;
+        $i1 = high - low;
+        $i1 = $i1 + 1;
+        $i0 = $i0 % $i1;
+        $i0 = $i0 + low;
+        return $i0;
+    }
+
+    public static char[] create_random_a_string(int, int)
+    {
+        int length_lo, length_hi, actual_length, i, aRandInt;
+        char[] temp, $r0;
+        char $c0;
+        long tid_create_random_a_string;
+        java.lang.Thread thread_create_random_a_string;
+
+        length_lo := @parameter0: int;
+        length_hi := @parameter1: int;
+        thread_create_random_a_string = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_create_random_a_string = virtualinvoke thread_create_random_a_string.<java.lang.Thread: long getId()>();
+        actual_length = staticinvoke <spec.jbb.JBButil: int random(int,int)>(length_lo, length_hi);
+        temp = newarray (char)[actual_length];
+        i = 0;
+        goto label2;
+
+     label0:
+        aRandInt = staticinvoke <spec.jbb.JBButil: int random(int,int)>(0, 61);
+        if aRandInt <= 61 goto label1;
+
+        aRandInt = 61;
+
+     label1:
+        $r0 = <spec.jbb.JBButil: char[] alnum>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>($r0, 84, tid_create_random_a_string, "spec.jbb.JBButil", 148, aRandInt, $c0);
+        $c0 = $r0[aRandInt];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(temp, 84, tid_create_random_a_string, "spec.jbb.JBButil", 148, i, $c0);
+        temp[i] = $c0;
+        i = i + 1;
+
+     label2:
+        if i < actual_length goto label0;
+
+        return temp;
+    }
+
+    public static char[] create_random_a_string(int, int, java.util.Random)
+    {
+        int length_lo, length_hi, actual_length, i, aRandInt;
+        java.util.Random r;
+        char[] temp, $r0;
+        char $c0;
+        long tid_create_random_a_string;
+        java.lang.Thread thread_create_random_a_string;
+
+        length_lo := @parameter0: int;
+        length_hi := @parameter1: int;
+        r := @parameter2: java.util.Random;
+        thread_create_random_a_string = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_create_random_a_string = virtualinvoke thread_create_random_a_string.<java.lang.Thread: long getId()>();
+        actual_length = staticinvoke <spec.jbb.JBButil: int random(int,int,java.util.Random)>(length_lo, length_hi, r);
+        temp = newarray (char)[actual_length];
+        i = 0;
+        goto label2;
+
+     label0:
+        aRandInt = staticinvoke <spec.jbb.JBButil: int random(int,int,java.util.Random)>(0, 61, r);
+        if aRandInt <= 61 goto label1;
+
+        aRandInt = 61;
+
+     label1:
+        $r0 = <spec.jbb.JBButil: char[] alnum>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>($r0, 84, tid_create_random_a_string, "spec.jbb.JBButil", 163, aRandInt, $c0);
+        $c0 = $r0[aRandInt];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(temp, 84, tid_create_random_a_string, "spec.jbb.JBButil", 163, i, $c0);
+        temp[i] = $c0;
+        i = i + 1;
+
+     label2:
+        if i < actual_length goto label0;
+
+        return temp;
+    }
+
+    public static char[] create_random_a_string(int, int, short)
+    {
+        int length_lo, length_hi, actual_length, i, aRandInt;
+        short warehouseId;
+        java.util.Random[] $r0;
+        java.util.Random r;
+        char[] temp, $r1;
+        char $c0;
+        long tid_create_random_a_string;
+        java.lang.Thread thread_create_random_a_string;
+
+        length_lo := @parameter0: int;
+        length_hi := @parameter1: int;
+        warehouseId := @parameter2: short;
+        thread_create_random_a_string = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_create_random_a_string = virtualinvoke thread_create_random_a_string.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(82, tid_create_random_a_string, "spec.jbbspec.jbb.JBButil", 172, $r0);
+        $r0 = <spec.jbb.JBButil: java.util.Random[] warehouse_random_stream>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 83, tid_create_random_a_string, "spec.jbb.JBButil", 172, warehouseId, r);
+        r = $r0[warehouseId];
+        actual_length = staticinvoke <spec.jbb.JBButil: int random(int,int,java.util.Random)>(length_lo, length_hi, r);
+        temp = newarray (char)[actual_length];
+        i = 0;
+        goto label2;
+
+     label0:
+        aRandInt = staticinvoke <spec.jbb.JBButil: int random(int,int,java.util.Random)>(0, 61, r);
+        if aRandInt <= 61 goto label1;
+
+        aRandInt = 61;
+
+     label1:
+        $r1 = <spec.jbb.JBButil: char[] alnum>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>($r1, 84, tid_create_random_a_string, "spec.jbb.JBButil", 179, aRandInt, $c0);
+        $c0 = $r1[aRandInt];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(temp, 84, tid_create_random_a_string, "spec.jbb.JBButil", 179, i, $c0);
+        temp[i] = $c0;
+        i = i + 1;
+
+     label2:
+        if i < actual_length goto label0;
+
+        return temp;
+    }
+
+    public static char[] create_random_n_string(int, int)
+    {
+        int length_lo, length_hi, actual_length, i, $i0;
+        char[] temp;
+        char $c1;
+        long tid_create_random_n_string;
+        java.lang.Thread thread_create_random_n_string;
+
+        length_lo := @parameter0: int;
+        length_hi := @parameter1: int;
+        thread_create_random_n_string = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_create_random_n_string = virtualinvoke thread_create_random_n_string.<java.lang.Thread: long getId()>();
+        actual_length = staticinvoke <spec.jbb.JBButil: int random(int,int)>(length_lo, length_hi);
+        temp = newarray (char)[actual_length];
+        i = 0;
+        goto label1;
+
+     label0:
+        $i0 = staticinvoke <spec.jbb.JBButil: int random(int,int)>(48, 57);
+        $c1 = (char) $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(temp, 84, tid_create_random_n_string, "spec.jbb.JBButil", 189, i, $c1);
+        temp[i] = $c1;
+        i = i + 1;
+
+     label1:
+        if i < actual_length goto label0;
+
+        return temp;
+    }
+
+    public static char[] create_random_n_string(int, int, java.util.Random)
+    {
+        int length_lo, length_hi, actual_length, i, $i0;
+        java.util.Random r;
+        char[] temp;
+        char $c1;
+        long tid_create_random_n_string;
+        java.lang.Thread thread_create_random_n_string;
+
+        length_lo := @parameter0: int;
+        length_hi := @parameter1: int;
+        r := @parameter2: java.util.Random;
+        thread_create_random_n_string = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_create_random_n_string = virtualinvoke thread_create_random_n_string.<java.lang.Thread: long getId()>();
+        actual_length = staticinvoke <spec.jbb.JBButil: int random(int,int,java.util.Random)>(length_lo, length_hi, r);
+        temp = newarray (char)[actual_length];
+        i = 0;
+        goto label1;
+
+     label0:
+        $i0 = staticinvoke <spec.jbb.JBButil: int random(int,int,java.util.Random)>(48, 57, r);
+        $c1 = (char) $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(temp, 84, tid_create_random_n_string, "spec.jbb.JBButil", 201, i, $c1);
+        temp[i] = $c1;
+        i = i + 1;
+
+     label1:
+        if i < actual_length goto label0;
+
+        return temp;
+    }
+
+    public static char[] create_random_n_string(int, int, short)
+    {
+        int length_lo, length_hi, actual_length, i, $i0;
+        short warehouseId;
+        java.util.Random[] $r0;
+        java.util.Random r;
+        char[] temp;
+        char $c1;
+        long tid_create_random_n_string;
+        java.lang.Thread thread_create_random_n_string;
+
+        length_lo := @parameter0: int;
+        length_hi := @parameter1: int;
+        warehouseId := @parameter2: short;
+        thread_create_random_n_string = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_create_random_n_string = virtualinvoke thread_create_random_n_string.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(82, tid_create_random_n_string, "spec.jbbspec.jbb.JBButil", 210, $r0);
+        $r0 = <spec.jbb.JBButil: java.util.Random[] warehouse_random_stream>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 83, tid_create_random_n_string, "spec.jbb.JBButil", 210, warehouseId, r);
+        r = $r0[warehouseId];
+        actual_length = staticinvoke <spec.jbb.JBButil: int random(int,int,java.util.Random)>(length_lo, length_hi, r);
+        temp = newarray (char)[actual_length];
+        i = 0;
+        goto label1;
+
+     label0:
+        $i0 = staticinvoke <spec.jbb.JBButil: int random(int,int,java.util.Random)>(48, 57, r);
+        $c1 = (char) $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(temp, 84, tid_create_random_n_string, "spec.jbb.JBButil", 214, i, $c1);
+        temp[i] = $c1;
+        i = i + 1;
+
+     label1:
+        if i < actual_length goto label0;
+
+        return temp;
+    }
+
+    public static float create_random_float_val_return(float, float, float)
+    {
+        float val_lo, val_hi, precision, f, result, $f0, $f1;
+        java.util.Random $r0;
+        double $d0, $d1;
+        long tid_create_random_float_val_return;
+        java.lang.Thread thread_create_random_float_val_return;
+
+        val_lo := @parameter0: float;
+        val_hi := @parameter1: float;
+        precision := @parameter2: float;
+        thread_create_random_float_val_return = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_create_random_float_val_return = virtualinvoke thread_create_random_float_val_return.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(81, tid_create_random_float_val_return, "spec.jbbspec.jbb.JBButil", 222, $r0);
+        $r0 = <spec.jbb.JBButil: java.util.Random r>;
+        $f0 = virtualinvoke $r0.<java.util.Random: float nextFloat()>();
+        $f1 = val_hi - val_lo;
+        $f0 = $f0 * $f1;
+        f = $f0 + val_lo;
+        $d0 = (double) f;
+        $d1 = (double) precision;
+        $d0 = staticinvoke <java.lang.Math: double IEEEremainder(double,double)>($d0, $d1);
+        $f1 = (float) $d0;
+        result = f - $f1;
+        return result;
+    }
+
+    public static float create_random_float_val_return(float, float, float, java.util.Random)
+    {
+        float val_lo, val_hi, precision, f, result, $f0, $f1;
+        java.util.Random r;
+        double $d0, $d1;
+
+        val_lo := @parameter0: float;
+        val_hi := @parameter1: float;
+        precision := @parameter2: float;
+        r := @parameter3: java.util.Random;
+        $f0 = virtualinvoke r.<java.util.Random: float nextFloat()>();
+        $f1 = val_hi - val_lo;
+        $f0 = $f0 * $f1;
+        f = $f0 + val_lo;
+        $d0 = (double) f;
+        $d1 = (double) precision;
+        $d0 = staticinvoke <java.lang.Math: double IEEEremainder(double,double)>($d0, $d1);
+        $f1 = (float) $d0;
+        result = f - $f1;
+        return result;
+    }
+
+    public static float create_random_float_val_return(float, float, float, short)
+    {
+        float val_lo, val_hi, precision, f, result, $f0, $f1;
+        short warehouseId;
+        java.util.Random[] $r0;
+        java.util.Random r;
+        double $d0, $d1;
+        long tid_create_random_float_val_return;
+        java.lang.Thread thread_create_random_float_val_return;
+
+        val_lo := @parameter0: float;
+        val_hi := @parameter1: float;
+        precision := @parameter2: float;
+        warehouseId := @parameter3: short;
+        thread_create_random_float_val_return = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_create_random_float_val_return = virtualinvoke thread_create_random_float_val_return.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(82, tid_create_random_float_val_return, "spec.jbbspec.jbb.JBButil", 239, $r0);
+        $r0 = <spec.jbb.JBButil: java.util.Random[] warehouse_random_stream>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 83, tid_create_random_float_val_return, "spec.jbb.JBButil", 239, warehouseId, r);
+        r = $r0[warehouseId];
+        $f0 = virtualinvoke r.<java.util.Random: float nextFloat()>();
+        $f1 = val_hi - val_lo;
+        $f0 = $f0 * $f1;
+        f = $f0 + val_lo;
+        $d0 = (double) f;
+        $d1 = (double) precision;
+        $d0 = staticinvoke <java.lang.Math: double IEEEremainder(double,double)>($d0, $d1);
+        $f1 = (float) $d0;
+        result = f - $f1;
+        return result;
+    }
+
+    public static char[] create_a_string_with_original(int, int, float, java.lang.Integer)
+    {
+        int length_lo, length_hi, actual_length, i, start_pos, $i0, $i2, $i4;
+        float percent_to_set, $f0;
+        java.lang.Integer hit;
+        char[] temp;
+        long f, tid_create_a_string_with_original;
+        char $c1;
+        byte $b3;
+        java.lang.String $r0;
+        java.lang.Thread thread_create_a_string_with_original;
+
+        length_lo := @parameter0: int;
+        length_hi := @parameter1: int;
+        percent_to_set := @parameter2: float;
+        hit := @parameter3: java.lang.Integer;
+        thread_create_a_string_with_original = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_create_a_string_with_original = virtualinvoke thread_create_a_string_with_original.<java.lang.Thread: long getId()>();
+        actual_length = staticinvoke <spec.jbb.JBButil: int random(int,int)>(length_lo, length_hi);
+        temp = newarray (char)[actual_length];
+        i = 0;
+        goto label1;
+
+     label0:
+        $i0 = staticinvoke <spec.jbb.JBButil: int random(int,int)>(48, 57);
+        $c1 = (char) $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(temp, 84, tid_create_a_string_with_original, "spec.jbb.JBButil", 254, i, $c1);
+        temp[i] = $c1;
+        i = i + 1;
+
+     label1:
+        if i < actual_length goto label0;
+
+        $i2 = staticinvoke <spec.jbb.JBButil: int random(int,int)>(0, 100);
+        f = (long) $i2;
+        $f0 = (float) f;
+        $b3 = $f0 cmpg percent_to_set;
+        if $b3 >= 0 goto label2;
+
+        $i4 = lengthof temp;
+        $i4 = $i4 - 8;
+        start_pos = staticinvoke <spec.jbb.JBButil: int random(int,int)>(0, $i4);
+        $r0 = "ORIGINAL";
+        virtualinvoke $r0.<java.lang.String: void getChars(int,int,char[],int)>(0, 8, temp, start_pos);
+
+     label2:
+        return temp;
+    }
+
+    public static char[] create_a_string_with_original(int, int, float, java.lang.Integer, short)
+    {
+        int length_lo, length_hi, actual_length, i, start_pos, $i0, $i2, $i4;
+        float percent_to_set, $f0;
+        java.lang.Integer hit;
+        short warehouseId;
+        char[] temp;
+        long f, tid_create_a_string_with_original;
+        char $c1;
+        byte $b3;
+        java.lang.String $r0;
+        java.lang.Thread thread_create_a_string_with_original;
+
+        length_lo := @parameter0: int;
+        length_hi := @parameter1: int;
+        percent_to_set := @parameter2: float;
+        hit := @parameter3: java.lang.Integer;
+        warehouseId := @parameter4: short;
+        thread_create_a_string_with_original = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_create_a_string_with_original = virtualinvoke thread_create_a_string_with_original.<java.lang.Thread: long getId()>();
+        actual_length = staticinvoke <spec.jbb.JBButil: int random(int,int,short)>(length_lo, length_hi, warehouseId);
+        temp = newarray (char)[actual_length];
+        i = 0;
+        goto label1;
+
+     label0:
+        $i0 = staticinvoke <spec.jbb.JBButil: int random(int,int,short)>(48, 57, warehouseId);
+        $c1 = (char) $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(temp, 84, tid_create_a_string_with_original, "spec.jbb.JBButil", 274, i, $c1);
+        temp[i] = $c1;
+        i = i + 1;
+
+     label1:
+        if i < actual_length goto label0;
+
+        $i2 = staticinvoke <spec.jbb.JBButil: int random(int,int,short)>(0, 100, warehouseId);
+        f = (long) $i2;
+        $f0 = (float) f;
+        $b3 = $f0 cmpg percent_to_set;
+        if $b3 >= 0 goto label2;
+
+        $i4 = lengthof temp;
+        $i4 = $i4 - 8;
+        start_pos = staticinvoke <spec.jbb.JBButil: int random(int,int,short)>(0, $i4, warehouseId);
+        $r0 = "ORIGINAL";
+        virtualinvoke $r0.<java.lang.String: void getChars(int,int,char[],int)>(0, 8, temp, start_pos);
+
+     label2:
+        return temp;
+    }
+
+    public static java.lang.String choose_random_last_name(int, short)
+    {
+        int maxCustomers;
+        short warehouseId, customerID;
+        java.lang.String temp;
+
+        maxCustomers := @parameter0: int;
+        warehouseId := @parameter1: short;
+        customerID = staticinvoke <spec.jbb.JBButil: short create_random_customer_id(int,short)>(maxCustomers, warehouseId);
+        temp = staticinvoke <spec.jbb.JBButil: java.lang.String create_random_last_name(int,short)>(customerID, warehouseId);
+        return temp;
+    }
+
+    public static short create_random_customer_id(int, short)
+    {
+        int maxCustomers, a_c_id, c_c_id, $i0;
+        short warehouseId, customerID;
+
+        maxCustomers := @parameter0: int;
+        warehouseId := @parameter1: short;
+        $i0 = 102 * maxCustomers;
+        a_c_id = $i0 / 3000;
+        $i0 = 34 * maxCustomers;
+        c_c_id = $i0 / 3000;
+        $i0 = staticinvoke <spec.jbb.JBButil: int NUrand_val(int,int,int,int,short)>(a_c_id, 1, maxCustomers, c_c_id, warehouseId);
+        customerID = (short) $i0;
+        return customerID;
+    }
+
+    public static int create_random_item_id(int, short)
+    {
+        int maxItems, a_ol_i_id, c_ol_i_id, itemID, $i0;
+        short warehouseId;
+        boolean $z0;
+        long tid_create_random_item_id;
+        java.lang.Thread thread_create_random_item_id;
+
+        maxItems := @parameter0: int;
+        warehouseId := @parameter1: short;
+        thread_create_random_item_id = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_create_random_item_id = virtualinvoke thread_create_random_item_id.<java.lang.Thread: long getId()>();
+        $i0 = 8191 * maxItems;
+        a_ol_i_id = $i0 / 100000;
+        $i0 = 5456 * maxItems;
+        c_ol_i_id = $i0 / 100000;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(25, tid_create_random_item_id, "spec.jbbspec.jbb.JBButil", 305, $z0);
+        $z0 = <spec.jbb.JBBmain: boolean uniformRandomItems>;
+        if $z0 == 0 goto label0;
+
+        itemID = staticinvoke <spec.jbb.JBButil: int random(int,int,short)>(1, maxItems, warehouseId);
+        goto label1;
+
+     label0:
+        itemID = staticinvoke <spec.jbb.JBButil: int NUrand_val(int,int,int,int,short)>(a_ol_i_id, 1, maxItems, c_ol_i_id, warehouseId);
+
+     label1:
+        return itemID;
+    }
+
+    public static java.lang.String create_random_last_name(int, short)
+    {
+        int cust_num, random_num, $i0, $i1;
+        short warehouseId;
+        java.util.Random[] $r0;
+        java.lang.String temp, $r4, $r6;
+        java.util.Random $r1;
+        java.lang.String[] $r2, $r5;
+        java.lang.StringBuilder $r3;
+        long tid_create_random_last_name;
+        java.lang.Thread thread_create_random_last_name;
+
+        cust_num := @parameter0: int;
+        warehouseId := @parameter1: short;
+        thread_create_random_last_name = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_create_random_last_name = virtualinvoke thread_create_random_last_name.<java.lang.Thread: long getId()>();
+        if cust_num == 0 goto label0;
+
+        if cust_num <= 1000 goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(82, tid_create_random_last_name, "spec.jbbspec.jbb.JBButil", 321, $r0);
+        $r0 = <spec.jbb.JBButil: java.util.Random[] warehouse_random_stream>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 83, tid_create_random_last_name, "spec.jbb.JBButil", 321, warehouseId, $r1);
+        $r1 = $r0[warehouseId];
+        random_num = staticinvoke <spec.jbb.JBButil: int NUrand_val(int,int,int,int,java.util.Random)>(255, 0, 999, 173, $r1);
+        goto label2;
+
+     label1:
+        random_num = cust_num - 1;
+
+     label2:
+        $r2 = <spec.jbb.JBButil: java.lang.String[] last_name_parts>;
+        $i0 = random_num / 100;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r2, 23, tid_create_random_last_name, "spec.jbb.JBButil", 326, $i0, temp);
+        temp = $r2[$i0];
+        random_num = random_num % 100;
+        $r3 = new java.lang.StringBuilder;
+        $r4 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(temp);
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>($r4);
+        $r5 = <spec.jbb.JBButil: java.lang.String[] last_name_parts>;
+        $i1 = random_num / 10;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r5, 23, tid_create_random_last_name, "spec.jbb.JBButil", 328, $i1, $r6);
+        $r6 = $r5[$i1];
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+        temp = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        random_num = random_num % 10;
+        $r3 = new java.lang.StringBuilder;
+        $r4 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(temp);
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>($r4);
+        $r5 = <spec.jbb.JBButil: java.lang.String[] last_name_parts>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r5, 23, tid_create_random_last_name, "spec.jbb.JBButil", 330, random_num, $r6);
+        $r6 = $r5[random_num];
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+        temp = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        return temp;
+    }
+
+    public static int NUrand_val(int, int, int, int, java.util.Random)
+    {
+        int A, x, y, C, $i0, $i1;
+        java.util.Random r;
+
+        A := @parameter0: int;
+        x := @parameter1: int;
+        y := @parameter2: int;
+        C := @parameter3: int;
+        r := @parameter4: java.util.Random;
+        $i0 = staticinvoke <spec.jbb.JBButil: int random(int,int,java.util.Random)>(0, A, r);
+        $i1 = staticinvoke <spec.jbb.JBButil: int random(int,int,java.util.Random)>(x, y, r);
+        $i0 = $i0 | $i1;
+        $i0 = $i0 + C;
+        $i1 = y - x;
+        $i1 = $i1 + 1;
+        $i0 = $i0 % $i1;
+        $i0 = $i0 + x;
+        return $i0;
+    }
+
+    public static int NUrand_val(int, int, int, int, short)
+    {
+        int A, x, y, C, $i0, $i1;
+        short warehouseId;
+        java.util.Random[] $r0;
+        java.util.Random r;
+        long tid_NUrand_val;
+        java.lang.Thread thread_NUrand_val;
+
+        A := @parameter0: int;
+        x := @parameter1: int;
+        y := @parameter2: int;
+        C := @parameter3: int;
+        warehouseId := @parameter4: short;
+        thread_NUrand_val = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_NUrand_val = virtualinvoke thread_NUrand_val.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(82, tid_NUrand_val, "spec.jbbspec.jbb.JBButil", 341, $r0);
+        $r0 = <spec.jbb.JBButil: java.util.Random[] warehouse_random_stream>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 83, tid_NUrand_val, "spec.jbb.JBButil", 341, warehouseId, r);
+        r = $r0[warehouseId];
+        $i0 = staticinvoke <spec.jbb.JBButil: int random(int,int,java.util.Random)>(0, A, r);
+        $i1 = staticinvoke <spec.jbb.JBButil: int random(int,int,java.util.Random)>(x, y, r);
+        $i0 = $i0 | $i1;
+        $i0 = $i0 + C;
+        $i1 = y - x;
+        $i1 = $i1 + 1;
+        $i0 = $i0 % $i1;
+        $i0 = $i0 + x;
+        return $i0;
+    }
+
+    public static void milliSecondsToSleep(long)
+    {
+        long mills;
+        java.lang.InterruptedException e, $r1;
+        java.util.logging.Level $r0;
+        java.util.logging.Logger $r2;
+
+        mills := @parameter0: long;
+
+     label0:
+        staticinvoke <java.lang.Thread: void sleep(long)>(mills);
+
+     label1:
+        goto label3;
+
+     label2:
+        $r1 := @caughtexception;
+        e = $r1;
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r0 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        virtualinvoke $r2.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r0, "  --> Exception: SLEEP INTERRUPTED!", e);
+
+     label3:
+        return;
+
+        catch java.lang.InterruptedException from label0 to label1 with label2;
+    }
+
+    public static void SecondsToSleep(long)
+    {
+        long seconds, mills;
+        java.lang.InterruptedException e, $r1;
+        java.util.logging.Level $r0;
+        java.util.logging.Logger $r2;
+
+        seconds := @parameter0: long;
+        mills = seconds * 1000L;
+
+     label0:
+        staticinvoke <java.lang.Thread: void sleep(long)>(mills);
+
+     label1:
+        goto label3;
+
+     label2:
+        $r1 := @caughtexception;
+        e = $r1;
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r0 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        virtualinvoke $r2.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r0, "  --> Exception: SLEEP INTERRUPTED!", e);
+
+     label3:
+        return;
+
+        catch java.lang.InterruptedException from label0 to label1 with label2;
+    }
+
+    public static void SecondsToSleep(double)
+    {
+        double seconds, $d0;
+        long mills;
+        java.lang.InterruptedException e, $r1;
+        java.util.logging.Level $r0;
+        java.util.logging.Logger $r2;
+
+        seconds := @parameter0: double;
+        $d0 = seconds * 1000.0;
+        mills = (long) $d0;
+
+     label0:
+        staticinvoke <java.lang.Thread: void sleep(long)>(mills);
+
+     label1:
+        goto label3;
+
+     label2:
+        $r1 := @caughtexception;
+        e = $r1;
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r0 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        virtualinvoke $r2.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r0, "  --> Exception: SLEEP INTERRUPTED!", e);
+
+     label3:
+        return;
+
+        catch java.lang.InterruptedException from label0 to label1 with label2;
+    }
+
+    public static double negativeExpDistribution(double, short)
+    {
+        double mean, rf, meanX10, t, $d0;
+        short warehouseId;
+        java.util.Random[] $r0;
+        java.util.Random r;
+        float $f0;
+        byte $b0;
+        long tid_negativeExpDistribution;
+        java.lang.Thread thread_negativeExpDistribution;
+
+        mean := @parameter0: double;
+        warehouseId := @parameter1: short;
+        thread_negativeExpDistribution = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_negativeExpDistribution = virtualinvoke thread_negativeExpDistribution.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(82, tid_negativeExpDistribution, "spec.jbbspec.jbb.JBButil", 381, $r0);
+        $r0 = <spec.jbb.JBButil: java.util.Random[] warehouse_random_stream>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 83, tid_negativeExpDistribution, "spec.jbb.JBButil", 381, warehouseId, r);
+        r = $r0[warehouseId];
+        $f0 = virtualinvoke r.<java.util.Random: float nextFloat()>();
+        rf = (double) $f0;
+        meanX10 = mean * 10.0;
+        $d0 = staticinvoke <java.lang.Math: double log(double)>(rf);
+        $d0 = neg $d0;
+        t = $d0 * mean;
+        $b0 = t cmpl meanX10;
+        if $b0 <= 0 goto label0;
+
+        t = meanX10;
+
+     label0:
+        return t;
+    }
+
+    public static java.util.logging.Logger getLog()
+    {
+        java.util.logging.Logger $r0;
+        long tid_getLog;
+        java.lang.Thread thread_getLog;
+
+        thread_getLog = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getLog = virtualinvoke thread_getLog.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(85, tid_getLog, "spec.jbbspec.jbb.JBButil", 393, $r0);
+        $r0 = <spec.jbb.JBButil: java.util.logging.Logger appLog>;
+        return $r0;
+    }
+
+    public static void setLog(java.util.logging.Logger)
+    {
+        java.util.logging.Logger appLog;
+        java.lang.Class locallocksetLog;
+        java.lang.Throwable throwableLocal5;
+        long tid_setLog;
+        java.lang.Thread thread_setLog;
+
+        appLog := @parameter0: java.util.logging.Logger;
+        thread_setLog = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setLog = virtualinvoke thread_setLog.<java.lang.Thread: long getId()>();
+        locallocksetLog = class "spec/jbb/JBButil";
+
+     label0:
+        entermonitor locallocksetLog;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(locallocksetLog, 1, tid_setLog);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(85, tid_setLog, "spec.jbbspec.jbb.JBButil", 397, appLog);
+        <spec.jbb.JBButil: java.util.logging.Logger appLog> = appLog;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallocksetLog, 1, tid_setLog);
+        exitmonitor locallocksetLog;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        throwableLocal5 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallocksetLog, 1, tid_setLog);
+        exitmonitor locallocksetLog;
+
+     label4:
+        throw throwableLocal5;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+}

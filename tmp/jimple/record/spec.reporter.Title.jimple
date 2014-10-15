@@ -1,0 +1,25 @@
+public class spec.reporter.Title extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+    java.lang.String t;
+
+    public void <init>()
+    {
+        spec.reporter.Title this;
+
+        this := @this: spec.reporter.Title;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<spec.reporter.Title: java.lang.String t> = "spec.initial.clientFile=Property file\nspec.initial.serverFile=Server property file\nspec.initial.maxRows=# of fields per edit panel\nconfig.hw.vendor=Hardware Vendor\nconfig.hw.vendor.url=Vendor URL\nconfig.hw.model=Model\nconfig.hw.processor=Processor\nconfig.hw.MHz=MHz\nconfig.hw.nchips=# of Chips\nconfig.hw.ncores=# of Cores\nconfig.hw.ncoresperchip=# of Cores/Chip\nconfig.hw.hwThreads=HW Threading Enabled?\nconfig.sw.procsAvailtoJava=Procs Avail to Java\nconfig.hw.memory=Memory (MB)\nconfig.hw.memory_description=Memory Details\nconfig.hw.primaryCache=Primary cache\nconfig.hw.secondaryCache=Secondary cache\nconfig.hw.otherCache=Other cache\nconfig.hw.fileSystem=Filesystem\nconfig.hw.disk=Disks\nconfig.hw.other=Other hardware\nconfig.hw.available=H/w available\nconfig.sw.vendor=Software Vendor\nconfig.sw.vendor.url=Vendor URL\nconfig.sw.JVM=JVM Version\nconfig.sw.command_line=JVM Command Line\nconfig.sw.JVMavailable=JVM available\nconfig.sw.JVMheapInitial=JVM Initial Heap Memory (MB)\nconfig.sw.JVMheapMax=JVM Maximum Heap Memory (MB) \nconfig.sw.JVMbitness=JVM Address bits \njava.class.path=JVM CLASSPATH\nsun.boot.class.path=JVM BOOTCLASSPATH\nconfig.sw.OS=OS Version\nconfig.sw.OSavailable=OS available\nconfig.sw.other=Other software\nconfig.sw.otherAvailable=Other s/w available\nconfig.sw.notes=Other Notes\nconfig.test.testedBy=Tested by\nconfig.test.specLicense=SPEC license #\nconfig.test.location=Test location\nconfig.test.date=Test date\nconfig.testx.emailTo=Mail test results to\nconfig.testx.emailReturn=Your return email address\nconfig.testx.mailHost=Outgoing SMTP mail server\nconfig.testx.testedByName=Tested by (person)\nconfig.testx.internalReference=Internal Reference\nspec.other.testTime=Test time\nspec.other.version=SPEC version\nspec.other.versionDate=SPEC release date\nspec.other.reportDate=Date report generated\n";
+        return;
+    }
+
+    public java.lang.String getTitleString()
+    {
+        spec.reporter.Title this;
+        java.lang.String $r0;
+
+        this := @this: spec.reporter.Title;
+        $r0 = this.<spec.reporter.Title: java.lang.String t>;
+        return $r0;
+    }
+}
