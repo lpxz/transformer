@@ -1,0 +1,924 @@
+class spec.jbb.NewOrderTransaction extends spec.jbb.Transaction
+{
+    static final java.lang.String COPYRIGHT;
+    private spec.jbb.Company company;
+    private short warehouseId;
+    private byte districtId;
+    private short customerId;
+    private spec.jbb.Warehouse warehousePtr;
+    private spec.jbb.District districtPtr;
+    private short number_of_orderlines;
+    private boolean rollback;
+    private java.math.BigDecimal warehouseTaxRate;
+    private java.math.BigDecimal districtTaxRate;
+    private int orderId;
+    private java.math.BigDecimal customerDiscountRate;
+    private java.lang.String customerLastName;
+    private java.lang.String customerCreditStatus;
+    private short orderline_count;
+    private spec.jbb.Order thisOrder;
+    private spec.jbb.infra.Util.TransactionLogBuffer backLog;
+    private spec.jbb.infra.Util.TransactionLogBuffer initLog;
+    private spec.jbb.infra.Util.TransactionLogBuffer orderLog;
+    private spec.jbb.infra.Util.XMLTransactionLog xmlOrderLog;
+    java.lang.String[] validationLog;
+    boolean[] checkLine;
+
+    public void <init>(spec.jbb.Company, short)
+    {
+        spec.jbb.NewOrderTransaction this;
+        spec.jbb.Company inCompany, $r2;
+        short inWarehouseId, $s0;
+        java.lang.String[] $r0;
+        boolean[] $r1;
+        spec.jbb.Warehouse $r3;
+        spec.jbb.infra.Util.TransactionLogBuffer $r4, $r6;
+        spec.jbb.infra.Util.XMLTransactionLog $r5;
+
+        this := @this: spec.jbb.NewOrderTransaction;
+        inCompany := @parameter0: spec.jbb.Company;
+        inWarehouseId := @parameter1: short;
+        specialinvoke this.<spec.jbb.Transaction: void <init>()>();
+        $r0 = newarray (java.lang.String)[24];
+        $r0[0] = "                                   New Order";
+        $r0[1] = "Warehouse:    1   District:  6                        Date: 13-04-2000 10:10:51";
+        $r0[2] = "Customer:    17   Name: BAROUGHTANTI       Credit: GC   %Disc: 43.11";
+        $r0[3] = "Order Number:       31  Number of Lines: 15        W_tax: 10.30   D_tax:  6.62";
+        $r0[4] = "";
+        $r0[5] = " Supp_W  Item_Id  Item Name                 Qty  Stock  B/G  Price    Amount   ";
+        $r0[6] = "     1    12117   rk9rIQP9q52FiN4FWuihzNT    5     59    G    $61.73   $308.65 ";
+        $r0[7] = "     1    19072   0VOgv21kW1ZS3pv1IzirxrmH   5     79    G    $26.62   $133.10 ";
+        $r0[8] = "     1     4260   clRd7h9zm9eGwqtvKblk1q     5     53    G    $85.08   $425.40 ";
+        $r0[9] = "     1     5772   b96nAb1I7qPaOA             5     73    G    $50.24   $251.20 ";
+        $r0[10] = "     1      587   98ILzFnfHy8rwch            5     79    G     $3.44    $17.20 ";
+        $r0[11] = "     1     2790   yrZXzgfPRKxNQW             5     71    G    $33.70   $168.50 ";
+        $r0[12] = "     1      687   G1GcZl0h1P7gJ4GxZhnuT      5     57    G    $46.26   $231.30 ";
+        $r0[13] = "     1     5258   b9PfVfw5TcKQe0iEZaPEWkt    5     14    G    $45.62   $228.10 ";
+        $r0[14] = "     1    12238   w0Tu7bleXb7XXY03           5     33    G    $70.20   $351.00 ";
+        $r0[15] = "     1     4933   TvoMqL3eITHLzearKdECH      5     89    G    $93.19   $465.95 ";
+        $r0[16] = "     1     4186   LNDK2oajzLA29ICevp8eBx     5     34    G    $49.22   $246.10 ";
+        $r0[17] = "     1     6996   450trcQ3zvuPwWHGb6i        5     56    G     $6.11    $30.55 ";
+        $r0[18] = "     1     9925   Vh0KacEuowjiT8ey           5     10    G    $72.28   $361.40 ";
+        $r0[19] = "     1    12042   m7ryJMNGNEaOaKEG           5     19    G    $65.31   $326.55 ";
+        $r0[20] = "     1     9471   hAdDzcbhMhlOQTUecrfFCym    5    100    G    $68.54   $342.70 ";
+        $r0[21] = "Execution Status: ---- Order is valid ----                   Total:   $2585.93 ";
+        $r0[22] = "";
+        $r0[23] = "";
+        this.<spec.jbb.NewOrderTransaction: java.lang.String[] validationLog> = $r0;
+        $r1 = newarray (boolean)[24];
+        $r1[0] = 1;
+        $r1[2] = 1;
+        $r1[3] = 1;
+        $r1[4] = 1;
+        $r1[5] = 1;
+        $r1[6] = 1;
+        $r1[7] = 1;
+        $r1[8] = 1;
+        $r1[9] = 1;
+        $r1[11] = 1;
+        $r1[12] = 1;
+        $r1[13] = 1;
+        $r1[14] = 1;
+        $r1[15] = 1;
+        $r1[16] = 1;
+        $r1[18] = 1;
+        $r1[19] = 1;
+        $r1[20] = 1;
+        $r1[21] = 1;
+        $r1[22] = 1;
+        $r1[23] = 1;
+        this.<spec.jbb.NewOrderTransaction: boolean[] checkLine> = $r1;
+        this.<spec.jbb.NewOrderTransaction: spec.jbb.Company company> = inCompany;
+        this.<spec.jbb.NewOrderTransaction: short warehouseId> = inWarehouseId;
+        $r2 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Company company>;
+        $s0 = this.<spec.jbb.NewOrderTransaction: short warehouseId>;
+        $r3 = virtualinvoke $r2.<spec.jbb.Company: spec.jbb.Warehouse getWarehousePtr(short,boolean)>($s0, 0);
+        this.<spec.jbb.NewOrderTransaction: spec.jbb.Warehouse warehousePtr> = $r3;
+        $r4 = new spec.jbb.infra.Util.TransactionLogBuffer;
+        specialinvoke $r4.<spec.jbb.infra.Util.TransactionLogBuffer: void <init>()>();
+        this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog> = $r4;
+        specialinvoke this.<spec.jbb.NewOrderTransaction: void setupOrderLog()>();
+        $r5 = new spec.jbb.infra.Util.XMLTransactionLog;
+        specialinvoke $r5.<spec.jbb.infra.Util.XMLTransactionLog: void <init>()>();
+        this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.XMLTransactionLog xmlOrderLog> = $r5;
+        $r4 = new spec.jbb.infra.Util.TransactionLogBuffer;
+        $r6 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        specialinvoke $r4.<spec.jbb.infra.Util.TransactionLogBuffer: void <init>(spec.jbb.infra.Util.TransactionLogBuffer)>($r6);
+        this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog> = $r4;
+        specialinvoke this.<spec.jbb.NewOrderTransaction: void setupInitLog()>();
+        return;
+    }
+
+    private void setupOrderLog()
+    {
+        spec.jbb.NewOrderTransaction this;
+        spec.jbb.infra.Util.TransactionLogBuffer $r0;
+        short $s0;
+
+        this := @this: spec.jbb.NewOrderTransaction;
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("New Order", 35, 0, 9);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("Warehouse:", 0, 1, 10);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $s0 = this.<spec.jbb.NewOrderTransaction: short warehouseId>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putInt(int,int,int,int)>($s0, 11, 1, 4);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("District:", 18, 1, 9);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("Date:", 54, 1, 5);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("Customer:", 0, 2, 10);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("Name:", 18, 2, 5);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("Credit:", 43, 2, 7);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("%Disc:", 56, 2, 6);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("Order Number:", 0, 3, 14);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("Number of Lines:", 24, 3, 26);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("W_tax:", 51, 3, 6);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("D_tax:", 66, 3, 6);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>(" Supp_W  Item_Id  Item Name                 Qty  Stock  B/G  Price    Amount", 0, 5, 79);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("Execution Status:", 0, 21, 17);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("Total:", 61, 21, 6);
+        return;
+    }
+
+    private void setupInitLog()
+    {
+        spec.jbb.NewOrderTransaction this;
+        int i;
+        spec.jbb.infra.Util.TransactionLogBuffer $r0;
+
+        this := @this: spec.jbb.NewOrderTransaction;
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putCharFill(char,int,int,int)>(57, 28, 1, 2);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("DD-MM-YYYY hh:mm:ss", 60, 1, 19);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putCharFill(char,int,int,int)>(57, 11, 2, 4);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putCharFill(char,int,int,int)>(88, 24, 2, 16);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putCharFill(char,int,int,int)>(88, 51, 2, 2);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("99.99", 63, 2, 5);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putCharFill(char,int,int,int)>(57, 14, 3, 8);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putCharFill(char,int,int,int)>(57, 41, 3, 2);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("99.99", 58, 3, 5);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("99.99", 73, 3, 5);
+        i = 6;
+        goto label1;
+
+     label0:
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putCharFill(char,int,int,int)>(57, 2, i, 4);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putCharFill(char,int,int,int)>(57, 9, i, 6);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putCharFill(char,int,int,int)>(88, 18, i, 24);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putCharFill(char,int,int,int)>(57, 44, i, 2);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putCharFill(char,int,int,int)>(57, 50, i, 3);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putChar(char,int,int)>(88, 57, i);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("$999.99", 61, i, 7);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("$9999.99", 70, i, 8);
+        i = i + 1;
+
+     label1:
+        if i < 21 goto label0;
+
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putCharFill(char,int,int,int)>(88, 18, 21, 24);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r0.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("$99999.99", 69, 21, 9);
+        return;
+    }
+
+    public java.lang.String getMenuName()
+    {
+        spec.jbb.NewOrderTransaction this;
+
+        this := @this: spec.jbb.NewOrderTransaction;
+        return "New-Order";
+    }
+
+    public void delete()
+    {
+        spec.jbb.NewOrderTransaction this;
+
+        this := @this: spec.jbb.NewOrderTransaction;
+        return;
+    }
+
+    public void init()
+    {
+        spec.jbb.NewOrderTransaction this;
+        java.util.logging.Logger $r0;
+        spec.jbb.Company $r1, $r2;
+        short $s0, $s1, $s4;
+        int $i2, $i5;
+        byte $b3, $b6;
+        boolean $z0;
+        spec.jbb.Warehouse $r4;
+        spec.jbb.District $r5;
+        long tid_init;
+        java.lang.Thread thread_init;
+
+        this := @this: spec.jbb.NewOrderTransaction;
+        thread_init = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_init = virtualinvoke thread_init.<java.lang.Thread: long getId()>();
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void entering(java.lang.String,java.lang.String)>("spec.jbb.NewOrderTransaction", "init");
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Company company>;
+        $s0 = virtualinvoke $r1.<spec.jbb.Company: short getMaxDistrictsPerWarehouse()>();
+        $s1 = this.<spec.jbb.NewOrderTransaction: short warehouseId>;
+        $i2 = staticinvoke <spec.jbb.JBButil: int random(int,int,short)>(1, $s0, $s1);
+        $b3 = (byte) $i2;
+        this.<spec.jbb.NewOrderTransaction: byte districtId> = $b3;
+        $r2 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Company company>;
+        $i2 = virtualinvoke $r2.<spec.jbb.Company: int getMaxCustomersPerDistrict()>();
+        $s0 = this.<spec.jbb.NewOrderTransaction: short warehouseId>;
+        $s4 = staticinvoke <spec.jbb.JBButil: short create_random_customer_id(int,short)>($i2, $s0);
+        this.<spec.jbb.NewOrderTransaction: short customerId> = $s4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(77, tid_init, "spec.jbbspec.jbb.NewOrderTransaction", 170, $i2);
+        $i2 = <spec.jbb.Transaction: int minOrderlines>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(78, tid_init, "spec.jbbspec.jbb.NewOrderTransaction", 170, $i5);
+        $i5 = <spec.jbb.Transaction: int maxOrderlines>;
+        $s1 = this.<spec.jbb.NewOrderTransaction: short warehouseId>;
+        $i2 = staticinvoke <spec.jbb.JBButil: int random(int,int,short)>($i2, $i5, $s1);
+        $s4 = (short) $i2;
+        this.<spec.jbb.NewOrderTransaction: short number_of_orderlines> = $s4;
+        $s1 = this.<spec.jbb.NewOrderTransaction: short warehouseId>;
+        $i2 = staticinvoke <spec.jbb.JBButil: int random(int,int,short)>(1, 100, $s1);
+        if $i2 != 1 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        this.<spec.jbb.NewOrderTransaction: boolean rollback> = $z0;
+        this.<spec.jbb.NewOrderTransaction: boolean rollback> = 0;
+        $r4 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Warehouse warehousePtr>;
+        $b6 = this.<spec.jbb.NewOrderTransaction: byte districtId>;
+        $r5 = virtualinvoke $r4.<spec.jbb.Warehouse: spec.jbb.District getDistrictPtr(byte,boolean)>($b6, 0);
+        this.<spec.jbb.NewOrderTransaction: spec.jbb.District districtPtr> = $r5;
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void exiting(java.lang.String,java.lang.String)>("spec.jbb.NewOrderTransaction", "init");
+        return;
+    }
+
+    public boolean process()
+    {
+        spec.jbb.NewOrderTransaction this;
+        java.util.logging.Logger $r0;
+        long uniqueCustomerId;
+        spec.jbb.Customer customerPtr;
+        spec.jbb.NewOrder theNewOrder, $r11;
+        spec.jbb.Warehouse $r1;
+        java.math.BigDecimal $r2, $r8, $r9, $r10;
+        spec.jbb.District $r3, $r14;
+        int $i0, $i4, $i8;
+        spec.jbb.Company $r4, $r7;
+        short $s1, $s3, $s6, $s7, $s10, $s11;
+        byte $b2, $b5, $b9;
+        java.lang.String $r5;
+        spec.jbb.Order $r6, $r12, $r13;
+        boolean $z0, $z1;
+
+        this := @this: spec.jbb.NewOrderTransaction;
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void entering(java.lang.String,java.lang.String)>("spec.jbb.NewOrderTransaction", "process");
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Warehouse warehousePtr>;
+        $r2 = virtualinvoke $r1.<spec.jbb.Warehouse: java.math.BigDecimal getTaxRate()>();
+        this.<spec.jbb.NewOrderTransaction: java.math.BigDecimal warehouseTaxRate> = $r2;
+        $r3 = this.<spec.jbb.NewOrderTransaction: spec.jbb.District districtPtr>;
+        $r2 = virtualinvoke $r3.<spec.jbb.District: java.math.BigDecimal getTaxRate()>();
+        this.<spec.jbb.NewOrderTransaction: java.math.BigDecimal districtTaxRate> = $r2;
+        $r3 = this.<spec.jbb.NewOrderTransaction: spec.jbb.District districtPtr>;
+        $i0 = virtualinvoke $r3.<spec.jbb.District: int nextOrderId()>();
+        this.<spec.jbb.NewOrderTransaction: int orderId> = $i0;
+        $r4 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Company company>;
+        $s1 = this.<spec.jbb.NewOrderTransaction: short warehouseId>;
+        $b2 = this.<spec.jbb.NewOrderTransaction: byte districtId>;
+        $s3 = this.<spec.jbb.NewOrderTransaction: short customerId>;
+        uniqueCustomerId = virtualinvoke $r4.<spec.jbb.Company: long buildUniqueCustomerKey(short,byte,short)>($s1, $b2, $s3);
+        $r4 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Company company>;
+        customerPtr = virtualinvoke $r4.<spec.jbb.Company: spec.jbb.Customer getCustomer(long,boolean)>(uniqueCustomerId, 0);
+        $r2 = virtualinvoke customerPtr.<spec.jbb.Customer: java.math.BigDecimal getDiscountRate()>();
+        this.<spec.jbb.NewOrderTransaction: java.math.BigDecimal customerDiscountRate> = $r2;
+        $r5 = virtualinvoke customerPtr.<spec.jbb.Customer: java.lang.String getLastName()>();
+        this.<spec.jbb.NewOrderTransaction: java.lang.String customerLastName> = $r5;
+        $r5 = virtualinvoke customerPtr.<spec.jbb.Customer: java.lang.String getCreditStatus()>();
+        this.<spec.jbb.NewOrderTransaction: java.lang.String customerCreditStatus> = $r5;
+        $r6 = new spec.jbb.Order;
+        $r7 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Company company>;
+        $i4 = this.<spec.jbb.NewOrderTransaction: int orderId>;
+        $b5 = this.<spec.jbb.NewOrderTransaction: byte districtId>;
+        $s6 = this.<spec.jbb.NewOrderTransaction: short warehouseId>;
+        $s7 = this.<spec.jbb.NewOrderTransaction: short customerId>;
+        $r8 = this.<spec.jbb.NewOrderTransaction: java.math.BigDecimal districtTaxRate>;
+        $r9 = this.<spec.jbb.NewOrderTransaction: java.math.BigDecimal warehouseTaxRate>;
+        $r10 = this.<spec.jbb.NewOrderTransaction: java.math.BigDecimal customerDiscountRate>;
+        specialinvoke $r6.<spec.jbb.Order: void <init>(spec.jbb.Company,int,byte,short,short,spec.jbb.Customer,java.math.BigDecimal,java.math.BigDecimal,java.math.BigDecimal)>($r7, $i4, $b5, $s6, $s7, customerPtr, $r8, $r9, $r10);
+        this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder> = $r6;
+        $r11 = new spec.jbb.NewOrder;
+        $r12 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        $i8 = this.<spec.jbb.NewOrderTransaction: int orderId>;
+        $b9 = this.<spec.jbb.NewOrderTransaction: byte districtId>;
+        $s10 = this.<spec.jbb.NewOrderTransaction: short warehouseId>;
+        specialinvoke $r11.<spec.jbb.NewOrder: void <init>(spec.jbb.Order,int,byte,short)>($r12, $i8, $b9, $s10);
+        theNewOrder = $r11;
+        $r13 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Warehouse warehousePtr>;
+        $s11 = this.<spec.jbb.NewOrderTransaction: short number_of_orderlines>;
+        $z0 = this.<spec.jbb.NewOrderTransaction: boolean rollback>;
+        $z1 = virtualinvoke $r13.<spec.jbb.Order: boolean processLines(spec.jbb.Warehouse,short,boolean)>($r1, $s11, $z0);
+        if $z1 == 0 goto label0;
+
+        $r6 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        $s1 = virtualinvoke $r6.<spec.jbb.Order: short getOrderlineCount()>();
+        this.<spec.jbb.NewOrderTransaction: short orderline_count> = $s1;
+        $r14 = this.<spec.jbb.NewOrderTransaction: spec.jbb.District districtPtr>;
+        $r6 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        virtualinvoke $r14.<spec.jbb.District: void addOrder(spec.jbb.Order)>($r6);
+        $r14 = this.<spec.jbb.NewOrderTransaction: spec.jbb.District districtPtr>;
+        virtualinvoke $r14.<spec.jbb.District: void addNewOrder(spec.jbb.NewOrder)>(theNewOrder);
+        $r6 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        virtualinvoke customerPtr.<spec.jbb.Customer: void addOrder(spec.jbb.Order)>($r6);
+        goto label1;
+
+     label0:
+        this.<spec.jbb.NewOrderTransaction: short orderline_count> = 0;
+
+     label1:
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void exiting(java.lang.String,java.lang.String)>("spec.jbb.NewOrderTransaction", "process");
+        return 1;
+    }
+
+    public void display()
+    {
+        spec.jbb.NewOrderTransaction this;
+        java.io.PrintStream $r0;
+        java.lang.StringBuilder $r1;
+        short $s0;
+        java.lang.String $r2;
+        byte $b1;
+        java.lang.Object localthislockdisplay;
+        java.lang.Throwable throwableLocal6;
+        long tid_display;
+        java.lang.Thread thread_display;
+
+        this := @this: spec.jbb.NewOrderTransaction;
+        thread_display = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_display = virtualinvoke thread_display.<java.lang.Thread: long getId()>();
+        localthislockdisplay = this;
+
+     label0:
+        entermonitor localthislockdisplay;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockdisplay, 0, tid_display);
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>("**** NewOrderTransaction Display **********************");
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("*       Warehouse ID is ");
+        $s0 = this.<spec.jbb.NewOrderTransaction: short warehouseId>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("                      *");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("*       District  ID is ");
+        $b1 = this.<spec.jbb.NewOrderTransaction: byte districtId>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($b1);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("                      *");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("*       Customer  ID is ");
+        $s0 = this.<spec.jbb.NewOrderTransaction: short customerId>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("                      *");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>("*******************************************************");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockdisplay, 0, tid_display);
+        exitmonitor localthislockdisplay;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        throwableLocal6 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockdisplay, 0, tid_display);
+        exitmonitor localthislockdisplay;
+
+     label4:
+        throw throwableLocal6;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public void initializeTransactionLog()
+    {
+        spec.jbb.NewOrderTransaction this;
+        java.util.logging.Logger $r0;
+        boolean $z0;
+        spec.jbb.infra.Util.TransactionLogBuffer $r1;
+        long tid_initializeTransactionLog;
+        java.lang.Thread thread_initializeTransactionLog;
+
+        this := @this: spec.jbb.NewOrderTransaction;
+        thread_initializeTransactionLog = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_initializeTransactionLog = virtualinvoke thread_initializeTransactionLog.<java.lang.Thread: long getId()>();
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void entering(java.lang.String,java.lang.String)>("spec.jbb.NewOrderTransaction", "initializeTransactionLog");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(79, tid_initializeTransactionLog, "spec.jbbspec.jbb.NewOrderTransaction", 248, $z0);
+        $z0 = <spec.jbb.Transaction: boolean enableLogWrite>;
+        if $z0 == 0 goto label0;
+
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer initLog>;
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void display()>();
+
+     label0:
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void exiting(java.lang.String,java.lang.String)>("spec.jbb.NewOrderTransaction", "initializeTransactionLog");
+        return;
+    }
+
+    public void processTransactionLog()
+    {
+        spec.jbb.NewOrderTransaction this;
+        java.util.logging.Logger $r0;
+        java.util.Date screenDate;
+        spec.jbb.Orderline[] orderlineList;
+        short lineCount, $s1, $s3;
+        int i, displayLine, $i2, $i5, $i6;
+        spec.jbb.Orderline currentOrderLine;
+        java.lang.String[] s, $r8, $r11;
+        java.lang.StringBuffer sb, $r9;
+        spec.jbb.infra.Util.TransactionLogBuffer $r1, $r7;
+        spec.jbb.infra.Util.XMLTransactionLog $r2;
+        spec.jbb.Order $r3, $r6;
+        byte $b0;
+        java.lang.String $r4, $r13, $r14;
+        java.math.BigDecimal $r5;
+        char $c4;
+        boolean $z0;
+        java.lang.StringBuilder $r10;
+        boolean[] $r12;
+        java.lang.Object localthislockprocessTransactionLog;
+        java.lang.Throwable throwableLocal7;
+        long tid_processTransactionLog;
+        java.lang.Thread thread_processTransactionLog;
+
+        this := @this: spec.jbb.NewOrderTransaction;
+        thread_processTransactionLog = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_processTransactionLog = virtualinvoke thread_processTransactionLog.<java.lang.Thread: long getId()>();
+        localthislockprocessTransactionLog = this;
+
+     label0:
+        entermonitor localthislockprocessTransactionLog;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockprocessTransactionLog, 0, tid_processTransactionLog);
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void entering(java.lang.String,java.lang.String)>("spec.jbb.NewOrderTransaction", "processTransactionLog");
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void clearBuffer()>();
+        $r2 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.XMLTransactionLog xmlOrderLog>;
+        virtualinvoke $r2.<spec.jbb.infra.Util.XMLTransactionLog: void clear()>();
+        specialinvoke this.<spec.jbb.NewOrderTransaction: void setupOrderLog()>();
+        $r3 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        screenDate = virtualinvoke $r3.<spec.jbb.Order: java.util.Date getEntryTime()>();
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $b0 = this.<spec.jbb.NewOrderTransaction: byte districtId>;
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putInt(int,int,int,int)>($b0, 28, 1, 2);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putDate(java.util.Date,int,int,int)>(screenDate, 60, 1, 10);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putTime(java.util.Date,int,int,int)>(screenDate, 71, 1, 8);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $s1 = this.<spec.jbb.NewOrderTransaction: short customerId>;
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putInt(int,int,int,int)>($s1, 11, 2, 4);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $r4 = this.<spec.jbb.NewOrderTransaction: java.lang.String customerLastName>;
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>($r4, 24, 2, 16);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $r4 = this.<spec.jbb.NewOrderTransaction: java.lang.String customerCreditStatus>;
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>($r4, 51, 2, 2);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $r5 = this.<spec.jbb.NewOrderTransaction: java.math.BigDecimal customerDiscountRate>;
+        $r5 = virtualinvoke $r5.<java.math.BigDecimal: java.math.BigDecimal movePointRight(int)>(2);
+        $r4 = virtualinvoke $r5.<java.math.BigDecimal: java.lang.String toString()>();
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putDouble(java.lang.String,int,int,int)>($r4, 63, 2, 5);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $i2 = this.<spec.jbb.NewOrderTransaction: int orderId>;
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putInt(int,int,int,int)>($i2, 14, 3, 8);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $s1 = this.<spec.jbb.NewOrderTransaction: short orderline_count>;
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putInt(int,int,int,int)>($s1, 41, 3, 2);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $r5 = this.<spec.jbb.NewOrderTransaction: java.math.BigDecimal warehouseTaxRate>;
+        $r5 = virtualinvoke $r5.<java.math.BigDecimal: java.math.BigDecimal movePointRight(int)>(2);
+        $r4 = virtualinvoke $r5.<java.math.BigDecimal: java.lang.String toString()>();
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putDouble(java.lang.String,int,int,int)>($r4, 58, 3, 5);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $r5 = this.<spec.jbb.NewOrderTransaction: java.math.BigDecimal districtTaxRate>;
+        $r5 = virtualinvoke $r5.<java.math.BigDecimal: java.math.BigDecimal movePointRight(int)>(2);
+        $r4 = virtualinvoke $r5.<java.math.BigDecimal: java.lang.String toString()>();
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putDouble(java.lang.String,int,int,int)>($r4, 73, 3, 5);
+        $s3 = this.<spec.jbb.NewOrderTransaction: short orderline_count>;
+        if $s3 <= 0 goto label4;
+
+        $r3 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        orderlineList = virtualinvoke $r3.<spec.jbb.Order: spec.jbb.Orderline[] getOrderlineList()>();
+        $r3 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        lineCount = virtualinvoke $r3.<spec.jbb.Order: short getOrderlineCount()>();
+        i = 0;
+        goto label3;
+
+     label1:
+        displayLine = i + 6;
+        if i < 15 goto label2;
+
+        displayLine = 20;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(orderlineList, 86, tid_processTransactionLog, "spec.jbb.NewOrderTransaction", 286, i, currentOrderLine);
+        currentOrderLine = orderlineList[i];
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $s1 = virtualinvoke currentOrderLine.<spec.jbb.Orderline: short getSupplyWarehouse()>();
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putInt(int,int,int,int)>($s1, 2, displayLine, 4);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $i2 = virtualinvoke currentOrderLine.<spec.jbb.Orderline: int getItemId()>();
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putInt(int,int,int,int)>($i2, 9, displayLine, 6);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $r4 = virtualinvoke currentOrderLine.<spec.jbb.Orderline: java.lang.String getItemName()>();
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>($r4, 18, displayLine, 24);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $s1 = virtualinvoke currentOrderLine.<spec.jbb.Orderline: short getQuantity()>();
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putInt(int,int,int,int)>($s1, 44, displayLine, 2);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $i2 = virtualinvoke currentOrderLine.<spec.jbb.Orderline: int getStockQuantity()>();
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putInt(int,int,int,int)>($i2, 50, displayLine, 3);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $c4 = virtualinvoke currentOrderLine.<spec.jbb.Orderline: char getBrandGeneric()>();
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putChar(char,int,int)>($c4, 57, displayLine);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $r5 = virtualinvoke currentOrderLine.<spec.jbb.Orderline: java.math.BigDecimal getItemPrice()>();
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putDollars(java.math.BigDecimal,int,int,int)>($r5, 62, displayLine, 7);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $r5 = virtualinvoke currentOrderLine.<spec.jbb.Orderline: java.math.BigDecimal getAmount()>();
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putDollars(java.math.BigDecimal,int,int,int)>($r5, 71, displayLine, 8);
+        i = i + 1;
+
+     label3:
+        if i < lineCount goto label1;
+
+     label4:
+        $s3 = this.<spec.jbb.NewOrderTransaction: short orderline_count>;
+        if $s3 <= 0 goto label5;
+
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("---- Order is valid ----", 18, 21, 24);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        $r6 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        $r5 = virtualinvoke $r6.<spec.jbb.Order: java.math.BigDecimal getTotalAmount()>();
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putDollars(java.math.BigDecimal,int,int,int)>($r5, 70, 21, 9);
+        goto label6;
+
+     label5:
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putText(java.lang.String,int,int,int)>("ITEM NUMBER IS NOT VALID", 18, 21, 24);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void putDollars(double,int,int,int)>(0.0, 69, 21, 9);
+
+     label6:
+        $r2 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.XMLTransactionLog xmlOrderLog>;
+        $r7 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r2.<spec.jbb.infra.Util.XMLTransactionLog: void populateXML(spec.jbb.infra.Util.TransactionLogBuffer)>($r7);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(79, tid_processTransactionLog, "spec.jbbspec.jbb.NewOrderTransaction", 317, $z0);
+        $z0 = <spec.jbb.Transaction: boolean enableLogWrite>;
+        if $z0 == 0 goto label7;
+
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: void display()>();
+
+     label7:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(80, tid_processTransactionLog, "spec.jbbspec.jbb.NewOrderTransaction", 319, $z0);
+        $z0 = <spec.jbb.Transaction: boolean validationFlag>;
+        if $z0 == 0 goto label12;
+
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.infra.Util.TransactionLogBuffer orderLog>;
+        s = virtualinvoke $r1.<spec.jbb.infra.Util.TransactionLogBuffer: java.lang.String[] validate()>();
+        $i5 = lengthof s;
+        $r8 = this.<spec.jbb.NewOrderTransaction: java.lang.String[] validationLog>;
+        $i2 = lengthof $r8;
+        if $i5 == $i2 goto label8;
+
+        $r9 = new java.lang.StringBuffer;
+        specialinvoke $r9.<java.lang.StringBuffer: void <init>(int)>(200);
+        sb = $r9;
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("VALIDATION ERROR:  mismatch in screen lengths for NewOrderTransaction");
+        $r4 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("line.separator");
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r10 = new java.lang.StringBuilder;
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>(java.lang.String)>("    Screen length should be:  ");
+        $r11 = this.<spec.jbb.NewOrderTransaction: java.lang.String[] validationLog>;
+        $i6 = lengthof $r11;
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i6);
+        $r4 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r4 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("line.separator");
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r10 = new java.lang.StringBuilder;
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>(java.lang.String)>("    Screen length is:  ");
+        $i6 = lengthof s;
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i6);
+        $r4 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r4 = virtualinvoke sb.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void warning(java.lang.String)>($r4);
+        staticinvoke <spec.jbb.Transaction: void invalidateRun()>();
+
+     label8:
+        i = 0;
+        goto label11;
+
+     label9:
+        $r12 = this.<spec.jbb.NewOrderTransaction: boolean[] checkLine>;
+        $z0 = $r12[i];
+        if $z0 == 0 goto label10;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(s, 23, tid_processTransactionLog, "spec.jbb.NewOrderTransaction", 335, i, $r13);
+        $r13 = s[i];
+        $r8 = this.<spec.jbb.NewOrderTransaction: java.lang.String[] validationLog>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r8, 23, tid_processTransactionLog, "spec.jbb.NewOrderTransaction", 335, i, $r4);
+        $r4 = $r8[i];
+        $z0 = virtualinvoke $r13.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+        if $z0 != 0 goto label10;
+
+        $r9 = new java.lang.StringBuffer;
+        specialinvoke $r9.<java.lang.StringBuffer: void <init>(int)>(200);
+        sb = $r9;
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("VALIDATION ERROR:  incorrect output for NewOrderTransaction");
+        $r4 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("line.separator");
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r10 = new java.lang.StringBuilder;
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>(java.lang.String)>("    Line ");
+        $i6 = i + 1;
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i6);
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" should be:  |");
+        $r11 = this.<spec.jbb.NewOrderTransaction: java.lang.String[] validationLog>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r11, 23, tid_processTransactionLog, "spec.jbb.NewOrderTransaction", 341, i, $r14);
+        $r14 = $r11[i];
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r14);
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+        $r4 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r4 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("line.separator");
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r10 = new java.lang.StringBuilder;
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>(java.lang.String)>("    Line ");
+        $i6 = i + 1;
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i6);
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" is:  |");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(s, 23, tid_processTransactionLog, "spec.jbb.NewOrderTransaction", 343, i, $r14);
+        $r14 = s[i];
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r14);
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+        $r4 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r4 = virtualinvoke sb.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void warning(java.lang.String)>($r4);
+        staticinvoke <spec.jbb.Transaction: void invalidateRun()>();
+
+     label10:
+        i = i + 1;
+
+     label11:
+        $r8 = this.<spec.jbb.NewOrderTransaction: java.lang.String[] validationLog>;
+        $i2 = lengthof $r8;
+        if i < $i2 goto label9;
+
+     label12:
+        $r0 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        virtualinvoke $r0.<java.util.logging.Logger: void exiting(java.lang.String,java.lang.String)>("spec.jbb.NewOrderTransaction", "processTransactionLog");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockprocessTransactionLog, 0, tid_processTransactionLog);
+        exitmonitor localthislockprocessTransactionLog;
+        goto label13;
+
+     label13:
+        return;
+
+     label14:
+        throwableLocal7 := @caughtexception;
+
+     label15:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockprocessTransactionLog, 0, tid_processTransactionLog);
+        exitmonitor localthislockprocessTransactionLog;
+
+     label16:
+        throw throwableLocal7;
+
+        catch java.lang.Throwable from label0 to label13 with label14;
+        catch java.lang.Throwable from label15 to label16 with label14;
+    }
+
+    public void processPreloadedOrders()
+    {
+        spec.jbb.NewOrderTransaction this;
+        long uniqueCustomerId, tid_processPreloadedOrders;
+        spec.jbb.Customer customerPtr;
+        java.math.BigDecimal temp;
+        java.util.Date orderdate, $r5;
+        byte carrierId, $b2, $b5, $b12;
+        spec.jbb.NewOrder theNewOrder, $r10;
+        spec.jbb.District $r0, $r4;
+        int $i0, $i4, $i8, $i9, $i11;
+        spec.jbb.Company $r1, $r3, $r7, $r8;
+        short $s1, $s3, $s6, $s7, $s10, $s13;
+        spec.jbb.Order $r2, $r6, $r11;
+        spec.jbb.Warehouse $r9;
+        java.lang.Object localthislockprocessPreloadedOrders;
+        java.lang.Throwable throwableLocal8;
+        java.lang.Thread thread_processPreloadedOrders;
+
+        this := @this: spec.jbb.NewOrderTransaction;
+        thread_processPreloadedOrders = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_processPreloadedOrders = virtualinvoke thread_processPreloadedOrders.<java.lang.Thread: long getId()>();
+        localthislockprocessPreloadedOrders = this;
+
+     label0:
+        entermonitor localthislockprocessPreloadedOrders;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockprocessPreloadedOrders, 0, tid_processPreloadedOrders);
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.District districtPtr>;
+        $i0 = virtualinvoke $r0.<spec.jbb.District: int nextOrderId()>();
+        this.<spec.jbb.NewOrderTransaction: int orderId> = $i0;
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Company company>;
+        $s1 = this.<spec.jbb.NewOrderTransaction: short warehouseId>;
+        $b2 = this.<spec.jbb.NewOrderTransaction: byte districtId>;
+        $s3 = this.<spec.jbb.NewOrderTransaction: short customerId>;
+        uniqueCustomerId = virtualinvoke $r1.<spec.jbb.Company: long buildUniqueCustomerKey(short,byte,short)>($s1, $b2, $s3);
+        $r1 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Company company>;
+        customerPtr = virtualinvoke $r1.<spec.jbb.Company: spec.jbb.Customer getCustomer(long,boolean)>(uniqueCustomerId, 0);
+        temp = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long,int)>(0L, 2);
+        $r2 = new spec.jbb.Order;
+        $r3 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Company company>;
+        $i4 = this.<spec.jbb.NewOrderTransaction: int orderId>;
+        $b5 = this.<spec.jbb.NewOrderTransaction: byte districtId>;
+        $s6 = this.<spec.jbb.NewOrderTransaction: short warehouseId>;
+        $s7 = this.<spec.jbb.NewOrderTransaction: short customerId>;
+        specialinvoke $r2.<spec.jbb.Order: void <init>(spec.jbb.Company,int,byte,short,short,spec.jbb.Customer,java.math.BigDecimal,java.math.BigDecimal,java.math.BigDecimal)>($r3, $i4, $b5, $s6, $s7, customerPtr, temp, temp, temp);
+        this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder> = $r2;
+        $r4 = this.<spec.jbb.NewOrderTransaction: spec.jbb.District districtPtr>;
+        $r2 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        virtualinvoke $r4.<spec.jbb.District: void addOrder(spec.jbb.Order)>($r2);
+        $r2 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        virtualinvoke customerPtr.<spec.jbb.Customer: void addOrder(spec.jbb.Order)>($r2);
+        $r5 = new java.util.Date;
+        specialinvoke $r5.<java.util.Date: void <init>()>();
+        orderdate = $r5;
+        $r6 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        virtualinvoke $r6.<spec.jbb.Order: void setEntryDateTime(java.util.Date)>(orderdate);
+        $i8 = this.<spec.jbb.NewOrderTransaction: int orderId>;
+        $r7 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Company company>;
+        $i0 = virtualinvoke $r7.<spec.jbb.Company: int getInitialOrders()>();
+        $r8 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Company company>;
+        $i9 = virtualinvoke $r8.<spec.jbb.Company: int getInitialNewOrders()>();
+        $i0 = $i0 - $i9;
+        if $i8 > $i0 goto label1;
+
+        $s10 = this.<spec.jbb.NewOrderTransaction: short warehouseId>;
+        $i8 = staticinvoke <spec.jbb.JBButil: int random(int,int,short)>(1, 10, $s10);
+        carrierId = (byte) $i8;
+        $r6 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        virtualinvoke $r6.<spec.jbb.Order: void setCarrierId(short)>(carrierId);
+
+     label1:
+        $r6 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        virtualinvoke $r6.<spec.jbb.Order: void setAllLocal(boolean)>(1);
+        $r6 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        $r9 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Warehouse warehousePtr>;
+        $s10 = this.<spec.jbb.NewOrderTransaction: short number_of_orderlines>;
+        virtualinvoke $r6.<spec.jbb.Order: boolean processLines(spec.jbb.Warehouse,short,boolean)>($r9, $s10, 0);
+        $r2 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        $s1 = virtualinvoke $r2.<spec.jbb.Order: short getOrderlineCount()>();
+        this.<spec.jbb.NewOrderTransaction: short orderline_count> = $s1;
+        $i8 = this.<spec.jbb.NewOrderTransaction: int orderId>;
+        $r7 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Company company>;
+        $i0 = virtualinvoke $r7.<spec.jbb.Company: int getInitialOrders()>();
+        $r8 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Company company>;
+        $i9 = virtualinvoke $r8.<spec.jbb.Company: int getInitialNewOrders()>();
+        $i0 = $i0 - $i9;
+        if $i8 <= $i0 goto label2;
+
+        $r10 = new spec.jbb.NewOrder;
+        $r11 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Order thisOrder>;
+        $i11 = this.<spec.jbb.NewOrderTransaction: int orderId>;
+        $b12 = this.<spec.jbb.NewOrderTransaction: byte districtId>;
+        $s13 = this.<spec.jbb.NewOrderTransaction: short warehouseId>;
+        specialinvoke $r10.<spec.jbb.NewOrder: void <init>(spec.jbb.Order,int,byte,short)>($r11, $i11, $b12, $s13);
+        theNewOrder = $r10;
+        $r4 = this.<spec.jbb.NewOrderTransaction: spec.jbb.District districtPtr>;
+        virtualinvoke $r4.<spec.jbb.District: void addNewOrder(spec.jbb.NewOrder)>(theNewOrder);
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockprocessPreloadedOrders, 0, tid_processPreloadedOrders);
+        exitmonitor localthislockprocessPreloadedOrders;
+        goto label3;
+
+     label3:
+        return;
+
+     label4:
+        throwableLocal8 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockprocessPreloadedOrders, 0, tid_processPreloadedOrders);
+        exitmonitor localthislockprocessPreloadedOrders;
+
+     label6:
+        throw throwableLocal8;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void setDistrictandCustomer(byte, short)
+    {
+        spec.jbb.NewOrderTransaction this;
+        byte inDistrictId, $b0;
+        short inCustomerId;
+        spec.jbb.Warehouse $r0;
+        spec.jbb.District $r1;
+        java.lang.Object localthislocksetDistrictandCustomer;
+        java.lang.Throwable throwableLocal9;
+        long tid_setDistrictandCustomer;
+        java.lang.Thread thread_setDistrictandCustomer;
+
+        this := @this: spec.jbb.NewOrderTransaction;
+        inDistrictId := @parameter0: byte;
+        inCustomerId := @parameter1: short;
+        thread_setDistrictandCustomer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setDistrictandCustomer = virtualinvoke thread_setDistrictandCustomer.<java.lang.Thread: long getId()>();
+        localthislocksetDistrictandCustomer = this;
+
+     label0:
+        entermonitor localthislocksetDistrictandCustomer;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislocksetDistrictandCustomer, 0, tid_setDistrictandCustomer);
+        this.<spec.jbb.NewOrderTransaction: byte districtId> = inDistrictId;
+        this.<spec.jbb.NewOrderTransaction: short customerId> = inCustomerId;
+        $r0 = this.<spec.jbb.NewOrderTransaction: spec.jbb.Warehouse warehousePtr>;
+        $b0 = this.<spec.jbb.NewOrderTransaction: byte districtId>;
+        $r1 = virtualinvoke $r0.<spec.jbb.Warehouse: spec.jbb.District getDistrictPtr(byte,boolean)>($b0, 0);
+        this.<spec.jbb.NewOrderTransaction: spec.jbb.District districtPtr> = $r1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislocksetDistrictandCustomer, 0, tid_setDistrictandCustomer);
+        exitmonitor localthislocksetDistrictandCustomer;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        throwableLocal9 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislocksetDistrictandCustomer, 0, tid_setDistrictandCustomer);
+        exitmonitor localthislocksetDistrictandCustomer;
+
+     label4:
+        throw throwableLocal9;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+}

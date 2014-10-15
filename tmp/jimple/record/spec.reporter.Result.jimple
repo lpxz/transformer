@@ -1,0 +1,751 @@
+public class spec.reporter.Result extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+    private static double maxBarWidth;
+    private static java.text.DecimalFormat memFormat;
+    private int best;
+    private int digits;
+    public java.lang.StringBuffer invalidReason;
+    public java.lang.String name;
+    public double referenceTime;
+    public spec.reporter.Run[] run;
+    public boolean valid;
+    public double weight;
+    private int worst;
+    private double score;
+    private int warehouses;
+    public double heapsize;
+    public double heapused;
+    public double min_thread_transactions;
+    public double max_thread_transactions;
+    public double elapsed;
+    public double meas_int;
+    public double expected_peak;
+    public int jvm_instances;
+    public double ramp_up_int;
+    public long start_rampup_time_milliseconds;
+    public long end_rampdown_time_milliseconds;
+    public long start_time_milliseconds;
+    public long end_time_milliseconds;
+
+    static void <clinit>()
+    {
+        java.text.DecimalFormat $r0;
+
+        <spec.reporter.Result: double maxBarWidth> = 0.0;
+        $r0 = new java.text.DecimalFormat;
+        specialinvoke $r0.<java.text.DecimalFormat: void <init>(java.lang.String)>("##.0");
+        <spec.reporter.Result: java.text.DecimalFormat memFormat> = $r0;
+        return;
+    }
+
+    public void <init>(java.lang.String, spec.reporter.ReportProps)
+    {
+        spec.reporter.Result this;
+        java.lang.String name, $r2, $r9, $r10;
+        spec.reporter.ReportProps props;
+        java.util.Vector rv, $r3;
+        int i, $i1, $i2;
+        spec.reporter.Run r, $r4, $r12;
+        java.lang.StringBuffer $r0, $r7;
+        java.lang.StringBuilder $r1, $r8;
+        double $d0, $d1;
+        byte $b0;
+        long $l3;
+        spec.reporter.Run[] $r5, $r6;
+        java.lang.Object $r11;
+
+        this := @this: spec.reporter.Result;
+        name := @parameter0: java.lang.String;
+        props := @parameter1: spec.reporter.ReportProps;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<spec.reporter.Result: int best> = -1;
+        this.<spec.reporter.Result: int digits> = 3;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        this.<spec.reporter.Result: java.lang.StringBuffer invalidReason> = $r0;
+        this.<spec.reporter.Result: boolean valid> = 1;
+        this.<spec.reporter.Result: int worst> = -1;
+        this.<spec.reporter.Result: java.lang.String name> = name;
+        this.<spec.reporter.Result: double weight> = 1.0;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("config.");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".ref");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $d0 = virtualinvoke props.<spec.reporter.ReportProps: double getDouble(java.lang.Object)>($r2);
+        this.<spec.reporter.Result: double referenceTime> = $d0;
+        $d1 = <spec.reporter.Result: double maxBarWidth>;
+        $b0 = $d1 cmpg 0.0;
+        if $b0 > 0 goto label0;
+
+        $d1 = virtualinvoke props.<spec.reporter.ReportProps: double getDouble(java.lang.Object)>("config.report.maxBarWidth");
+        <spec.reporter.Result: double maxBarWidth> = $d1;
+
+     label0:
+        $r3 = new java.util.Vector;
+        specialinvoke $r3.<java.util.Vector: void <init>(int)>(8);
+        rv = $r3;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".company.score");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $d0 = virtualinvoke props.<spec.reporter.ReportProps: double getDouble(java.lang.Object)>($r2);
+        this.<spec.reporter.Result: double score> = $d0;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".warehouses");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $i1 = virtualinvoke props.<spec.reporter.ReportProps: int getInt(java.lang.Object)>($r2);
+        this.<spec.reporter.Result: int warehouses> = $i1;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".elapsed_milliseconds");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $d0 = virtualinvoke props.<spec.reporter.ReportProps: double getDouble(java.lang.Object)>($r2);
+        this.<spec.reporter.Result: double elapsed> = $d0;
+        $d0 = virtualinvoke props.<spec.reporter.ReportProps: double getDouble(java.lang.Object)>("input.measurement_seconds");
+        this.<spec.reporter.Result: double meas_int> = $d0;
+        $i1 = virtualinvoke props.<spec.reporter.ReportProps: int getInt(java.lang.Object)>("input.jvm_instances");
+        this.<spec.reporter.Result: int jvm_instances> = $i1;
+        $d0 = virtualinvoke props.<spec.reporter.ReportProps: double getDouble(java.lang.Object)>("input.expected_peak_warehouse");
+        this.<spec.reporter.Result: double expected_peak> = $d0;
+        $d0 = virtualinvoke props.<spec.reporter.ReportProps: double getDouble(java.lang.Object)>("input.ramp_up_seconds");
+        this.<spec.reporter.Result: double ramp_up_int> = $d0;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".company.heapsize");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $d0 = virtualinvoke props.<spec.reporter.ReportProps: double getDouble(java.lang.Object)>($r2);
+        this.<spec.reporter.Result: double heapsize> = $d0;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".company.heapused");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $d0 = virtualinvoke props.<spec.reporter.ReportProps: double getDouble(java.lang.Object)>($r2);
+        this.<spec.reporter.Result: double heapused> = $d0;
+        $i2 = this.<spec.reporter.Result: int jvm_instances>;
+        if $i2 <= 1 goto label1;
+
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".start_rampup_time_milliseconds");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $l3 = virtualinvoke props.<spec.reporter.ReportProps: long getLong(java.lang.Object)>($r2);
+        this.<spec.reporter.Result: long start_rampup_time_milliseconds> = $l3;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".end_rampdown_time_milliseconds");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $l3 = virtualinvoke props.<spec.reporter.ReportProps: long getLong(java.lang.Object)>($r2);
+        this.<spec.reporter.Result: long end_rampdown_time_milliseconds> = $l3;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".start_time_milliseconds");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $l3 = virtualinvoke props.<spec.reporter.ReportProps: long getLong(java.lang.Object)>($r2);
+        this.<spec.reporter.Result: long start_time_milliseconds> = $l3;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".end_time_milliseconds");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $l3 = virtualinvoke props.<spec.reporter.ReportProps: long getLong(java.lang.Object)>($r2);
+        this.<spec.reporter.Result: long end_time_milliseconds> = $l3;
+
+     label1:
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".company.min_thread_transactions");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $d0 = virtualinvoke props.<spec.reporter.ReportProps: double getDouble(java.lang.Object)>($r2);
+        this.<spec.reporter.Result: double min_thread_transactions> = $d0;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("result.");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".company.max_thread_transactions");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $d0 = virtualinvoke props.<spec.reporter.ReportProps: double getDouble(java.lang.Object)>($r2);
+        this.<spec.reporter.Result: double max_thread_transactions> = $d0;
+        i = 0;
+        goto label3;
+
+     label2:
+        $r4 = new spec.reporter.Run;
+        specialinvoke $r4.<spec.reporter.Run: void <init>(spec.reporter.ReportProps,int,double,spec.reporter.Result)>(props, i, 17.0, this);
+        r = $r4;
+        virtualinvoke rv.<java.util.Vector: void addElement(java.lang.Object)>(r);
+        i = i + 1;
+
+     label3:
+        if i < 6 goto label2;
+
+        this.<spec.reporter.Result: int best> = 2;
+        this.<spec.reporter.Result: int worst> = 1;
+        $i1 = virtualinvoke rv.<java.util.Vector: int size()>();
+        $r5 = newarray (spec.reporter.Run)[$i1];
+        this.<spec.reporter.Result: spec.reporter.Run[] run> = $r5;
+        $r6 = this.<spec.reporter.Result: spec.reporter.Run[] run>;
+        $i2 = lengthof $r6;
+        if $i2 != 0 goto label4;
+
+        this.<spec.reporter.Result: boolean valid> = 0;
+        $r7 = this.<spec.reporter.Result: java.lang.StringBuffer invalidReason>;
+        $r8 = new java.lang.StringBuilder;
+        $r9 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(name);
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>(java.lang.String)>($r9);
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" was not run\n");
+        $r10 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r10);
+        goto label7;
+
+     label4:
+        i = 0;
+        goto label6;
+
+     label5:
+        $r6 = this.<spec.reporter.Result: spec.reporter.Run[] run>;
+        $r11 = virtualinvoke rv.<java.util.Vector: java.lang.Object elementAt(int)>(i);
+        $r12 = (spec.reporter.Run) $r11;
+        $r6[i] = $r12;
+        i = i + 1;
+
+     label6:
+        $r5 = this.<spec.reporter.Result: spec.reporter.Run[] run>;
+        $i1 = lengthof $r5;
+        if i < $i1 goto label5;
+
+     label7:
+        return;
+    }
+
+    public double score()
+    {
+        spec.reporter.Result this;
+        double $d0;
+
+        this := @this: spec.reporter.Result;
+        $d0 = this.<spec.reporter.Result: double score>;
+        return $d0;
+    }
+
+    public int warehouses()
+    {
+        spec.reporter.Result this;
+        int $i0;
+
+        this := @this: spec.reporter.Result;
+        $i0 = this.<spec.reporter.Result: int warehouses>;
+        return $i0;
+    }
+
+    public double elapsed()
+    {
+        spec.reporter.Result this;
+        double $d0;
+
+        this := @this: spec.reporter.Result;
+        $d0 = this.<spec.reporter.Result: double elapsed>;
+        return $d0;
+    }
+
+    public double meas_int()
+    {
+        spec.reporter.Result this;
+        double $d0;
+
+        this := @this: spec.reporter.Result;
+        $d0 = this.<spec.reporter.Result: double meas_int>;
+        return $d0;
+    }
+
+    public double ramp_up_int()
+    {
+        spec.reporter.Result this;
+        double $d0;
+
+        this := @this: spec.reporter.Result;
+        $d0 = this.<spec.reporter.Result: double ramp_up_int>;
+        return $d0;
+    }
+
+    public double expected_peak()
+    {
+        spec.reporter.Result this;
+        double $d0;
+
+        this := @this: spec.reporter.Result;
+        $d0 = this.<spec.reporter.Result: double expected_peak>;
+        return $d0;
+    }
+
+    public long rampup_millis()
+    {
+        spec.reporter.Result this;
+        long $l0;
+
+        this := @this: spec.reporter.Result;
+        $l0 = this.<spec.reporter.Result: long start_rampup_time_milliseconds>;
+        return $l0;
+    }
+
+    public long rampdown_millis()
+    {
+        spec.reporter.Result this;
+        long $l0;
+
+        this := @this: spec.reporter.Result;
+        $l0 = this.<spec.reporter.Result: long end_rampdown_time_milliseconds>;
+        return $l0;
+    }
+
+    public long start_millis()
+    {
+        spec.reporter.Result this;
+        long $l0;
+
+        this := @this: spec.reporter.Result;
+        $l0 = this.<spec.reporter.Result: long start_time_milliseconds>;
+        return $l0;
+    }
+
+    public long end_millis()
+    {
+        spec.reporter.Result this;
+        long $l0;
+
+        this := @this: spec.reporter.Result;
+        $l0 = this.<spec.reporter.Result: long end_time_milliseconds>;
+        return $l0;
+    }
+
+    public java.lang.String toDetailRows()
+    {
+        spec.reporter.Result this;
+        java.lang.StringBuffer $r0, buf;
+        int i, $i0, $i1, $i2;
+        spec.reporter.Run[] $r1, $r5, $r6;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3, $r4, $r7;
+        double $d0, $d1, $d2, $d3;
+
+        this := @this: spec.reporter.Result;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(java.lang.String)>("<TR>\n");
+        buf = $r0;
+        $r1 = this.<spec.reporter.Result: spec.reporter.Run[] run>;
+        $i0 = lengthof $r1;
+        if $i0 != 0 goto label0;
+
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD>");
+        $r3 = this.<spec.reporter.Result: java.lang.String name>;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD COLSPAN=8><I>not run</I></TD>\n");
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("</TABLE>");
+        goto label3;
+
+     label0:
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD VALIGN=TOP ALIGN=RIGHT ROWSPAN=");
+        $r5 = this.<spec.reporter.Result: spec.reporter.Run[] run>;
+        $i1 = lengthof $r5;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(">");
+        $i1 = this.<spec.reporter.Result: int warehouses>;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD VALIGN=TOP ALIGN=RIGHT ROWSPAN=");
+        $r5 = this.<spec.reporter.Result: spec.reporter.Run[] run>;
+        $i1 = lengthof $r5;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(">");
+        $d0 = this.<spec.reporter.Result: double score>;
+        $r3 = staticinvoke <spec.reporter.Metrics: java.lang.String format(double)>($d0);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD VALIGN=TOP ALIGN=RIGHT ROWSPAN=");
+        $r5 = this.<spec.reporter.Result: spec.reporter.Run[] run>;
+        $i1 = lengthof $r5;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(">");
+        $d0 = this.<spec.reporter.Result: double heapsize>;
+        $r3 = staticinvoke <spec.reporter.Metrics: java.lang.String format(double)>($d0);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD VALIGN=TOP ALIGN=RIGHT ROWSPAN=");
+        $r5 = this.<spec.reporter.Result: spec.reporter.Run[] run>;
+        $i1 = lengthof $r5;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(">");
+        $d0 = this.<spec.reporter.Result: double heapused>;
+        $r3 = staticinvoke <spec.reporter.Metrics: java.lang.String format(double)>($d0);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD VALIGN=TOP ALIGN=CENTER ROWSPAN=");
+        $r5 = this.<spec.reporter.Result: spec.reporter.Run[] run>;
+        $i1 = lengthof $r5;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(">");
+        $d1 = this.<spec.reporter.Result: double max_thread_transactions>;
+        $d2 = this.<spec.reporter.Result: double min_thread_transactions>;
+        $d1 = $d1 - $d2;
+        $d0 = 100.0 * $d1;
+        $d1 = this.<spec.reporter.Result: double max_thread_transactions>;
+        $d0 = $d0 / $d1;
+        $r3 = staticinvoke <spec.reporter.Metrics: java.lang.String format(double)>($d0);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("% </TD>\n");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD VALIGN=TOP ALIGN=RIGHT ROWSPAN=");
+        $r5 = this.<spec.reporter.Result: spec.reporter.Run[] run>;
+        $i1 = lengthof $r5;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(">");
+        $d1 = this.<spec.reporter.Result: double elapsed>;
+        $d3 = this.<spec.reporter.Result: double meas_int>;
+        $d2 = 1000.0 * $d3;
+        $d1 = $d1 - $d2;
+        $d2 = this.<spec.reporter.Result: double meas_int>;
+        $d1 = $d1 / $d2;
+        $d0 = 0.1 * $d1;
+        $r3 = staticinvoke <spec.reporter.Metrics: java.lang.String format(double)>($d0);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r4 = specialinvoke this.<spec.reporter.Result: java.lang.String detailRow(int)>(0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("</TR>\n");
+        i = 1;
+        goto label2;
+
+     label1:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("<TR>\n");
+        $r4 = specialinvoke this.<spec.reporter.Result: java.lang.String detailRow(int)>(i);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("</TR>\n");
+        i = i + 1;
+
+     label2:
+        $r6 = this.<spec.reporter.Result: spec.reporter.Run[] run>;
+        $i2 = lengthof $r6;
+        if i < $i2 goto label1;
+
+     label3:
+        $r7 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r7;
+    }
+
+    private java.lang.String detailRow(int)
+    {
+        spec.reporter.Result this;
+        int n, $i0;
+        java.lang.StringBuffer $r0, buf;
+        java.lang.StringBuilder $r1;
+        java.lang.String[] $r2;
+        java.lang.String $r3, $r4, $r7;
+        spec.reporter.Run[] $r5;
+        spec.reporter.Run $r6;
+        double $d0;
+        long tid_detailRow;
+        java.lang.Thread thread_detailRow;
+
+        this := @this: spec.reporter.Result;
+        n := @parameter0: int;
+        thread_detailRow = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_detailRow = virtualinvoke thread_detailRow.<java.lang.Thread: long getId()>();
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buf = $r0;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD ALIGN=RIGHT>");
+        $r2 = <spec.reporter.Run: java.lang.String[] transaction>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r2, 23, tid_detailRow, "spec.reporter.Result", 230, n, $r3);
+        $r3 = $r2[n];
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r4 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD ALIGN=RIGHT>");
+        $r5 = this.<spec.reporter.Result: spec.reporter.Run[] run>;
+        $r6 = $r5[n];
+        $i0 = $r6.<spec.reporter.Run: int count>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r4 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD ALIGN=RIGHT>");
+        $r5 = this.<spec.reporter.Result: spec.reporter.Run[] run>;
+        $r6 = $r5[n];
+        $d0 = $r6.<spec.reporter.Run: double totaltime>;
+        $r3 = staticinvoke <spec.reporter.Metrics: java.lang.String format(double)>($d0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r4 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD ALIGN=RIGHT>");
+        $r5 = this.<spec.reporter.Result: spec.reporter.Run[] run>;
+        $r6 = $r5[n];
+        $d0 = $r6.<spec.reporter.Run: double maximumtime>;
+        $r3 = staticinvoke <spec.reporter.Metrics: java.lang.String format(double)>($d0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r4 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r7 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r7;
+    }
+
+    public java.lang.String toRow(int)
+    {
+        spec.reporter.Result this;
+        int whAtPeak, $i0, $i1, $i2;
+        java.lang.StringBuffer $r0, buf;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2, $r3, $r4;
+        double $d0;
+
+        this := @this: spec.reporter.Result;
+        whAtPeak := @parameter0: int;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(java.lang.String)>("<TR>\n");
+        buf = $r0;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD ALIGN=RIGHT>");
+        $i0 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD ALIGN=RIGHT>");
+        $d0 = virtualinvoke this.<spec.reporter.Result: double score()>();
+        $r3 = staticinvoke <spec.reporter.Metrics: java.lang.String format(double)>($d0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $i1 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        if whAtPeak > $i1 goto label0;
+
+        $i2 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        $i1 = 2 * whAtPeak;
+        if $i2 > $i1 goto label0;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD ALIGN=RIGHT> *  </TD>\n");
+        goto label1;
+
+     label0:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD ALIGN=RIGHT>    </TD>\n");
+
+     label1:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("</TR>\n");
+        $r4 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r4;
+    }
+
+    public java.lang.String toFirstRow(int)
+    {
+        spec.reporter.Result this;
+        int whAtPeak, $i0, $i1, $i2;
+        java.lang.StringBuffer $r0, buf;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2, $r3, $r4;
+        double $d0;
+
+        this := @this: spec.reporter.Result;
+        whAtPeak := @parameter0: int;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(java.lang.String)>("<TR>\n");
+        buf = $r0;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD ALIGN=RIGHT>");
+        $i0 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD ALIGN=RIGHT>");
+        $d0 = virtualinvoke this.<spec.reporter.Result: double score()>();
+        $r3 = staticinvoke <spec.reporter.Metrics: java.lang.String format(double)>($d0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $i1 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        if whAtPeak > $i1 goto label0;
+
+        $i2 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        $i1 = 2 * whAtPeak;
+        if $i2 > $i1 goto label0;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD ALIGN=RIGHT> *  </TD>\n");
+        goto label1;
+
+     label0:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD ALIGN=RIGHT>  &nbsp   </TD>\n");
+
+     label1:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD ALIGN=RIGHT>  &nbsp </TD>\n");
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD ALIGN=RIGHT>  &nbsp   </TD>\n");
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("</TR>\n");
+        $r4 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r4;
+    }
+
+    public java.lang.String shifted_toRow(int)
+    {
+        spec.reporter.Result this;
+        int whAtPeak, $i0, $i1, $i2;
+        java.lang.StringBuffer $r0, buf;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2, $r3, $r4;
+        double $d0;
+
+        this := @this: spec.reporter.Result;
+        whAtPeak := @parameter0: int;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(java.lang.String)>("<TR>\n");
+        buf = $r0;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD ALIGN=RIGHT>");
+        $i0 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD ALIGN=RIGHT>&nbsp</TD>\n");
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD ALIGN=RIGHT>&nbsp</TD>\n");
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD ALIGN=RIGHT>");
+        $d0 = virtualinvoke this.<spec.reporter.Result: double score()>();
+        $r3 = staticinvoke <spec.reporter.Metrics: java.lang.String format(double)>($d0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $i1 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        if whAtPeak > $i1 goto label0;
+
+        $i2 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        $i1 = 2 * whAtPeak;
+        if $i2 > $i1 goto label0;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD ALIGN=RIGHT> *  </TD>\n");
+        goto label1;
+
+     label0:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD ALIGN=RIGHT>  &nbsp   </TD>\n");
+
+     label1:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("</TR>\n");
+        $r4 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r4;
+    }
+
+    public java.lang.String TwoRow(spec.reporter.Result, spec.reporter.Metrics, int, int)
+    {
+        spec.reporter.Result this, result_2;
+        spec.reporter.Metrics metrics_2;
+        int whAtPeak, whAtPeak2, $i0, $i1, $i2, $i3;
+        java.lang.StringBuffer $r0, buf;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2, $r3, $r4;
+        double $d0;
+
+        this := @this: spec.reporter.Result;
+        result_2 := @parameter0: spec.reporter.Result;
+        metrics_2 := @parameter1: spec.reporter.Metrics;
+        whAtPeak := @parameter2: int;
+        whAtPeak2 := @parameter3: int;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(java.lang.String)>("<TR>\n");
+        buf = $r0;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD ALIGN=RIGHT>");
+        $i0 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD ALIGN=RIGHT>");
+        $d0 = virtualinvoke this.<spec.reporter.Result: double score()>();
+        $r3 = staticinvoke <spec.reporter.Metrics: java.lang.String format(double)>($d0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $i1 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        if whAtPeak > $i1 goto label0;
+
+        $i2 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        $i1 = 2 * whAtPeak;
+        if $i2 > $i1 goto label0;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD ALIGN=RIGHT> *  </TD>\n");
+        goto label1;
+
+     label0:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD ALIGN=RIGHT>  &nbsp   </TD>\n");
+
+     label1:
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("  <TD ALIGN=RIGHT>");
+        $i3 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        $d0 = virtualinvoke metrics_2.<spec.reporter.Metrics: double score_at_wh(int)>($i3);
+        $r3 = staticinvoke <spec.reporter.Metrics: java.lang.String format(double)>($d0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</TD>\n");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $i1 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        if whAtPeak2 > $i1 goto label2;
+
+        $i2 = virtualinvoke this.<spec.reporter.Result: int warehouses()>();
+        $i1 = 2 * whAtPeak2;
+        if $i2 > $i1 goto label2;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD ALIGN=RIGHT> *  </TD>\n");
+        goto label3;
+
+     label2:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  <TD ALIGN=RIGHT>   &nbsp  </TD>\n");
+
+     label3:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("</TR>\n");
+        $r4 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r4;
+    }
+}

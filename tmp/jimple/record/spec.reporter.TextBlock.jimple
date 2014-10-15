@@ -1,0 +1,558 @@
+public class spec.reporter.TextBlock extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+    private static final char NL;
+    private static final java.lang.String columnSeparator;
+    private java.util.Vector lines;
+    private java.lang.String spaces;
+    private int width;
+
+    public void <init>(int)
+    {
+        spec.reporter.TextBlock this;
+        int width;
+        java.util.Vector $r0;
+        java.lang.String $r1;
+
+        this := @this: spec.reporter.TextBlock;
+        width := @parameter0: int;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new java.util.Vector;
+        specialinvoke $r0.<java.util.Vector: void <init>()>();
+        this.<spec.reporter.TextBlock: java.util.Vector lines> = $r0;
+        this.<spec.reporter.TextBlock: int width> = width;
+        $r1 = staticinvoke <spec.reporter.TextBlock: java.lang.String rep(java.lang.String,int)>(" ", width);
+        this.<spec.reporter.TextBlock: java.lang.String spaces> = $r1;
+        return;
+    }
+
+    public void <init>(int, java.lang.String)
+    {
+        spec.reporter.TextBlock this;
+        int width;
+        java.lang.String text, $r0;
+
+        this := @this: spec.reporter.TextBlock;
+        width := @parameter0: int;
+        text := @parameter1: java.lang.String;
+        specialinvoke this.<spec.reporter.TextBlock: void <init>(int)>(width);
+        virtualinvoke this.<spec.reporter.TextBlock: void add(java.lang.String)>(text);
+        $r0 = staticinvoke <spec.reporter.TextBlock: java.lang.String rep(java.lang.String,int)>(" ", width);
+        this.<spec.reporter.TextBlock: java.lang.String spaces> = $r0;
+        return;
+    }
+
+    public static void main(java.lang.String[])
+    {
+        java.lang.String[] args;
+        int width, $i0;
+        java.lang.NumberFormatException l2, $r1;
+        spec.reporter.TextBlock t, t1, t2, $r2;
+        java.lang.String $r0, $r4;
+        java.io.PrintStream $r3;
+        long tid_main;
+        java.lang.Thread thread_main;
+
+        args := @parameter0: java.lang.String[];
+        thread_main = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_main = virtualinvoke thread_main.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStartRun(long,java.lang.String,java.lang.String[])>(tid_main, "spec.reporter.TextBlock.main", args);
+        width = 40;
+        $i0 = lengthof args;
+        if $i0 <= 0 goto label3;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 23, tid_main, "spec.reporter.TextBlock", 64, 0, $r0);
+        $r0 = args[0];
+        width = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r0);
+
+     label1:
+        goto label3;
+
+     label2:
+        $r1 := @caughtexception;
+        l2 = $r1;
+
+     label3:
+        $r2 = new spec.reporter.TextBlock;
+        specialinvoke $r2.<spec.reporter.TextBlock: void <init>(int)>(width);
+        t = $r2;
+        virtualinvoke t.<spec.reporter.TextBlock: void add(java.lang.String)>("Now is the time for all good men to come to the aid of their country");
+        virtualinvoke t.<spec.reporter.TextBlock: void add(java.lang.String)>("Mary had a little lamb. Its fleece was white as snow.");
+        virtualinvoke t.<spec.reporter.TextBlock: void add(java.lang.String)>("A veryverylongwordalmomstlikeaGermanwordinlength added here");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("*** left");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r4 = virtualinvoke t.<spec.reporter.TextBlock: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r4);
+        $r2 = new spec.reporter.TextBlock;
+        specialinvoke $r2.<spec.reporter.TextBlock: void <init>(int)>(20);
+        t1 = $r2;
+        virtualinvoke t1.<spec.reporter.TextBlock: void add(java.lang.String)>("The quick brown fox jumped over the lazy white dog.");
+        virtualinvoke t1.<spec.reporter.TextBlock: void add(java.lang.String)>("She sells sea shells by the sea shore.");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("*** right");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r4 = virtualinvoke t1.<spec.reporter.TextBlock: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r4);
+        t2 = virtualinvoke t.<spec.reporter.TextBlock: spec.reporter.TextBlock join(spec.reporter.TextBlock)>(t1);
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("*** together");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r4 = virtualinvoke t2.<spec.reporter.TextBlock: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r4);
+        virtualinvoke t2.<spec.reporter.TextBlock: void add(spec.reporter.TextBlock)>(t);
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("*** appended");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r4 = virtualinvoke t2.<spec.reporter.TextBlock: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r4);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "spec.reporter.TextBlock.main", args);
+        return;
+
+        catch java.lang.NumberFormatException from label0 to label1 with label2;
+    }
+
+    private static java.lang.String rep(java.lang.String, int)
+    {
+        java.lang.String s, $r1;
+        int n, i;
+        java.lang.StringBuffer $r0, buf;
+
+        s := @parameter0: java.lang.String;
+        n := @parameter1: int;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buf = $r0;
+        i = 0;
+        goto label1;
+
+     label0:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(s);
+        i = i + 1;
+
+     label1:
+        if i < n goto label0;
+
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String justifyLeft(java.lang.String, int)
+    {
+        java.lang.String s, $r1, $r2, $r3;
+        int width, slen, $i0;
+        java.lang.StringBuilder $r0;
+
+        s := @parameter0: java.lang.String;
+        width := @parameter1: int;
+        slen = virtualinvoke s.<java.lang.String: int length()>();
+        if slen >= width goto label0;
+
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(s);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $i0 = width - slen;
+        $r2 = staticinvoke <spec.reporter.TextBlock: java.lang.String rep(java.lang.String,int)>(" ", $i0);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+        $r3 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r3;
+
+     label0:
+        $r3 = virtualinvoke s.<java.lang.String: java.lang.String substring(int,int)>(0, width);
+        return $r3;
+    }
+
+    public static java.lang.String justifyRight(java.lang.String, int)
+    {
+        java.lang.String s, $r1, $r2;
+        int width, slen, $i0, $i1;
+        java.lang.StringBuilder $r0;
+
+        s := @parameter0: java.lang.String;
+        width := @parameter1: int;
+        slen = virtualinvoke s.<java.lang.String: int length()>();
+        if slen >= width goto label0;
+
+        $r0 = new java.lang.StringBuilder;
+        $i0 = width - slen;
+        $r1 = staticinvoke <spec.reporter.TextBlock: java.lang.String rep(java.lang.String,int)>(" ", $i0);
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r1);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(s);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r2;
+
+     label0:
+        $i1 = slen - width;
+        $r2 = virtualinvoke s.<java.lang.String: java.lang.String substring(int)>($i1);
+        return $r2;
+    }
+
+    public void add(java.lang.String)
+    {
+        spec.reporter.TextBlock this;
+        java.lang.String text, $r1, $r2;
+        int len, i, j, $i0, $i1, $i3, $i4, $i5;
+        char $c2;
+        java.util.Vector $r0;
+
+        this := @this: spec.reporter.TextBlock;
+        text := @parameter0: java.lang.String;
+        len = virtualinvoke text.<java.lang.String: int length()>();
+        i = 0;
+        goto label5;
+
+     label0:
+        i = i + 1;
+        $i0 = len - i;
+        $i1 = this.<spec.reporter.TextBlock: int width>;
+        if $i0 <= $i1 goto label1;
+
+        goto label6;
+
+     label1:
+        $c2 = virtualinvoke text.<java.lang.String: char charAt(int)>(i);
+        if $c2 == 32 goto label0;
+
+        j = virtualinvoke text.<java.lang.String: int lastIndexOf(int)>(32);
+        goto label3;
+
+     label2:
+        $i3 = j - 1;
+        j = virtualinvoke text.<java.lang.String: int lastIndexOf(int,int)>(32, $i3);
+
+     label3:
+        $i3 = this.<spec.reporter.TextBlock: int width>;
+        $i1 = i + $i3;
+        if j > $i1 goto label2;
+
+        if j >= i goto label4;
+
+        $r0 = this.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $i4 = this.<spec.reporter.TextBlock: int width>;
+        $i5 = i + $i4;
+        $r1 = virtualinvoke text.<java.lang.String: java.lang.String substring(int,int)>(i, $i5);
+        virtualinvoke $r0.<java.util.Vector: void addElement(java.lang.Object)>($r1);
+        $i1 = this.<spec.reporter.TextBlock: int width>;
+        i = i + $i1;
+        goto label5;
+
+     label4:
+        $r0 = this.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $r2 = virtualinvoke text.<java.lang.String: java.lang.String substring(int,int)>(i, j);
+        $r1 = specialinvoke this.<spec.reporter.TextBlock: java.lang.String justifyLeft(java.lang.String)>($r2);
+        virtualinvoke $r0.<java.util.Vector: void addElement(java.lang.Object)>($r1);
+        i = j + 1;
+
+     label5:
+        $i0 = len - i;
+        $i1 = this.<spec.reporter.TextBlock: int width>;
+        if $i0 > $i1 goto label1;
+
+     label6:
+        $r0 = this.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $r2 = virtualinvoke text.<java.lang.String: java.lang.String substring(int)>(i);
+        $r1 = specialinvoke this.<spec.reporter.TextBlock: java.lang.String justifyLeft(java.lang.String)>($r2);
+        virtualinvoke $r0.<java.util.Vector: void addElement(java.lang.Object)>($r1);
+        return;
+    }
+
+    public void addRight(java.lang.String)
+    {
+        spec.reporter.TextBlock this;
+        java.lang.String text, $r1, $r2;
+        int len, i, j, $i0, $i1, $i3, $i4, $i5;
+        char $c2;
+        java.util.Vector $r0;
+
+        this := @this: spec.reporter.TextBlock;
+        text := @parameter0: java.lang.String;
+        len = virtualinvoke text.<java.lang.String: int length()>();
+        i = 0;
+        goto label5;
+
+     label0:
+        i = i + 1;
+        $i0 = len - i;
+        $i1 = this.<spec.reporter.TextBlock: int width>;
+        if $i0 <= $i1 goto label1;
+
+        goto label6;
+
+     label1:
+        $c2 = virtualinvoke text.<java.lang.String: char charAt(int)>(i);
+        if $c2 == 32 goto label0;
+
+        j = virtualinvoke text.<java.lang.String: int lastIndexOf(int)>(32);
+        goto label3;
+
+     label2:
+        $i3 = j - 1;
+        j = virtualinvoke text.<java.lang.String: int lastIndexOf(int,int)>(32, $i3);
+
+     label3:
+        $i3 = this.<spec.reporter.TextBlock: int width>;
+        $i1 = i + $i3;
+        if j > $i1 goto label2;
+
+        if j >= i goto label4;
+
+        $r0 = this.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $i4 = this.<spec.reporter.TextBlock: int width>;
+        $i5 = i + $i4;
+        $r1 = virtualinvoke text.<java.lang.String: java.lang.String substring(int,int)>(i, $i5);
+        virtualinvoke $r0.<java.util.Vector: void addElement(java.lang.Object)>($r1);
+        $i1 = this.<spec.reporter.TextBlock: int width>;
+        i = i + $i1;
+        goto label5;
+
+     label4:
+        $r0 = this.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $r2 = virtualinvoke text.<java.lang.String: java.lang.String substring(int,int)>(i, j);
+        $r1 = specialinvoke this.<spec.reporter.TextBlock: java.lang.String justifyRight(java.lang.String)>($r2);
+        virtualinvoke $r0.<java.util.Vector: void addElement(java.lang.Object)>($r1);
+        i = j + 1;
+
+     label5:
+        $i0 = len - i;
+        $i1 = this.<spec.reporter.TextBlock: int width>;
+        if $i0 > $i1 goto label1;
+
+     label6:
+        $r0 = this.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $r2 = virtualinvoke text.<java.lang.String: java.lang.String substring(int)>(i);
+        $r1 = specialinvoke this.<spec.reporter.TextBlock: java.lang.String justifyRight(java.lang.String)>($r2);
+        virtualinvoke $r0.<java.util.Vector: void addElement(java.lang.Object)>($r1);
+        return;
+    }
+
+    public void add(spec.reporter.TextBlock)
+    {
+        spec.reporter.TextBlock this, block;
+        java.util.Enumeration e;
+        java.util.Vector $r0;
+        java.lang.Object $r1;
+        java.lang.String $r2;
+        boolean $z0;
+        int $i0, $i1;
+
+        this := @this: spec.reporter.TextBlock;
+        block := @parameter0: spec.reporter.TextBlock;
+        $r0 = block.<spec.reporter.TextBlock: java.util.Vector lines>;
+        e = virtualinvoke $r0.<java.util.Vector: java.util.Enumeration elements()>();
+        goto label1;
+
+     label0:
+        $r0 = this.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $r1 = interfaceinvoke e.<java.util.Enumeration: java.lang.Object nextElement()>();
+        $r2 = (java.lang.String) $r1;
+        virtualinvoke $r0.<java.util.Vector: void addElement(java.lang.Object)>($r2);
+
+     label1:
+        $z0 = interfaceinvoke e.<java.util.Enumeration: boolean hasMoreElements()>();
+        if $z0 != 0 goto label0;
+
+        $i0 = this.<spec.reporter.TextBlock: int width>;
+        $i1 = block.<spec.reporter.TextBlock: int width>;
+        $i0 = staticinvoke <java.lang.Math: int max(int,int)>($i0, $i1);
+        this.<spec.reporter.TextBlock: int width> = $i0;
+        return;
+    }
+
+    public spec.reporter.TextBlock join(spec.reporter.TextBlock)
+    {
+        spec.reporter.TextBlock this, right, $r0;
+
+        this := @this: spec.reporter.TextBlock;
+        right := @parameter0: spec.reporter.TextBlock;
+        $r0 = virtualinvoke this.<spec.reporter.TextBlock: spec.reporter.TextBlock join(spec.reporter.TextBlock,java.lang.String)>(right, " | ");
+        return $r0;
+    }
+
+    public spec.reporter.TextBlock join(spec.reporter.TextBlock, java.lang.String)
+    {
+        spec.reporter.TextBlock this, right, combined, $r0;
+        java.lang.String columnSeparator, $r5, $r8, $r9;
+        int nleft, nright, n, i, $i0, $i1;
+        java.util.Vector $r1, $r3, $r6;
+        java.lang.StringBuilder $r2;
+        java.lang.Object $r4, $r7;
+
+        this := @this: spec.reporter.TextBlock;
+        right := @parameter0: spec.reporter.TextBlock;
+        columnSeparator := @parameter1: java.lang.String;
+        nleft = virtualinvoke this.<spec.reporter.TextBlock: int size()>();
+        nright = virtualinvoke right.<spec.reporter.TextBlock: int size()>();
+        n = staticinvoke <java.lang.Math: int min(int,int)>(nleft, nright);
+        $r0 = new spec.reporter.TextBlock;
+        $i0 = this.<spec.reporter.TextBlock: int width>;
+        $i1 = virtualinvoke columnSeparator.<java.lang.String: int length()>();
+        $i0 = $i0 + $i1;
+        $i1 = right.<spec.reporter.TextBlock: int width>;
+        $i0 = $i0 + $i1;
+        specialinvoke $r0.<spec.reporter.TextBlock: void <init>(int)>($i0);
+        combined = $r0;
+        i = 0;
+        goto label1;
+
+     label0:
+        $r1 = combined.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $r2 = new java.lang.StringBuilder;
+        $r3 = this.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $r4 = virtualinvoke $r3.<java.util.Vector: java.lang.Object elementAt(int)>(i);
+        $r5 = (java.lang.String) $r4;
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r5);
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>($r5);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(columnSeparator);
+        $r6 = right.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $r7 = virtualinvoke $r6.<java.util.Vector: java.lang.Object elementAt(int)>(i);
+        $r8 = (java.lang.String) $r7;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+        $r9 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r1.<java.util.Vector: void addElement(java.lang.Object)>($r9);
+        i = i + 1;
+
+     label1:
+        if i < n goto label0;
+
+        if nleft >= nright goto label4;
+
+        i = n;
+        goto label3;
+
+     label2:
+        $r1 = combined.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $r2 = new java.lang.StringBuilder;
+        $r5 = this.<spec.reporter.TextBlock: java.lang.String spaces>;
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r5);
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>($r5);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(columnSeparator);
+        $r6 = right.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $r7 = virtualinvoke $r6.<java.util.Vector: java.lang.Object elementAt(int)>(i);
+        $r8 = (java.lang.String) $r7;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+        $r9 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r1.<java.util.Vector: void addElement(java.lang.Object)>($r9);
+        i = i + 1;
+
+     label3:
+        if i < nright goto label2;
+
+        goto label7;
+
+     label4:
+        i = n;
+        goto label6;
+
+     label5:
+        $r1 = combined.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $r2 = new java.lang.StringBuilder;
+        $r3 = this.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $r4 = virtualinvoke $r3.<java.util.Vector: java.lang.Object elementAt(int)>(i);
+        $r5 = (java.lang.String) $r4;
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r5);
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>($r5);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(columnSeparator);
+        $r8 = this.<spec.reporter.TextBlock: java.lang.String spaces>;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+        $r9 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r1.<java.util.Vector: void addElement(java.lang.Object)>($r9);
+        i = i + 1;
+
+     label6:
+        if i < nleft goto label5;
+
+     label7:
+        return combined;
+    }
+
+    private java.lang.String justifyLeft(java.lang.String)
+    {
+        spec.reporter.TextBlock this;
+        java.lang.String s, $r1, $r2, s, $r3;
+        java.lang.StringBuilder $r0;
+        int $i0;
+
+        this := @this: spec.reporter.TextBlock;
+        s := @parameter0: java.lang.String;
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(s);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r2 = this.<spec.reporter.TextBlock: java.lang.String spaces>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+        s = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $i0 = this.<spec.reporter.TextBlock: int width>;
+        $r3 = virtualinvoke s.<java.lang.String: java.lang.String substring(int,int)>(0, $i0);
+        return $r3;
+    }
+
+    private java.lang.String justifyRight(java.lang.String)
+    {
+        spec.reporter.TextBlock this;
+        java.lang.String s, $r1, s, $r2;
+        java.lang.StringBuilder $r0;
+        int slen, $i0, $i1;
+
+        this := @this: spec.reporter.TextBlock;
+        s := @parameter0: java.lang.String;
+        $r0 = new java.lang.StringBuilder;
+        $r1 = this.<spec.reporter.TextBlock: java.lang.String spaces>;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r1);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(s);
+        s = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        slen = virtualinvoke s.<java.lang.String: int length()>();
+        $i0 = this.<spec.reporter.TextBlock: int width>;
+        $i1 = slen - $i0;
+        $r2 = virtualinvoke s.<java.lang.String: java.lang.String substring(int)>($i1);
+        return $r2;
+    }
+
+    public int size()
+    {
+        spec.reporter.TextBlock this;
+        java.util.Vector $r0;
+        int $i0;
+
+        this := @this: spec.reporter.TextBlock;
+        $r0 = this.<spec.reporter.TextBlock: java.util.Vector lines>;
+        $i0 = virtualinvoke $r0.<java.util.Vector: int size()>();
+        return $i0;
+    }
+
+    public java.lang.String toString()
+    {
+        spec.reporter.TextBlock this;
+        java.lang.StringBuffer $r0, buf;
+        java.util.Enumeration e;
+        java.util.Vector $r1;
+        java.lang.Object $r2;
+        java.lang.String $r3, $r4;
+        boolean $z0;
+
+        this := @this: spec.reporter.TextBlock;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buf = $r0;
+        $r1 = this.<spec.reporter.TextBlock: java.util.Vector lines>;
+        e = virtualinvoke $r1.<java.util.Vector: java.util.Enumeration elements()>();
+        goto label1;
+
+     label0:
+        $r2 = interfaceinvoke e.<java.util.Enumeration: java.lang.Object nextElement()>();
+        $r3 = (java.lang.String) $r2;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r3);
+        $z0 = interfaceinvoke e.<java.util.Enumeration: boolean hasMoreElements()>();
+        if $z0 == 0 goto label1;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\n");
+
+     label1:
+        $z0 = interfaceinvoke e.<java.util.Enumeration: boolean hasMoreElements()>();
+        if $z0 != 0 goto label0;
+
+        $r4 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r4;
+    }
+}

@@ -1,0 +1,274 @@
+public class spec.reporter.TextColumn extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+    private static final char NL;
+    private static final java.lang.String columnSeparator;
+    private java.util.Vector blocks;
+    private int width;
+
+    public void <init>(int)
+    {
+        spec.reporter.TextColumn this;
+        int width;
+        java.util.Vector $r0;
+
+        this := @this: spec.reporter.TextColumn;
+        width := @parameter0: int;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new java.util.Vector;
+        specialinvoke $r0.<java.util.Vector: void <init>()>();
+        this.<spec.reporter.TextColumn: java.util.Vector blocks> = $r0;
+        this.<spec.reporter.TextColumn: int width> = width;
+        return;
+    }
+
+    public void <init>(int, java.lang.String)
+    {
+        spec.reporter.TextColumn this;
+        int width;
+        java.lang.String text;
+
+        this := @this: spec.reporter.TextColumn;
+        width := @parameter0: int;
+        text := @parameter1: java.lang.String;
+        specialinvoke this.<spec.reporter.TextColumn: void <init>(int)>(width);
+        virtualinvoke this.<spec.reporter.TextColumn: void add(java.lang.String)>(text);
+        return;
+    }
+
+    public static void main(java.lang.String[])
+    {
+        java.lang.String[] args;
+        int width, $i0;
+        java.lang.NumberFormatException l2, $r1;
+        spec.reporter.TextColumn t, t1, t2, $r2;
+        java.lang.String $r0, $r4;
+        java.io.PrintStream $r3;
+        long tid_main;
+        java.lang.Thread thread_main;
+
+        args := @parameter0: java.lang.String[];
+        thread_main = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_main = virtualinvoke thread_main.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStartRun(long,java.lang.String,java.lang.String[])>(tid_main, "spec.reporter.TextColumn.main", args);
+        width = 40;
+        $i0 = lengthof args;
+        if $i0 <= 0 goto label3;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 23, tid_main, "spec.reporter.TextColumn", 60, 0, $r0);
+        $r0 = args[0];
+        width = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r0);
+
+     label1:
+        goto label3;
+
+     label2:
+        $r1 := @caughtexception;
+        l2 = $r1;
+
+     label3:
+        $r2 = new spec.reporter.TextColumn;
+        specialinvoke $r2.<spec.reporter.TextColumn: void <init>(int)>(width);
+        t = $r2;
+        virtualinvoke t.<spec.reporter.TextColumn: void add(java.lang.String)>("Now is the time for all good men to come to the aid of their country");
+        virtualinvoke t.<spec.reporter.TextColumn: void add(java.lang.String)>("Mary had a little lamb. Its fleece was white as snow.");
+        virtualinvoke t.<spec.reporter.TextColumn: void add(java.lang.String)>("A veryverylongwordalmomstlikeaGermanwordinlength added here");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("*** left");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r4 = virtualinvoke t.<spec.reporter.TextColumn: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r4);
+        $r2 = new spec.reporter.TextColumn;
+        specialinvoke $r2.<spec.reporter.TextColumn: void <init>(int)>(20);
+        t1 = $r2;
+        virtualinvoke t1.<spec.reporter.TextColumn: void add(java.lang.String)>("The quick brown fox jumped over the lazy white dog.");
+        virtualinvoke t1.<spec.reporter.TextColumn: void add(java.lang.String)>("She sells sea shells by the sea shore.");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("*** right");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r4 = virtualinvoke t1.<spec.reporter.TextColumn: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r4);
+        t2 = virtualinvoke t.<spec.reporter.TextColumn: spec.reporter.TextColumn join(spec.reporter.TextColumn)>(t1);
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("*** together");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r4 = virtualinvoke t2.<spec.reporter.TextColumn: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r4);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "spec.reporter.TextColumn.main", args);
+        return;
+
+        catch java.lang.NumberFormatException from label0 to label1 with label2;
+    }
+
+    public void add(java.lang.String)
+    {
+        spec.reporter.TextColumn this;
+        java.lang.String text;
+        spec.reporter.TextBlock $r0;
+        java.util.Vector $r1;
+        int $i0;
+
+        this := @this: spec.reporter.TextColumn;
+        text := @parameter0: java.lang.String;
+        $r1 = this.<spec.reporter.TextColumn: java.util.Vector blocks>;
+        $r0 = new spec.reporter.TextBlock;
+        $i0 = this.<spec.reporter.TextColumn: int width>;
+        specialinvoke $r0.<spec.reporter.TextBlock: void <init>(int,java.lang.String)>($i0, text);
+        virtualinvoke $r1.<java.util.Vector: void addElement(java.lang.Object)>($r0);
+        return;
+    }
+
+    public spec.reporter.TextColumn join(spec.reporter.TextColumn)
+    {
+        spec.reporter.TextColumn this, right, $r0;
+
+        this := @this: spec.reporter.TextColumn;
+        right := @parameter0: spec.reporter.TextColumn;
+        $r0 = virtualinvoke this.<spec.reporter.TextColumn: spec.reporter.TextColumn join(spec.reporter.TextColumn,java.lang.String)>(right, " | ");
+        return $r0;
+    }
+
+    public spec.reporter.TextColumn join(spec.reporter.TextColumn, java.lang.String)
+    {
+        spec.reporter.TextColumn this, right, combined, $r0;
+        java.lang.String columnSeparator;
+        int nleft, nright, n, i, $i0, $i1;
+        spec.reporter.TextBlock empty, $r4, $r7, $r8;
+        java.util.Vector $r1, $r2, $r5;
+        java.lang.Object $r3, $r6;
+
+        this := @this: spec.reporter.TextColumn;
+        right := @parameter0: spec.reporter.TextColumn;
+        columnSeparator := @parameter1: java.lang.String;
+        nleft = virtualinvoke this.<spec.reporter.TextColumn: int size()>();
+        nright = virtualinvoke right.<spec.reporter.TextColumn: int size()>();
+        n = staticinvoke <java.lang.Math: int min(int,int)>(nleft, nright);
+        $r0 = new spec.reporter.TextColumn;
+        $i0 = this.<spec.reporter.TextColumn: int width>;
+        $i1 = virtualinvoke columnSeparator.<java.lang.String: int length()>();
+        $i0 = $i0 + $i1;
+        $i1 = right.<spec.reporter.TextColumn: int width>;
+        $i0 = $i0 + $i1;
+        specialinvoke $r0.<spec.reporter.TextColumn: void <init>(int)>($i0);
+        combined = $r0;
+        i = 0;
+        goto label1;
+
+     label0:
+        $r1 = combined.<spec.reporter.TextColumn: java.util.Vector blocks>;
+        $r2 = this.<spec.reporter.TextColumn: java.util.Vector blocks>;
+        $r3 = virtualinvoke $r2.<java.util.Vector: java.lang.Object elementAt(int)>(i);
+        $r4 = (spec.reporter.TextBlock) $r3;
+        $r5 = right.<spec.reporter.TextColumn: java.util.Vector blocks>;
+        $r6 = virtualinvoke $r5.<java.util.Vector: java.lang.Object elementAt(int)>(i);
+        $r7 = (spec.reporter.TextBlock) $r6;
+        $r4 = virtualinvoke $r4.<spec.reporter.TextBlock: spec.reporter.TextBlock join(spec.reporter.TextBlock,java.lang.String)>($r7, columnSeparator);
+        virtualinvoke $r1.<java.util.Vector: void addElement(java.lang.Object)>($r4);
+        i = i + 1;
+
+     label1:
+        if i < n goto label0;
+
+        if nleft >= nright goto label4;
+
+        $r8 = new spec.reporter.TextBlock;
+        $i0 = this.<spec.reporter.TextColumn: int width>;
+        specialinvoke $r8.<spec.reporter.TextBlock: void <init>(int)>($i0);
+        empty = $r8;
+        i = n;
+        goto label3;
+
+     label2:
+        $r1 = combined.<spec.reporter.TextColumn: java.util.Vector blocks>;
+        $r5 = right.<spec.reporter.TextColumn: java.util.Vector blocks>;
+        $r6 = virtualinvoke $r5.<java.util.Vector: java.lang.Object elementAt(int)>(i);
+        $r7 = (spec.reporter.TextBlock) $r6;
+        $r4 = virtualinvoke empty.<spec.reporter.TextBlock: spec.reporter.TextBlock join(spec.reporter.TextBlock,java.lang.String)>($r7, columnSeparator);
+        virtualinvoke $r1.<java.util.Vector: void addElement(java.lang.Object)>($r4);
+        i = i + 1;
+
+     label3:
+        if i < nright goto label2;
+
+        goto label7;
+
+     label4:
+        $r8 = new spec.reporter.TextBlock;
+        $i0 = right.<spec.reporter.TextColumn: int width>;
+        specialinvoke $r8.<spec.reporter.TextBlock: void <init>(int)>($i0);
+        empty = $r8;
+        i = n;
+        goto label6;
+
+     label5:
+        $r1 = combined.<spec.reporter.TextColumn: java.util.Vector blocks>;
+        $r2 = this.<spec.reporter.TextColumn: java.util.Vector blocks>;
+        $r3 = virtualinvoke $r2.<java.util.Vector: java.lang.Object elementAt(int)>(i);
+        $r4 = (spec.reporter.TextBlock) $r3;
+        $r4 = virtualinvoke $r4.<spec.reporter.TextBlock: spec.reporter.TextBlock join(spec.reporter.TextBlock,java.lang.String)>(empty, columnSeparator);
+        virtualinvoke $r1.<java.util.Vector: void addElement(java.lang.Object)>($r4);
+        i = i + 1;
+
+     label6:
+        if i < nleft goto label5;
+
+     label7:
+        return combined;
+    }
+
+    public spec.reporter.TextBlock merge()
+    {
+        spec.reporter.TextColumn this;
+        spec.reporter.TextBlock $r0, merged, $r3;
+        java.util.Enumeration e;
+        int $i0;
+        java.util.Vector $r1;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        this := @this: spec.reporter.TextColumn;
+        $r0 = new spec.reporter.TextBlock;
+        $i0 = this.<spec.reporter.TextColumn: int width>;
+        specialinvoke $r0.<spec.reporter.TextBlock: void <init>(int)>($i0);
+        merged = $r0;
+        $r1 = this.<spec.reporter.TextColumn: java.util.Vector blocks>;
+        e = virtualinvoke $r1.<java.util.Vector: java.util.Enumeration elements()>();
+        goto label1;
+
+     label0:
+        $r2 = interfaceinvoke e.<java.util.Enumeration: java.lang.Object nextElement()>();
+        $r3 = (spec.reporter.TextBlock) $r2;
+        virtualinvoke merged.<spec.reporter.TextBlock: void add(spec.reporter.TextBlock)>($r3);
+
+     label1:
+        $z0 = interfaceinvoke e.<java.util.Enumeration: boolean hasMoreElements()>();
+        if $z0 != 0 goto label0;
+
+        return merged;
+    }
+
+    public int size()
+    {
+        spec.reporter.TextColumn this;
+        java.util.Vector $r0;
+        int $i0;
+
+        this := @this: spec.reporter.TextColumn;
+        $r0 = this.<spec.reporter.TextColumn: java.util.Vector blocks>;
+        $i0 = virtualinvoke $r0.<java.util.Vector: int size()>();
+        return $i0;
+    }
+
+    public java.lang.String toString()
+    {
+        spec.reporter.TextColumn this;
+        spec.reporter.TextBlock $r0;
+        java.lang.String $r1;
+
+        this := @this: spec.reporter.TextColumn;
+        $r0 = virtualinvoke this.<spec.reporter.TextColumn: spec.reporter.TextBlock merge()>();
+        $r1 = virtualinvoke $r0.<spec.reporter.TextBlock: java.lang.String toString()>();
+        return $r1;
+    }
+}

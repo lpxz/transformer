@@ -1,0 +1,59 @@
+class spec.jbb.Infrastructure extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+
+    void <init>()
+    {
+        spec.jbb.Infrastructure this;
+
+        this := @this: spec.jbb.Infrastructure;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    private static spec.jbb.JBBDataStorage synchStorage(spec.jbb.JBBDataStorage)
+    {
+        spec.jbb.JBBDataStorage s;
+        spec.jbb.Infrastructure$SynchronizedJBBDataStorage $r0;
+
+        s := @parameter0: spec.jbb.JBBDataStorage;
+        $r0 = new spec.jbb.Infrastructure$SynchronizedJBBDataStorage;
+        specialinvoke $r0.<spec.jbb.Infrastructure$SynchronizedJBBDataStorage: void <init>(spec.jbb.JBBDataStorage)>(s);
+        return $r0;
+    }
+
+    public static spec.jbb.JBBDataStorage createStorage()
+    {
+        spec.jbb.MapDataStorage $r0;
+
+        nop;
+        $r0 = new spec.jbb.MapDataStorage;
+        specialinvoke $r0.<spec.jbb.MapDataStorage: void <init>()>();
+        return $r0;
+    }
+
+    public static spec.jbb.JBBDataStorage createStorage(boolean)
+    {
+        boolean synch;
+        spec.jbb.JBBDataStorage s;
+
+        synch := @parameter0: boolean;
+        s = staticinvoke <spec.jbb.Infrastructure: spec.jbb.JBBDataStorage createStorage()>();
+        if synch == 0 goto label0;
+
+        s = staticinvoke <spec.jbb.Infrastructure: spec.jbb.JBBDataStorage synchStorage(spec.jbb.JBBDataStorage)>(s);
+
+     label0:
+        return s;
+    }
+
+    public static spec.jbb.JBBSortedStorage createSortedStorage()
+    {
+        spec.jbb.TreeMapDataStorage $r0;
+
+        nop;
+        $r0 = new spec.jbb.TreeMapDataStorage;
+        specialinvoke $r0.<spec.jbb.TreeMapDataStorage: void <init>()>();
+        return $r0;
+    }
+}

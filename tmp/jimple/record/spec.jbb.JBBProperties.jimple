@@ -1,0 +1,1712 @@
+public class spec.jbb.JBBProperties extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+    private java.util.Properties PropertiesForBatch;
+    java.lang.String val;
+    public int warehousePopulationBase;
+    public int orderlinesPerOrder;
+    public int rampupSeconds;
+    public int measurementSeconds;
+    public int expectedPeakWarehouse;
+    public boolean deterministicRandomSeed;
+    public int jvm_instances;
+    public float per_jvm_warehouse_rampup;
+    public float per_jvm_warehouse_rampdown;
+    public int waitTimePercent;
+    public boolean showWarehouseDetail;
+    public int startingNumberWarehouses;
+    public int incrementNumberWarehouses;
+    public int endingNumberWarehouses;
+    public int[] sequenceOfWarehouses;
+    public boolean steadyStateFlag;
+    public boolean screenWriteFlag;
+    public boolean checkThroughput;
+    public float minBTPSRatio;
+    public static int overrideItemTableSize;
+    public static boolean uniformRandomItems;
+    public static boolean printPropertiesAndArgs;
+    private java.util.logging.Level applicationLoggingLevel;
+    private static final float COMPLIANT_RATE_per_jvm_warehouse_rampup;
+    private static final float COMPLIANT_RATE_per_jvm_warehouse_rampdown;
+    private static final int COMPLIANT_RATE_warehousePopulationBase;
+    private static final int COMPLIANT_RATE_orderlinesPerOrder;
+    private static final int COMPLIANT_RATE_rampupSeconds;
+    private static final int COMPLIANT_RATE_measurementSeconds;
+    private static final int COMPLIANT_RATE_waitTimePercent;
+    private static final boolean COMPLIANT_RATE_steadyStateFlag;
+    private static final boolean COMPLIANT_RATE_screenWriteFlag;
+    private static final boolean COMPLIANT_RATE_uniformRandomItems;
+    private static final int COMPLIANT_RATE_overrideItemTableSize;
+    private static final boolean COMPLIANT_RATE_deterministicRandomSeed;
+    private static final java.util.logging.Level COMPLIANT_RATE_applicationLoggingLevel;
+
+    static void <clinit>()
+    {
+        java.util.logging.Level $r0;
+
+        <spec.jbb.JBBProperties: int overrideItemTableSize> = 2;
+        <spec.jbb.JBBProperties: boolean uniformRandomItems> = 1;
+        <spec.jbb.JBBProperties: boolean printPropertiesAndArgs> = 1;
+        $r0 = <java.util.logging.Level: java.util.logging.Level INFO>;
+        <spec.jbb.JBBProperties: java.util.logging.Level COMPLIANT_RATE_applicationLoggingLevel> = $r0;
+        return;
+    }
+
+    public void <init>(java.lang.String)
+    {
+        spec.jbb.JBBProperties this;
+        java.lang.String propertiesFileName, $r3, $r9, $r10;
+        java.io.FileInputStream PropertiesFile, IncludedPropertiesFile, $r4;
+        java.io.IOException e, $r7, $r11;
+        java.util.logging.Level $r0;
+        java.io.PrintStream $r1;
+        java.lang.StringBuilder $r2;
+        java.util.Properties $r5, $r6;
+        java.util.logging.Logger $r8;
+
+        this := @this: spec.jbb.JBBProperties;
+        propertiesFileName := @parameter0: java.lang.String;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<spec.jbb.JBBProperties: int expectedPeakWarehouse> = 4;
+        this.<spec.jbb.JBBProperties: boolean deterministicRandomSeed> = 0;
+        this.<spec.jbb.JBBProperties: int jvm_instances> = 1;
+        this.<spec.jbb.JBBProperties: float per_jvm_warehouse_rampup> = 0.0F;
+        this.<spec.jbb.JBBProperties: float per_jvm_warehouse_rampdown> = 0.0F;
+        this.<spec.jbb.JBBProperties: boolean showWarehouseDetail> = 0;
+        $r0 = <java.util.logging.Level: java.util.logging.Level ALL>;
+        this.<spec.jbb.JBBProperties: java.util.logging.Level applicationLoggingLevel> = $r0;
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>("");
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("Loading properties from ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(propertiesFileName);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r1.<java.io.PrintStream: void println(java.lang.String)>($r3);
+
+     label0:
+        $r4 = new java.io.FileInputStream;
+        specialinvoke $r4.<java.io.FileInputStream: void <init>(java.lang.String)>(propertiesFileName);
+        PropertiesFile = $r4;
+        $r5 = new java.util.Properties;
+        specialinvoke $r5.<java.util.Properties: void <init>()>();
+        this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch> = $r5;
+        $r6 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        virtualinvoke $r6.<java.util.Properties: void load(java.io.InputStream)>(PropertiesFile);
+
+     label1:
+        goto label3;
+
+     label2:
+        $r7 := @caughtexception;
+        e = $r7;
+        $r8 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r0 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        virtualinvoke $r8.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r0, "ERROR:  Properties File error; please start again", e);
+        return;
+
+     label3:
+        $r3 = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>("input.include_file");
+        this.<spec.jbb.JBBProperties: java.lang.String val> = $r3;
+        $r9 = this.<spec.jbb.JBBProperties: java.lang.String val>;
+        if $r9 == null goto label7;
+
+     label4:
+        $r4 = new java.io.FileInputStream;
+        $r10 = this.<spec.jbb.JBBProperties: java.lang.String val>;
+        specialinvoke $r4.<java.io.FileInputStream: void <init>(java.lang.String)>($r10);
+        IncludedPropertiesFile = $r4;
+        $r6 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        virtualinvoke $r6.<java.util.Properties: void load(java.io.InputStream)>(IncludedPropertiesFile);
+
+     label5:
+        goto label7;
+
+     label6:
+        $r11 := @caughtexception;
+        e = $r11;
+        $r8 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r0 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        virtualinvoke $r8.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r0, "ERROR:  Properties File error with included properties file; please start again", e);
+        return;
+
+     label7:
+        return;
+
+        catch java.io.IOException from label0 to label1 with label2;
+        catch java.io.IOException from label4 to label5 with label6;
+    }
+
+    public java.lang.String getRequiredProperty(java.lang.String)
+    {
+        spec.jbb.JBBProperties this;
+        java.lang.String s, $r2, $r6;
+        java.lang.NullPointerException e, $r3;
+        java.lang.StringBuilder $r0;
+        java.util.Properties $r1;
+        java.util.logging.Logger $r4;
+        java.util.logging.Level $r5;
+
+        this := @this: spec.jbb.JBBProperties;
+        s := @parameter0: java.lang.String;
+
+     label0:
+        $r1 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        $r2 = virtualinvoke $r1.<java.util.Properties: java.lang.String getProperty(java.lang.String)>(s);
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String trim()>();
+
+     label1:
+        return $r2;
+
+     label2:
+        $r3 := @caughtexception;
+        e = $r3;
+        $r4 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r5 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("ERROR:  Property ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(s);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" not specified; please add to Properties File");
+        $r6 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r5, $r6, e);
+        return null;
+
+        catch java.lang.NullPointerException from label0 to label1 with label2;
+    }
+
+    public void setRequiredProperty(java.lang.String, java.lang.String)
+    {
+        spec.jbb.JBBProperties this;
+        java.lang.String property, value, $r6;
+        java.lang.NullPointerException e, $r2;
+        java.util.Properties $r0;
+        java.util.logging.Logger $r3;
+        java.util.logging.Level $r4;
+        java.lang.StringBuilder $r5;
+
+        this := @this: spec.jbb.JBBProperties;
+        property := @parameter0: java.lang.String;
+        value := @parameter1: java.lang.String;
+
+     label0:
+        $r0 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        virtualinvoke $r0.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>(property, value);
+
+     label1:
+        goto label3;
+
+     label2:
+        $r2 := @caughtexception;
+        e = $r2;
+        $r3 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r4 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r5 = new java.lang.StringBuilder;
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>(java.lang.String)>("ERROR: setting ");
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(property);
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r4, $r6, e);
+
+     label3:
+        return;
+
+        catch java.lang.NullPointerException from label0 to label1 with label2;
+    }
+
+    public java.lang.String getOptionalProperty(java.lang.String)
+    {
+        spec.jbb.JBBProperties this;
+        java.lang.String s, $r1;
+        java.lang.NullPointerException e, $r2;
+        java.util.Properties $r0;
+
+        this := @this: spec.jbb.JBBProperties;
+        s := @parameter0: java.lang.String;
+
+     label0:
+        $r0 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        $r1 = virtualinvoke $r0.<java.util.Properties: java.lang.String getProperty(java.lang.String)>(s);
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String trim()>();
+
+     label1:
+        return $r1;
+
+     label2:
+        $r2 := @caughtexception;
+        e = $r2;
+        return null;
+
+        catch java.lang.NullPointerException from label0 to label1 with label2;
+    }
+
+    public boolean getProps()
+    {
+        spec.jbb.JBBProperties this;
+        java.lang.String prefix, val, $r1, $r2, $r11;
+        boolean tmpValue, retval, valid_warehouse_sequence, $z0, $z1, $z2;
+        java.lang.IllegalArgumentException iae, $r5;
+        int startIndex, numEntries, nextSpace, i, $i0, tmpValue, $i1, $i2, $i3;
+        java.lang.StringBuilder $r0;
+        java.io.PrintStream $r3;
+        java.util.logging.Level $r4;
+        java.lang.Float $r6;
+        float $f0, $f1;
+        java.util.Properties $r7;
+        java.lang.Runtime $r9, $r10;
+        int[] $r12, $r13, $r14;
+        long tid_getProps;
+        java.lang.Thread thread_getProps;
+
+        this := @this: spec.jbb.JBBProperties;
+        thread_getProps = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getProps = virtualinvoke thread_getProps.<java.lang.Thread: long getId()>();
+        prefix = "input.";
+        tmpValue = 0;
+        retval = 1;
+        valid_warehouse_sequence = 0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 14, tid_getProps, "spec.jbb.JBBProperties", 172, null);
+        this.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses> = null;
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("suite");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getRequiredProperty(java.lang.String)>($r2);
+        if val == null goto label1;
+
+        $z0 = virtualinvoke val.<java.lang.String: boolean equals(java.lang.Object)>("SPECjbb");
+        if $z0 == 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 22, tid_getProps, "spec.jbb.JBBProperties", 176, 0);
+        this.<spec.jbb.JBBProperties: boolean checkThroughput> = 0;
+        goto label2;
+
+     label0:
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  Property file error");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("   suite must be SPECjbb");
+        retval = 0;
+        goto label2;
+
+     label1:
+        retval = 0;
+
+     label2:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("log_level");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getRequiredProperty(java.lang.String)>($r2);
+        if val == null goto label6;
+
+     label3:
+        $r4 = staticinvoke <java.util.logging.Level: java.util.logging.Level parse(java.lang.String)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_getProps, "spec.jbb.JBBProperties", 190, $r4);
+        this.<spec.jbb.JBBProperties: java.util.logging.Level applicationLoggingLevel> = $r4;
+
+     label4:
+        goto label7;
+
+     label5:
+        $r5 := @caughtexception;
+        iae = $r5;
+        retval = 0;
+        goto label7;
+
+     label6:
+        retval = 0;
+
+     label7:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 22, tid_getProps, "spec.jbb.JBBProperties", 202, $z0);
+        $z0 = this.<spec.jbb.JBBProperties: boolean checkThroughput>;
+        if $z0 == 0 goto label9;
+
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("min_capacity_ratio");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getRequiredProperty(java.lang.String)>($r2);
+        if val == null goto label8;
+
+        $r6 = staticinvoke <java.lang.Float: java.lang.Float valueOf(java.lang.String)>(val);
+        $f0 = virtualinvoke $r6.<java.lang.Float: float floatValue()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 3, tid_getProps, "spec.jbb.JBBProperties", 205, $f0);
+        this.<spec.jbb.JBBProperties: float minBTPSRatio> = $f0;
+        goto label9;
+
+     label8:
+        retval = 0;
+
+     label9:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("warehouse_population");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>($r2);
+        if val == null goto label10;
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 10, tid_getProps, "spec.jbb.JBBProperties", 213, $i0);
+        this.<spec.jbb.JBBProperties: int warehousePopulationBase> = $i0;
+        goto label11;
+
+     label10:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 10, tid_getProps, "spec.jbb.JBBProperties", 216, 2);
+        this.<spec.jbb.JBBProperties: int warehousePopulationBase> = 2;
+        $r7 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("warehouse_population");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r7.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>($r2, "2");
+
+     label11:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("orderlines_per_order");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>($r2);
+        if val == null goto label12;
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 5, tid_getProps, "spec.jbb.JBBProperties", 221, $i0);
+        this.<spec.jbb.JBBProperties: int orderlinesPerOrder> = $i0;
+        goto label13;
+
+     label12:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 5, tid_getProps, "spec.jbb.JBBProperties", 224, 10);
+        this.<spec.jbb.JBBProperties: int orderlinesPerOrder> = 10;
+        $r7 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("orderlines_per_order");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r7.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>($r2, "10");
+
+     label13:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ramp_up_seconds");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getRequiredProperty(java.lang.String)>($r2);
+        if val == null goto label14;
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 20, tid_getProps, "spec.jbb.JBBProperties", 229, $i0);
+        this.<spec.jbb.JBBProperties: int rampupSeconds> = $i0;
+        goto label15;
+
+     label14:
+        retval = 0;
+
+     label15:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("jvm_instances");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getRequiredProperty(java.lang.String)>($r2);
+        if val == null goto label16;
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 7, tid_getProps, "spec.jbb.JBBProperties", 236, $i0);
+        this.<spec.jbb.JBBProperties: int jvm_instances> = $i0;
+        goto label17;
+
+     label16:
+        retval = 0;
+
+     label17:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("per_jvm_warehouse_rampup");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getRequiredProperty(java.lang.String)>($r2);
+        if val == null goto label18;
+
+        $f0 = staticinvoke <java.lang.Float: float parseFloat(java.lang.String)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 8, tid_getProps, "spec.jbb.JBBProperties", 243, $f0);
+        this.<spec.jbb.JBBProperties: float per_jvm_warehouse_rampup> = $f0;
+        goto label19;
+
+     label18:
+        retval = 0;
+
+     label19:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("per_jvm_warehouse_rampdown");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getRequiredProperty(java.lang.String)>($r2);
+        if val == null goto label20;
+
+        $f0 = staticinvoke <java.lang.Float: float parseFloat(java.lang.String)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 9, tid_getProps, "spec.jbb.JBBProperties", 250, $f0);
+        this.<spec.jbb.JBBProperties: float per_jvm_warehouse_rampdown> = $f0;
+        goto label21;
+
+     label20:
+        retval = 0;
+
+     label21:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("measurement_seconds");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getRequiredProperty(java.lang.String)>($r2);
+        if val == null goto label22;
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 21, tid_getProps, "spec.jbb.JBBProperties", 257, $i0);
+        this.<spec.jbb.JBBProperties: int measurementSeconds> = $i0;
+        goto label23;
+
+     label22:
+        retval = 0;
+
+     label23:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("expected_peak_warehouse");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>($r2);
+        if val == null goto label27;
+
+        tmpValue = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(val);
+        if tmpValue != 0 goto label25;
+
+        $r9 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+        tmpValue = virtualinvoke $r9.<java.lang.Runtime: int availableProcessors()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 7, tid_getProps, "spec.jbb.JBBProperties", 267, $i1);
+        $i1 = this.<spec.jbb.JBBProperties: int jvm_instances>;
+        if $i1 <= 1 goto label24;
+
+        if tmpValue <= 1 goto label24;
+
+        $r10 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+        $i0 = virtualinvoke $r10.<java.lang.Runtime: int availableProcessors()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 7, tid_getProps, "spec.jbb.JBBProperties", 270, $i2);
+        $i2 = this.<spec.jbb.JBBProperties: int jvm_instances>;
+        $i0 = $i0 / $i2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 19, tid_getProps, "spec.jbb.JBBProperties", 268, $i0);
+        this.<spec.jbb.JBBProperties: int expectedPeakWarehouse> = $i0;
+        goto label29;
+
+     label24:
+        $r10 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+        $i0 = virtualinvoke $r10.<java.lang.Runtime: int availableProcessors()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 19, tid_getProps, "spec.jbb.JBBProperties", 272, $i0);
+        this.<spec.jbb.JBBProperties: int expectedPeakWarehouse> = $i0;
+        goto label29;
+
+     label25:
+        $r10 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+        $i0 = virtualinvoke $r10.<java.lang.Runtime: int availableProcessors()>();
+        if tmpValue != $i0 goto label26;
+
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("Warning: Explicitly setting ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(prefix);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("expected_peak_warehouse");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("requires submission and review by SPEC in order to publish the result.");
+
+     label26:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 19, tid_getProps, "spec.jbb.JBBProperties", 280, tmpValue);
+        this.<spec.jbb.JBBProperties: int expectedPeakWarehouse> = tmpValue;
+        goto label29;
+
+     label27:
+        $r9 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+        tmpValue = virtualinvoke $r9.<java.lang.Runtime: int availableProcessors()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 7, tid_getProps, "spec.jbb.JBBProperties", 285, $i1);
+        $i1 = this.<spec.jbb.JBBProperties: int jvm_instances>;
+        if $i1 <= 1 goto label28;
+
+        if tmpValue <= 1 goto label28;
+
+        $r10 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+        $i0 = virtualinvoke $r10.<java.lang.Runtime: int availableProcessors()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 7, tid_getProps, "spec.jbb.JBBProperties", 288, $i2);
+        $i2 = this.<spec.jbb.JBBProperties: int jvm_instances>;
+        $i0 = $i0 / $i2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 19, tid_getProps, "spec.jbb.JBBProperties", 286, $i0);
+        this.<spec.jbb.JBBProperties: int expectedPeakWarehouse> = $i0;
+        goto label29;
+
+     label28:
+        $r10 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+        $i0 = virtualinvoke $r10.<java.lang.Runtime: int availableProcessors()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 19, tid_getProps, "spec.jbb.JBBProperties", 290, $i0);
+        this.<spec.jbb.JBBProperties: int expectedPeakWarehouse> = $i0;
+
+     label29:
+        $r7 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("expected_peak_warehouse");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 19, tid_getProps, "spec.jbb.JBBProperties", 294, $i2);
+        $i2 = this.<spec.jbb.JBBProperties: int expectedPeakWarehouse>;
+        $r11 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i2);
+        virtualinvoke $r7.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>($r2, $r11);
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("deterministic_random_seed");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getRequiredProperty(java.lang.String)>($r2);
+        if val == null goto label30;
+
+        $z1 = staticinvoke <java.lang.Boolean: boolean parseBoolean(java.lang.String)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 6, tid_getProps, "spec.jbb.JBBProperties", 297, $z1);
+        this.<spec.jbb.JBBProperties: boolean deterministicRandomSeed> = $z1;
+        goto label31;
+
+     label30:
+        retval = 0;
+
+     label31:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("wait_time_percent");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>($r2);
+        if val == null goto label32;
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 4, tid_getProps, "spec.jbb.JBBProperties", 304, $i0);
+        this.<spec.jbb.JBBProperties: int waitTimePercent> = $i0;
+        goto label33;
+
+     label32:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 4, tid_getProps, "spec.jbb.JBBProperties", 307, 0);
+        this.<spec.jbb.JBBProperties: int waitTimePercent> = 0;
+        $r7 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("wait_time_percent");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r7.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>($r2, "0");
+
+     label33:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("screen_write");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>($r2);
+        if val == null goto label36;
+
+        $z0 = virtualinvoke val.<java.lang.String: boolean equals(java.lang.Object)>("true");
+        if $z0 == 0 goto label34;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 12, tid_getProps, "spec.jbb.JBBProperties", 313, 1);
+        this.<spec.jbb.JBBProperties: boolean screenWriteFlag> = 1;
+        goto label37;
+
+     label34:
+        $z0 = virtualinvoke val.<java.lang.String: boolean equals(java.lang.Object)>("false");
+        if $z0 == 0 goto label35;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 12, tid_getProps, "spec.jbb.JBBProperties", 316, 0);
+        this.<spec.jbb.JBBProperties: boolean screenWriteFlag> = 0;
+        goto label37;
+
+     label35:
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  Property file error");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("   screen_write must be \'true\' or \'false\'");
+        retval = 0;
+        goto label37;
+
+     label36:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 12, tid_getProps, "spec.jbb.JBBProperties", 325, 0);
+        this.<spec.jbb.JBBProperties: boolean screenWriteFlag> = 0;
+        $r7 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("screen_write");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r7.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>($r2, "false");
+
+     label37:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("steady_state");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>($r2);
+        if val == null goto label40;
+
+        $z0 = virtualinvoke val.<java.lang.String: boolean equals(java.lang.Object)>("true");
+        if $z0 == 0 goto label38;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 13, tid_getProps, "spec.jbb.JBBProperties", 331, 1);
+        this.<spec.jbb.JBBProperties: boolean steadyStateFlag> = 1;
+        goto label41;
+
+     label38:
+        $z0 = virtualinvoke val.<java.lang.String: boolean equals(java.lang.Object)>("false");
+        if $z0 == 0 goto label39;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 13, tid_getProps, "spec.jbb.JBBProperties", 334, 0);
+        this.<spec.jbb.JBBProperties: boolean steadyStateFlag> = 0;
+        goto label41;
+
+     label39:
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  Property file error");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("   steady_state must be \'true\' or \'false\'");
+        retval = 0;
+        goto label41;
+
+     label40:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 13, tid_getProps, "spec.jbb.JBBProperties", 343, 1);
+        this.<spec.jbb.JBBProperties: boolean steadyStateFlag> = 1;
+        $r7 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("steady_state");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r7.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>($r2, "true");
+
+     label41:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("override_itemtable_size");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>($r2);
+        if val == null goto label42;
+
+        $i1 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(11, tid_getProps, "spec.jbbspec.jbb.JBBProperties", 348, $i1);
+        <spec.jbb.JBBProperties: int overrideItemTableSize> = $i1;
+
+     label42:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("uniform_random_items");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>($r2);
+        if val == null goto label45;
+
+        $z0 = virtualinvoke val.<java.lang.String: boolean equals(java.lang.Object)>("true");
+        if $z0 == 0 goto label43;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(58, tid_getProps, "spec.jbbspec.jbb.JBBProperties", 353, 1);
+        <spec.jbb.JBBProperties: boolean uniformRandomItems> = 1;
+        goto label45;
+
+     label43:
+        $z0 = virtualinvoke val.<java.lang.String: boolean equals(java.lang.Object)>("false");
+        if $z0 == 0 goto label44;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(58, tid_getProps, "spec.jbbspec.jbb.JBBProperties", 356, 0);
+        <spec.jbb.JBBProperties: boolean uniformRandomItems> = 0;
+        goto label45;
+
+     label44:
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  Property file error");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("   uniform_random_items must be true or false");
+        retval = 0;
+
+     label45:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("starting_number_warehouses");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>($r2);
+        if val == null goto label46;
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 15, tid_getProps, "spec.jbb.JBBProperties", 367, $i0);
+        this.<spec.jbb.JBBProperties: int startingNumberWarehouses> = $i0;
+
+     label46:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("increment_number_warehouses");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>($r2);
+        if val == null goto label47;
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 16, tid_getProps, "spec.jbb.JBBProperties", 371, $i0);
+        this.<spec.jbb.JBBProperties: int incrementNumberWarehouses> = $i0;
+
+     label47:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ending_number_warehouses");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>($r2);
+        if val == null goto label48;
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 17, tid_getProps, "spec.jbb.JBBProperties", 375, $i0);
+        this.<spec.jbb.JBBProperties: int endingNumberWarehouses> = $i0;
+        goto label50;
+
+     label48:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 19, tid_getProps, "spec.jbb.JBBProperties", 378, $i0);
+        $i0 = this.<spec.jbb.JBBProperties: int expectedPeakWarehouse>;
+        $i0 = $i0 * 2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 17, tid_getProps, "spec.jbb.JBBProperties", 378, $i0);
+        this.<spec.jbb.JBBProperties: int endingNumberWarehouses> = $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 17, tid_getProps, "spec.jbb.JBBProperties", 379, $i1);
+        $i1 = this.<spec.jbb.JBBProperties: int endingNumberWarehouses>;
+        if $i1 >= 8 goto label49;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 17, tid_getProps, "spec.jbb.JBBProperties", 380, 8);
+        this.<spec.jbb.JBBProperties: int endingNumberWarehouses> = 8;
+
+     label49:
+        $r7 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ending_number_warehouses");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 17, tid_getProps, "spec.jbb.JBBProperties", 382, $i2);
+        $i2 = this.<spec.jbb.JBBProperties: int endingNumberWarehouses>;
+        $r11 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i2);
+        virtualinvoke $r7.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>($r2, $r11);
+
+     label50:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 15, tid_getProps, "spec.jbb.JBBProperties", 384, $i1);
+        $i1 = this.<spec.jbb.JBBProperties: int startingNumberWarehouses>;
+        if $i1 <= 0 goto label51;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 17, tid_getProps, "spec.jbb.JBBProperties", 385, $i1);
+        $i1 = this.<spec.jbb.JBBProperties: int endingNumberWarehouses>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 15, tid_getProps, "spec.jbb.JBBProperties", 385, $i0);
+        $i0 = this.<spec.jbb.JBBProperties: int startingNumberWarehouses>;
+        if $i1 < $i0 goto label51;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 16, tid_getProps, "spec.jbb.JBBProperties", 386, $i1);
+        $i1 = this.<spec.jbb.JBBProperties: int incrementNumberWarehouses>;
+        if $i1 <= 0 goto label51;
+
+        valid_warehouse_sequence = 1;
+
+     label51:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("sequence_of_number_of_warehouses");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>($r2);
+        if val == null goto label60;
+
+        if valid_warehouse_sequence == 0 goto label52;
+
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  Property file error");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("   Cannot specify both sequence_of_number_of_warehouses and {starting,ending,increment}_number_warehouses");
+        retval = 0;
+        goto label60;
+
+     label52:
+        startIndex = 0;
+        numEntries = 0;
+        goto label54;
+
+     label53:
+        numEntries = numEntries + 1;
+        startIndex = nextSpace + 1;
+
+     label54:
+        $i1 = virtualinvoke val.<java.lang.String: int indexOf(int,int)>(32, startIndex);
+        nextSpace = $i1;
+        if $i1 > 0 goto label53;
+
+        numEntries = numEntries + 1;
+        $r12 = newarray (int)[numEntries];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 14, tid_getProps, "spec.jbb.JBBProperties", 406, $r12);
+        this.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses> = $r12;
+        startIndex = 0;
+        numEntries = 0;
+        goto label56;
+
+     label55:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 14, tid_getProps, "spec.jbb.JBBProperties", 410, $r13);
+        $r13 = this.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses>;
+        $r11 = virtualinvoke val.<java.lang.String: java.lang.String substring(int,int)>(startIndex, nextSpace);
+        $i2 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r11);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r13, 18, tid_getProps, "spec.jbb.JBBProperties", 410, numEntries, $i2);
+        $r13[numEntries] = $i2;
+        numEntries = numEntries + 1;
+        startIndex = nextSpace + 1;
+
+     label56:
+        $i1 = virtualinvoke val.<java.lang.String: int indexOf(int,int)>(32, startIndex);
+        nextSpace = $i1;
+        if $i1 > 0 goto label55;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 14, tid_getProps, "spec.jbb.JBBProperties", 415, $r13);
+        $r13 = this.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses>;
+        $i3 = virtualinvoke val.<java.lang.String: int length()>();
+        $r11 = virtualinvoke val.<java.lang.String: java.lang.String substring(int,int)>(startIndex, $i3);
+        $i2 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r11);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r13, 18, tid_getProps, "spec.jbb.JBBProperties", 415, numEntries, $i2);
+        $r13[numEntries] = $i2;
+        numEntries = numEntries + 1;
+        valid_warehouse_sequence = 1;
+        i = 1;
+        goto label59;
+
+     label57:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 14, tid_getProps, "spec.jbb.JBBProperties", 420, $r13);
+        $r13 = this.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r13, 18, tid_getProps, "spec.jbb.JBBProperties", 420, i, $i1);
+        $i1 = $r13[i];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 14, tid_getProps, "spec.jbb.JBBProperties", 420, $r12);
+        $r12 = this.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses>;
+        $i2 = i - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r12, 18, tid_getProps, "spec.jbb.JBBProperties", 420, $i2, $i0);
+        $i0 = $r12[$i2];
+        if $i1 >= $i0 goto label58;
+
+        valid_warehouse_sequence = 0;
+        goto label60;
+
+     label58:
+        i = i + 1;
+
+     label59:
+        if i < numEntries goto label57;
+
+     label60:
+        $r0 = new java.lang.StringBuilder;
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(prefix);
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("print_properties_and_args");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        val = virtualinvoke this.<spec.jbb.JBBProperties: java.lang.String getOptionalProperty(java.lang.String)>($r2);
+        if val == null goto label63;
+
+        $z0 = virtualinvoke val.<java.lang.String: boolean equals(java.lang.Object)>("true");
+        if $z0 == 0 goto label61;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(32, tid_getProps, "spec.jbbspec.jbb.JBBProperties", 430, 1);
+        <spec.jbb.JBBProperties: boolean printPropertiesAndArgs> = 1;
+        goto label63;
+
+     label61:
+        $z0 = virtualinvoke val.<java.lang.String: boolean equals(java.lang.Object)>("false");
+        if $z0 == 0 goto label62;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(32, tid_getProps, "spec.jbbspec.jbb.JBBProperties", 433, 0);
+        <spec.jbb.JBBProperties: boolean printPropertiesAndArgs> = 0;
+        goto label63;
+
+     label62:
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  Property file error");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("   print_properties_and_args must be true or false");
+        retval = 0;
+
+     label63:
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("\nInput Properties:");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("  per_jvm_warehouse_rampup = ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 8, tid_getProps, "spec.jbb.JBBProperties", 444, $f1);
+        $f1 = this.<spec.jbb.JBBProperties: float per_jvm_warehouse_rampup>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(float)>($f1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("  per_jvm_warehouse_rampdown = ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 9, tid_getProps, "spec.jbb.JBBProperties", 446, $f1);
+        $f1 = this.<spec.jbb.JBBProperties: float per_jvm_warehouse_rampdown>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(float)>($f1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("  jvm_instances = ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 7, tid_getProps, "spec.jbb.JBBProperties", 447, $i2);
+        $i2 = this.<spec.jbb.JBBProperties: int jvm_instances>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("  deterministic_random_seed = ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 6, tid_getProps, "spec.jbb.JBBProperties", 449, $z2);
+        $z2 = this.<spec.jbb.JBBProperties: boolean deterministicRandomSeed>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z2);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("  ramp_up_seconds = ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 20, tid_getProps, "spec.jbb.JBBProperties", 450, $i2);
+        $i2 = this.<spec.jbb.JBBProperties: int rampupSeconds>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("  measurement_seconds = ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 21, tid_getProps, "spec.jbb.JBBProperties", 451, $i2);
+        $i2 = this.<spec.jbb.JBBProperties: int measurementSeconds>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 14, tid_getProps, "spec.jbb.JBBProperties", 459, $r13);
+        $r13 = this.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses>;
+        if $r13 != null goto label64;
+
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("  starting_number_warehouses = ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 15, tid_getProps, "spec.jbb.JBBProperties", 461, $i2);
+        $i2 = this.<spec.jbb.JBBProperties: int startingNumberWarehouses>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("  increment_number_warehouses = ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 16, tid_getProps, "spec.jbb.JBBProperties", 463, $i2);
+        $i2 = this.<spec.jbb.JBBProperties: int incrementNumberWarehouses>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("  ending_number_warehouses = ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 17, tid_getProps, "spec.jbb.JBBProperties", 465, $i2);
+        $i2 = this.<spec.jbb.JBBProperties: int endingNumberWarehouses>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("  expected_peak_warehouse = ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 19, tid_getProps, "spec.jbb.JBBProperties", 467, $i2);
+        $i2 = this.<spec.jbb.JBBProperties: int expectedPeakWarehouse>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        goto label67;
+
+     label64:
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void print(java.lang.String)>("  sequence_of_number_of_warehouses = ");
+        i = 0;
+        goto label66;
+
+     label65:
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>(" ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 14, tid_getProps, "spec.jbb.JBBProperties", 472, $r14);
+        $r14 = this.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r14, 18, tid_getProps, "spec.jbb.JBBProperties", 472, i, $i2);
+        $i2 = $r14[i];
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void print(java.lang.String)>($r2);
+        i = i + 1;
+
+     label66:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 14, tid_getProps, "spec.jbb.JBBProperties", 471, $r12);
+        $r12 = this.<spec.jbb.JBBProperties: int[] sequenceOfWarehouses>;
+        $i0 = lengthof $r12;
+        if i < $i0 goto label65;
+
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("  expected_peak_warehouse = ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 19, tid_getProps, "spec.jbb.JBBProperties", 475, $i2);
+        $i2 = this.<spec.jbb.JBBProperties: int expectedPeakWarehouse>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("");
+
+     label67:
+        if valid_warehouse_sequence != 0 goto label68;
+
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  Property file error");
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("   No valid warehouse sequence specified.");
+
+     label68:
+        if retval == 0 goto label69;
+
+        if valid_warehouse_sequence == 0 goto label69;
+
+        return 1;
+
+     label69:
+        return 0;
+
+        catch java.lang.IllegalArgumentException from label3 to label4 with label5;
+    }
+
+    public boolean copyPropsToOutput(java.io.PrintStream)
+    {
+        spec.jbb.JBBProperties this;
+        java.io.PrintStream outRawFile, $r6;
+        boolean retval, found, $z0;
+        java.lang.String[] input_props, $r0;
+        int num_props, i, $i0, $i1;
+        java.util.Enumeration e;
+        java.lang.String name, propsKey, svalue, $r4, $r5, $r7, $r11;
+        java.util.Vector keyvec, $r8;
+        java.lang.Integer procsAvail, $r12;
+        java.util.Properties $r1, $r9;
+        java.lang.Object $r2;
+        java.lang.StringBuilder $r3;
+        java.util.Set $r10;
+        java.lang.Runtime $r13;
+        long tid_copyPropsToOutput;
+        java.lang.Thread thread_copyPropsToOutput;
+
+        this := @this: spec.jbb.JBBProperties;
+        outRawFile := @parameter0: java.io.PrintStream;
+        thread_copyPropsToOutput = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_copyPropsToOutput = virtualinvoke thread_copyPropsToOutput.<java.lang.Thread: long getId()>();
+        retval = 1;
+        $r0 = newarray (java.lang.String)[23];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 495, 0, "suite");
+        $r0[0] = "suite";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 495, 1, "log_level");
+        $r0[1] = "log_level";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 495, 2, "warehouse_population");
+        $r0[2] = "warehouse_population";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 496, 3, "orderlines_per_order");
+        $r0[3] = "orderlines_per_order";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 496, 4, "ramp_up_seconds");
+        $r0[4] = "ramp_up_seconds";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 497, 5, "measurement_seconds");
+        $r0[5] = "measurement_seconds";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 497, 6, "wait_time_percent");
+        $r0[6] = "wait_time_percent";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 497, 7, "screen_write");
+        $r0[7] = "screen_write";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 498, 8, "steady_state");
+        $r0[8] = "steady_state";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 498, 9, "starting_number_warehouses");
+        $r0[9] = "starting_number_warehouses";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 499, 10, "increment_number_warehouses");
+        $r0[10] = "increment_number_warehouses";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 499, 11, "ending_number_warehouses");
+        $r0[11] = "ending_number_warehouses";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 500, 12, "sequence_of_number_of_warehouses");
+        $r0[12] = "sequence_of_number_of_warehouses";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 500, 13, "include_file");
+        $r0[13] = "include_file";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 501, 14, "override_itemtable_size");
+        $r0[14] = "override_itemtable_size";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 501, 15, "uniform_random_items");
+        $r0[15] = "uniform_random_items";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 502, 16, "print_properties_and_args");
+        $r0[16] = "print_properties_and_args";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 502, 17, "output_directory");
+        $r0[17] = "output_directory";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 503, 18, "expected_peak_warehouse");
+        $r0[18] = "expected_peak_warehouse";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 503, 19, "deterministic_random_seed");
+        $r0[19] = "deterministic_random_seed";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 504, 20, "jvm_instances");
+        $r0[20] = "jvm_instances";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 504, 21, "per_jvm_warehouse_rampup");
+        $r0[21] = "per_jvm_warehouse_rampup";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 505, 22, "per_jvm_warehouse_rampdown");
+        $r0[22] = "per_jvm_warehouse_rampdown";
+        input_props = $r0;
+        num_props = 0;
+        $r1 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        e = virtualinvoke $r1.<java.util.Properties: java.util.Enumeration propertyNames()>();
+        goto label12;
+
+     label0:
+        $r2 = interfaceinvoke e.<java.util.Enumeration: java.lang.Object nextElement()>();
+        name = (java.lang.String) $r2;
+        $z0 = virtualinvoke name.<java.lang.String: boolean startsWith(java.lang.String)>("config.");
+        if $z0 == 0 goto label1;
+
+        num_props = num_props + 1;
+        goto label12;
+
+     label1:
+        $z0 = virtualinvoke name.<java.lang.String: boolean startsWith(java.lang.String)>("input.");
+        if $z0 == 0 goto label11;
+
+        found = 0;
+        i = 0;
+        goto label4;
+
+     label2:
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>("input.");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(input_props, 23, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 517, i, $r4);
+        $r4 = input_props[i];
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        $z0 = virtualinvoke name.<java.lang.String: boolean equals(java.lang.Object)>($r5);
+        if $z0 == 0 goto label3;
+
+        found = 1;
+        goto label5;
+
+     label3:
+        i = i + 1;
+
+     label4:
+        $i0 = lengthof input_props;
+        if i < $i0 goto label2;
+
+     label5:
+        if found == 0 goto label6;
+
+        num_props = num_props + 1;
+        goto label12;
+
+     label6:
+        $z0 = virtualinvoke name.<java.lang.String: boolean equals(java.lang.Object)>("input.min_capacity_ratio");
+        if $z0 == 0 goto label8;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 22, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 526, $z0);
+        $z0 = this.<spec.jbb.JBBProperties: boolean checkThroughput>;
+        if $z0 == 0 goto label7;
+
+        num_props = num_props + 1;
+        goto label12;
+
+     label7:
+        $r6 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r6.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  Property file error");
+        $r6 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r6.<java.io.PrintStream: void println(java.lang.String)>("   input.min_capacity_ratio invalid for input.suite=SPECjbb");
+        retval = 0;
+        goto label12;
+
+     label8:
+        $z0 = virtualinvoke name.<java.lang.String: boolean equals(java.lang.Object)>("input.show_warehouse_detail");
+        if $z0 == 0 goto label10;
+
+        $r1 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        $r7 = virtualinvoke $r1.<java.util.Properties: java.lang.String getProperty(java.lang.String)>("input.show_warehouse_detail");
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>("true");
+        if $z0 == 0 goto label9;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 2, tid_copyPropsToOutput, "spec.jbb.JBBProperties", 540, 1);
+        this.<spec.jbb.JBBProperties: boolean showWarehouseDetail> = 1;
+
+     label9:
+        num_props = num_props + 1;
+        goto label12;
+
+     label10:
+        $r6 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r6.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  Property file error");
+        $r6 = <java.lang.System: java.io.PrintStream out>;
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>("   Unrecognized property:  ");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r6.<java.io.PrintStream: void println(java.lang.String)>($r5);
+        retval = 0;
+        goto label12;
+
+     label11:
+        $r6 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r6.<java.io.PrintStream: void println(java.lang.String)>("ERROR:  Property file error");
+        $r6 = <java.lang.System: java.io.PrintStream out>;
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>("   Unrecognized property:  ");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r6.<java.io.PrintStream: void println(java.lang.String)>($r5);
+        retval = 0;
+
+     label12:
+        $z0 = interfaceinvoke e.<java.util.Enumeration: boolean hasMoreElements()>();
+        if $z0 != 0 goto label0;
+
+        if retval == 0 goto label15;
+
+        $r8 = new java.util.Vector;
+        $r9 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        $r10 = virtualinvoke $r9.<java.util.Properties: java.util.Set keySet()>();
+        specialinvoke $r8.<java.util.Vector: void <init>(java.util.Collection)>($r10);
+        keyvec = $r8;
+        staticinvoke <java.util.Collections: void sort(java.util.List)>(keyvec);
+        i = 0;
+        goto label14;
+
+     label13:
+        $r2 = virtualinvoke keyvec.<java.util.Vector: java.lang.Object elementAt(int)>(i);
+        propsKey = (java.lang.String) $r2;
+        $r1 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        svalue = virtualinvoke $r1.<java.util.Properties: java.lang.String getProperty(java.lang.String)>(propsKey);
+        $r3 = new java.lang.StringBuilder;
+        $r11 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(propsKey);
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>($r11);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("=");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(svalue);
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke outRawFile.<java.io.PrintStream: void println(java.lang.String)>($r5);
+        i = i + 1;
+
+     label14:
+        $i0 = virtualinvoke keyvec.<java.util.Vector: int size()>();
+        if i < $i0 goto label13;
+
+        $r12 = new java.lang.Integer;
+        $r13 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+        $i1 = virtualinvoke $r13.<java.lang.Runtime: int availableProcessors()>();
+        specialinvoke $r12.<java.lang.Integer: void <init>(int)>($i1);
+        procsAvail = $r12;
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>("config.sw.procsAvailtoJava=");
+        $r4 = virtualinvoke procsAvail.<java.lang.Integer: java.lang.String toString()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke outRawFile.<java.io.PrintStream: void println(java.lang.String)>($r5);
+
+     label15:
+        return retval;
+    }
+
+    public java.lang.String setProp(java.lang.String, java.lang.String)
+    {
+        spec.jbb.JBBProperties this;
+        java.lang.String prop, value, $r2;
+        java.util.Properties $r0;
+
+        this := @this: spec.jbb.JBBProperties;
+        prop := @parameter0: java.lang.String;
+        value := @parameter1: java.lang.String;
+        $r0 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        virtualinvoke $r0.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>(prop, value);
+        $r0 = this.<spec.jbb.JBBProperties: java.util.Properties PropertiesForBatch>;
+        $r2 = virtualinvoke $r0.<java.util.Properties: java.lang.String getProperty(java.lang.String)>(prop);
+        return $r2;
+    }
+
+    private boolean checkCompliance(int, int, java.lang.String)
+    {
+        spec.jbb.JBBProperties this;
+        int actualValue, compliantValue;
+        java.lang.String name, $r2;
+        java.io.PrintStream $r0;
+        java.lang.StringBuilder $r1;
+
+        this := @this: spec.jbb.JBBProperties;
+        actualValue := @parameter0: int;
+        compliantValue := @parameter1: int;
+        name := @parameter2: java.lang.String;
+        if actualValue == compliantValue goto label0;
+
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("INVALID:  ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" = ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(actualValue);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", must be ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(compliantValue);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        return 0;
+
+     label0:
+        return 1;
+    }
+
+    private boolean checkCompliance(boolean, boolean, java.lang.String)
+    {
+        spec.jbb.JBBProperties this;
+        boolean actualValue, compliantValue;
+        java.lang.String name, $r2;
+        java.io.PrintStream $r0;
+        java.lang.StringBuilder $r1;
+
+        this := @this: spec.jbb.JBBProperties;
+        actualValue := @parameter0: boolean;
+        compliantValue := @parameter1: boolean;
+        name := @parameter2: java.lang.String;
+        if actualValue == compliantValue goto label0;
+
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("INVALID:  ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" = ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>(actualValue);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", must be ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>(compliantValue);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        return 0;
+
+     label0:
+        return 1;
+    }
+
+    private boolean checkCompliance(float, float, java.lang.String)
+    {
+        spec.jbb.JBBProperties this;
+        float actualValue, compliantValue;
+        java.lang.String name, $r2;
+        byte $b0;
+        java.io.PrintStream $r0;
+        java.lang.StringBuilder $r1;
+
+        this := @this: spec.jbb.JBBProperties;
+        actualValue := @parameter0: float;
+        compliantValue := @parameter1: float;
+        name := @parameter2: java.lang.String;
+        $b0 = actualValue cmpl compliantValue;
+        if $b0 == 0 goto label0;
+
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("INVALID:  ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" = ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(float)>(actualValue);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", must be ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(float)>(compliantValue);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        return 0;
+
+     label0:
+        return 1;
+    }
+
+    private boolean checkCompliance(java.util.logging.Level, java.util.logging.Level, java.lang.String)
+    {
+        spec.jbb.JBBProperties this;
+        java.util.logging.Level actualValue, compliantValue;
+        java.lang.String name, $r2;
+        boolean $z0;
+        java.io.PrintStream $r0;
+        java.lang.StringBuilder $r1;
+
+        this := @this: spec.jbb.JBBProperties;
+        actualValue := @parameter0: java.util.logging.Level;
+        compliantValue := @parameter1: java.util.logging.Level;
+        name := @parameter2: java.lang.String;
+        $z0 = virtualinvoke actualValue.<java.util.logging.Level: boolean equals(java.lang.Object)>(compliantValue);
+        if $z0 != 0 goto label0;
+
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("INVALID:  ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" = ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(actualValue);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", must be ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(compliantValue);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        return 0;
+
+     label0:
+        return 1;
+    }
+
+    public void checkCompliance()
+    {
+        spec.jbb.JBBProperties this;
+        boolean compliant, $z0, $z1;
+        java.io.PrintStream $r0;
+        int $i0, $i1;
+        float $f0;
+        java.util.logging.Level $r1, $r2;
+        long tid_checkCompliance;
+        java.lang.Thread thread_checkCompliance;
+
+        this := @this: spec.jbb.JBBProperties;
+        thread_checkCompliance = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_checkCompliance = virtualinvoke thread_checkCompliance.<java.lang.Thread: long getId()>();
+        compliant = 1;
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>("\n\nChecking whether run will be valid");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 22, tid_checkCompliance, "spec.jbb.JBBProperties", 625, $z0);
+        $z0 = this.<spec.jbb.JBBProperties: boolean checkThroughput>;
+        if $z0 != 0 goto label26;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 10, tid_checkCompliance, "spec.jbb.JBBProperties", 628, $i0);
+        $i0 = this.<spec.jbb.JBBProperties: int warehousePopulationBase>;
+        $z0 = specialinvoke this.<spec.jbb.JBBProperties: boolean checkCompliance(int,int,java.lang.String)>($i0, 60, "warehouse_population_base");
+        if $z0 == 0 goto label0;
+
+        if compliant == 0 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        compliant = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 5, tid_checkCompliance, "spec.jbb.JBBProperties", 632, $i0);
+        $i0 = this.<spec.jbb.JBBProperties: int orderlinesPerOrder>;
+        $z0 = specialinvoke this.<spec.jbb.JBBProperties: boolean checkCompliance(int,int,java.lang.String)>($i0, 10, "orderlines_per_order");
+        if $z0 == 0 goto label2;
+
+        if compliant == 0 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        compliant = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 6, tid_checkCompliance, "spec.jbb.JBBProperties", 635, $z1);
+        $z1 = this.<spec.jbb.JBBProperties: boolean deterministicRandomSeed>;
+        $z0 = specialinvoke this.<spec.jbb.JBBProperties: boolean checkCompliance(boolean,boolean,java.lang.String)>($z1, 0, "deterministic_random_seed");
+        if $z0 == 0 goto label4;
+
+        if compliant == 0 goto label4;
+
+        $z0 = 1;
+        goto label5;
+
+     label4:
+        $z0 = 0;
+
+     label5:
+        compliant = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 8, tid_checkCompliance, "spec.jbb.JBBProperties", 639, $f0);
+        $f0 = this.<spec.jbb.JBBProperties: float per_jvm_warehouse_rampup>;
+        $z0 = specialinvoke this.<spec.jbb.JBBProperties: boolean checkCompliance(float,float,java.lang.String)>($f0, 3.0F, "per_jvm_warehouse_rampup");
+        if $z0 == 0 goto label6;
+
+        if compliant == 0 goto label6;
+
+        $z0 = 1;
+        goto label7;
+
+     label6:
+        $z0 = 0;
+
+     label7:
+        compliant = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 9, tid_checkCompliance, "spec.jbb.JBBProperties", 643, $f0);
+        $f0 = this.<spec.jbb.JBBProperties: float per_jvm_warehouse_rampdown>;
+        $z0 = specialinvoke this.<spec.jbb.JBBProperties: boolean checkCompliance(float,float,java.lang.String)>($f0, 20.0F, "per_jvm_warehouse_rampdown");
+        if $z0 == 0 goto label8;
+
+        if compliant == 0 goto label8;
+
+        $z0 = 1;
+        goto label9;
+
+     label8:
+        $z0 = 0;
+
+     label9:
+        compliant = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 20, tid_checkCompliance, "spec.jbb.JBBProperties", 647, $i0);
+        $i0 = this.<spec.jbb.JBBProperties: int rampupSeconds>;
+        $z0 = specialinvoke this.<spec.jbb.JBBProperties: boolean checkCompliance(int,int,java.lang.String)>($i0, 30, "ramp_up_seconds");
+        if $z0 == 0 goto label10;
+
+        if compliant == 0 goto label10;
+
+        $z0 = 1;
+        goto label11;
+
+     label10:
+        $z0 = 0;
+
+     label11:
+        compliant = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 21, tid_checkCompliance, "spec.jbb.JBBProperties", 650, $i0);
+        $i0 = this.<spec.jbb.JBBProperties: int measurementSeconds>;
+        $z0 = specialinvoke this.<spec.jbb.JBBProperties: boolean checkCompliance(int,int,java.lang.String)>($i0, 240, "measurement_seconds");
+        if $z0 == 0 goto label12;
+
+        if compliant == 0 goto label12;
+
+        $z0 = 1;
+        goto label13;
+
+     label12:
+        $z0 = 0;
+
+     label13:
+        compliant = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 4, tid_checkCompliance, "spec.jbb.JBBProperties", 653, $i0);
+        $i0 = this.<spec.jbb.JBBProperties: int waitTimePercent>;
+        $z0 = specialinvoke this.<spec.jbb.JBBProperties: boolean checkCompliance(int,int,java.lang.String)>($i0, 0, "wait_time_percent");
+        if $z0 == 0 goto label14;
+
+        if compliant == 0 goto label14;
+
+        $z0 = 1;
+        goto label15;
+
+     label14:
+        $z0 = 0;
+
+     label15:
+        compliant = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 13, tid_checkCompliance, "spec.jbb.JBBProperties", 656, $z1);
+        $z1 = this.<spec.jbb.JBBProperties: boolean steadyStateFlag>;
+        $z0 = specialinvoke this.<spec.jbb.JBBProperties: boolean checkCompliance(boolean,boolean,java.lang.String)>($z1, 1, "steady_state");
+        if $z0 == 0 goto label16;
+
+        if compliant == 0 goto label16;
+
+        $z0 = 1;
+        goto label17;
+
+     label16:
+        $z0 = 0;
+
+     label17:
+        compliant = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 12, tid_checkCompliance, "spec.jbb.JBBProperties", 659, $z1);
+        $z1 = this.<spec.jbb.JBBProperties: boolean screenWriteFlag>;
+        $z0 = specialinvoke this.<spec.jbb.JBBProperties: boolean checkCompliance(boolean,boolean,java.lang.String)>($z1, 0, "screen_write");
+        if $z0 == 0 goto label18;
+
+        if compliant == 0 goto label18;
+
+        $z0 = 1;
+        goto label19;
+
+     label18:
+        $z0 = 0;
+
+     label19:
+        compliant = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(58, tid_checkCompliance, "spec.jbbspec.jbb.JBBProperties", 662, $z1);
+        $z1 = <spec.jbb.JBBProperties: boolean uniformRandomItems>;
+        $z0 = specialinvoke this.<spec.jbb.JBBProperties: boolean checkCompliance(boolean,boolean,java.lang.String)>($z1, 1, "uniform_random_items");
+        if $z0 == 0 goto label20;
+
+        if compliant == 0 goto label20;
+
+        $z0 = 1;
+        goto label21;
+
+     label20:
+        $z0 = 0;
+
+     label21:
+        compliant = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_checkCompliance, "spec.jbb.JBBProperties", 665, $r1);
+        $r1 = this.<spec.jbb.JBBProperties: java.util.logging.Level applicationLoggingLevel>;
+        $r2 = <spec.jbb.JBBProperties: java.util.logging.Level COMPLIANT_RATE_applicationLoggingLevel>;
+        $z0 = specialinvoke this.<spec.jbb.JBBProperties: boolean checkCompliance(java.util.logging.Level,java.util.logging.Level,java.lang.String)>($r1, $r2, "log_level");
+        if $z0 == 0 goto label22;
+
+        if compliant == 0 goto label22;
+
+        $z0 = 1;
+        goto label23;
+
+     label22:
+        $z0 = 0;
+
+     label23:
+        compliant = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(11, tid_checkCompliance, "spec.jbbspec.jbb.JBBProperties", 668, $i1);
+        $i1 = <spec.jbb.JBBProperties: int overrideItemTableSize>;
+        if $i1 <= 0 goto label26;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(11, tid_checkCompliance, "spec.jbbspec.jbb.JBBProperties", 669, $i0);
+        $i0 = <spec.jbb.JBBProperties: int overrideItemTableSize>;
+        $z0 = specialinvoke this.<spec.jbb.JBBProperties: boolean checkCompliance(int,int,java.lang.String)>($i0, 20000, "override_itemtable_size");
+        if $z0 == 0 goto label24;
+
+        if compliant == 0 goto label24;
+
+        $z0 = 1;
+        goto label25;
+
+     label24:
+        $z0 = 0;
+
+     label25:
+        compliant = $z0;
+
+     label26:
+        if compliant == 0 goto label27;
+
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println()>();
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>("Run will be COMPLIANT");
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println()>();
+        goto label28;
+
+     label27:
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println()>();
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>("INVALID:  Run will NOT be compliant");
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println()>();
+
+     label28:
+        return;
+    }
+
+    public java.util.logging.Level getApplicationLoggingLevel()
+    {
+        spec.jbb.JBBProperties this;
+        java.util.logging.Level $r0;
+        long tid_getApplicationLoggingLevel;
+        java.lang.Thread thread_getApplicationLoggingLevel;
+
+        this := @this: spec.jbb.JBBProperties;
+        thread_getApplicationLoggingLevel = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getApplicationLoggingLevel = virtualinvoke thread_getApplicationLoggingLevel.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_getApplicationLoggingLevel, "spec.jbb.JBBProperties", 688, $r0);
+        $r0 = this.<spec.jbb.JBBProperties: java.util.logging.Level applicationLoggingLevel>;
+        return $r0;
+    }
+}

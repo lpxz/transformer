@@ -1,0 +1,492 @@
+public class spec.jbb.District extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+    private spec.jbb.JBBSortedStorage orderTable;
+    private spec.jbb.JBBSortedStorage newOrderTable;
+    private java.lang.String name;
+    private spec.jbb.Address address;
+    private java.math.BigDecimal taxRate;
+    private java.math.BigDecimal ytd;
+    private int nextOrder;
+    private byte districtId;
+    private short warehouseId;
+    private int oldestOrder;
+
+    public void <init>(short, byte)
+    {
+        spec.jbb.District this;
+        short inWarehouseId;
+        byte inDistrictId;
+        spec.jbb.Address $r0;
+        spec.jbb.JBBSortedStorage $r1;
+
+        this := @this: spec.jbb.District;
+        inWarehouseId := @parameter0: short;
+        inDistrictId := @parameter1: byte;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<spec.jbb.District: byte districtId> = inDistrictId;
+        this.<spec.jbb.District: short warehouseId> = inWarehouseId;
+        $r0 = new spec.jbb.Address;
+        specialinvoke $r0.<spec.jbb.Address: void <init>()>();
+        this.<spec.jbb.District: spec.jbb.Address address> = $r0;
+        this.<spec.jbb.District: int nextOrder> = 1;
+        $r1 = staticinvoke <spec.jbb.Infrastructure: spec.jbb.JBBSortedStorage createSortedStorage()>();
+        this.<spec.jbb.District: spec.jbb.JBBSortedStorage orderTable> = $r1;
+        $r1 = staticinvoke <spec.jbb.Infrastructure: spec.jbb.JBBSortedStorage createSortedStorage()>();
+        this.<spec.jbb.District: spec.jbb.JBBSortedStorage newOrderTable> = $r1;
+        return;
+    }
+
+    public int getId()
+    {
+        spec.jbb.District this;
+        byte $b0;
+
+        this := @this: spec.jbb.District;
+        $b0 = this.<spec.jbb.District: byte districtId>;
+        return $b0;
+    }
+
+    public java.math.BigDecimal getTaxRate()
+    {
+        spec.jbb.District this;
+        java.math.BigDecimal $r0;
+
+        this := @this: spec.jbb.District;
+        $r0 = this.<spec.jbb.District: java.math.BigDecimal taxRate>;
+        return $r0;
+    }
+
+    public spec.jbb.Address getAddress()
+    {
+        spec.jbb.District this;
+        spec.jbb.Address $r0;
+
+        this := @this: spec.jbb.District;
+        $r0 = this.<spec.jbb.District: spec.jbb.Address address>;
+        return $r0;
+    }
+
+    public int lastOrderId()
+    {
+        spec.jbb.District this;
+        int temp, $i0;
+
+        this := @this: spec.jbb.District;
+        $i0 = this.<spec.jbb.District: int nextOrder>;
+        temp = $i0 - 1;
+        return temp;
+    }
+
+    public int nextOrderId()
+    {
+        spec.jbb.District this;
+        int $i0, temp, $i1;
+
+        this := @this: spec.jbb.District;
+        $i0 = this.<spec.jbb.District: int nextOrder>;
+        $i1 = $i0 + 1;
+        this.<spec.jbb.District: int nextOrder> = $i1;
+        temp = $i0;
+        return temp;
+    }
+
+    public void display()
+    {
+        spec.jbb.District this;
+        java.io.PrintStream $r0;
+        java.lang.StringBuilder $r1;
+        byte $b0;
+        java.lang.String $r2, $r3;
+        short $s1;
+        spec.jbb.Address $r4;
+
+        this := @this: spec.jbb.District;
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>("District display ****************************");
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("districtId is ======== ");
+        $b0 = this.<spec.jbb.District: byte districtId>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($b0);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("warehouseID == ");
+        $s1 = this.<spec.jbb.District: short warehouseId>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s1);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("name is   ==== ");
+        $r3 = this.<spec.jbb.District: java.lang.String name>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r4 = this.<spec.jbb.District: spec.jbb.Address address>;
+        virtualinvoke $r4.<spec.jbb.Address: void display()>();
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>("*********************************************");
+        return;
+    }
+
+    public void receivePayment(java.math.BigDecimal)
+    {
+        spec.jbb.District this;
+        java.math.BigDecimal paymentAmount, $r0;
+
+        this := @this: spec.jbb.District;
+        paymentAmount := @parameter0: java.math.BigDecimal;
+        $r0 = this.<spec.jbb.District: java.math.BigDecimal ytd>;
+        $r0 = virtualinvoke $r0.<java.math.BigDecimal: java.math.BigDecimal add(java.math.BigDecimal)>(paymentAmount);
+        this.<spec.jbb.District: java.math.BigDecimal ytd> = $r0;
+        return;
+    }
+
+    public void setUsingRandom()
+    {
+        spec.jbb.District this;
+        java.lang.String $r0;
+        float temp;
+        short $s0, $s1, $s2;
+        char[] $r1;
+        spec.jbb.Address $r2;
+        java.math.BigDecimal $r3;
+        double $d0;
+
+        this := @this: spec.jbb.District;
+        $r0 = new java.lang.String;
+        $s0 = this.<spec.jbb.District: short warehouseId>;
+        $r1 = staticinvoke <spec.jbb.JBButil: char[] create_random_a_string(int,int,short)>(6, 10, $s0);
+        specialinvoke $r0.<java.lang.String: void <init>(char[])>($r1);
+        this.<spec.jbb.District: java.lang.String name> = $r0;
+        $r2 = this.<spec.jbb.District: spec.jbb.Address address>;
+        $s1 = this.<spec.jbb.District: short warehouseId>;
+        virtualinvoke $r2.<spec.jbb.Address: void setUsingRandom(short)>($s1);
+        $s2 = this.<spec.jbb.District: short warehouseId>;
+        temp = staticinvoke <spec.jbb.JBButil: float create_random_float_val_return(float,float,float,short)>(0.0F, 0.2F, 1.0E-4F, $s2);
+        $r3 = new java.math.BigDecimal;
+        $d0 = (double) temp;
+        specialinvoke $r3.<java.math.BigDecimal: void <init>(double)>($d0);
+        $r3 = virtualinvoke $r3.<java.math.BigDecimal: java.math.BigDecimal setScale(int,int)>(4, 4);
+        this.<spec.jbb.District: java.math.BigDecimal taxRate> = $r3;
+        $r3 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long,int)>(3000000L, 2);
+        this.<spec.jbb.District: java.math.BigDecimal ytd> = $r3;
+        return;
+    }
+
+    public void addOrder(spec.jbb.Order)
+    {
+        spec.jbb.District this;
+        spec.jbb.Order anOrder;
+        spec.jbb.JBBSortedStorage $r0;
+        int $i0;
+        java.lang.Integer $r1;
+
+        this := @this: spec.jbb.District;
+        anOrder := @parameter0: spec.jbb.Order;
+        $r0 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage orderTable>;
+        $i0 = virtualinvoke anOrder.<spec.jbb.Order: int getId()>();
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+        interfaceinvoke $r0.<spec.jbb.JBBSortedStorage: java.lang.Object put(java.lang.Object,java.lang.Object)>($r1, anOrder);
+        return;
+    }
+
+    public spec.jbb.Order retrieveOrder(spec.jbb.Order)
+    {
+        spec.jbb.District this;
+        spec.jbb.Order order, $r3;
+        spec.jbb.JBBSortedStorage $r0;
+        int $i0;
+        java.lang.Integer $r1;
+        java.lang.Object $r2;
+
+        this := @this: spec.jbb.District;
+        order := @parameter0: spec.jbb.Order;
+        $r0 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage orderTable>;
+        $i0 = virtualinvoke order.<spec.jbb.Order: int getId()>();
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+        $r2 = interfaceinvoke $r0.<spec.jbb.JBBSortedStorage: java.lang.Object get(java.lang.Object)>($r1);
+        $r3 = (spec.jbb.Order) $r2;
+        return $r3;
+    }
+
+    public void removeOldestOrder()
+    {
+        spec.jbb.District this;
+        boolean removed;
+        int $i0, $i1;
+        spec.jbb.JBBSortedStorage $r1;
+        java.util.logging.Logger $r2;
+        java.lang.StringBuilder $r3;
+        byte $b2;
+        short $s3;
+        java.lang.String $r4;
+        long tid_removeOldestOrder;
+        java.lang.Thread thread_removeOldestOrder;
+
+        this := @this: spec.jbb.District;
+        thread_removeOldestOrder = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_removeOldestOrder = virtualinvoke thread_removeOldestOrder.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 109, tid_removeOldestOrder, "spec.jbb.District", 108, $i0);
+        $i0 = this.<spec.jbb.District: int oldestOrder>;
+        $i0 = $i0 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 109, tid_removeOldestOrder, "spec.jbb.District", 108, $i0);
+        this.<spec.jbb.District: int oldestOrder> = $i0;
+        $r1 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage orderTable>;
+        removed = interfaceinvoke $r1.<spec.jbb.JBBSortedStorage: boolean deleteFirstEntities()>();
+        if removed != 0 goto label0;
+
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>("District.removeOldestOrder failed for orderId=");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 109, tid_removeOldestOrder, "spec.jbb.District", 113, $i1);
+        $i1 = this.<spec.jbb.District: int oldestOrder>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", districtId=");
+        $b2 = this.<spec.jbb.District: byte districtId>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($b2);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", warehouseId=");
+        $s3 = this.<spec.jbb.District: short warehouseId>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s3);
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void warning(java.lang.String)>($r4);
+
+     label0:
+        return;
+    }
+
+    public void removeOldOrders(int)
+    {
+        spec.jbb.District this;
+        int minOrders, size, $i0, $i1;
+        boolean removed, $z0;
+        java.util.logging.Logger log, $r2;
+        spec.jbb.JBBSortedStorage $r0, $r4;
+        java.lang.StringBuilder $r3;
+        byte $b2;
+        short $s3;
+        java.lang.String $r5;
+        java.util.logging.Level $r6;
+        long tid_removeOldOrders;
+        java.lang.Thread thread_removeOldOrders;
+
+        this := @this: spec.jbb.District;
+        minOrders := @parameter0: int;
+        thread_removeOldOrders = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_removeOldOrders = virtualinvoke thread_removeOldOrders.<java.lang.Thread: long getId()>();
+        $r0 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage orderTable>;
+        size = interfaceinvoke $r0.<spec.jbb.JBBSortedStorage: int size()>();
+        $r0 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage orderTable>;
+        $i0 = size - minOrders;
+        removed = interfaceinvoke $r0.<spec.jbb.JBBSortedStorage: boolean deleteFirstEntities(int)>($i0);
+        if removed == 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 109, tid_removeOldOrders, "spec.jbb.District", 122, $i0);
+        $i0 = this.<spec.jbb.District: int oldestOrder>;
+        $i1 = size - minOrders;
+        $i0 = $i0 + $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 109, tid_removeOldOrders, "spec.jbb.District", 122, $i0);
+        this.<spec.jbb.District: int oldestOrder> = $i0;
+        goto label1;
+
+     label0:
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>("District.removeOldOrders failed for , districtId=");
+        $b2 = this.<spec.jbb.District: byte districtId>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($b2);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", warehouseId=");
+        $s3 = this.<spec.jbb.District: short warehouseId>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s3);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", size=");
+        $r4 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage orderTable>;
+        $i1 = interfaceinvoke $r4.<spec.jbb.JBBSortedStorage: int size()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void warning(java.lang.String)>($r5);
+
+     label1:
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r6 = <java.util.logging.Level: java.util.logging.Level FINEST>;
+        $z0 = virtualinvoke $r2.<java.util.logging.Logger: boolean isLoggable(java.util.logging.Level)>($r6);
+        if $z0 == 0 goto label2;
+
+        log = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>("SteadyState trimmed orderTable to ");
+        $r4 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage orderTable>;
+        $i1 = interfaceinvoke $r4.<spec.jbb.JBBSortedStorage: int size()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" elements, from ");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(size);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" elements");
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke log.<java.util.logging.Logger: void finest(java.lang.String)>($r5);
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>("  for districtId=");
+        $b2 = this.<spec.jbb.District: byte districtId>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($b2);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" warehouseId=");
+        $s3 = this.<spec.jbb.District: short warehouseId>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s3);
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke log.<java.util.logging.Logger: void finest(java.lang.String)>($r5);
+
+     label2:
+        return;
+    }
+
+    public void removeOldNewOrders(int)
+    {
+        spec.jbb.District this;
+        int minNewOrders, size, $i0, $i3;
+        boolean removed, $z0;
+        java.util.logging.Logger log, $r1;
+        spec.jbb.JBBSortedStorage $r0, $r3;
+        java.lang.StringBuilder $r2;
+        byte $b1;
+        short $s2;
+        java.lang.String $r4;
+        java.util.logging.Level $r5;
+
+        this := @this: spec.jbb.District;
+        minNewOrders := @parameter0: int;
+        $r0 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage newOrderTable>;
+        size = interfaceinvoke $r0.<spec.jbb.JBBSortedStorage: int size()>();
+        $r0 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage newOrderTable>;
+        $i0 = size - minNewOrders;
+        removed = interfaceinvoke $r0.<spec.jbb.JBBSortedStorage: boolean deleteFirstEntities(int)>($i0);
+        if removed != 0 goto label0;
+
+        $r1 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("District.removeOldNewOrders failed for , districtId=");
+        $b1 = this.<spec.jbb.District: byte districtId>;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($b1);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", warehouseId=");
+        $s2 = this.<spec.jbb.District: short warehouseId>;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s2);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", size=");
+        $r3 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage newOrderTable>;
+        $i3 = interfaceinvoke $r3.<spec.jbb.JBBSortedStorage: int size()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r1.<java.util.logging.Logger: void warning(java.lang.String)>($r4);
+
+     label0:
+        $r1 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r5 = <java.util.logging.Level: java.util.logging.Level FINEST>;
+        $z0 = virtualinvoke $r1.<java.util.logging.Logger: boolean isLoggable(java.util.logging.Level)>($r5);
+        if $z0 == 0 goto label1;
+
+        log = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("SteadyState trimmed newOrderTable to ");
+        $r3 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage newOrderTable>;
+        $i3 = interfaceinvoke $r3.<spec.jbb.JBBSortedStorage: int size()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" elements, from ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(size);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" elements");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke log.<java.util.logging.Logger: void finest(java.lang.String)>($r4);
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("  for districtId=");
+        $b1 = this.<spec.jbb.District: byte districtId>;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($b1);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", warehouseId=");
+        $s2 = this.<spec.jbb.District: short warehouseId>;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s2);
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke log.<java.util.logging.Logger: void finest(java.lang.String)>($r4);
+
+     label1:
+        return;
+    }
+
+    public void addNewOrder(spec.jbb.NewOrder)
+    {
+        spec.jbb.District this;
+        spec.jbb.NewOrder aNewOrder;
+        spec.jbb.JBBSortedStorage $r0;
+        int $i0;
+        java.lang.Integer $r1;
+
+        this := @this: spec.jbb.District;
+        aNewOrder := @parameter0: spec.jbb.NewOrder;
+        $r0 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage newOrderTable>;
+        $i0 = virtualinvoke aNewOrder.<spec.jbb.NewOrder: int getId()>();
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+        interfaceinvoke $r0.<spec.jbb.JBBSortedStorage: java.lang.Object put(java.lang.Object,java.lang.Object)>($r1, aNewOrder);
+        return;
+    }
+
+    public spec.jbb.NewOrder removeFirstNewOrder()
+    {
+        spec.jbb.District this;
+        null_type temp;
+        spec.jbb.JBBSortedStorage $r0;
+        java.lang.Object $r1;
+        spec.jbb.NewOrder temp;
+
+        this := @this: spec.jbb.District;
+        temp = null;
+        $r0 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage newOrderTable>;
+        $r1 = interfaceinvoke $r0.<spec.jbb.JBBSortedStorage: java.lang.Object removeFirstElem()>();
+        temp = (spec.jbb.NewOrder) $r1;
+        return temp;
+    }
+
+    public spec.jbb.JBBDataStorage getOrderTable()
+    {
+        spec.jbb.District this;
+        spec.jbb.JBBSortedStorage $r0;
+
+        this := @this: spec.jbb.District;
+        $r0 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage orderTable>;
+        return $r0;
+    }
+
+    public java.lang.String getName()
+    {
+        spec.jbb.District this;
+        java.lang.String $r0;
+
+        this := @this: spec.jbb.District;
+        $r0 = this.<spec.jbb.District: java.lang.String name>;
+        return $r0;
+    }
+
+    public java.util.Iterator newOrderIter()
+    {
+        spec.jbb.District this;
+        spec.jbb.JBBSortedStorage $r0;
+        java.util.Iterator $r1;
+
+        this := @this: spec.jbb.District;
+        $r0 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage newOrderTable>;
+        $r1 = interfaceinvoke $r0.<spec.jbb.JBBSortedStorage: java.util.Iterator elements()>();
+        return $r1;
+    }
+
+    public spec.jbb.NewOrder removeNewOrder(java.lang.Object)
+    {
+        spec.jbb.District this;
+        java.lang.Object key, $r1;
+        spec.jbb.NewOrder temp, $r2;
+        spec.jbb.JBBSortedStorage $r0;
+
+        this := @this: spec.jbb.District;
+        key := @parameter0: java.lang.Object;
+        $r0 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage newOrderTable>;
+        $r1 = interfaceinvoke $r0.<spec.jbb.JBBSortedStorage: java.lang.Object get(java.lang.Object)>(key);
+        temp = (spec.jbb.NewOrder) $r1;
+        $r0 = this.<spec.jbb.District: spec.jbb.JBBSortedStorage newOrderTable>;
+        $r1 = interfaceinvoke $r0.<spec.jbb.JBBSortedStorage: java.lang.Object remove(java.lang.Object)>(key);
+        $r2 = (spec.jbb.NewOrder) $r1;
+        return $r2;
+    }
+}

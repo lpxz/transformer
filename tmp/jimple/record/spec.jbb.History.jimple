@@ -1,0 +1,161 @@
+public class spec.jbb.History extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+    private java.util.Date date;
+    private java.lang.String data;
+    private java.math.BigDecimal amount;
+    private short customerId;
+    private byte customerDistrictId;
+    private short customerWarehouseId;
+    private byte districtId;
+    private short warehouseId;
+
+    public void <init>(short, byte, short, byte, short, java.util.Date, java.math.BigDecimal, java.lang.String)
+    {
+        spec.jbb.History this;
+        short inCustomerId, inCustomerWarehouseId, inWarehouseId;
+        byte inCustomerDistrictId, inDistrictId;
+        java.util.Date inDate;
+        java.math.BigDecimal inAmount;
+        java.lang.String inData;
+
+        this := @this: spec.jbb.History;
+        inCustomerId := @parameter0: short;
+        inCustomerDistrictId := @parameter1: byte;
+        inCustomerWarehouseId := @parameter2: short;
+        inDistrictId := @parameter3: byte;
+        inWarehouseId := @parameter4: short;
+        inDate := @parameter5: java.util.Date;
+        inAmount := @parameter6: java.math.BigDecimal;
+        inData := @parameter7: java.lang.String;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<spec.jbb.History: short customerId> = inCustomerId;
+        this.<spec.jbb.History: byte customerDistrictId> = inCustomerDistrictId;
+        this.<spec.jbb.History: short customerWarehouseId> = inCustomerWarehouseId;
+        this.<spec.jbb.History: byte districtId> = inDistrictId;
+        this.<spec.jbb.History: short warehouseId> = inWarehouseId;
+        this.<spec.jbb.History: java.util.Date date> = inDate;
+        this.<spec.jbb.History: java.math.BigDecimal amount> = inAmount;
+        this.<spec.jbb.History: java.lang.String data> = inData;
+        return;
+    }
+
+    public void <init>()
+    {
+        spec.jbb.History this;
+
+        this := @this: spec.jbb.History;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public void initHistory(short, byte, short, byte, short, java.util.Date, java.math.BigDecimal, java.lang.String)
+    {
+        spec.jbb.History this;
+        short inCustomerId, inCustomerWarehouseId, inWarehouseId;
+        byte inCustomerDistrictId, inDistrictId;
+        java.util.Date inDate;
+        java.math.BigDecimal inAmount;
+        java.lang.String inData;
+
+        this := @this: spec.jbb.History;
+        inCustomerId := @parameter0: short;
+        inCustomerDistrictId := @parameter1: byte;
+        inCustomerWarehouseId := @parameter2: short;
+        inDistrictId := @parameter3: byte;
+        inWarehouseId := @parameter4: short;
+        inDate := @parameter5: java.util.Date;
+        inAmount := @parameter6: java.math.BigDecimal;
+        inData := @parameter7: java.lang.String;
+        this.<spec.jbb.History: short customerId> = inCustomerId;
+        this.<spec.jbb.History: byte customerDistrictId> = inCustomerDistrictId;
+        this.<spec.jbb.History: short customerWarehouseId> = inCustomerWarehouseId;
+        this.<spec.jbb.History: byte districtId> = inDistrictId;
+        this.<spec.jbb.History: short warehouseId> = inWarehouseId;
+        this.<spec.jbb.History: java.util.Date date> = inDate;
+        this.<spec.jbb.History: java.math.BigDecimal amount> = inAmount;
+        this.<spec.jbb.History: java.lang.String data> = inData;
+        return;
+    }
+
+    public java.lang.String buildData(java.lang.String, java.lang.String)
+    {
+        spec.jbb.History this;
+        java.lang.String warehouseName, districtName, $r0, temp, $r2, $r3;
+        java.lang.StringBuilder $r1;
+        java.lang.Object localthislockbuildData;
+        java.lang.Throwable throwableLocal12;
+        long tid_buildData;
+        java.lang.Thread thread_buildData;
+
+        this := @this: spec.jbb.History;
+        warehouseName := @parameter0: java.lang.String;
+        districtName := @parameter1: java.lang.String;
+        thread_buildData = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_buildData = virtualinvoke thread_buildData.<java.lang.Thread: long getId()>();
+        localthislockbuildData = this;
+
+     label0:
+        entermonitor localthislockbuildData;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockbuildData, 0, tid_buildData);
+        $r0 = new java.lang.String;
+        $r1 = new java.lang.StringBuilder;
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>(warehouseName);
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>($r2);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("   ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(districtName);
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke $r0.<java.lang.String: void <init>(java.lang.String)>($r3);
+        this.<spec.jbb.History: java.lang.String data> = $r0;
+        temp = this.<spec.jbb.History: java.lang.String data>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockbuildData, 0, tid_buildData);
+        exitmonitor localthislockbuildData;
+        goto label1;
+
+     label1:
+        return temp;
+
+     label2:
+        throwableLocal12 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockbuildData, 0, tid_buildData);
+        exitmonitor localthislockbuildData;
+
+     label4:
+        throw throwableLocal12;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public short getCustomerId()
+    {
+        spec.jbb.History this;
+        short temp;
+
+        this := @this: spec.jbb.History;
+        temp = this.<spec.jbb.History: short customerId>;
+        return temp;
+    }
+
+    public java.util.Date getDate()
+    {
+        spec.jbb.History this;
+        java.util.Date temp;
+
+        this := @this: spec.jbb.History;
+        temp = this.<spec.jbb.History: java.util.Date date>;
+        return temp;
+    }
+
+    public java.math.BigDecimal getAmount()
+    {
+        spec.jbb.History this;
+        java.math.BigDecimal temp;
+
+        this := @this: spec.jbb.History;
+        temp = this.<spec.jbb.History: java.math.BigDecimal amount>;
+        return temp;
+    }
+}

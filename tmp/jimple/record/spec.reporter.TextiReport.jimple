@@ -1,0 +1,544 @@
+public class spec.reporter.TextiReport extends java.lang.Object
+{
+    static final java.lang.String COPYRIGHT;
+    public java.lang.String hardware;
+    public java.lang.String metric;
+    public java.lang.String software;
+    public java.lang.String base;
+    private spec.reporter.TextColumn columnTitle;
+    private spec.reporter.TextColumn columnValue;
+    public java.lang.String issue;
+    private java.lang.String memory;
+    private java.lang.String memoryDescription;
+    public spec.reporter.TextMetrics metrics;
+    private static final int pageWidth;
+    public spec.reporter.ReportProps results;
+    public boolean SPECInternalUse;
+
+    public void <init>(java.lang.String, java.lang.String, boolean)
+    {
+        spec.reporter.TextiReport this;
+        java.lang.String newsletter, resultFile, $r8, $r12, $r13, $r14;
+        boolean SPECInternalUse, $z0;
+        spec.reporter.ReportProps $r0, $r2, $r10;
+        java.io.InputStream $r1;
+        java.io.IOException e, $r4;
+        java.io.InputStreamReader $r3;
+        java.util.logging.Logger $r5;
+        java.util.logging.Level $r6;
+        java.lang.StringBuilder $r7, $r11;
+        spec.reporter.TextMetrics $r9, $r15;
+
+        this := @this: spec.reporter.TextiReport;
+        newsletter := @parameter0: java.lang.String;
+        resultFile := @parameter1: java.lang.String;
+        SPECInternalUse := @parameter2: boolean;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new spec.reporter.ReportProps;
+        specialinvoke $r0.<spec.reporter.ReportProps: void <init>()>();
+        this.<spec.reporter.TextiReport: spec.reporter.ReportProps results> = $r0;
+        this.<spec.reporter.TextiReport: java.lang.String issue> = newsletter;
+        this.<spec.reporter.TextiReport: boolean SPECInternalUse> = SPECInternalUse;
+
+     label0:
+        if resultFile != null goto label1;
+
+        $r2 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        $r3 = new java.io.InputStreamReader;
+        $r1 = <java.lang.System: java.io.InputStream in>;
+        specialinvoke $r3.<java.io.InputStreamReader: void <init>(java.io.InputStream)>($r1);
+        virtualinvoke $r2.<spec.reporter.ReportProps: void load(java.io.Reader)>($r3);
+        goto label4;
+
+     label1:
+        $r2 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        virtualinvoke $r2.<spec.reporter.ReportProps: void load(java.lang.String)>(resultFile);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r4 := @caughtexception;
+        e = $r4;
+        $r5 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r6 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r7 = new java.lang.StringBuilder;
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>(java.lang.String)>("Error reading results file ");
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(resultFile);
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(e);
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r5.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r6, $r8, e);
+        staticinvoke <java.lang.System: void exit(int)>(1);
+
+     label4:
+        $r9 = new spec.reporter.TextMetrics;
+        $r10 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        specialinvoke $r9.<spec.reporter.TextMetrics: void <init>(spec.reporter.ReportProps,boolean)>($r10, SPECInternalUse);
+        this.<spec.reporter.TextiReport: spec.reporter.TextMetrics metrics> = $r9;
+        $r11 = new java.lang.StringBuilder;
+        $r12 = specialinvoke this.<spec.reporter.TextiReport: java.lang.String get(java.lang.String)>("config.hw.vendor");
+        $r12 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r12);
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>(java.lang.String)>($r12);
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+        $r8 = specialinvoke this.<spec.reporter.TextiReport: java.lang.String get(java.lang.String)>("config.hw.model");
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+        $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+        this.<spec.reporter.TextiReport: java.lang.String hardware> = $r13;
+        $r14 = this.<spec.reporter.TextiReport: java.lang.String metric>;
+        if $r14 != null goto label5;
+
+        $r9 = this.<spec.reporter.TextiReport: spec.reporter.TextMetrics metrics>;
+        $r13 = virtualinvoke $r9.<spec.reporter.TextMetrics: java.lang.String metric()>();
+        this.<spec.reporter.TextiReport: java.lang.String metric> = $r13;
+
+     label5:
+        $r15 = this.<spec.reporter.TextiReport: spec.reporter.TextMetrics metrics>;
+        $z0 = $r15.<spec.reporter.TextMetrics: boolean valid>;
+        if $z0 == 0 goto label6;
+
+        $r15 = this.<spec.reporter.TextiReport: spec.reporter.TextMetrics metrics>;
+        $r11 = new java.lang.StringBuilder;
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>(java.lang.String)>("Valid run, Score is ");
+        $r8 = this.<spec.reporter.TextiReport: java.lang.String metric>;
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+        $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r15.<spec.reporter.TextMetrics: void output_properly(java.lang.String)>($r13);
+        goto label8;
+
+     label6:
+        $r15 = this.<spec.reporter.TextiReport: spec.reporter.TextMetrics metrics>;
+        $z0 = $r15.<spec.reporter.TextMetrics: boolean print_score>;
+        if $z0 == 0 goto label7;
+
+        $r15 = this.<spec.reporter.TextiReport: spec.reporter.TextMetrics metrics>;
+        $r11 = new java.lang.StringBuilder;
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>(java.lang.String)>("INVALID run; Score is ");
+        $r8 = this.<spec.reporter.TextiReport: java.lang.String metric>;
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+        $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r15.<spec.reporter.TextMetrics: void output_properly(java.lang.String)>($r13);
+        goto label8;
+
+     label7:
+        $r15 = this.<spec.reporter.TextiReport: spec.reporter.TextMetrics metrics>;
+        virtualinvoke $r15.<spec.reporter.TextMetrics: void output_properly(java.lang.String)>("INVALID run, preventing score calculation.");
+
+     label8:
+        $r11 = new java.lang.StringBuilder;
+        $r12 = specialinvoke this.<spec.reporter.TextiReport: java.lang.String get(java.lang.String)>("config.sw.vendor");
+        $r12 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r12);
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>(java.lang.String)>($r12);
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+        $r8 = specialinvoke this.<spec.reporter.TextiReport: java.lang.String get(java.lang.String)>("config.sw.JVM");
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+        $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+        this.<spec.reporter.TextiReport: java.lang.String software> = $r13;
+        $r0 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        $r13 = virtualinvoke $r0.<spec.reporter.ReportProps: java.lang.String get(java.lang.String)>("config.hw.memory");
+        this.<spec.reporter.TextiReport: java.lang.String memory> = $r13;
+        $r0 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        $r13 = virtualinvoke $r0.<spec.reporter.ReportProps: java.lang.String get(java.lang.String)>("config.hw.memory_description");
+        this.<spec.reporter.TextiReport: java.lang.String memoryDescription> = $r13;
+        return;
+
+        catch java.io.IOException from label0 to label2 with label3;
+    }
+
+    private java.lang.String configSection()
+    {
+        spec.reporter.TextiReport this;
+        spec.reporter.TextBlock $r0, left, right, top, $r3;
+        spec.reporter.TextColumn $r1, $r2;
+        spec.reporter.ReportProps $r4, $r6;
+        java.lang.String $r5, $r7;
+
+        this := @this: spec.reporter.TextiReport;
+        $r0 = new spec.reporter.TextBlock;
+        specialinvoke $r0.<spec.reporter.TextBlock: void <init>(int,java.lang.String)>(51, "HARDWARE");
+        left = $r0;
+        $r1 = new spec.reporter.TextColumn;
+        specialinvoke $r1.<spec.reporter.TextColumn: void <init>(int)>(25);
+        this.<spec.reporter.TextiReport: spec.reporter.TextColumn columnTitle> = $r1;
+        $r1 = new spec.reporter.TextColumn;
+        specialinvoke $r1.<spec.reporter.TextColumn: void <init>(int)>(25);
+        this.<spec.reporter.TextiReport: spec.reporter.TextColumn columnValue> = $r1;
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.vendor", "Vendor");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.vendor.url", "Vendor URL");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.model", "Model");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.processor", "Processor");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.MHz", "MHz");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.nchips", "# of Chips");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.ncores", "# of Cores");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.ncoresperchip", "# of Cores/Chip");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.hwThreads", "HW Threading Enabled");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.sw.procsAvailtoJava", "Procs avail to Java");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.memory", "Memory (MB)");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.memory_description", "Memory Details");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.primaryCache", "L1 Cache");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.secondaryCache", "L2 Cache");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.otherCache", "Other Cache");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.fileSystem", "Filesystem");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.disk", "Disks");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.other", "Other H/W");
+        $r1 = this.<spec.reporter.TextiReport: spec.reporter.TextColumn columnTitle>;
+        $r2 = this.<spec.reporter.TextiReport: spec.reporter.TextColumn columnValue>;
+        $r1 = virtualinvoke $r1.<spec.reporter.TextColumn: spec.reporter.TextColumn join(spec.reporter.TextColumn,java.lang.String)>($r2, " ");
+        $r3 = virtualinvoke $r1.<spec.reporter.TextColumn: spec.reporter.TextBlock merge()>();
+        virtualinvoke left.<spec.reporter.TextBlock: void add(spec.reporter.TextBlock)>($r3);
+        $r0 = new spec.reporter.TextBlock;
+        specialinvoke $r0.<spec.reporter.TextBlock: void <init>(int,java.lang.String)>(65, "SOFTWARE");
+        right = $r0;
+        $r1 = new spec.reporter.TextColumn;
+        specialinvoke $r1.<spec.reporter.TextColumn: void <init>(int)>(20);
+        this.<spec.reporter.TextiReport: spec.reporter.TextColumn columnTitle> = $r1;
+        $r1 = new spec.reporter.TextColumn;
+        specialinvoke $r1.<spec.reporter.TextColumn: void <init>(int)>(44);
+        this.<spec.reporter.TextiReport: spec.reporter.TextColumn columnValue> = $r1;
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.sw.vendor", "Vendor");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.sw.vendor.url", "Vendor URL");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.sw.JVM", "JVM Version");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.sw.command_line", "Command Line");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.sw.JVMheapInitial", "Initial Heap Mem (MB)");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.sw.JVMheapMax", "Max Heap Mem (MB)");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.sw.JVMbitness", "JVM addressing bits");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("java.class.path", "JVM CLASSPATH");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("java.library.path", "JVM BOOTCLASSPATH");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.sw.OS", "OS Version");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.sw.other", "Other S/W");
+        $r1 = this.<spec.reporter.TextiReport: spec.reporter.TextColumn columnTitle>;
+        $r2 = this.<spec.reporter.TextiReport: spec.reporter.TextColumn columnValue>;
+        $r1 = virtualinvoke $r1.<spec.reporter.TextColumn: spec.reporter.TextColumn join(spec.reporter.TextColumn,java.lang.String)>($r2, " ");
+        $r3 = virtualinvoke $r1.<spec.reporter.TextColumn: spec.reporter.TextBlock merge()>();
+        virtualinvoke right.<spec.reporter.TextBlock: void add(spec.reporter.TextBlock)>($r3);
+        virtualinvoke right.<spec.reporter.TextBlock: void add(java.lang.String)>("");
+        virtualinvoke right.<spec.reporter.TextBlock: void add(java.lang.String)>("AOT Compilation Details");
+        $r4 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        $r5 = virtualinvoke $r4.<spec.reporter.ReportProps: java.lang.String get(java.lang.String)>("config.sw.aot");
+        if $r5 == null goto label0;
+
+        $r6 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        $r7 = virtualinvoke $r6.<spec.reporter.ReportProps: java.lang.String get(java.lang.String)>("config.sw.aot");
+        virtualinvoke right.<spec.reporter.TextBlock: void add(java.lang.String)>($r7);
+
+     label0:
+        virtualinvoke right.<spec.reporter.TextBlock: void add(java.lang.String)>("");
+        virtualinvoke right.<spec.reporter.TextBlock: void add(java.lang.String)>("TUNING AND NOTES");
+        $r4 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        $r5 = virtualinvoke $r4.<spec.reporter.ReportProps: java.lang.String get(java.lang.String)>("config.sw.tuning");
+        if $r5 == null goto label1;
+
+        $r6 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        $r7 = virtualinvoke $r6.<spec.reporter.ReportProps: java.lang.String get(java.lang.String)>("config.sw.tuning");
+        virtualinvoke right.<spec.reporter.TextBlock: void add(java.lang.String)>($r7);
+
+     label1:
+        $r4 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        $r5 = virtualinvoke $r4.<spec.reporter.ReportProps: java.lang.String get(java.lang.String)>("config.sw.notes");
+        if $r5 == null goto label2;
+
+        $r6 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        $r7 = virtualinvoke $r6.<spec.reporter.ReportProps: java.lang.String get(java.lang.String)>("config.sw.notes");
+        virtualinvoke right.<spec.reporter.TextBlock: void add(java.lang.String)>($r7);
+
+     label2:
+        virtualinvoke right.<spec.reporter.TextBlock: void add(java.lang.String)>("");
+        top = virtualinvoke left.<spec.reporter.TextBlock: spec.reporter.TextBlock join(spec.reporter.TextBlock)>(right);
+        virtualinvoke top.<spec.reporter.TextBlock: void add(java.lang.String)>("");
+        $r0 = new spec.reporter.TextBlock;
+        specialinvoke $r0.<spec.reporter.TextBlock: void <init>(int,java.lang.String)>(37, "TEST INFORMATION");
+        right = $r0;
+        $r1 = new spec.reporter.TextColumn;
+        specialinvoke $r1.<spec.reporter.TextColumn: void <init>(int)>(18);
+        this.<spec.reporter.TextiReport: spec.reporter.TextColumn columnTitle> = $r1;
+        $r1 = new spec.reporter.TextColumn;
+        specialinvoke $r1.<spec.reporter.TextColumn: void <init>(int)>(18);
+        this.<spec.reporter.TextiReport: spec.reporter.TextColumn columnValue> = $r1;
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.test.testedBy", "Tested by");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.test.specLicense", "SPEC License");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.test.location", "Test Location");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.test.date", "Test Date");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.sw.JVMavailable", "JVM available");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.hw.available", "H/w available");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.sw.OSavailable", "OS available");
+        specialinvoke this.<spec.reporter.TextiReport: void cput(java.lang.String,java.lang.String)>("config.sw.otherAvailable", "Other s/w available");
+        $r1 = this.<spec.reporter.TextiReport: spec.reporter.TextColumn columnTitle>;
+        $r2 = this.<spec.reporter.TextiReport: spec.reporter.TextColumn columnValue>;
+        $r1 = virtualinvoke $r1.<spec.reporter.TextColumn: spec.reporter.TextColumn join(spec.reporter.TextColumn,java.lang.String)>($r2, " ");
+        $r3 = virtualinvoke $r1.<spec.reporter.TextColumn: spec.reporter.TextBlock merge()>();
+        virtualinvoke right.<spec.reporter.TextBlock: void add(spec.reporter.TextBlock)>($r3);
+        virtualinvoke top.<spec.reporter.TextBlock: void add(spec.reporter.TextBlock)>(right);
+        $r5 = virtualinvoke top.<spec.reporter.TextBlock: java.lang.String toString()>();
+        return $r5;
+    }
+
+    private void cput(java.lang.String, java.lang.String)
+    {
+        spec.reporter.TextiReport this;
+        java.lang.String name, title, $r1;
+        spec.reporter.TextColumn $r0;
+
+        this := @this: spec.reporter.TextiReport;
+        name := @parameter0: java.lang.String;
+        title := @parameter1: java.lang.String;
+        $r0 = this.<spec.reporter.TextiReport: spec.reporter.TextColumn columnTitle>;
+        virtualinvoke $r0.<spec.reporter.TextColumn: void add(java.lang.String)>(title);
+        $r0 = this.<spec.reporter.TextiReport: spec.reporter.TextColumn columnValue>;
+        $r1 = specialinvoke this.<spec.reporter.TextiReport: java.lang.String get(java.lang.String)>(name);
+        virtualinvoke $r0.<spec.reporter.TextColumn: void add(java.lang.String)>($r1);
+        return;
+    }
+
+    private java.lang.String get(java.lang.String)
+    {
+        spec.reporter.TextiReport this;
+        java.lang.String name, $r0;
+
+        this := @this: spec.reporter.TextiReport;
+        name := @parameter0: java.lang.String;
+        $r0 = specialinvoke this.<spec.reporter.TextiReport: java.lang.String get(java.lang.String,java.lang.String)>(name, "MISSING");
+        return $r0;
+    }
+
+    private java.lang.String get(java.lang.String, java.lang.String)
+    {
+        spec.reporter.TextiReport this;
+        java.lang.String name, def, s, $r2, $r3;
+        int i, $i0, $i1;
+        spec.reporter.ReportProps $r0;
+        java.lang.StringBuilder $r1;
+
+        this := @this: spec.reporter.TextiReport;
+        name := @parameter0: java.lang.String;
+        def := @parameter1: java.lang.String;
+        $r0 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        s = virtualinvoke $r0.<spec.reporter.ReportProps: java.lang.String get(java.lang.String,java.lang.String)>(name, def);
+        $i0 = virtualinvoke s.<java.lang.String: int indexOf(int)>(60);
+        if $i0 < 0 goto label3;
+
+        i = virtualinvoke s.<java.lang.String: int indexOf(java.lang.String)>("<i>");
+        if i < 0 goto label0;
+
+        $r1 = new java.lang.StringBuilder;
+        $r2 = virtualinvoke s.<java.lang.String: java.lang.String substring(int,int)>(0, i);
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r2);
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>($r2);
+        $i1 = i + 3;
+        $r3 = virtualinvoke s.<java.lang.String: java.lang.String substring(int)>($i1);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        s = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label0:
+        i = virtualinvoke s.<java.lang.String: int indexOf(java.lang.String)>("<I>");
+        if i < 0 goto label1;
+
+        $r1 = new java.lang.StringBuilder;
+        $r2 = virtualinvoke s.<java.lang.String: java.lang.String substring(int,int)>(0, i);
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r2);
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>($r2);
+        $i1 = i + 3;
+        $r3 = virtualinvoke s.<java.lang.String: java.lang.String substring(int)>($i1);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        s = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label1:
+        i = virtualinvoke s.<java.lang.String: int indexOf(java.lang.String)>("</i>");
+        if i < 0 goto label2;
+
+        $r1 = new java.lang.StringBuilder;
+        $r2 = virtualinvoke s.<java.lang.String: java.lang.String substring(int,int)>(0, i);
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r2);
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>($r2);
+        $i1 = i + 4;
+        $r3 = virtualinvoke s.<java.lang.String: java.lang.String substring(int)>($i1);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        s = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label2:
+        i = virtualinvoke s.<java.lang.String: int indexOf(java.lang.String)>("</I>");
+        if i < 0 goto label3;
+
+        $r1 = new java.lang.StringBuilder;
+        $r2 = virtualinvoke s.<java.lang.String: java.lang.String substring(int,int)>(0, i);
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r2);
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>($r2);
+        $i1 = i + 4;
+        $r3 = virtualinvoke s.<java.lang.String: java.lang.String substring(int)>($i1);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        s = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label3:
+        return s;
+    }
+
+    public void print(java.lang.String)
+    {
+        spec.reporter.TextiReport this;
+        java.lang.String outFile, $r7;
+        java.io.PrintStream $r0;
+        java.io.BufferedOutputStream $r1;
+        java.io.FileOutputStream $r2;
+        java.io.IOException e, $r3;
+        java.util.logging.Logger $r4;
+        java.util.logging.Level $r5;
+        java.lang.StringBuilder $r6;
+
+        this := @this: spec.reporter.TextiReport;
+        outFile := @parameter0: java.lang.String;
+
+     label0:
+        $r0 = new java.io.PrintStream;
+        $r1 = new java.io.BufferedOutputStream;
+        $r2 = new java.io.FileOutputStream;
+        specialinvoke $r2.<java.io.FileOutputStream: void <init>(java.lang.String)>(outFile);
+        specialinvoke $r1.<java.io.BufferedOutputStream: void <init>(java.io.OutputStream)>($r2);
+        specialinvoke $r0.<java.io.PrintStream: void <init>(java.io.OutputStream)>($r1);
+        virtualinvoke this.<spec.reporter.TextiReport: void print(java.io.PrintStream)>($r0);
+
+     label1:
+        goto label3;
+
+     label2:
+        $r3 := @caughtexception;
+        e = $r3;
+        $r4 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r5 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r6 = new java.lang.StringBuilder;
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>(java.lang.String)>("Error creating output: ");
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(e);
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r5, $r7, e);
+
+     label3:
+        return;
+
+        catch java.io.IOException from label0 to label1 with label2;
+    }
+
+    public void print(java.io.PrintStream)
+    {
+        spec.reporter.TextiReport this;
+        java.io.PrintStream out;
+        java.lang.StringBuilder $r0, $r10;
+        java.lang.Exception e, $r7;
+        java.lang.String $r1, $r2, $r5;
+        spec.reporter.TextMetrics $r3, $r6;
+        spec.reporter.ReportProps $r4;
+        boolean $z0;
+        java.util.logging.Logger $r8;
+        java.util.logging.Level $r9;
+
+        this := @this: spec.reporter.TextiReport;
+        out := @parameter0: java.io.PrintStream;
+
+     label0:
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("SPECjbb2005 bops = ");
+        $r1 = this.<spec.reporter.TextiReport: java.lang.String metric>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", SPECjbb2005 bops/JVM = ");
+        $r1 = this.<spec.reporter.TextiReport: java.lang.String metric>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke out.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        virtualinvoke out.<java.io.PrintStream: void println()>();
+        $r2 = this.<spec.reporter.TextiReport: java.lang.String hardware>;
+        virtualinvoke out.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r2 = this.<spec.reporter.TextiReport: java.lang.String software>;
+        virtualinvoke out.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        virtualinvoke this.<spec.reporter.TextiReport: void testBar(java.io.PrintStream)>(out);
+        $r3 = this.<spec.reporter.TextiReport: spec.reporter.TextMetrics metrics>;
+        $r2 = virtualinvoke $r3.<spec.reporter.TextMetrics: java.lang.String ratioTable()>();
+        virtualinvoke out.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        virtualinvoke out.<java.io.PrintStream: void println()>();
+        $r2 = specialinvoke this.<spec.reporter.TextiReport: java.lang.String configSection()>();
+        virtualinvoke out.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r3 = this.<spec.reporter.TextiReport: spec.reporter.TextMetrics metrics>;
+        $r2 = virtualinvoke $r3.<spec.reporter.TextMetrics: java.lang.String detail()>();
+        virtualinvoke out.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("\nSPECjbb2005 Version: [");
+        $r4 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        $r1 = virtualinvoke $r4.<spec.reporter.ReportProps: java.lang.String get(java.lang.String,java.lang.String)>("config.benchmark_version", "N/A");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+        $r4 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        $r1 = virtualinvoke $r4.<spec.reporter.ReportProps: java.lang.String get(java.lang.String,java.lang.String)>("config.benchmark_versionDate", "-");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke out.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        $r5 = this.<spec.reporter.TextiReport: java.lang.String issue>;
+        if $r5 == null goto label1;
+
+        $r5 = this.<spec.reporter.TextiReport: java.lang.String issue>;
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>("");
+        if $z0 != 0 goto label1;
+
+        $r6 = this.<spec.reporter.TextiReport: spec.reporter.TextMetrics metrics>;
+        $z0 = $r6.<spec.reporter.TextMetrics: boolean valid>;
+        if $z0 == 0 goto label1;
+
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("Published by SPEC ");
+        $r1 = this.<spec.reporter.TextiReport: java.lang.String issue>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke out.<java.io.PrintStream: void println(java.lang.String)>($r2);
+
+     label1:
+        virtualinvoke out.<java.io.PrintStream: void println(java.lang.String)>("Reporting page (C) Copyright SPEC, 2005. All rights reserved\n");
+        virtualinvoke out.<java.io.PrintStream: void close()>();
+
+     label2:
+        goto label4;
+
+     label3:
+        $r7 := @caughtexception;
+        e = $r7;
+        $r8 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r9 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r10 = new java.lang.StringBuilder;
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>(java.lang.String)>("Error: ");
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(e);
+        $r1 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r8.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r9, $r1, e);
+
+     label4:
+        return;
+
+        catch java.lang.Exception from label0 to label2 with label3;
+    }
+
+    public void testBar(java.io.PrintStream) throws java.io.IOException
+    {
+        spec.reporter.TextiReport this;
+        java.io.PrintStream out;
+        java.lang.String license, testedBy, testDate, $r2;
+        spec.reporter.ReportProps $r0;
+        java.lang.StringBuilder $r1;
+
+        this := @this: spec.reporter.TextiReport;
+        out := @parameter0: java.io.PrintStream;
+        $r0 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        license = virtualinvoke $r0.<spec.reporter.ReportProps: java.lang.String get(java.lang.String,java.lang.String)>("config.test.specLicense", "MISSING");
+        $r0 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        testedBy = virtualinvoke $r0.<spec.reporter.ReportProps: java.lang.String get(java.lang.String,java.lang.String)>("config.test.testedBy", "MISSING");
+        $r0 = this.<spec.reporter.TextiReport: spec.reporter.ReportProps results>;
+        testDate = virtualinvoke $r0.<spec.reporter.ReportProps: java.lang.String get(java.lang.String,java.lang.String)>("config.test.date", "MISSING");
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("SPEC license # ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(license);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(",  ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Tested by: ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(testedBy);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(",  ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Test date: ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(testDate);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke out.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        return;
+    }
+}

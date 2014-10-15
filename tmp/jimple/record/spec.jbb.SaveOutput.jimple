@@ -1,0 +1,199 @@
+class spec.jbb.SaveOutput extends java.io.PrintStream
+{
+    static final java.lang.String COPYRIGHT;
+    static java.io.OutputStream logfile;
+    static java.io.PrintStream oldStdout;
+    static java.io.PrintStream oldStderr;
+
+    void <init>(java.io.PrintStream)
+    {
+        spec.jbb.SaveOutput this;
+        java.io.PrintStream ps;
+
+        this := @this: spec.jbb.SaveOutput;
+        ps := @parameter0: java.io.PrintStream;
+        specialinvoke this.<java.io.PrintStream: void <init>(java.io.OutputStream)>(ps);
+        return;
+    }
+
+    public static void start(java.lang.String) throws java.io.IOException
+    {
+        java.lang.String f;
+        java.io.PrintStream $r0, $r4;
+        java.io.BufferedOutputStream $r1;
+        java.io.FileOutputStream $r2;
+        spec.jbb.SaveOutput $r3;
+        long tid_start;
+        java.lang.Thread thread_start;
+
+        f := @parameter0: java.lang.String;
+        thread_start = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_start = virtualinvoke thread_start.<java.lang.Thread: long getId()>();
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(61, tid_start, "spec.jbbspec.jbb.SaveOutput", 38, $r0);
+        <spec.jbb.SaveOutput: java.io.PrintStream oldStdout> = $r0;
+        $r0 = <java.lang.System: java.io.PrintStream err>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(62, tid_start, "spec.jbbspec.jbb.SaveOutput", 39, $r0);
+        <spec.jbb.SaveOutput: java.io.PrintStream oldStderr> = $r0;
+        $r0 = new java.io.PrintStream;
+        $r1 = new java.io.BufferedOutputStream;
+        $r2 = new java.io.FileOutputStream;
+        specialinvoke $r2.<java.io.FileOutputStream: void <init>(java.lang.String)>(f);
+        specialinvoke $r1.<java.io.BufferedOutputStream: void <init>(java.io.OutputStream)>($r2);
+        specialinvoke $r0.<java.io.PrintStream: void <init>(java.io.OutputStream)>($r1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(63, tid_start, "spec.jbbspec.jbb.SaveOutput", 41, $r0);
+        <spec.jbb.SaveOutput: java.io.OutputStream logfile> = $r0;
+        $r3 = new spec.jbb.SaveOutput;
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        specialinvoke $r3.<spec.jbb.SaveOutput: void <init>(java.io.PrintStream)>($r4);
+        staticinvoke <java.lang.System: void setOut(java.io.PrintStream)>($r3);
+        $r3 = new spec.jbb.SaveOutput;
+        $r4 = <java.lang.System: java.io.PrintStream err>;
+        specialinvoke $r3.<spec.jbb.SaveOutput: void <init>(java.io.PrintStream)>($r4);
+        staticinvoke <java.lang.System: void setErr(java.io.PrintStream)>($r3);
+        return;
+    }
+
+    public static void stop()
+    {
+        java.io.PrintStream $r0;
+        java.lang.Exception e, $r4;
+        java.util.logging.Level $r1;
+        java.lang.StringBuilder $r2;
+        java.io.OutputStream $r3;
+        java.util.logging.Logger $r5;
+        java.lang.String $r6, $r7;
+        long tid_stop;
+        java.lang.Thread thread_stop;
+
+        thread_stop = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_stop = virtualinvoke thread_stop.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(61, tid_stop, "spec.jbbspec.jbb.SaveOutput", 50, $r0);
+        $r0 = <spec.jbb.SaveOutput: java.io.PrintStream oldStdout>;
+        staticinvoke <java.lang.System: void setOut(java.io.PrintStream)>($r0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(62, tid_stop, "spec.jbbspec.jbb.SaveOutput", 51, $r0);
+        $r0 = <spec.jbb.SaveOutput: java.io.PrintStream oldStderr>;
+        staticinvoke <java.lang.System: void setErr(java.io.PrintStream)>($r0);
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(63, tid_stop, "spec.jbbspec.jbb.SaveOutput", 53, $r3);
+        $r3 = <spec.jbb.SaveOutput: java.io.OutputStream logfile>;
+        virtualinvoke $r3.<java.io.OutputStream: void close()>();
+
+     label1:
+        goto label3;
+
+     label2:
+        $r4 := @caughtexception;
+        e = $r4;
+        $r5 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r1 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("Exception: ");
+        $r6 = virtualinvoke e.<java.lang.Exception: java.lang.String getMessage()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+        $r7 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r5.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r1, $r7, e);
+
+     label3:
+        return;
+
+        catch java.lang.Exception from label0 to label1 with label2;
+    }
+
+    public void write(int)
+    {
+        spec.jbb.SaveOutput this;
+        int b;
+        java.io.OutputStream $r0;
+        java.lang.Exception e, $r2;
+        java.lang.StringBuilder $r1;
+        java.util.logging.Logger $r3;
+        java.util.logging.Level $r4;
+        java.lang.String $r5, $r6;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: spec.jbb.SaveOutput;
+        b := @parameter0: int;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(63, tid_write, "spec.jbbspec.jbb.SaveOutput", 63, $r0);
+        $r0 = <spec.jbb.SaveOutput: java.io.OutputStream logfile>;
+        virtualinvoke $r0.<java.io.OutputStream: void write(int)>(b);
+
+     label1:
+        goto label3;
+
+     label2:
+        $r2 := @caughtexception;
+        e = $r2;
+        $r3 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r4 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("Exception: ");
+        $r5 = virtualinvoke e.<java.lang.Exception: java.lang.String getMessage()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+        $r6 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r4, $r6, e);
+        virtualinvoke this.<spec.jbb.SaveOutput: void setError()>();
+
+     label3:
+        specialinvoke this.<java.io.PrintStream: void write(int)>(b);
+        return;
+
+        catch java.lang.Exception from label0 to label1 with label2;
+    }
+
+    public void write(byte[], int, int)
+    {
+        spec.jbb.SaveOutput this;
+        byte[] buf;
+        int off, len;
+        java.io.OutputStream $r0;
+        java.lang.Exception e, $r1;
+        java.util.logging.Logger $r2;
+        java.util.logging.Level $r3;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r5, $r6;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: spec.jbb.SaveOutput;
+        buf := @parameter0: byte[];
+        off := @parameter1: int;
+        len := @parameter2: int;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(63, tid_write, "spec.jbbspec.jbb.SaveOutput", 75, $r0);
+        $r0 = <spec.jbb.SaveOutput: java.io.OutputStream logfile>;
+        virtualinvoke $r0.<java.io.OutputStream: void write(byte[],int,int)>(buf, off, len);
+
+     label1:
+        goto label3;
+
+     label2:
+        $r1 := @caughtexception;
+        e = $r1;
+        $r2 = staticinvoke <spec.jbb.JBButil: java.util.logging.Logger getLog()>();
+        $r3 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+        $r4 = new java.lang.StringBuilder;
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>(java.lang.String)>("Exception: ");
+        $r5 = virtualinvoke e.<java.lang.Exception: java.lang.String getMessage()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+        $r6 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r3, $r6, e);
+        virtualinvoke this.<spec.jbb.SaveOutput: void setError()>();
+
+     label3:
+        specialinvoke this.<java.io.PrintStream: void write(byte[],int,int)>(buf, off, len);
+        return;
+
+        catch java.lang.Exception from label0 to label1 with label2;
+    }
+}
