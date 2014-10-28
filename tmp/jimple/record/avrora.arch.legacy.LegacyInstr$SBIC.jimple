@@ -1,0 +1,64 @@
+public class avrora.arch.legacy.LegacyInstr$SBIC extends avrora.arch.legacy.LegacyInstr$IMMIMM_class
+{
+    static final avrora.arch.legacy.LegacyInstrProperties props;
+    static final avrora.arch.legacy.LegacyInstrProto prototype;
+
+    avrora.arch.legacy.LegacyInstr allocate(int, int, int)
+    {
+        avrora.arch.legacy.LegacyInstr$SBIC this, $r0;
+        int pc, a, b;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$SBIC;
+        pc := @parameter0: int;
+        a := @parameter1: int;
+        b := @parameter2: int;
+        $r0 = new avrora.arch.legacy.LegacyInstr$SBIC;
+        specialinvoke $r0.<avrora.arch.legacy.LegacyInstr$SBIC: void <init>(int,int,int)>(pc, a, b);
+        return $r0;
+    }
+
+    public void <init>(int, int, int)
+    {
+        avrora.arch.legacy.LegacyInstr$SBIC this;
+        int pc, a, b, $i0, $i1;
+        avrora.arch.legacy.LegacyInstrProperties $r0;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$SBIC;
+        pc := @parameter0: int;
+        a := @parameter1: int;
+        b := @parameter2: int;
+        $r0 = <avrora.arch.legacy.LegacyInstr$SBIC: avrora.arch.legacy.LegacyInstrProperties props>;
+        $i0 = staticinvoke <avrora.arch.legacy.LegacyInstr: int access$2100(int,int)>(1, a);
+        $i1 = staticinvoke <avrora.arch.legacy.LegacyInstr: int access$1500(int,int)>(2, b);
+        specialinvoke this.<avrora.arch.legacy.LegacyInstr$IMMIMM_class: void <init>(avrora.arch.legacy.LegacyInstrProperties,int,int)>($r0, $i0, $i1);
+        return;
+    }
+
+    public void accept(avrora.arch.legacy.LegacyInstrVisitor)
+    {
+        avrora.arch.legacy.LegacyInstr$SBIC this;
+        avrora.arch.legacy.LegacyInstrVisitor v;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$SBIC;
+        v := @parameter0: avrora.arch.legacy.LegacyInstrVisitor;
+        interfaceinvoke v.<avrora.arch.legacy.LegacyInstrVisitor: void visit(avrora.arch.legacy.LegacyInstr$SBIC)>(this);
+        return;
+    }
+
+    static void <clinit>()
+    {
+        avrora.arch.legacy.LegacyInstrProperties $r0;
+        avrora.arch.legacy.LegacyInstr$SBIC $r1;
+        int $i0, $i1;
+
+        $r0 = new avrora.arch.legacy.LegacyInstrProperties;
+        specialinvoke $r0.<avrora.arch.legacy.LegacyInstrProperties: void <init>(java.lang.String,java.lang.String,int,int)>("sbic", "sbic", 2, 1);
+        <avrora.arch.legacy.LegacyInstr$SBIC: avrora.arch.legacy.LegacyInstrProperties props> = $r0;
+        $r1 = new avrora.arch.legacy.LegacyInstr$SBIC;
+        $i0 = staticinvoke <avrora.arch.legacy.LegacyInstr: int access$2000()>();
+        $i1 = staticinvoke <avrora.arch.legacy.LegacyInstr: int access$1400()>();
+        specialinvoke $r1.<avrora.arch.legacy.LegacyInstr$SBIC: void <init>(int,int,int)>(0, $i0, $i1);
+        <avrora.arch.legacy.LegacyInstr$SBIC: avrora.arch.legacy.LegacyInstrProto prototype> = $r1;
+        return;
+    }
+}

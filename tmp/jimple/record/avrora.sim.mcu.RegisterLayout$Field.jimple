@@ -1,0 +1,70 @@
+public class avrora.sim.mcu.RegisterLayout$Field extends java.lang.Object
+{
+    final java.lang.String name;
+    int length;
+    avrora.sim.mcu.RegisterLayout$SubField[] subfields;
+
+    void <init>(java.lang.String)
+    {
+        avrora.sim.mcu.RegisterLayout$Field this;
+        java.lang.String n;
+
+        this := @this: avrora.sim.mcu.RegisterLayout$Field;
+        n := @parameter0: java.lang.String;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.mcu.RegisterLayout$Field: java.lang.String name> = n;
+        return;
+    }
+
+    void add(avrora.sim.mcu.RegisterLayout$SubField)
+    {
+        avrora.sim.mcu.RegisterLayout$Field this;
+        avrora.sim.mcu.RegisterLayout$SubField sf;
+        avrora.sim.mcu.RegisterLayout$SubField[] nsf, $r0, $r1, $r2;
+        int highbit, $i0, $i1, $i2;
+        long tid_add;
+        java.lang.Thread thread_add;
+
+        this := @this: avrora.sim.mcu.RegisterLayout$Field;
+        sf := @parameter0: avrora.sim.mcu.RegisterLayout$SubField;
+        thread_add = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_add = virtualinvoke thread_add.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.RegisterLayout$Field: avrora.sim.mcu.RegisterLayout$SubField[] subfields>;
+        if $r0 != null goto label0;
+
+        $r1 = newarray (avrora.sim.mcu.RegisterLayout$SubField)[1];
+        this.<avrora.sim.mcu.RegisterLayout$Field: avrora.sim.mcu.RegisterLayout$SubField[] subfields> = $r1;
+        goto label1;
+
+     label0:
+        $r0 = this.<avrora.sim.mcu.RegisterLayout$Field: avrora.sim.mcu.RegisterLayout$SubField[] subfields>;
+        $i0 = lengthof $r0;
+        $i0 = $i0 + 1;
+        nsf = newarray (avrora.sim.mcu.RegisterLayout$SubField)[$i0];
+        $r0 = this.<avrora.sim.mcu.RegisterLayout$Field: avrora.sim.mcu.RegisterLayout$SubField[] subfields>;
+        $r2 = this.<avrora.sim.mcu.RegisterLayout$Field: avrora.sim.mcu.RegisterLayout$SubField[] subfields>;
+        $i1 = lengthof $r2;
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r0, 0, nsf, 0, $i1);
+        this.<avrora.sim.mcu.RegisterLayout$Field: avrora.sim.mcu.RegisterLayout$SubField[] subfields> = nsf;
+
+     label1:
+        $r0 = this.<avrora.sim.mcu.RegisterLayout$Field: avrora.sim.mcu.RegisterLayout$SubField[] subfields>;
+        $r1 = this.<avrora.sim.mcu.RegisterLayout$Field: avrora.sim.mcu.RegisterLayout$SubField[] subfields>;
+        $i2 = lengthof $r1;
+        $i2 = $i2 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 22, tid_add, "avrora.sim.mcu.RegisterLayout$Field", 81, $i2, sf);
+        $r0[$i2] = sf;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 26, tid_add, "avrora.sim.mcu.RegisterLayout$Field", 82, $i0);
+        $i0 = sf.<avrora.sim.mcu.RegisterLayout$SubField: int field_low_bit>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 23, tid_add, "avrora.sim.mcu.RegisterLayout$Field", 82, $i2);
+        $i2 = sf.<avrora.sim.mcu.RegisterLayout$SubField: int length>;
+        highbit = $i0 + $i2;
+        $i2 = this.<avrora.sim.mcu.RegisterLayout$Field: int length>;
+        if highbit <= $i2 goto label2;
+
+        this.<avrora.sim.mcu.RegisterLayout$Field: int length> = highbit;
+
+     label2:
+        return;
+    }
+}

@@ -1,0 +1,378 @@
+public abstract class org.apache.lucene.util.PriorityQueue extends java.lang.Object
+{
+    private int size;
+    private int maxSize;
+    protected java.lang.Object[] heap;
+
+    public void <init>()
+    {
+        org.apache.lucene.util.PriorityQueue this;
+
+        this := @this: org.apache.lucene.util.PriorityQueue;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    protected abstract boolean lessThan(java.lang.Object, java.lang.Object);
+
+    protected final void initialize(int)
+    {
+        org.apache.lucene.util.PriorityQueue this;
+        int maxSize, heapSize;
+        java.lang.Object[] $r0;
+        long tid_initialize;
+        java.lang.Thread thread_initialize;
+
+        this := @this: org.apache.lucene.util.PriorityQueue;
+        maxSize := @parameter0: int;
+        thread_initialize = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_initialize = virtualinvoke thread_initialize.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_initialize, "org.apache.lucene.util.PriorityQueue", 34, 0);
+        this.<org.apache.lucene.util.PriorityQueue: int size> = 0;
+        if 0 != maxSize goto label0;
+
+        heapSize = 2;
+        goto label1;
+
+     label0:
+        heapSize = maxSize + 1;
+
+     label1:
+        $r0 = newarray (java.lang.Object)[heapSize];
+        this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap> = $r0;
+        this.<org.apache.lucene.util.PriorityQueue: int maxSize> = maxSize;
+        return;
+    }
+
+    public final void put(java.lang.Object)
+    {
+        org.apache.lucene.util.PriorityQueue this;
+        java.lang.Object element;
+        int $i0;
+        java.lang.Object[] $r1;
+        long tid_put;
+        java.lang.Thread thread_put;
+
+        this := @this: org.apache.lucene.util.PriorityQueue;
+        element := @parameter0: java.lang.Object;
+        thread_put = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_put = virtualinvoke thread_put.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_put, "org.apache.lucene.util.PriorityQueue", 51, $i0);
+        $i0 = this.<org.apache.lucene.util.PriorityQueue: int size>;
+        $i0 = $i0 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_put, "org.apache.lucene.util.PriorityQueue", 51, $i0);
+        this.<org.apache.lucene.util.PriorityQueue: int size> = $i0;
+        $r1 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_put, "org.apache.lucene.util.PriorityQueue", 52, $i0);
+        $i0 = this.<org.apache.lucene.util.PriorityQueue: int size>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 141, tid_put, "org.apache.lucene.util.PriorityQueue", 52, $i0, element);
+        $r1[$i0] = element;
+        specialinvoke this.<org.apache.lucene.util.PriorityQueue: void upHeap()>();
+        return;
+    }
+
+    public boolean insert(java.lang.Object)
+    {
+        org.apache.lucene.util.PriorityQueue this;
+        java.lang.Object element, $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.util.PriorityQueue;
+        element := @parameter0: java.lang.Object;
+        $r0 = virtualinvoke this.<org.apache.lucene.util.PriorityQueue: java.lang.Object insertWithOverflow(java.lang.Object)>(element);
+        if $r0 == element goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public java.lang.Object insertWithOverflow(java.lang.Object)
+    {
+        org.apache.lucene.util.PriorityQueue this;
+        java.lang.Object element, 'ret', $r1;
+        int $i0, $i1;
+        java.lang.Object[] $r0, $r2;
+        boolean $z0;
+        long tid_insertWithOverflow;
+        java.lang.Thread thread_insertWithOverflow;
+
+        this := @this: org.apache.lucene.util.PriorityQueue;
+        element := @parameter0: java.lang.Object;
+        thread_insertWithOverflow = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_insertWithOverflow = virtualinvoke thread_insertWithOverflow.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_insertWithOverflow, "org.apache.lucene.util.PriorityQueue", 77, $i0);
+        $i0 = this.<org.apache.lucene.util.PriorityQueue: int size>;
+        $i1 = this.<org.apache.lucene.util.PriorityQueue: int maxSize>;
+        if $i0 >= $i1 goto label0;
+
+        virtualinvoke this.<org.apache.lucene.util.PriorityQueue: void put(java.lang.Object)>(element);
+        return null;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_insertWithOverflow, "org.apache.lucene.util.PriorityQueue", 80, $i0);
+        $i0 = this.<org.apache.lucene.util.PriorityQueue: int size>;
+        if $i0 <= 0 goto label1;
+
+        $r0 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 141, tid_insertWithOverflow, "org.apache.lucene.util.PriorityQueue", 80, 1, $r1);
+        $r1 = $r0[1];
+        $z0 = virtualinvoke this.<org.apache.lucene.util.PriorityQueue: boolean lessThan(java.lang.Object,java.lang.Object)>(element, $r1);
+        if $z0 != 0 goto label1;
+
+        $r2 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r2, 141, tid_insertWithOverflow, "org.apache.lucene.util.PriorityQueue", 81, 1, 'ret');
+        'ret' = $r2[1];
+        $r2 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r2, 141, tid_insertWithOverflow, "org.apache.lucene.util.PriorityQueue", 82, 1, element);
+        $r2[1] = element;
+        virtualinvoke this.<org.apache.lucene.util.PriorityQueue: void adjustTop()>();
+        return 'ret';
+
+     label1:
+        return element;
+    }
+
+    public final java.lang.Object top()
+    {
+        org.apache.lucene.util.PriorityQueue this;
+        java.lang.Object[] $r0;
+        java.lang.Object $r1;
+        long tid_top;
+        java.lang.Thread thread_top;
+
+        this := @this: org.apache.lucene.util.PriorityQueue;
+        thread_top = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_top = virtualinvoke thread_top.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 141, tid_top, "org.apache.lucene.util.PriorityQueue", 95, 1, $r1);
+        $r1 = $r0[1];
+        return $r1;
+    }
+
+    public final java.lang.Object pop()
+    {
+        org.apache.lucene.util.PriorityQueue this;
+        java.lang.Object result, $r2;
+        int $i0, $i1, $i2;
+        java.lang.Object[] $r0, $r1;
+        long tid_pop;
+        java.lang.Thread thread_pop;
+
+        this := @this: org.apache.lucene.util.PriorityQueue;
+        thread_pop = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_pop = virtualinvoke thread_pop.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_pop, "org.apache.lucene.util.PriorityQueue", 101, $i0);
+        $i0 = this.<org.apache.lucene.util.PriorityQueue: int size>;
+        if $i0 <= 0 goto label0;
+
+        $r0 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 141, tid_pop, "org.apache.lucene.util.PriorityQueue", 102, 1, result);
+        result = $r0[1];
+        $r0 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        $r1 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_pop, "org.apache.lucene.util.PriorityQueue", 103, $i1);
+        $i1 = this.<org.apache.lucene.util.PriorityQueue: int size>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 141, tid_pop, "org.apache.lucene.util.PriorityQueue", 103, $i1, $r2);
+        $r2 = $r1[$i1];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 141, tid_pop, "org.apache.lucene.util.PriorityQueue", 103, 1, $r2);
+        $r0[1] = $r2;
+        $r0 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_pop, "org.apache.lucene.util.PriorityQueue", 104, $i2);
+        $i2 = this.<org.apache.lucene.util.PriorityQueue: int size>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 141, tid_pop, "org.apache.lucene.util.PriorityQueue", 104, $i2, null);
+        $r0[$i2] = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_pop, "org.apache.lucene.util.PriorityQueue", 105, $i2);
+        $i2 = this.<org.apache.lucene.util.PriorityQueue: int size>;
+        $i2 = $i2 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_pop, "org.apache.lucene.util.PriorityQueue", 105, $i2);
+        this.<org.apache.lucene.util.PriorityQueue: int size> = $i2;
+        specialinvoke this.<org.apache.lucene.util.PriorityQueue: void downHeap()>();
+        return result;
+
+     label0:
+        return null;
+    }
+
+    public final void adjustTop()
+    {
+        org.apache.lucene.util.PriorityQueue this;
+
+        this := @this: org.apache.lucene.util.PriorityQueue;
+        specialinvoke this.<org.apache.lucene.util.PriorityQueue: void downHeap()>();
+        return;
+    }
+
+    public final int size()
+    {
+        org.apache.lucene.util.PriorityQueue this;
+        int $i0;
+        long tid_size;
+        java.lang.Thread thread_size;
+
+        this := @this: org.apache.lucene.util.PriorityQueue;
+        thread_size = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_size = virtualinvoke thread_size.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_size, "org.apache.lucene.util.PriorityQueue", 125, $i0);
+        $i0 = this.<org.apache.lucene.util.PriorityQueue: int size>;
+        return $i0;
+    }
+
+    public final void clear()
+    {
+        org.apache.lucene.util.PriorityQueue this;
+        int i, $i0;
+        java.lang.Object[] $r0;
+        long tid_clear;
+        java.lang.Thread thread_clear;
+
+        this := @this: org.apache.lucene.util.PriorityQueue;
+        thread_clear = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clear = virtualinvoke thread_clear.<java.lang.Thread: long getId()>();
+        i = 0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_clear, "org.apache.lucene.util.PriorityQueue", 130, $i0);
+        $i0 = this.<org.apache.lucene.util.PriorityQueue: int size>;
+        if i > $i0 goto label1;
+
+        $r0 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 141, tid_clear, "org.apache.lucene.util.PriorityQueue", 131, i, null);
+        $r0[i] = null;
+        i = i + 1;
+        goto label0;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_clear, "org.apache.lucene.util.PriorityQueue", 132, 0);
+        this.<org.apache.lucene.util.PriorityQueue: int size> = 0;
+        return;
+    }
+
+    private final void upHeap()
+    {
+        org.apache.lucene.util.PriorityQueue this;
+        int i, j;
+        java.lang.Object node, $r2;
+        java.lang.Object[] $r0, $r1;
+        boolean $z0;
+        long tid_upHeap;
+        java.lang.Thread thread_upHeap;
+
+        this := @this: org.apache.lucene.util.PriorityQueue;
+        thread_upHeap = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_upHeap = virtualinvoke thread_upHeap.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_upHeap, "org.apache.lucene.util.PriorityQueue", 136, i);
+        i = this.<org.apache.lucene.util.PriorityQueue: int size>;
+        $r0 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 141, tid_upHeap, "org.apache.lucene.util.PriorityQueue", 137, i, node);
+        node = $r0[i];
+        j = i >>> 1;
+
+     label0:
+        if j <= 0 goto label1;
+
+        $r1 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 141, tid_upHeap, "org.apache.lucene.util.PriorityQueue", 139, j, $r2);
+        $r2 = $r1[j];
+        $z0 = virtualinvoke this.<org.apache.lucene.util.PriorityQueue: boolean lessThan(java.lang.Object,java.lang.Object)>(node, $r2);
+        if $z0 == 0 goto label1;
+
+        $r0 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        $r1 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 141, tid_upHeap, "org.apache.lucene.util.PriorityQueue", 140, j, $r2);
+        $r2 = $r1[j];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 141, tid_upHeap, "org.apache.lucene.util.PriorityQueue", 140, i, $r2);
+        $r0[i] = $r2;
+        i = j;
+        j = j >>> 1;
+        goto label0;
+
+     label1:
+        $r0 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 141, tid_upHeap, "org.apache.lucene.util.PriorityQueue", 144, i, node);
+        $r0[i] = node;
+        return;
+    }
+
+    private final void downHeap()
+    {
+        org.apache.lucene.util.PriorityQueue this;
+        int i, j, k, $i0;
+        java.lang.Object node, $r2, $r4;
+        java.lang.Object[] $r0, $r1, $r3;
+        boolean $z0;
+        long tid_downHeap;
+        java.lang.Thread thread_downHeap;
+
+        this := @this: org.apache.lucene.util.PriorityQueue;
+        thread_downHeap = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_downHeap = virtualinvoke thread_downHeap.<java.lang.Thread: long getId()>();
+        i = 1;
+        $r0 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 141, tid_downHeap, "org.apache.lucene.util.PriorityQueue", 149, i, node);
+        node = $r0[i];
+        j = i << 1;
+        k = j + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_downHeap, "org.apache.lucene.util.PriorityQueue", 152, $i0);
+        $i0 = this.<org.apache.lucene.util.PriorityQueue: int size>;
+        if k > $i0 goto label0;
+
+        $r1 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 141, tid_downHeap, "org.apache.lucene.util.PriorityQueue", 152, k, $r2);
+        $r2 = $r1[k];
+        $r3 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r3, 141, tid_downHeap, "org.apache.lucene.util.PriorityQueue", 152, j, $r4);
+        $r4 = $r3[j];
+        $z0 = virtualinvoke this.<org.apache.lucene.util.PriorityQueue: boolean lessThan(java.lang.Object,java.lang.Object)>($r2, $r4);
+        if $z0 == 0 goto label0;
+
+        j = k;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_downHeap, "org.apache.lucene.util.PriorityQueue", 155, $i0);
+        $i0 = this.<org.apache.lucene.util.PriorityQueue: int size>;
+        if j > $i0 goto label1;
+
+        $r1 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 141, tid_downHeap, "org.apache.lucene.util.PriorityQueue", 155, j, $r2);
+        $r2 = $r1[j];
+        $z0 = virtualinvoke this.<org.apache.lucene.util.PriorityQueue: boolean lessThan(java.lang.Object,java.lang.Object)>($r2, node);
+        if $z0 == 0 goto label1;
+
+        $r0 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        $r3 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r3, 141, tid_downHeap, "org.apache.lucene.util.PriorityQueue", 156, j, $r4);
+        $r4 = $r3[j];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 141, tid_downHeap, "org.apache.lucene.util.PriorityQueue", 156, i, $r4);
+        $r0[i] = $r4;
+        i = j;
+        j = i << 1;
+        k = j + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 140, tid_downHeap, "org.apache.lucene.util.PriorityQueue", 160, $i0);
+        $i0 = this.<org.apache.lucene.util.PriorityQueue: int size>;
+        if k > $i0 goto label0;
+
+        $r1 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 141, tid_downHeap, "org.apache.lucene.util.PriorityQueue", 160, k, $r2);
+        $r2 = $r1[k];
+        $r3 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r3, 141, tid_downHeap, "org.apache.lucene.util.PriorityQueue", 160, j, $r4);
+        $r4 = $r3[j];
+        $z0 = virtualinvoke this.<org.apache.lucene.util.PriorityQueue: boolean lessThan(java.lang.Object,java.lang.Object)>($r2, $r4);
+        if $z0 == 0 goto label0;
+
+        j = k;
+        goto label0;
+
+     label1:
+        $r0 = this.<org.apache.lucene.util.PriorityQueue: java.lang.Object[] heap>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 141, tid_downHeap, "org.apache.lucene.util.PriorityQueue", 164, i, node);
+        $r0[i] = node;
+        return;
+    }
+}

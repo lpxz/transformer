@@ -1,0 +1,120 @@
+class avrora.sim.Simulation$Iter extends java.lang.Object implements java.util.Iterator
+{
+    int cursor;
+    final avrora.sim.Simulation this$0;
+
+    void <init>(avrora.sim.Simulation)
+    {
+        avrora.sim.Simulation$Iter this;
+        avrora.sim.Simulation l1;
+
+        this := @this: avrora.sim.Simulation$Iter;
+        l1 := @parameter0: avrora.sim.Simulation;
+        this.<avrora.sim.Simulation$Iter: avrora.sim.Simulation this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        specialinvoke this.<avrora.sim.Simulation$Iter: void scan()>();
+        return;
+    }
+
+    public boolean hasNext()
+    {
+        avrora.sim.Simulation$Iter this;
+        int $i0, $i1;
+        avrora.sim.Simulation $r0;
+        avrora.sim.Simulation$Node[] $r1;
+        boolean $z0;
+
+        this := @this: avrora.sim.Simulation$Iter;
+        $i0 = this.<avrora.sim.Simulation$Iter: int cursor>;
+        $r0 = this.<avrora.sim.Simulation$Iter: avrora.sim.Simulation this$0>;
+        $r1 = $r0.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $i1 = lengthof $r1;
+        if $i0 >= $i1 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public java.lang.Object next()
+    {
+        avrora.sim.Simulation$Iter this;
+        avrora.sim.Simulation$Node o;
+        int $i0, $i1;
+        avrora.sim.Simulation $r0, $r3;
+        avrora.sim.Simulation$Node[] $r1, $r4;
+        java.util.NoSuchElementException $r2;
+
+        this := @this: avrora.sim.Simulation$Iter;
+        $i0 = this.<avrora.sim.Simulation$Iter: int cursor>;
+        $r0 = this.<avrora.sim.Simulation$Iter: avrora.sim.Simulation this$0>;
+        $r1 = $r0.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $i1 = lengthof $r1;
+        if $i0 < $i1 goto label0;
+
+        $r2 = new java.util.NoSuchElementException;
+        specialinvoke $r2.<java.util.NoSuchElementException: void <init>()>();
+        throw $r2;
+
+     label0:
+        $r3 = this.<avrora.sim.Simulation$Iter: avrora.sim.Simulation this$0>;
+        $r4 = $r3.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $i1 = this.<avrora.sim.Simulation$Iter: int cursor>;
+        o = $r4[$i1];
+        $i1 = this.<avrora.sim.Simulation$Iter: int cursor>;
+        $i1 = $i1 + 1;
+        this.<avrora.sim.Simulation$Iter: int cursor> = $i1;
+        specialinvoke this.<avrora.sim.Simulation$Iter: void scan()>();
+        return o;
+    }
+
+    private void scan()
+    {
+        avrora.sim.Simulation$Iter this;
+        int $i0, $i1;
+        avrora.sim.Simulation $r0, $r2;
+        avrora.sim.Simulation$Node[] $r1, $r3;
+        avrora.sim.Simulation$Node $r4;
+
+        this := @this: avrora.sim.Simulation$Iter;
+
+     label0:
+        $i0 = this.<avrora.sim.Simulation$Iter: int cursor>;
+        $r0 = this.<avrora.sim.Simulation$Iter: avrora.sim.Simulation this$0>;
+        $r1 = $r0.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $i1 = lengthof $r1;
+        if $i0 >= $i1 goto label2;
+
+        $r2 = this.<avrora.sim.Simulation$Iter: avrora.sim.Simulation this$0>;
+        $r3 = $r2.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $i1 = this.<avrora.sim.Simulation$Iter: int cursor>;
+        $r4 = $r3[$i1];
+        if $r4 == null goto label1;
+
+        return;
+
+     label1:
+        $i1 = this.<avrora.sim.Simulation$Iter: int cursor>;
+        $i1 = $i1 + 1;
+        this.<avrora.sim.Simulation$Iter: int cursor> = $i1;
+        goto label0;
+
+     label2:
+        return;
+    }
+
+    public void remove()
+    {
+        avrora.sim.Simulation$Iter this;
+        cck.util.Util$InternalError $r0;
+
+        this := @this: avrora.sim.Simulation$Iter;
+        $r0 = staticinvoke <cck.util.Util: cck.util.Util$InternalError unimplemented()>();
+        throw $r0;
+    }
+}

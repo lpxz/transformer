@@ -1,0 +1,81 @@
+public class avrora.sim.state.RegisterUtil$BoolView extends java.lang.Object implements avrora.sim.state.BooleanView
+{
+    protected final avrora.sim.state.RegisterView reg;
+    protected final byte low;
+
+    public void <init>(avrora.sim.state.RegisterView, byte)
+    {
+        avrora.sim.state.RegisterUtil$BoolView this;
+        avrora.sim.state.RegisterView r;
+        byte l;
+
+        this := @this: avrora.sim.state.RegisterUtil$BoolView;
+        r := @parameter0: avrora.sim.state.RegisterView;
+        l := @parameter1: byte;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.state.RegisterUtil$BoolView: avrora.sim.state.RegisterView reg> = r;
+        this.<avrora.sim.state.RegisterUtil$BoolView: byte low> = l;
+        return;
+    }
+
+    public boolean getValue()
+    {
+        avrora.sim.state.RegisterUtil$BoolView this;
+        avrora.sim.state.RegisterView $r0;
+        int $i0;
+        byte $b1;
+        boolean $z0;
+
+        this := @this: avrora.sim.state.RegisterUtil$BoolView;
+        $r0 = this.<avrora.sim.state.RegisterUtil$BoolView: avrora.sim.state.RegisterView reg>;
+        $i0 = interfaceinvoke $r0.<avrora.sim.state.RegisterView: int getValue()>();
+        $b1 = this.<avrora.sim.state.RegisterUtil$BoolView: byte low>;
+        $i0 = $i0 >> $b1;
+        $i0 = $i0 & 1;
+        if $i0 != 1 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public void setValue(boolean)
+    {
+        avrora.sim.state.RegisterUtil$BoolView this;
+        boolean v;
+        avrora.sim.state.RegisterView $r0, $r1;
+        int $i0, $i2;
+        byte $b1;
+
+        this := @this: avrora.sim.state.RegisterUtil$BoolView;
+        v := @parameter0: boolean;
+        if v == 0 goto label0;
+
+        $r0 = this.<avrora.sim.state.RegisterUtil$BoolView: avrora.sim.state.RegisterView reg>;
+        $r1 = this.<avrora.sim.state.RegisterUtil$BoolView: avrora.sim.state.RegisterView reg>;
+        $i0 = interfaceinvoke $r1.<avrora.sim.state.RegisterView: int getValue()>();
+        $b1 = this.<avrora.sim.state.RegisterUtil$BoolView: byte low>;
+        $i2 = 1 << $b1;
+        $i0 = $i0 | $i2;
+        interfaceinvoke $r0.<avrora.sim.state.RegisterView: void setValue(int)>($i0);
+        goto label1;
+
+     label0:
+        $r0 = this.<avrora.sim.state.RegisterUtil$BoolView: avrora.sim.state.RegisterView reg>;
+        $r1 = this.<avrora.sim.state.RegisterUtil$BoolView: avrora.sim.state.RegisterView reg>;
+        $i0 = interfaceinvoke $r1.<avrora.sim.state.RegisterView: int getValue()>();
+        $b1 = this.<avrora.sim.state.RegisterUtil$BoolView: byte low>;
+        $i2 = 1 << $b1;
+        $i2 = $i2 ^ -1;
+        $i0 = $i0 & $i2;
+        interfaceinvoke $r0.<avrora.sim.state.RegisterView: void setValue(int)>($i0);
+
+     label1:
+        return;
+    }
+}

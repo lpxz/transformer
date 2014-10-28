@@ -1,0 +1,111 @@
+public class org.apache.lucene.search.ComplexExplanation extends org.apache.lucene.search.Explanation
+{
+    private java.lang.Boolean match;
+
+    public void <init>()
+    {
+        org.apache.lucene.search.ComplexExplanation this;
+
+        this := @this: org.apache.lucene.search.ComplexExplanation;
+        specialinvoke this.<org.apache.lucene.search.Explanation: void <init>()>();
+        return;
+    }
+
+    public void <init>(boolean, float, java.lang.String)
+    {
+        org.apache.lucene.search.ComplexExplanation this;
+        boolean match;
+        float value;
+        java.lang.String description;
+        java.lang.Boolean $r0;
+
+        this := @this: org.apache.lucene.search.ComplexExplanation;
+        match := @parameter0: boolean;
+        value := @parameter1: float;
+        description := @parameter2: java.lang.String;
+        specialinvoke this.<org.apache.lucene.search.Explanation: void <init>(float,java.lang.String)>(value, description);
+        $r0 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(match);
+        this.<org.apache.lucene.search.ComplexExplanation: java.lang.Boolean match> = $r0;
+        return;
+    }
+
+    public java.lang.Boolean getMatch()
+    {
+        org.apache.lucene.search.ComplexExplanation this;
+        java.lang.Boolean $r0;
+
+        this := @this: org.apache.lucene.search.ComplexExplanation;
+        $r0 = this.<org.apache.lucene.search.ComplexExplanation: java.lang.Boolean match>;
+        return $r0;
+    }
+
+    public void setMatch(java.lang.Boolean)
+    {
+        org.apache.lucene.search.ComplexExplanation this;
+        java.lang.Boolean match;
+
+        this := @this: org.apache.lucene.search.ComplexExplanation;
+        match := @parameter0: java.lang.Boolean;
+        this.<org.apache.lucene.search.ComplexExplanation: java.lang.Boolean match> = match;
+        return;
+    }
+
+    public boolean isMatch()
+    {
+        org.apache.lucene.search.ComplexExplanation this;
+        java.lang.Boolean m;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.ComplexExplanation;
+        m = virtualinvoke this.<org.apache.lucene.search.ComplexExplanation: java.lang.Boolean getMatch()>();
+        if null == m goto label0;
+
+        $z0 = virtualinvoke m.<java.lang.Boolean: boolean booleanValue()>();
+        goto label1;
+
+     label0:
+        $z0 = specialinvoke this.<org.apache.lucene.search.Explanation: boolean isMatch()>();
+
+     label1:
+        return $z0;
+    }
+
+    protected java.lang.String getSummary()
+    {
+        org.apache.lucene.search.ComplexExplanation this;
+        java.lang.Boolean $r0;
+        java.lang.String $r1, $r3;
+        java.lang.StringBuffer $r2;
+        float $f0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.ComplexExplanation;
+        $r0 = virtualinvoke this.<org.apache.lucene.search.ComplexExplanation: java.lang.Boolean getMatch()>();
+        if null != $r0 goto label0;
+
+        $r1 = specialinvoke this.<org.apache.lucene.search.Explanation: java.lang.String getSummary()>();
+        return $r1;
+
+     label0:
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $f0 = virtualinvoke this.<org.apache.lucene.search.ComplexExplanation: float getValue()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(float)>($f0);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" = ");
+        $z0 = virtualinvoke this.<org.apache.lucene.search.ComplexExplanation: boolean isMatch()>();
+        if $z0 == 0 goto label1;
+
+        $r3 = "(MATCH) ";
+        goto label2;
+
+     label1:
+        $r3 = "(NON-MATCH) ";
+
+     label2:
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r3);
+        $r3 = virtualinvoke this.<org.apache.lucene.search.ComplexExplanation: java.lang.String getDescription()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r3);
+        $r1 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+}

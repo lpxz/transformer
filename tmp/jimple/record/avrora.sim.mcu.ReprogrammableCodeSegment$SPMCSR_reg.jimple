@@ -1,0 +1,193 @@
+class avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg extends avrora.sim.RWRegister
+{
+    avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent reset;
+    final avrora.sim.mcu.ReprogrammableCodeSegment this$0;
+
+    private void <init>(avrora.sim.mcu.ReprogrammableCodeSegment)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg this;
+        avrora.sim.mcu.ReprogrammableCodeSegment l1;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent $r0;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg;
+        l1 := @parameter0: avrora.sim.mcu.ReprogrammableCodeSegment;
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment this$0> = l1;
+        specialinvoke this.<avrora.sim.RWRegister: void <init>()>();
+        $r0 = new avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent;
+        specialinvoke $r0.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent: void <init>(avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg)>(this);
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent reset> = $r0;
+        return;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg this;
+        byte val, lower, $b0, $b1;
+        avrora.sim.mcu.ReprogrammableCodeSegment $r0;
+        avrora.sim.clock.MainClock $r1;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent $r2;
+        avrora.sim.AtmelInterpreter $r3;
+        boolean $z0;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg;
+        val := @parameter0: byte;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        lower = val & 31;
+        lookupswitch(lower)
+        {
+            case 1: goto label0;
+            case 3: goto label0;
+            case 5: goto label0;
+            case 9: goto label0;
+            case 17: goto label0;
+            default: goto label1;
+        };
+
+     label0:
+        $r0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment this$0>;
+        $r1 = $r0.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.clock.MainClock mainClock>;
+        $r2 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent reset>;
+        virtualinvoke $r1.<avrora.sim.clock.MainClock: void removeEvent(avrora.sim.Simulator$Event)>($r2);
+        $r0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment this$0>;
+        $r1 = $r0.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.clock.MainClock mainClock>;
+        $r2 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent reset>;
+        virtualinvoke $r1.<avrora.sim.clock.MainClock: void insertEvent(avrora.sim.Simulator$Event,long)>($r2, 6L);
+        goto label2;
+
+     label1:
+        lower = 0;
+
+     label2:
+        $b0 = val & -32;
+        $b0 = $b0 | lower;
+        $b0 = (byte) $b0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg", 123, $b0);
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: byte value> = $b0;
+        $r0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment this$0>;
+        $r3 = staticinvoke <avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.AtmelInterpreter access$000(avrora.sim.mcu.ReprogrammableCodeSegment)>($r0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg", 125, $b1);
+        $b1 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: byte value>;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>($b1, 7);
+        virtualinvoke $r3.<avrora.sim.AtmelInterpreter: void setEnabled(int,boolean)>(35, $z0);
+        $r0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment this$0>;
+        $r3 = staticinvoke <avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.AtmelInterpreter access$100(avrora.sim.mcu.ReprogrammableCodeSegment)>($r0);
+        $b0 = 35;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg", 126, $b1);
+        $b1 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: byte value>;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>($b1, 0);
+        if $z0 != 0 goto label3;
+
+        $z0 = 1;
+        goto label4;
+
+     label3:
+        $z0 = 0;
+
+     label4:
+        virtualinvoke $r3.<avrora.sim.AtmelInterpreter: void setPosted(int,boolean)>($b0, $z0);
+        return;
+    }
+
+    int getState()
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg this;
+        byte $b0;
+        long tid_getState;
+        java.lang.Thread thread_getState;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg;
+        thread_getState = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getState = virtualinvoke thread_getState.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_getState, "avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg", 139, $b0);
+        $b0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: byte value>;
+        $b0 = $b0 & 31;
+        return $b0;
+    }
+
+    void reset()
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg this;
+        byte $b0;
+        long tid_reset;
+        java.lang.Thread thread_reset;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg;
+        thread_reset = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_reset = virtualinvoke thread_reset.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_reset, "avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg", 143, $b0);
+        $b0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: byte value>;
+        $b0 = $b0 & -32;
+        $b0 = (byte) $b0;
+        virtualinvoke this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: void write(byte)>($b0);
+        return;
+    }
+
+    boolean isBusy()
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg this;
+        byte $b0;
+        boolean $z0;
+        long tid_isBusy;
+        java.lang.Thread thread_isBusy;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg;
+        thread_isBusy = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_isBusy = virtualinvoke thread_isBusy.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_isBusy, "avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg", 147, $b0);
+        $b0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: byte value>;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>($b0, 6);
+        return $z0;
+    }
+
+    void setBusy()
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg this;
+        byte $b0;
+        long tid_setBusy;
+        java.lang.Thread thread_setBusy;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg;
+        thread_setBusy = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setBusy = virtualinvoke thread_setBusy.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_setBusy, "avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg", 151, $b0);
+        $b0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: byte value>;
+        $b0 = staticinvoke <cck.util.Arithmetic: byte setBit(byte,int)>($b0, 6);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_setBusy, "avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg", 151, $b0);
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: byte value> = $b0;
+        return;
+    }
+
+    void clearBusy()
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg this;
+        byte $b0;
+        long tid_clearBusy;
+        java.lang.Thread thread_clearBusy;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg;
+        thread_clearBusy = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clearBusy = virtualinvoke thread_clearBusy.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_clearBusy, "avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg", 155, $b0);
+        $b0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: byte value>;
+        $b0 = staticinvoke <cck.util.Arithmetic: byte clearBit(byte,int)>($b0, 6);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_clearBusy, "avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg", 155, $b0);
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: byte value> = $b0;
+        return;
+    }
+
+    void <init>(avrora.sim.mcu.ReprogrammableCodeSegment, avrora.sim.mcu.ReprogrammableCodeSegment$1)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg this;
+        avrora.sim.mcu.ReprogrammableCodeSegment x0;
+        avrora.sim.mcu.ReprogrammableCodeSegment$1 x1;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg;
+        x0 := @parameter0: avrora.sim.mcu.ReprogrammableCodeSegment;
+        x1 := @parameter1: avrora.sim.mcu.ReprogrammableCodeSegment$1;
+        specialinvoke this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: void <init>(avrora.sim.mcu.ReprogrammableCodeSegment)>(x0);
+        return;
+    }
+}

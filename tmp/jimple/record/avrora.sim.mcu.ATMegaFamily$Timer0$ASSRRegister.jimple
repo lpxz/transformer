@@ -1,0 +1,66 @@
+public class avrora.sim.mcu.ATMegaFamily$Timer0$ASSRRegister extends avrora.sim.RWRegister
+{
+    static final int AS0;
+    static final int TCN0UB;
+    static final int OCR0UB;
+    static final int TCR0UB;
+    final avrora.sim.mcu.ATMegaFamily$Timer0 this$1;
+
+    protected void <init>(avrora.sim.mcu.ATMegaFamily$Timer0)
+    {
+        avrora.sim.mcu.ATMegaFamily$Timer0$ASSRRegister this;
+        avrora.sim.mcu.ATMegaFamily$Timer0 l1;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$Timer0$ASSRRegister;
+        l1 := @parameter0: avrora.sim.mcu.ATMegaFamily$Timer0;
+        this.<avrora.sim.mcu.ATMegaFamily$Timer0$ASSRRegister: avrora.sim.mcu.ATMegaFamily$Timer0 this$1> = l1;
+        specialinvoke this.<avrora.sim.RWRegister: void <init>()>();
+        return;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.mcu.ATMegaFamily$Timer0$ASSRRegister this;
+        byte val, $b0;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$Timer0$ASSRRegister;
+        val := @parameter0: byte;
+        $b0 = 15 & val;
+        $b0 = (byte) $b0;
+        specialinvoke this.<avrora.sim.RWRegister: void write(byte)>($b0);
+        virtualinvoke this.<avrora.sim.mcu.ATMegaFamily$Timer0$ASSRRegister: void decode(byte)>(val);
+        return;
+    }
+
+    protected void decode(byte)
+    {
+        avrora.sim.mcu.ATMegaFamily$Timer0$ASSRRegister this;
+        byte val;
+        avrora.sim.mcu.ATMegaFamily$Timer0 $r0, $r1;
+        boolean $z0;
+        avrora.sim.clock.Clock $r2;
+        long tid_decode;
+        java.lang.Thread thread_decode;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$Timer0$ASSRRegister;
+        val := @parameter0: byte;
+        thread_decode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_decode = virtualinvoke thread_decode.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.ATMegaFamily$Timer0$ASSRRegister: avrora.sim.mcu.ATMegaFamily$Timer0 this$1>;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 3);
+        if $z0 == 0 goto label0;
+
+        $r1 = this.<avrora.sim.mcu.ATMegaFamily$Timer0$ASSRRegister: avrora.sim.mcu.ATMegaFamily$Timer0 this$1>;
+        $r2 = $r1.<avrora.sim.mcu.ATMegaFamily$Timer0: avrora.sim.clock.Clock externalClock>;
+        goto label1;
+
+     label0:
+        $r1 = this.<avrora.sim.mcu.ATMegaFamily$Timer0$ASSRRegister: avrora.sim.mcu.ATMegaFamily$Timer0 this$1>;
+        $r2 = $r1.<avrora.sim.mcu.ATMegaFamily$Timer0: avrora.sim.clock.Clock mainClock>;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r0, 86, tid_decode, "avrora.sim.mcu.ATMegaFamily$Timer0$ASSRRegister", 276, $r2);
+        $r0.<avrora.sim.mcu.ATMegaFamily$Timer0: avrora.sim.clock.Clock timerClock> = $r2;
+        return;
+    }
+}

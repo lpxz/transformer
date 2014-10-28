@@ -83,12 +83,12 @@ public class AddInterestEventVisitor extends Visitor {
             
             
             // let us do not support hashmap/hashset invocations now. 
-//            if(Options.modelJDKcalls){
-//                if(JDKOpType(callee).equals(Parameters.READ)||JDKOpType(callee).equals(Parameters.WRITE) )
-//                {
-//                	visitFakedInstanceFieldRef(sm,units,s, invokeExpr);// the context is not important, the op type matters
-//                }
-//            }
+            if(AnalysisOptions.modelJDKcalls){
+                if(JDKOpType(callee).equals(Parameters.READ)||JDKOpType(callee).equals(Parameters.WRITE) )
+                {
+                	visitDS(sm,units,s, invokeExpr, JDKOpType(callee));// the context is not important, the op type matters
+                }
+            }
         
             
             if (sig.equals("void wait()")||sig.equals("void wait(long)") || sig.equals("void wait(long,int)")) 
@@ -178,11 +178,179 @@ public class AddInterestEventVisitor extends Visitor {
 ////        nextVisitor.visitInstanceFieldRef(sm, units, s, instanceFieldRef, context); // this is a side effect call, no need to call any htinkg further
 //    }
     
-    public static String JDKOpType(SootMethod sm) {
+    /**
+	 * @param sm
+	 * @param units
+	 * @param s
+	 * @param invokeExpr
+	 */
+	public void visitDS(SootMethod sm, Chain units, Stmt s, InstanceInvokeExpr invokeExpr, String type) {
+
+	     if(AnalysisOptions.modelJDKcalls)
+	     {
+	    	 Visitor.totalaccessnum++;    	
+
+	     	Value base = invokeExpr.getBase();
+	     	
+	 		String sig = Util.getSig4DS(base);
+	 		Value memory = StringConstant.v(sig);		
+	 		
+	 		if(Visitor.sharedVariableWriteAccessSet.contains(sig))// ok
+	 		{	
+	 			String methodname = null; 
+	 			Value v=null;
+	 			if (type.equals(Parameters.READ)) 
+	 	        {
+	 				methodname = "readBeforeDSElem"; 
+	 				if(s instanceof AssignStmt)
+	 				{
+	 					v= ((AssignStmt)s).getLeftOp();
+	 				}else {
+						v = NullConstant.v();
+					}
+	 				
+	 	        }	else {
+	 	        	methodname = "writeBeforeDSElem";
+	 	        	try {
+						v=invokeExpr.getArg(1);// (k,v)
+					} catch (Exception e) {
+						v=NullConstant.v();
+					}
+				}		
+	 				
+	 			
+	 			
+	 			
+	 			LinkedList args = new LinkedList();
+	 			args.addLast(base);
+	 			args.addLast(IntConstant.v(getSPEIndex(memory)));
+	 			args.addLast(getTIDLocal(sm));
+	 			args.addLast(StringConstant.v( sm.getDeclaringClass().getName()));		
+	 			LineNumberTag tag = (LineNumberTag)s.getTag("LineNumberTag");
+	 			if(tag!=null)
+	 			{
+	 				args.addLast(IntConstant.v(tag.getLineNumber()));
+	 			}
+	 			else {
+	 				args.addLast(IntConstant.v(-1));
+	 			}
+	 			
+	 			args.addLast(invokeExpr.getArg(0));
+	 			
+
+	 			
+	 			 if(v.getType() instanceof PrimType)
+	 		    {
+	 		    	Value staticInvoke;
+
+	 		    	if(v.getType() instanceof BooleanType)
+	 		    	{
+	 		    		args.addLast(v);
+	 		 			SootMethodRef mr = Scene.v().getMethod(
+	 		 					"<" + observerClass + ": void " + methodname
+	 		 							+ "(java.lang.Object,int,long,java.lang.String,int,java.lang.Object,boolean)>").makeRef();
+	 		 			units.insertBefore(Jimple.v().newInvokeStmt(
+	 		 						Jimple.v().newStaticInvokeExpr(mr, args)), s);
+	 		    		
+	 		    	}
+	 		    	else if(v.getType() instanceof ByteType)
+	 		    	{ 
+	 		    		args.addLast(v);
+	 		    		SootMethodRef mr = Scene.v().getMethod(
+	 		 					"<" + observerClass + ": void " + methodname
+	 		 							+ "(java.lang.Object,int,long,java.lang.String,int,java.lang.Object,byte)>").makeRef();
+	 		 			units.insertBefore(Jimple.v().newInvokeStmt(
+	 		 						Jimple.v().newStaticInvokeExpr(mr, args)), s);
+	 		    		
+	 		    	}
+	 		    	else if(v.getType() instanceof CharType)
+	 		    	{
+	 		    		args.addLast(v);
+	 		    		SootMethodRef mr = Scene.v().getMethod(
+	 		 					"<" + observerClass + ": void " + methodname
+	 		 							+ "(java.lang.Object,int,long,java.lang.String,int,java.lang.Object,char)>").makeRef();
+	 		 			units.insertBefore(Jimple.v().newInvokeStmt(
+	 		 						Jimple.v().newStaticInvokeExpr(mr, args)), s);
+	 		    		
+	 		    	}
+	 		    	else if(v.getType() instanceof DoubleType)
+	 		    	{
+	 		    		args.addLast(v);
+	 		    		SootMethodRef mr = Scene.v().getMethod(
+	 		 					"<" + observerClass + ": void " + methodname
+	 		 							+ "(java.lang.Object,int,long,java.lang.String,int,java.lang.Object,double)>").makeRef();
+	 		 			units.insertBefore(Jimple.v().newInvokeStmt(
+	 		 						Jimple.v().newStaticInvokeExpr(mr, args)), s);
+	 		    		
+	 		    	}
+	 		    	else if(v.getType() instanceof FloatType)
+	 		    	{
+	 		    		args.addLast(v);
+	 		    		SootMethodRef mr = Scene.v().getMethod(
+	 		 					"<" + observerClass + ": void " + methodname
+	 		 							+ "(java.lang.Object,int,long,java.lang.String,int,java.lang.Object,float)>").makeRef();
+	 		 			units.insertBefore(Jimple.v().newInvokeStmt(
+	 		 						Jimple.v().newStaticInvokeExpr(mr, args)), s);
+	 		    		
+	 		    	}
+	 		    	else if(v.getType() instanceof IntType)
+	 		    	{
+	 		    		args.addLast(v);
+	 		    		SootMethodRef mr = Scene.v().getMethod(
+	 		 					"<" + observerClass + ": void " + methodname
+	 		 							+ "(java.lang.Object,int,long,java.lang.String,int,java.lang.Object,int)>").makeRef();
+	 		 			units.insertBefore(Jimple.v().newInvokeStmt(
+	 		 						Jimple.v().newStaticInvokeExpr(mr, args)), s);
+	 		    		
+	 		    	}
+	 		    	else if(v.getType() instanceof LongType)
+	 		    	{
+	 		    		args.addLast(v);
+	 		    		SootMethodRef mr = Scene.v().getMethod(
+	 		 					"<" + observerClass + ": void " + methodname
+	 		 							+ "(java.lang.Object,int,long,java.lang.String,int,java.lang.Object,long)>").makeRef();
+	 		 			units.insertBefore(Jimple.v().newInvokeStmt(
+	 		 						Jimple.v().newStaticInvokeExpr(mr, args)), s);
+	 		    		
+	 		    	}
+	 		    	else//if (v.getType() instanceof ShortType)
+	 		    	{
+	 		    		args.addLast(v);
+	 		    		SootMethodRef mr = Scene.v().getMethod(
+	 		 					"<" + observerClass + ": void " + methodname
+	 		 							+ "(java.lang.Object,int,long,java.lang.String,int,java.lang.Object,short)>").makeRef();
+	 		 			units.insertBefore(Jimple.v().newInvokeStmt(
+	 		 						Jimple.v().newStaticInvokeExpr(mr, args)), s);
+	 		    		
+	 		    	}
+	 		    }
+	 		    else
+	 		    {
+	 		    	args.addLast(v);
+	 		    	SootMethodRef mr = Scene.v().getMethod(
+			 					"<" + observerClass + ": void " + methodname
+			 							+ "(java.lang.Object,int,long,java.lang.String,int,java.lang.Object,java.lang.Object)>").makeRef();
+			 			units.insertBefore(Jimple.v().newInvokeStmt(
+			 						Jimple.v().newStaticInvokeExpr(mr, args)), s);	
+	 		    }
+	 			 
+	 			
+//	 		    Visitor.addCallAccessSPEArrayElem(sm,units, s, methodname, base, memory, true,  arrayRef);
+	 			Visitor.sharedaccessnum++;
+	 		    Visitor.instrusharedaccessnum++;        	
+	 		}
+	     }
+	    	
+	              	
+	    
+		
+		
+	}
+	public static String JDKOpType(SootMethod sm) {
     	SootClass sClass = sm.getDeclaringClass();
     	String classname = sClass.getName();
     	String methodname  = sm.getName();
-    	return Parameters.JDKOpType(classname, methodname);
+    	return Parameters.readOrWrite(classname, methodname);
 
 	}
 	public void visitStaticInvokeExpr(SootMethod sm, Chain units, Stmt s, StaticInvokeExpr invokeExpr, InvokeContext context) {

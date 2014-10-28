@@ -1,0 +1,213 @@
+public class avrora.monitors.SerialMonitor extends avrora.monitors.MonitorFactory
+{
+    protected final cck.util.Option$List PORTS;
+    protected final cck.util.Option$List DEVICE;
+    protected final cck.util.Option$Str COMMAND;
+    java.util.HashMap portMap;
+
+    public void <init>()
+    {
+        avrora.monitors.SerialMonitor this;
+        cck.util.Option$List $r0;
+        cck.util.Option$Str $r1;
+        java.util.HashMap $r2;
+
+        this := @this: avrora.monitors.SerialMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"serial\" monitor allows the serial port (UART) of a node in the simulation to be connected to a socket so that data from the program running in the simulation can be outputted, and external data can be fed into the serial port of the simulated node.");
+        $r0 = virtualinvoke this.<avrora.monitors.SerialMonitor: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("ports", "0:0:2390", "The \"ports\" option specifies a list of server ports that the simulator will listen on to connect to the serial forwarder for each node. The format is to first give the node number, the UART number, and then the port number ($node:$uart:$port,$node:$uart:$port).");
+        this.<avrora.monitors.SerialMonitor: cck.util.Option$List PORTS> = $r0;
+        $r0 = virtualinvoke this.<avrora.monitors.SerialMonitor: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("devices", "", "The \"device\" option can be used to specify the devices (represented as file names) to connect to each of the nodes\' serial port. The format is to first give the node number, the UART number, and then a file name for the input file, and (optionally) a file name for the output ($node:$uart:$in[:$out],$node:$uart:$in[:$out]).");
+        this.<avrora.monitors.SerialMonitor: cck.util.Option$List DEVICE> = $r0;
+        $r1 = virtualinvoke this.<avrora.monitors.SerialMonitor: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("command", "", "The \"command\" option defines an external command to connect to the serial port of the simulated system.");
+        this.<avrora.monitors.SerialMonitor: cck.util.Option$Str COMMAND> = $r1;
+        $r2 = new java.util.HashMap;
+        specialinvoke $r2.<java.util.HashMap: void <init>()>();
+        this.<avrora.monitors.SerialMonitor: java.util.HashMap portMap> = $r2;
+        return;
+    }
+
+    public void processOptions(cck.util.Options)
+    {
+        avrora.monitors.SerialMonitor this;
+        cck.util.Options o;
+
+        this := @this: avrora.monitors.SerialMonitor;
+        o := @parameter0: cck.util.Options;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void processOptions(cck.util.Options)>(o);
+        specialinvoke this.<avrora.monitors.SerialMonitor: void processSocketConnections()>();
+        specialinvoke this.<avrora.monitors.SerialMonitor: void processDeviceConnections()>();
+        return;
+    }
+
+    private void processSocketConnections()
+    {
+        avrora.monitors.SerialMonitor this;
+        java.util.Iterator i;
+        java.lang.String pid, $r3;
+        java.lang.String[] str;
+        int nid, uart, port, $i0;
+        avrora.monitors.SerialMonitor$SocketConnection conn, $r4;
+        cck.util.Option$List $r0;
+        java.util.List $r1;
+        boolean $z0;
+        java.lang.Object $r2;
+        long tid_processSocketConnections;
+        java.lang.Thread thread_processSocketConnections;
+
+        this := @this: avrora.monitors.SerialMonitor;
+        thread_processSocketConnections = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_processSocketConnections = virtualinvoke thread_processSocketConnections.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.monitors.SerialMonitor: cck.util.Option$List PORTS>;
+        $r1 = virtualinvoke $r0.<cck.util.Option$List: java.util.List get()>();
+        i = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r2 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        pid = (java.lang.String) $r2;
+        str = virtualinvoke pid.<java.lang.String: java.lang.String[] split(java.lang.String)>(":");
+        $i0 = lengthof str;
+        if $i0 >= 3 goto label1;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String)>("Format error in \"ports\" option");
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(str, 18, tid_processSocketConnections, "avrora.monitors.SerialMonitor", 156, 0, $r3);
+        $r3 = str[0];
+        nid = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(str, 18, tid_processSocketConnections, "avrora.monitors.SerialMonitor", 157, 1, $r3);
+        $r3 = str[1];
+        uart = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(str, 18, tid_processSocketConnections, "avrora.monitors.SerialMonitor", 158, 2, $r3);
+        $r3 = str[2];
+        port = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r3);
+        $r4 = new avrora.monitors.SerialMonitor$SocketConnection;
+        specialinvoke $r4.<avrora.monitors.SerialMonitor$SocketConnection: void <init>(avrora.monitors.SerialMonitor)>(this);
+        conn = $r4;
+        conn.<avrora.monitors.SerialMonitor$SocketConnection: int usart> = uart;
+        conn.<avrora.monitors.SerialMonitor$SocketConnection: int port> = port;
+        specialinvoke this.<avrora.monitors.SerialMonitor: void addConnection(int,avrora.monitors.SerialMonitor$Connection)>(nid, conn);
+        goto label0;
+
+     label2:
+        return;
+    }
+
+    private void processDeviceConnections()
+    {
+        avrora.monitors.SerialMonitor this;
+        java.util.Iterator i;
+        java.lang.String pid, inf, outf, $r3;
+        java.lang.String[] str;
+        int nid, uart, $i0;
+        avrora.monitors.SerialMonitor$FileConnection conn, $r4;
+        cck.util.Option$List $r0;
+        java.util.List $r1;
+        boolean $z0;
+        java.lang.Object $r2;
+        long tid_processDeviceConnections;
+        java.lang.Thread thread_processDeviceConnections;
+
+        this := @this: avrora.monitors.SerialMonitor;
+        thread_processDeviceConnections = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_processDeviceConnections = virtualinvoke thread_processDeviceConnections.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.monitors.SerialMonitor: cck.util.Option$List DEVICE>;
+        $r1 = virtualinvoke $r0.<cck.util.Option$List: java.util.List get()>();
+        i = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label4;
+
+        $r2 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        pid = (java.lang.String) $r2;
+        str = virtualinvoke pid.<java.lang.String: java.lang.String[] split(java.lang.String)>(":");
+        $i0 = lengthof str;
+        if $i0 >= 3 goto label1;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String)>("Format error in \"device\" option");
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(str, 18, tid_processDeviceConnections, "avrora.monitors.SerialMonitor", 172, 0, $r3);
+        $r3 = str[0];
+        nid = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(str, 18, tid_processDeviceConnections, "avrora.monitors.SerialMonitor", 173, 1, $r3);
+        $r3 = str[1];
+        uart = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(str, 18, tid_processDeviceConnections, "avrora.monitors.SerialMonitor", 174, 2, inf);
+        inf = str[2];
+        $i0 = lengthof str;
+        if $i0 <= 3 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(str, 18, tid_processDeviceConnections, "avrora.monitors.SerialMonitor", 175, 3, $r3);
+        $r3 = str[3];
+        goto label3;
+
+     label2:
+        $r3 = inf;
+
+     label3:
+        outf = $r3;
+        $r4 = new avrora.monitors.SerialMonitor$FileConnection;
+        specialinvoke $r4.<avrora.monitors.SerialMonitor$FileConnection: void <init>(avrora.monitors.SerialMonitor)>(this);
+        conn = $r4;
+        conn.<avrora.monitors.SerialMonitor$FileConnection: int usart> = uart;
+        conn.<avrora.monitors.SerialMonitor$FileConnection: java.lang.String infile> = inf;
+        conn.<avrora.monitors.SerialMonitor$FileConnection: java.lang.String outfile> = outf;
+        specialinvoke this.<avrora.monitors.SerialMonitor: void addConnection(int,avrora.monitors.SerialMonitor$Connection)>(nid, conn);
+        goto label0;
+
+     label4:
+        return;
+    }
+
+    private void addConnection(int, avrora.monitors.SerialMonitor$Connection)
+    {
+        avrora.monitors.SerialMonitor this;
+        int nid;
+        avrora.monitors.SerialMonitor$Connection ucon;
+        java.lang.Integer $r0, nidI;
+        java.util.Set set;
+        java.util.HashMap $r1;
+        java.lang.Object $r2;
+        java.util.HashSet $r3;
+
+        this := @this: avrora.monitors.SerialMonitor;
+        nid := @parameter0: int;
+        ucon := @parameter1: avrora.monitors.SerialMonitor$Connection;
+        $r0 = new java.lang.Integer;
+        specialinvoke $r0.<java.lang.Integer: void <init>(int)>(nid);
+        nidI = $r0;
+        $r1 = this.<avrora.monitors.SerialMonitor: java.util.HashMap portMap>;
+        $r2 = virtualinvoke $r1.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(nidI);
+        set = (java.util.Set) $r2;
+        if set != null goto label0;
+
+        $r3 = new java.util.HashSet;
+        specialinvoke $r3.<java.util.HashSet: void <init>()>();
+        set = $r3;
+        $r1 = this.<avrora.monitors.SerialMonitor: java.util.HashMap portMap>;
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(nidI, set);
+
+     label0:
+        interfaceinvoke set.<java.util.Set: boolean add(java.lang.Object)>(ucon);
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.SerialMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.SerialMonitor$Monitor tmp$547863819;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.SerialMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$547863819 = new avrora.monitors.SerialMonitor$Monitor;
+        specialinvoke tmp$547863819.<avrora.monitors.SerialMonitor$Monitor: void <init>(avrora.monitors.SerialMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$547863819;
+        return tmp;
+    }
+}

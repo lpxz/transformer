@@ -1,0 +1,289 @@
+public class cck.elf.ELFHeader extends java.lang.Object
+{
+    protected static final int ELFCLASSNONE;
+    protected static final int ELFCLASS32;
+    protected static final int ELFCLASS64;
+    protected static final int ELFCLASSNUM;
+    protected static final int EI_NIDENT;
+    protected static final int EI_CLASS;
+    protected static final int EI_DATA;
+    protected static final int EI_VERSION;
+    protected static final int EI_PAD;
+    protected static final int ELFDATA2LSB;
+    protected static final int ELFDATA2MSB;
+    public final byte[] e_ident;
+    public short e_type;
+    public short e_machine;
+    public int e_version;
+    public int e_entry;
+    public int e_phoff;
+    public int e_shoff;
+    public int e_flags;
+    public short e_ehsize;
+    public short e_phentsize;
+    public short e_phnum;
+    public short e_shentsize;
+    public short e_shnum;
+    public short e_shstrndx;
+    boolean bigEndian;
+
+    public void <init>()
+    {
+        cck.elf.ELFHeader this;
+        byte[] $r0;
+
+        this := @this: cck.elf.ELFHeader;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = newarray (byte)[16];
+        this.<cck.elf.ELFHeader: byte[] e_ident> = $r0;
+        return;
+    }
+
+    public void read(java.io.RandomAccessFile) throws java.io.IOException, cck.elf.ELFHeader$FormatError
+    {
+        cck.elf.ELFHeader this;
+        java.io.RandomAccessFile fs;
+        int index, $i2, $i3;
+        cck.elf.ELFDataInputStream is, $r2;
+        long $l0;
+        byte $b1;
+        cck.elf.ELFHeader$FormatError $r0;
+        byte[] $r1;
+        short $s4;
+
+        this := @this: cck.elf.ELFHeader;
+        fs := @parameter0: java.io.RandomAccessFile;
+        $l0 = virtualinvoke fs.<java.io.RandomAccessFile: long length()>();
+        $b1 = $l0 cmp 16L;
+        if $b1 >= 0 goto label0;
+
+        $r0 = new cck.elf.ELFHeader$FormatError;
+        specialinvoke $r0.<cck.elf.ELFHeader$FormatError: void <init>(cck.elf.ELFHeader)>(this);
+        throw $r0;
+
+     label0:
+        index = 0;
+
+     label1:
+        if index >= 16 goto label2;
+
+        $r1 = this.<cck.elf.ELFHeader: byte[] e_ident>;
+        $i2 = 16 - index;
+        $i3 = virtualinvoke fs.<java.io.RandomAccessFile: int read(byte[],int,int)>($r1, index, $i2);
+        index = index + $i3;
+        goto label1;
+
+     label2:
+        specialinvoke this.<cck.elf.ELFHeader: void checkIdent()>();
+        $r2 = new cck.elf.ELFDataInputStream;
+        specialinvoke $r2.<cck.elf.ELFDataInputStream: void <init>(cck.elf.ELFHeader,java.io.RandomAccessFile)>(this, fs);
+        is = $r2;
+        $s4 = virtualinvoke is.<cck.elf.ELFDataInputStream: short read_Elf32_Half()>();
+        this.<cck.elf.ELFHeader: short e_type> = $s4;
+        $s4 = virtualinvoke is.<cck.elf.ELFDataInputStream: short read_Elf32_Half()>();
+        this.<cck.elf.ELFHeader: short e_machine> = $s4;
+        $i3 = virtualinvoke is.<cck.elf.ELFDataInputStream: int read_Elf32_Word()>();
+        this.<cck.elf.ELFHeader: int e_version> = $i3;
+        $i3 = virtualinvoke is.<cck.elf.ELFDataInputStream: int read_Elf32_Addr()>();
+        this.<cck.elf.ELFHeader: int e_entry> = $i3;
+        $i3 = virtualinvoke is.<cck.elf.ELFDataInputStream: int read_Elf32_Off()>();
+        this.<cck.elf.ELFHeader: int e_phoff> = $i3;
+        $i3 = virtualinvoke is.<cck.elf.ELFDataInputStream: int read_Elf32_Off()>();
+        this.<cck.elf.ELFHeader: int e_shoff> = $i3;
+        $i3 = virtualinvoke is.<cck.elf.ELFDataInputStream: int read_Elf32_Word()>();
+        this.<cck.elf.ELFHeader: int e_flags> = $i3;
+        $s4 = virtualinvoke is.<cck.elf.ELFDataInputStream: short read_Elf32_Half()>();
+        this.<cck.elf.ELFHeader: short e_ehsize> = $s4;
+        $s4 = virtualinvoke is.<cck.elf.ELFDataInputStream: short read_Elf32_Half()>();
+        this.<cck.elf.ELFHeader: short e_phentsize> = $s4;
+        $s4 = virtualinvoke is.<cck.elf.ELFDataInputStream: short read_Elf32_Half()>();
+        this.<cck.elf.ELFHeader: short e_phnum> = $s4;
+        $s4 = virtualinvoke is.<cck.elf.ELFDataInputStream: short read_Elf32_Half()>();
+        this.<cck.elf.ELFHeader: short e_shentsize> = $s4;
+        $s4 = virtualinvoke is.<cck.elf.ELFDataInputStream: short read_Elf32_Half()>();
+        this.<cck.elf.ELFHeader: short e_shnum> = $s4;
+        $s4 = virtualinvoke is.<cck.elf.ELFDataInputStream: short read_Elf32_Half()>();
+        this.<cck.elf.ELFHeader: short e_shstrndx> = $s4;
+        return;
+    }
+
+    private void checkIdent() throws cck.elf.ELFHeader$FormatError
+    {
+        cck.elf.ELFHeader this;
+        boolean $z0;
+
+        this := @this: cck.elf.ELFHeader;
+        specialinvoke this.<cck.elf.ELFHeader: void checkIndentByte(int,int)>(0, 127);
+        specialinvoke this.<cck.elf.ELFHeader: void checkIndentByte(int,int)>(1, 69);
+        specialinvoke this.<cck.elf.ELFHeader: void checkIndentByte(int,int)>(2, 76);
+        specialinvoke this.<cck.elf.ELFHeader: void checkIndentByte(int,int)>(3, 70);
+        $z0 = virtualinvoke this.<cck.elf.ELFHeader: boolean isBigEndian()>();
+        this.<cck.elf.ELFHeader: boolean bigEndian> = $z0;
+        return;
+    }
+
+    private void checkIndentByte(int, int) throws cck.elf.ELFHeader$FormatError
+    {
+        cck.elf.ELFHeader this;
+        int ind, val;
+        byte[] $r0;
+        byte $b0;
+        cck.elf.ELFHeader$FormatError $r1;
+        long tid_checkIndentByte;
+        java.lang.Thread thread_checkIndentByte;
+
+        this := @this: cck.elf.ELFHeader;
+        ind := @parameter0: int;
+        val := @parameter1: int;
+        thread_checkIndentByte = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_checkIndentByte = virtualinvoke thread_checkIndentByte.<java.lang.Thread: long getId()>();
+        $r0 = this.<cck.elf.ELFHeader: byte[] e_ident>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_checkIndentByte, "cck.elf.ELFHeader", 132, ind, $b0);
+        $b0 = $r0[ind];
+        if $b0 == val goto label0;
+
+        $r1 = new cck.elf.ELFHeader$FormatError;
+        specialinvoke $r1.<cck.elf.ELFHeader$FormatError: void <init>(cck.elf.ELFHeader)>(this);
+        throw $r1;
+
+     label0:
+        return;
+    }
+
+    public int getVersion()
+    {
+        cck.elf.ELFHeader this;
+        byte[] $r0;
+        byte $b0;
+        long tid_getVersion;
+        java.lang.Thread thread_getVersion;
+
+        this := @this: cck.elf.ELFHeader;
+        thread_getVersion = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getVersion = virtualinvoke thread_getVersion.<java.lang.Thread: long getId()>();
+        $r0 = this.<cck.elf.ELFHeader: byte[] e_ident>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_getVersion, "cck.elf.ELFHeader", 141, 6, $b0);
+        $b0 = $r0[6];
+        return $b0;
+    }
+
+    public java.lang.String getArchitecture()
+    {
+        cck.elf.ELFHeader this;
+        short $s0;
+        java.lang.String $r0;
+
+        this := @this: cck.elf.ELFHeader;
+        $s0 = this.<cck.elf.ELFHeader: short e_machine>;
+        $r0 = staticinvoke <cck.elf.ELFIdentifier: java.lang.String getArchitecture(int)>($s0);
+        return $r0;
+    }
+
+    public boolean isLittleEndian()
+    {
+        cck.elf.ELFHeader this;
+        byte[] $r0;
+        byte $b0;
+        boolean $z0;
+        long tid_isLittleEndian;
+        java.lang.Thread thread_isLittleEndian;
+
+        this := @this: cck.elf.ELFHeader;
+        thread_isLittleEndian = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_isLittleEndian = virtualinvoke thread_isLittleEndian.<java.lang.Thread: long getId()>();
+        $r0 = this.<cck.elf.ELFHeader: byte[] e_ident>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_isLittleEndian, "cck.elf.ELFHeader", 161, 6, $b0);
+        $b0 = $r0[6];
+        if $b0 != 1 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public boolean isBigEndian()
+    {
+        cck.elf.ELFHeader this;
+        byte[] $r0;
+        byte $b0;
+        boolean $z0;
+        long tid_isBigEndian;
+        java.lang.Thread thread_isBigEndian;
+
+        this := @this: cck.elf.ELFHeader;
+        thread_isBigEndian = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_isBigEndian = virtualinvoke thread_isBigEndian.<java.lang.Thread: long getId()>();
+        $r0 = this.<cck.elf.ELFHeader: byte[] e_ident>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_isBigEndian, "cck.elf.ELFHeader", 171, 6, $b0);
+        $b0 = $r0[6];
+        if $b0 != 2 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public boolean is32Bit()
+    {
+        cck.elf.ELFHeader this;
+        byte[] $r0;
+        byte $b0;
+        boolean $z0;
+        long tid_is32Bit;
+        java.lang.Thread thread_is32Bit;
+
+        this := @this: cck.elf.ELFHeader;
+        thread_is32Bit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_is32Bit = virtualinvoke thread_is32Bit.<java.lang.Thread: long getId()>();
+        $r0 = this.<cck.elf.ELFHeader: byte[] e_ident>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_is32Bit, "cck.elf.ELFHeader", 181, 4, $b0);
+        $b0 = $r0[4];
+        if $b0 != 1 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public boolean is64Bit()
+    {
+        cck.elf.ELFHeader this;
+        byte[] $r0;
+        byte $b0;
+        boolean $z0;
+        long tid_is64Bit;
+        java.lang.Thread thread_is64Bit;
+
+        this := @this: cck.elf.ELFHeader;
+        thread_is64Bit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_is64Bit = virtualinvoke thread_is64Bit.<java.lang.Thread: long getId()>();
+        $r0 = this.<cck.elf.ELFHeader: byte[] e_ident>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_is64Bit, "cck.elf.ELFHeader", 191, 4, $b0);
+        $b0 = $r0[4];
+        if $b0 != 2 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+}

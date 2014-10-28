@@ -1,0 +1,326 @@
+class org.apache.lucene.search.TermQuery$TermWeight extends java.lang.Object implements org.apache.lucene.search.Weight
+{
+    private org.apache.lucene.search.Similarity similarity;
+    private float value;
+    private float idf;
+    private float queryNorm;
+    private float queryWeight;
+    private final org.apache.lucene.search.TermQuery this$0;
+
+    public void <init>(org.apache.lucene.search.TermQuery, org.apache.lucene.search.Searcher) throws java.io.IOException
+    {
+        org.apache.lucene.search.TermQuery$TermWeight this;
+        org.apache.lucene.search.TermQuery l1;
+        org.apache.lucene.search.Searcher searcher;
+        org.apache.lucene.search.Similarity $r0;
+        org.apache.lucene.index.Term $r1;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.TermQuery$TermWeight;
+        l1 := @parameter0: org.apache.lucene.search.TermQuery;
+        searcher := @parameter1: org.apache.lucene.search.Searcher;
+        this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.TermQuery this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = virtualinvoke l1.<org.apache.lucene.search.TermQuery: org.apache.lucene.search.Similarity getSimilarity(org.apache.lucene.search.Searcher)>(searcher);
+        this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.Similarity similarity> = $r0;
+        $r0 = this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.Similarity similarity>;
+        $r1 = staticinvoke <org.apache.lucene.search.TermQuery: org.apache.lucene.index.Term access$000(org.apache.lucene.search.TermQuery)>(l1);
+        $f0 = virtualinvoke $r0.<org.apache.lucene.search.Similarity: float idf(org.apache.lucene.index.Term,org.apache.lucene.search.Searcher)>($r1, searcher);
+        this.<org.apache.lucene.search.TermQuery$TermWeight: float idf> = $f0;
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        org.apache.lucene.search.TermQuery$TermWeight this;
+        java.lang.StringBuffer $r0;
+        org.apache.lucene.search.TermQuery $r1;
+        java.lang.String $r2;
+
+        this := @this: org.apache.lucene.search.TermQuery$TermWeight;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("weight(");
+        $r1 = this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.TermQuery this$0>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(")");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r2;
+    }
+
+    public org.apache.lucene.search.Query getQuery()
+    {
+        org.apache.lucene.search.TermQuery$TermWeight this;
+        org.apache.lucene.search.TermQuery $r0;
+
+        this := @this: org.apache.lucene.search.TermQuery$TermWeight;
+        $r0 = this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.TermQuery this$0>;
+        return $r0;
+    }
+
+    public float getValue()
+    {
+        org.apache.lucene.search.TermQuery$TermWeight this;
+        float $f0;
+        long tid_getValue;
+        java.lang.Thread thread_getValue;
+
+        this := @this: org.apache.lucene.search.TermQuery$TermWeight;
+        thread_getValue = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getValue = virtualinvoke thread_getValue.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 160, tid_getValue, "org.apache.lucene.search.TermQuery$TermWeight", 50, $f0);
+        $f0 = this.<org.apache.lucene.search.TermQuery$TermWeight: float value>;
+        return $f0;
+    }
+
+    public float sumOfSquaredWeights()
+    {
+        org.apache.lucene.search.TermQuery$TermWeight this;
+        float $f0, $f1, $f2;
+        org.apache.lucene.search.TermQuery $r0;
+        long tid_sumOfSquaredWeights;
+        java.lang.Thread thread_sumOfSquaredWeights;
+
+        this := @this: org.apache.lucene.search.TermQuery$TermWeight;
+        thread_sumOfSquaredWeights = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_sumOfSquaredWeights = virtualinvoke thread_sumOfSquaredWeights.<java.lang.Thread: long getId()>();
+        $f0 = this.<org.apache.lucene.search.TermQuery$TermWeight: float idf>;
+        $r0 = this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.TermQuery this$0>;
+        $f1 = virtualinvoke $r0.<org.apache.lucene.search.TermQuery: float getBoost()>();
+        $f0 = $f0 * $f1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 161, tid_sumOfSquaredWeights, "org.apache.lucene.search.TermQuery$TermWeight", 53, $f0);
+        this.<org.apache.lucene.search.TermQuery$TermWeight: float queryWeight> = $f0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 161, tid_sumOfSquaredWeights, "org.apache.lucene.search.TermQuery$TermWeight", 54, $f2);
+        $f2 = this.<org.apache.lucene.search.TermQuery$TermWeight: float queryWeight>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 161, tid_sumOfSquaredWeights, "org.apache.lucene.search.TermQuery$TermWeight", 54, $f0);
+        $f0 = this.<org.apache.lucene.search.TermQuery$TermWeight: float queryWeight>;
+        $f2 = $f2 * $f0;
+        return $f2;
+    }
+
+    public void normalize(float)
+    {
+        org.apache.lucene.search.TermQuery$TermWeight this;
+        float queryNorm, $f0, $f1;
+        long tid_normalize;
+        java.lang.Thread thread_normalize;
+
+        this := @this: org.apache.lucene.search.TermQuery$TermWeight;
+        queryNorm := @parameter0: float;
+        thread_normalize = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_normalize = virtualinvoke thread_normalize.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 162, tid_normalize, "org.apache.lucene.search.TermQuery$TermWeight", 58, queryNorm);
+        this.<org.apache.lucene.search.TermQuery$TermWeight: float queryNorm> = queryNorm;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 161, tid_normalize, "org.apache.lucene.search.TermQuery$TermWeight", 59, $f0);
+        $f0 = this.<org.apache.lucene.search.TermQuery$TermWeight: float queryWeight>;
+        $f0 = $f0 * queryNorm;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 161, tid_normalize, "org.apache.lucene.search.TermQuery$TermWeight", 59, $f0);
+        this.<org.apache.lucene.search.TermQuery$TermWeight: float queryWeight> = $f0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 161, tid_normalize, "org.apache.lucene.search.TermQuery$TermWeight", 60, $f0);
+        $f0 = this.<org.apache.lucene.search.TermQuery$TermWeight: float queryWeight>;
+        $f1 = this.<org.apache.lucene.search.TermQuery$TermWeight: float idf>;
+        $f0 = $f0 * $f1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 160, tid_normalize, "org.apache.lucene.search.TermQuery$TermWeight", 60, $f0);
+        this.<org.apache.lucene.search.TermQuery$TermWeight: float value> = $f0;
+        return;
+    }
+
+    public org.apache.lucene.search.Scorer scorer(org.apache.lucene.index.IndexReader) throws java.io.IOException
+    {
+        org.apache.lucene.search.TermQuery$TermWeight this;
+        org.apache.lucene.index.IndexReader reader;
+        org.apache.lucene.index.TermDocs termDocs;
+        org.apache.lucene.search.TermQuery $r0, $r4;
+        org.apache.lucene.index.Term $r1, $r5;
+        org.apache.lucene.search.TermScorer $r2;
+        org.apache.lucene.search.Similarity $r3;
+        java.lang.String $r6;
+        byte[] $r7;
+
+        this := @this: org.apache.lucene.search.TermQuery$TermWeight;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        $r0 = this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.TermQuery this$0>;
+        $r1 = staticinvoke <org.apache.lucene.search.TermQuery: org.apache.lucene.index.Term access$000(org.apache.lucene.search.TermQuery)>($r0);
+        termDocs = virtualinvoke reader.<org.apache.lucene.index.IndexReader: org.apache.lucene.index.TermDocs termDocs(org.apache.lucene.index.Term)>($r1);
+        if termDocs != null goto label0;
+
+        return null;
+
+     label0:
+        $r2 = new org.apache.lucene.search.TermScorer;
+        $r3 = this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.Similarity similarity>;
+        $r4 = this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.TermQuery this$0>;
+        $r5 = staticinvoke <org.apache.lucene.search.TermQuery: org.apache.lucene.index.Term access$000(org.apache.lucene.search.TermQuery)>($r4);
+        $r6 = virtualinvoke $r5.<org.apache.lucene.index.Term: java.lang.String field()>();
+        $r7 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: byte[] norms(java.lang.String)>($r6);
+        specialinvoke $r2.<org.apache.lucene.search.TermScorer: void <init>(org.apache.lucene.search.Weight,org.apache.lucene.index.TermDocs,org.apache.lucene.search.Similarity,byte[])>(this, termDocs, $r3, $r7);
+        return $r2;
+    }
+
+    public org.apache.lucene.search.Explanation explain(org.apache.lucene.index.IndexReader, int) throws java.io.IOException
+    {
+        org.apache.lucene.search.TermQuery$TermWeight this;
+        org.apache.lucene.index.IndexReader reader;
+        int doc, $i0;
+        org.apache.lucene.search.ComplexExplanation $r0, result, fieldExpl;
+        java.lang.StringBuffer $r1, $r2;
+        org.apache.lucene.search.Explanation idfExpl, queryExpl, boostExpl, queryNormExpl, tfExpl, fieldNormExpl, $r5;
+        java.lang.String field, $r4, $r8;
+        byte[] fieldNorms;
+        float fieldNorm, $f0, $f1, $f2;
+        org.apache.lucene.search.Query $r3;
+        org.apache.lucene.search.TermQuery $r6, $r9, $r10;
+        org.apache.lucene.index.Term $r7, $r11, $r12;
+        byte $b1;
+        org.apache.lucene.search.Scorer $r13;
+        boolean $z0;
+        java.lang.Boolean $r14;
+        long tid_explain;
+        java.lang.Thread thread_explain;
+
+        this := @this: org.apache.lucene.search.TermQuery$TermWeight;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        doc := @parameter1: int;
+        thread_explain = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_explain = virtualinvoke thread_explain.<java.lang.Thread: long getId()>();
+        $r0 = new org.apache.lucene.search.ComplexExplanation;
+        specialinvoke $r0.<org.apache.lucene.search.ComplexExplanation: void <init>()>();
+        result = $r0;
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("weight(");
+        $r3 = virtualinvoke this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.Query getQuery()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" in ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(doc);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("), product of:");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke result.<org.apache.lucene.search.ComplexExplanation: void setDescription(java.lang.String)>($r4);
+        $r5 = new org.apache.lucene.search.Explanation;
+        $f0 = this.<org.apache.lucene.search.TermQuery$TermWeight: float idf>;
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("idf(docFreq=");
+        $r6 = this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.TermQuery this$0>;
+        $r7 = staticinvoke <org.apache.lucene.search.TermQuery: org.apache.lucene.index.Term access$000(org.apache.lucene.search.TermQuery)>($r6);
+        $i0 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: int docFreq(org.apache.lucene.index.Term)>($r7);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", numDocs=");
+        $i0 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: int numDocs()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i0);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(")");
+        $r8 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r5.<org.apache.lucene.search.Explanation: void <init>(float,java.lang.String)>($f0, $r8);
+        idfExpl = $r5;
+        $r5 = new org.apache.lucene.search.Explanation;
+        specialinvoke $r5.<org.apache.lucene.search.Explanation: void <init>()>();
+        queryExpl = $r5;
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("queryWeight(");
+        $r3 = virtualinvoke this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.Query getQuery()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("), product of:");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke queryExpl.<org.apache.lucene.search.Explanation: void setDescription(java.lang.String)>($r4);
+        $r5 = new org.apache.lucene.search.Explanation;
+        $r9 = this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.TermQuery this$0>;
+        $f0 = virtualinvoke $r9.<org.apache.lucene.search.TermQuery: float getBoost()>();
+        specialinvoke $r5.<org.apache.lucene.search.Explanation: void <init>(float,java.lang.String)>($f0, "boost");
+        boostExpl = $r5;
+        $r10 = this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.TermQuery this$0>;
+        $f1 = virtualinvoke $r10.<org.apache.lucene.search.TermQuery: float getBoost()>();
+        $b1 = $f1 cmpl 1.0F;
+        if $b1 == 0 goto label0;
+
+        virtualinvoke queryExpl.<org.apache.lucene.search.Explanation: void addDetail(org.apache.lucene.search.Explanation)>(boostExpl);
+
+     label0:
+        virtualinvoke queryExpl.<org.apache.lucene.search.Explanation: void addDetail(org.apache.lucene.search.Explanation)>(idfExpl);
+        $r5 = new org.apache.lucene.search.Explanation;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 162, tid_explain, "org.apache.lucene.search.TermQuery$TermWeight", 92, $f0);
+        $f0 = this.<org.apache.lucene.search.TermQuery$TermWeight: float queryNorm>;
+        specialinvoke $r5.<org.apache.lucene.search.Explanation: void <init>(float,java.lang.String)>($f0, "queryNorm");
+        queryNormExpl = $r5;
+        virtualinvoke queryExpl.<org.apache.lucene.search.Explanation: void addDetail(org.apache.lucene.search.Explanation)>(queryNormExpl);
+        $f2 = virtualinvoke boostExpl.<org.apache.lucene.search.Explanation: float getValue()>();
+        $f0 = virtualinvoke idfExpl.<org.apache.lucene.search.Explanation: float getValue()>();
+        $f2 = $f2 * $f0;
+        $f0 = virtualinvoke queryNormExpl.<org.apache.lucene.search.Explanation: float getValue()>();
+        $f2 = $f2 * $f0;
+        virtualinvoke queryExpl.<org.apache.lucene.search.Explanation: void setValue(float)>($f2);
+        virtualinvoke result.<org.apache.lucene.search.ComplexExplanation: void addDetail(org.apache.lucene.search.Explanation)>(queryExpl);
+        $r10 = this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.TermQuery this$0>;
+        $r11 = staticinvoke <org.apache.lucene.search.TermQuery: org.apache.lucene.index.Term access$000(org.apache.lucene.search.TermQuery)>($r10);
+        field = virtualinvoke $r11.<org.apache.lucene.index.Term: java.lang.String field()>();
+        $r0 = new org.apache.lucene.search.ComplexExplanation;
+        specialinvoke $r0.<org.apache.lucene.search.ComplexExplanation: void <init>()>();
+        fieldExpl = $r0;
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("fieldWeight(");
+        $r9 = this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.TermQuery this$0>;
+        $r12 = staticinvoke <org.apache.lucene.search.TermQuery: org.apache.lucene.index.Term access$000(org.apache.lucene.search.TermQuery)>($r9);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r12);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" in ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(doc);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("), product of:");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke fieldExpl.<org.apache.lucene.search.ComplexExplanation: void setDescription(java.lang.String)>($r4);
+        $r13 = virtualinvoke this.<org.apache.lucene.search.TermQuery$TermWeight: org.apache.lucene.search.Scorer scorer(org.apache.lucene.index.IndexReader)>(reader);
+        tfExpl = virtualinvoke $r13.<org.apache.lucene.search.Scorer: org.apache.lucene.search.Explanation explain(int)>(doc);
+        virtualinvoke fieldExpl.<org.apache.lucene.search.ComplexExplanation: void addDetail(org.apache.lucene.search.Explanation)>(tfExpl);
+        virtualinvoke fieldExpl.<org.apache.lucene.search.ComplexExplanation: void addDetail(org.apache.lucene.search.Explanation)>(idfExpl);
+        $r5 = new org.apache.lucene.search.Explanation;
+        specialinvoke $r5.<org.apache.lucene.search.Explanation: void <init>()>();
+        fieldNormExpl = $r5;
+        fieldNorms = virtualinvoke reader.<org.apache.lucene.index.IndexReader: byte[] norms(java.lang.String)>(field);
+        if fieldNorms == null goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(fieldNorms, 4, tid_explain, "org.apache.lucene.search.TermQuery$TermWeight", 113, doc, $b1);
+        $b1 = fieldNorms[doc];
+        $f1 = staticinvoke <org.apache.lucene.search.Similarity: float decodeNorm(byte)>($b1);
+        goto label2;
+
+     label1:
+        $f1 = 0.0F;
+
+     label2:
+        fieldNorm = $f1;
+        virtualinvoke fieldNormExpl.<org.apache.lucene.search.Explanation: void setValue(float)>(fieldNorm);
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("fieldNorm(field=");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(field);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", doc=");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(doc);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(")");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke fieldNormExpl.<org.apache.lucene.search.Explanation: void setDescription(java.lang.String)>($r4);
+        virtualinvoke fieldExpl.<org.apache.lucene.search.ComplexExplanation: void addDetail(org.apache.lucene.search.Explanation)>(fieldNormExpl);
+        $z0 = virtualinvoke tfExpl.<org.apache.lucene.search.Explanation: boolean isMatch()>();
+        $r14 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($z0);
+        virtualinvoke fieldExpl.<org.apache.lucene.search.ComplexExplanation: void setMatch(java.lang.Boolean)>($r14);
+        $f2 = virtualinvoke tfExpl.<org.apache.lucene.search.Explanation: float getValue()>();
+        $f0 = virtualinvoke idfExpl.<org.apache.lucene.search.Explanation: float getValue()>();
+        $f2 = $f2 * $f0;
+        $f0 = virtualinvoke fieldNormExpl.<org.apache.lucene.search.Explanation: float getValue()>();
+        $f2 = $f2 * $f0;
+        virtualinvoke fieldExpl.<org.apache.lucene.search.ComplexExplanation: void setValue(float)>($f2);
+        virtualinvoke result.<org.apache.lucene.search.ComplexExplanation: void addDetail(org.apache.lucene.search.Explanation)>(fieldExpl);
+        $r14 = virtualinvoke fieldExpl.<org.apache.lucene.search.ComplexExplanation: java.lang.Boolean getMatch()>();
+        virtualinvoke result.<org.apache.lucene.search.ComplexExplanation: void setMatch(java.lang.Boolean)>($r14);
+        $f2 = virtualinvoke queryExpl.<org.apache.lucene.search.Explanation: float getValue()>();
+        $f0 = virtualinvoke fieldExpl.<org.apache.lucene.search.ComplexExplanation: float getValue()>();
+        $f2 = $f2 * $f0;
+        virtualinvoke result.<org.apache.lucene.search.ComplexExplanation: void setValue(float)>($f2);
+        $f1 = virtualinvoke queryExpl.<org.apache.lucene.search.Explanation: float getValue()>();
+        $b1 = $f1 cmpl 1.0F;
+        if $b1 != 0 goto label3;
+
+        return fieldExpl;
+
+     label3:
+        return result;
+    }
+}

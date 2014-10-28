@@ -1,0 +1,551 @@
+public class avrora.sim.InterruptTable extends java.lang.Object
+{
+    protected final int numInterrupts;
+    protected long posted;
+    protected long pending;
+    protected long enabled;
+    protected avrora.sim.util.MulticastInterruptProbe globalProbe;
+    protected final avrora.sim.util.MulticastInterruptProbe[] probes;
+    protected final avrora.sim.InterruptTable$Notification[] notify;
+    protected final avrora.sim.Interpreter interpreter;
+    protected final avrora.sim.State state;
+
+    public void <init>(avrora.sim.Interpreter, int)
+    {
+        avrora.sim.InterruptTable this;
+        avrora.sim.Interpreter interp, $r2;
+        int numInterrupts;
+        avrora.sim.util.MulticastInterruptProbe[] $r0;
+        avrora.sim.InterruptTable$Notification[] $r1;
+        avrora.sim.State $r3;
+
+        this := @this: avrora.sim.InterruptTable;
+        interp := @parameter0: avrora.sim.Interpreter;
+        numInterrupts := @parameter1: int;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.InterruptTable: avrora.sim.Interpreter interpreter> = interp;
+        $r0 = newarray (avrora.sim.util.MulticastInterruptProbe)[numInterrupts];
+        this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe[] probes> = $r0;
+        $r1 = newarray (avrora.sim.InterruptTable$Notification)[numInterrupts];
+        this.<avrora.sim.InterruptTable: avrora.sim.InterruptTable$Notification[] notify> = $r1;
+        $r2 = this.<avrora.sim.InterruptTable: avrora.sim.Interpreter interpreter>;
+        $r3 = virtualinvoke $r2.<avrora.sim.Interpreter: avrora.sim.State getState()>();
+        this.<avrora.sim.InterruptTable: avrora.sim.State state> = $r3;
+        this.<avrora.sim.InterruptTable: int numInterrupts> = numInterrupts;
+        return;
+    }
+
+    public void post(int)
+    {
+        avrora.sim.InterruptTable this;
+        int inum;
+        avrora.sim.util.MulticastInterruptProbe probe, $r2;
+        avrora.sim.Interpreter $r0;
+        long $l0, $l1, tid_post;
+        avrora.sim.util.MulticastInterruptProbe[] $r1;
+        avrora.sim.State $r3;
+        java.lang.Thread thread_post;
+
+        this := @this: avrora.sim.InterruptTable;
+        inum := @parameter0: int;
+        thread_post = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_post = virtualinvoke thread_post.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.Interpreter interpreter>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r0, 9, tid_post, "avrora.sim.InterruptTable", 90, 0);
+        $r0.<avrora.sim.Interpreter: boolean innerLoop> = 0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 80, tid_post, "avrora.sim.InterruptTable", 91, $l0);
+        $l0 = this.<avrora.sim.InterruptTable: long posted>;
+        $l0 = staticinvoke <cck.util.Arithmetic: long setBit(long,int,boolean)>($l0, inum, 1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 80, tid_post, "avrora.sim.InterruptTable", 91, $l0);
+        this.<avrora.sim.InterruptTable: long posted> = $l0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 80, tid_post, "avrora.sim.InterruptTable", 92, $l0);
+        $l0 = this.<avrora.sim.InterruptTable: long posted>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 81, tid_post, "avrora.sim.InterruptTable", 92, $l1);
+        $l1 = this.<avrora.sim.InterruptTable: long enabled>;
+        $l0 = $l0 & $l1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 82, tid_post, "avrora.sim.InterruptTable", 92, $l0);
+        this.<avrora.sim.InterruptTable: long pending> = $l0;
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe[] probes>;
+        probe = $r1[inum];
+        $r2 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        if $r2 == null goto label0;
+
+        $r2 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        $r3 = this.<avrora.sim.InterruptTable: avrora.sim.State state>;
+        virtualinvoke $r2.<avrora.sim.util.MulticastInterruptProbe: void fireWhenPosted(avrora.sim.State,int)>($r3, inum);
+
+     label0:
+        if probe == null goto label1;
+
+        $r3 = this.<avrora.sim.InterruptTable: avrora.sim.State state>;
+        virtualinvoke probe.<avrora.sim.util.MulticastInterruptProbe: void fireWhenPosted(avrora.sim.State,int)>($r3, inum);
+
+     label1:
+        return;
+    }
+
+    void force(int)
+    {
+        avrora.sim.InterruptTable this;
+        int inum;
+        avrora.sim.InterruptTable$Notification n;
+        avrora.sim.InterruptTable$Notification[] $r0;
+
+        this := @this: avrora.sim.InterruptTable;
+        inum := @parameter0: int;
+        virtualinvoke this.<avrora.sim.InterruptTable: void post(int)>(inum);
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.InterruptTable$Notification[] notify>;
+        n = $r0[inum];
+        if n == null goto label0;
+
+        interfaceinvoke n.<avrora.sim.InterruptTable$Notification: void force(int)>(inum);
+
+     label0:
+        return;
+    }
+
+    public void unpost(int)
+    {
+        avrora.sim.InterruptTable this;
+        int inum;
+        avrora.sim.util.MulticastInterruptProbe probe, $r1;
+        long $l0, $l1, tid_unpost;
+        avrora.sim.util.MulticastInterruptProbe[] $r0;
+        avrora.sim.State $r2;
+        java.lang.Thread thread_unpost;
+
+        this := @this: avrora.sim.InterruptTable;
+        inum := @parameter0: int;
+        thread_unpost = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_unpost = virtualinvoke thread_unpost.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 80, tid_unpost, "avrora.sim.InterruptTable", 117, $l0);
+        $l0 = this.<avrora.sim.InterruptTable: long posted>;
+        $l0 = staticinvoke <cck.util.Arithmetic: long setBit(long,int,boolean)>($l0, inum, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 80, tid_unpost, "avrora.sim.InterruptTable", 117, $l0);
+        this.<avrora.sim.InterruptTable: long posted> = $l0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 80, tid_unpost, "avrora.sim.InterruptTable", 118, $l0);
+        $l0 = this.<avrora.sim.InterruptTable: long posted>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 81, tid_unpost, "avrora.sim.InterruptTable", 118, $l1);
+        $l1 = this.<avrora.sim.InterruptTable: long enabled>;
+        $l0 = $l0 & $l1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 82, tid_unpost, "avrora.sim.InterruptTable", 118, $l0);
+        this.<avrora.sim.InterruptTable: long pending> = $l0;
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe[] probes>;
+        probe = $r0[inum];
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        if $r1 == null goto label0;
+
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        $r2 = this.<avrora.sim.InterruptTable: avrora.sim.State state>;
+        virtualinvoke $r1.<avrora.sim.util.MulticastInterruptProbe: void fireWhenUnposted(avrora.sim.State,int)>($r2, inum);
+
+     label0:
+        if probe == null goto label1;
+
+        $r2 = this.<avrora.sim.InterruptTable: avrora.sim.State state>;
+        virtualinvoke probe.<avrora.sim.util.MulticastInterruptProbe: void fireWhenUnposted(avrora.sim.State,int)>($r2, inum);
+
+     label1:
+        return;
+    }
+
+    void enable(int)
+    {
+        avrora.sim.InterruptTable this;
+        int inum;
+        avrora.sim.util.MulticastInterruptProbe probe, $r1;
+        long $l0, $l1, tid_enable;
+        avrora.sim.util.MulticastInterruptProbe[] $r0;
+        avrora.sim.State $r2;
+        java.lang.Thread thread_enable;
+
+        this := @this: avrora.sim.InterruptTable;
+        inum := @parameter0: int;
+        thread_enable = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_enable = virtualinvoke thread_enable.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 81, tid_enable, "avrora.sim.InterruptTable", 131, $l0);
+        $l0 = this.<avrora.sim.InterruptTable: long enabled>;
+        $l0 = staticinvoke <cck.util.Arithmetic: long setBit(long,int,boolean)>($l0, inum, 1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 81, tid_enable, "avrora.sim.InterruptTable", 131, $l0);
+        this.<avrora.sim.InterruptTable: long enabled> = $l0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 80, tid_enable, "avrora.sim.InterruptTable", 132, $l0);
+        $l0 = this.<avrora.sim.InterruptTable: long posted>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 81, tid_enable, "avrora.sim.InterruptTable", 132, $l1);
+        $l1 = this.<avrora.sim.InterruptTable: long enabled>;
+        $l0 = $l0 & $l1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 82, tid_enable, "avrora.sim.InterruptTable", 132, $l0);
+        this.<avrora.sim.InterruptTable: long pending> = $l0;
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe[] probes>;
+        probe = $r0[inum];
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        if $r1 == null goto label0;
+
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        $r2 = this.<avrora.sim.InterruptTable: avrora.sim.State state>;
+        virtualinvoke $r1.<avrora.sim.util.MulticastInterruptProbe: void fireWhenEnabled(avrora.sim.State,int)>($r2, inum);
+
+     label0:
+        if probe == null goto label1;
+
+        $r2 = this.<avrora.sim.InterruptTable: avrora.sim.State state>;
+        virtualinvoke probe.<avrora.sim.util.MulticastInterruptProbe: void fireWhenEnabled(avrora.sim.State,int)>($r2, inum);
+
+     label1:
+        return;
+    }
+
+    public void disable(int)
+    {
+        avrora.sim.InterruptTable this;
+        int inum;
+        avrora.sim.util.MulticastInterruptProbe probe, $r1;
+        long $l0, $l1, tid_disable;
+        avrora.sim.util.MulticastInterruptProbe[] $r0;
+        avrora.sim.State $r2;
+        java.lang.Thread thread_disable;
+
+        this := @this: avrora.sim.InterruptTable;
+        inum := @parameter0: int;
+        thread_disable = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_disable = virtualinvoke thread_disable.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 81, tid_disable, "avrora.sim.InterruptTable", 145, $l0);
+        $l0 = this.<avrora.sim.InterruptTable: long enabled>;
+        $l0 = staticinvoke <cck.util.Arithmetic: long setBit(long,int,boolean)>($l0, inum, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 81, tid_disable, "avrora.sim.InterruptTable", 145, $l0);
+        this.<avrora.sim.InterruptTable: long enabled> = $l0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 80, tid_disable, "avrora.sim.InterruptTable", 146, $l0);
+        $l0 = this.<avrora.sim.InterruptTable: long posted>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 81, tid_disable, "avrora.sim.InterruptTable", 146, $l1);
+        $l1 = this.<avrora.sim.InterruptTable: long enabled>;
+        $l0 = $l0 & $l1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 82, tid_disable, "avrora.sim.InterruptTable", 146, $l0);
+        this.<avrora.sim.InterruptTable: long pending> = $l0;
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe[] probes>;
+        probe = $r0[inum];
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        if $r1 == null goto label0;
+
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        $r2 = this.<avrora.sim.InterruptTable: avrora.sim.State state>;
+        virtualinvoke $r1.<avrora.sim.util.MulticastInterruptProbe: void fireWhenDisabled(avrora.sim.State,int)>($r2, inum);
+
+     label0:
+        if probe == null goto label1;
+
+        $r2 = this.<avrora.sim.InterruptTable: avrora.sim.State state>;
+        virtualinvoke probe.<avrora.sim.util.MulticastInterruptProbe: void fireWhenDisabled(avrora.sim.State,int)>($r2, inum);
+
+     label1:
+        return;
+    }
+
+    public void enableAll()
+    {
+        avrora.sim.InterruptTable this;
+        avrora.sim.util.MulticastInterruptProbe $r0;
+        avrora.sim.State $r1;
+
+        this := @this: avrora.sim.InterruptTable;
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.State state>;
+        virtualinvoke $r0.<avrora.sim.util.MulticastInterruptProbe: void fireWhenEnabled(avrora.sim.State,int)>($r1, 0);
+
+     label0:
+        return;
+    }
+
+    public void disableAll()
+    {
+        avrora.sim.InterruptTable this;
+        avrora.sim.util.MulticastInterruptProbe $r0;
+        avrora.sim.State $r1;
+
+        this := @this: avrora.sim.InterruptTable;
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.State state>;
+        virtualinvoke $r0.<avrora.sim.util.MulticastInterruptProbe: void fireWhenDisabled(avrora.sim.State,int)>($r1, 0);
+
+     label0:
+        return;
+    }
+
+    public void beforeInvoke(int)
+    {
+        avrora.sim.InterruptTable this;
+        int inum;
+        avrora.sim.util.MulticastInterruptProbe probe, $r1;
+        avrora.sim.InterruptTable$Notification n;
+        avrora.sim.util.MulticastInterruptProbe[] $r0;
+        avrora.sim.State $r2;
+        avrora.sim.InterruptTable$Notification[] $r3;
+
+        this := @this: avrora.sim.InterruptTable;
+        inum := @parameter0: int;
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe[] probes>;
+        probe = $r0[inum];
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        if $r1 == null goto label0;
+
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        $r2 = this.<avrora.sim.InterruptTable: avrora.sim.State state>;
+        virtualinvoke $r1.<avrora.sim.util.MulticastInterruptProbe: void fireBeforeInvoke(avrora.sim.State,int)>($r2, inum);
+
+     label0:
+        if probe == null goto label1;
+
+        $r2 = this.<avrora.sim.InterruptTable: avrora.sim.State state>;
+        virtualinvoke probe.<avrora.sim.util.MulticastInterruptProbe: void fireBeforeInvoke(avrora.sim.State,int)>($r2, inum);
+
+     label1:
+        $r3 = this.<avrora.sim.InterruptTable: avrora.sim.InterruptTable$Notification[] notify>;
+        n = $r3[inum];
+        if n == null goto label2;
+
+        interfaceinvoke n.<avrora.sim.InterruptTable$Notification: void invoke(int)>(inum);
+
+     label2:
+        return;
+    }
+
+    public void afterInvoke(int)
+    {
+        avrora.sim.InterruptTable this;
+        int inum;
+        avrora.sim.util.MulticastInterruptProbe probe, $r1;
+        avrora.sim.util.MulticastInterruptProbe[] $r0;
+        avrora.sim.State $r2;
+
+        this := @this: avrora.sim.InterruptTable;
+        inum := @parameter0: int;
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe[] probes>;
+        probe = $r0[inum];
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        if $r1 == null goto label0;
+
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        $r2 = this.<avrora.sim.InterruptTable: avrora.sim.State state>;
+        virtualinvoke $r1.<avrora.sim.util.MulticastInterruptProbe: void fireAfterInvoke(avrora.sim.State,int)>($r2, inum);
+
+     label0:
+        if probe == null goto label1;
+
+        $r2 = this.<avrora.sim.InterruptTable: avrora.sim.State state>;
+        virtualinvoke probe.<avrora.sim.util.MulticastInterruptProbe: void fireAfterInvoke(avrora.sim.State,int)>($r2, inum);
+
+     label1:
+        return;
+    }
+
+    public void registerInternalNotification(avrora.sim.InterruptTable$Notification, int)
+    {
+        avrora.sim.InterruptTable this;
+        avrora.sim.InterruptTable$Notification n;
+        int inum;
+        avrora.sim.InterruptTable$Notification[] $r0;
+
+        this := @this: avrora.sim.InterruptTable;
+        n := @parameter0: avrora.sim.InterruptTable$Notification;
+        inum := @parameter1: int;
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.InterruptTable$Notification[] notify>;
+        $r0[inum] = n;
+        return;
+    }
+
+    public long getPostedInterrupts()
+    {
+        avrora.sim.InterruptTable this;
+        long $l0, tid_getPostedInterrupts;
+        java.lang.Thread thread_getPostedInterrupts;
+
+        this := @this: avrora.sim.InterruptTable;
+        thread_getPostedInterrupts = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getPostedInterrupts = virtualinvoke thread_getPostedInterrupts.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 80, tid_getPostedInterrupts, "avrora.sim.InterruptTable", 209, $l0);
+        $l0 = this.<avrora.sim.InterruptTable: long posted>;
+        return $l0;
+    }
+
+    public long getPendingInterrupts()
+    {
+        avrora.sim.InterruptTable this;
+        long $l0, tid_getPendingInterrupts;
+        java.lang.Thread thread_getPendingInterrupts;
+
+        this := @this: avrora.sim.InterruptTable;
+        thread_getPendingInterrupts = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getPendingInterrupts = virtualinvoke thread_getPendingInterrupts.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 82, tid_getPendingInterrupts, "avrora.sim.InterruptTable", 220, $l0);
+        $l0 = this.<avrora.sim.InterruptTable: long pending>;
+        return $l0;
+    }
+
+    public long getEnabledInterrupts()
+    {
+        avrora.sim.InterruptTable this;
+        long $l0, tid_getEnabledInterrupts;
+        java.lang.Thread thread_getEnabledInterrupts;
+
+        this := @this: avrora.sim.InterruptTable;
+        thread_getEnabledInterrupts = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getEnabledInterrupts = virtualinvoke thread_getEnabledInterrupts.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 81, tid_getEnabledInterrupts, "avrora.sim.InterruptTable", 231, $l0);
+        $l0 = this.<avrora.sim.InterruptTable: long enabled>;
+        return $l0;
+    }
+
+    public boolean isPosted(int)
+    {
+        avrora.sim.InterruptTable this;
+        int inum;
+        long $l0, tid_isPosted;
+        boolean $z0;
+        java.lang.Thread thread_isPosted;
+
+        this := @this: avrora.sim.InterruptTable;
+        inum := @parameter0: int;
+        thread_isPosted = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_isPosted = virtualinvoke thread_isPosted.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 80, tid_isPosted, "avrora.sim.InterruptTable", 240, $l0);
+        $l0 = this.<avrora.sim.InterruptTable: long posted>;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(long,int)>($l0, inum);
+        return $z0;
+    }
+
+    public boolean isPending(int)
+    {
+        avrora.sim.InterruptTable this;
+        int inum;
+        long $l0, tid_isPending;
+        boolean $z0;
+        java.lang.Thread thread_isPending;
+
+        this := @this: avrora.sim.InterruptTable;
+        inum := @parameter0: int;
+        thread_isPending = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_isPending = virtualinvoke thread_isPending.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 82, tid_isPending, "avrora.sim.InterruptTable", 249, $l0);
+        $l0 = this.<avrora.sim.InterruptTable: long pending>;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(long,int)>($l0, inum);
+        return $z0;
+    }
+
+    public boolean isEnabled(int)
+    {
+        avrora.sim.InterruptTable this;
+        int inum;
+        long $l0, tid_isEnabled;
+        boolean $z0;
+        java.lang.Thread thread_isEnabled;
+
+        this := @this: avrora.sim.InterruptTable;
+        inum := @parameter0: int;
+        thread_isEnabled = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_isEnabled = virtualinvoke thread_isEnabled.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 81, tid_isEnabled, "avrora.sim.InterruptTable", 258, $l0);
+        $l0 = this.<avrora.sim.InterruptTable: long enabled>;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(long,int)>($l0, inum);
+        return $z0;
+    }
+
+    public void insertProbe(avrora.sim.Simulator$InterruptProbe, int)
+    {
+        avrora.sim.InterruptTable this;
+        avrora.sim.Simulator$InterruptProbe p;
+        int inum;
+        avrora.sim.util.MulticastInterruptProbe mp, $r0;
+        avrora.sim.util.MulticastInterruptProbe[] $r1;
+
+        this := @this: avrora.sim.InterruptTable;
+        p := @parameter0: avrora.sim.Simulator$InterruptProbe;
+        inum := @parameter1: int;
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe[] probes>;
+        mp = $r1[inum];
+        if mp != null goto label0;
+
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe[] probes>;
+        $r0 = new avrora.sim.util.MulticastInterruptProbe;
+        specialinvoke $r0.<avrora.sim.util.MulticastInterruptProbe: void <init>()>();
+        mp = $r0;
+        $r1[inum] = $r0;
+
+     label0:
+        virtualinvoke mp.<avrora.sim.util.MulticastInterruptProbe: void add(java.lang.Object)>(p);
+        return;
+    }
+
+    public void removeProbe(avrora.sim.Simulator$InterruptProbe, int)
+    {
+        avrora.sim.InterruptTable this;
+        avrora.sim.Simulator$InterruptProbe p;
+        int inum;
+        avrora.sim.util.MulticastInterruptProbe mp;
+        avrora.sim.util.MulticastInterruptProbe[] $r0;
+
+        this := @this: avrora.sim.InterruptTable;
+        p := @parameter0: avrora.sim.Simulator$InterruptProbe;
+        inum := @parameter1: int;
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe[] probes>;
+        mp = $r0[inum];
+        if mp == null goto label0;
+
+        virtualinvoke mp.<avrora.sim.util.MulticastInterruptProbe: void remove(java.lang.Object)>(p);
+
+     label0:
+        return;
+    }
+
+    public void insertProbe(avrora.sim.Simulator$InterruptProbe)
+    {
+        avrora.sim.InterruptTable this;
+        avrora.sim.Simulator$InterruptProbe p;
+        avrora.sim.util.MulticastInterruptProbe $r0, $r1;
+
+        this := @this: avrora.sim.InterruptTable;
+        p := @parameter0: avrora.sim.Simulator$InterruptProbe;
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        if $r1 != null goto label0;
+
+        $r0 = new avrora.sim.util.MulticastInterruptProbe;
+        specialinvoke $r0.<avrora.sim.util.MulticastInterruptProbe: void <init>()>();
+        this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe> = $r0;
+
+     label0:
+        $r1 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        virtualinvoke $r1.<avrora.sim.util.MulticastInterruptProbe: void add(java.lang.Object)>(p);
+        return;
+    }
+
+    public void removeProbe(avrora.sim.Simulator$InterruptProbe)
+    {
+        avrora.sim.InterruptTable this;
+        avrora.sim.Simulator$InterruptProbe p;
+        avrora.sim.util.MulticastInterruptProbe $r0;
+
+        this := @this: avrora.sim.InterruptTable;
+        p := @parameter0: avrora.sim.Simulator$InterruptProbe;
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<avrora.sim.InterruptTable: avrora.sim.util.MulticastInterruptProbe globalProbe>;
+        virtualinvoke $r0.<avrora.sim.util.MulticastInterruptProbe: void remove(java.lang.Object)>(p);
+
+     label0:
+        return;
+    }
+
+    public int getNumberOfInterrupts()
+    {
+        avrora.sim.InterruptTable this;
+        int $i0;
+
+        this := @this: avrora.sim.InterruptTable;
+        $i0 = this.<avrora.sim.InterruptTable: int numInterrupts>;
+        return $i0;
+    }
+}

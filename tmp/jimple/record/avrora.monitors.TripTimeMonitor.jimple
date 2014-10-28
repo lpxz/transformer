@@ -1,0 +1,41 @@
+public class avrora.monitors.TripTimeMonitor extends avrora.monitors.MonitorFactory
+{
+    final cck.util.Option$List PAIRS;
+    final cck.util.Option$List FROM;
+    final cck.util.Option$List TO;
+    final cck.util.Option$Bool DISTRIBUTION;
+
+    public void <init>()
+    {
+        avrora.monitors.TripTimeMonitor this;
+        cck.util.Option$List $r0;
+        cck.util.Option$Bool $r1;
+
+        this := @this: avrora.monitors.TripTimeMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"trip-time\" monitor records profiling information about the program that consists of the time it takes (on average) to reach one point from another point in the program.");
+        $r0 = virtualinvoke this.<avrora.monitors.TripTimeMonitor: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("pairs", "", "The \"pairs\" option specifies the list of program point pairs for which to measure the point-to-point trip time. ");
+        this.<avrora.monitors.TripTimeMonitor: cck.util.Option$List PAIRS> = $r0;
+        $r0 = virtualinvoke this.<avrora.monitors.TripTimeMonitor: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("from", "", "The \"from\" option specifies the list of program points for which to measure to every other instruction in the program. ");
+        this.<avrora.monitors.TripTimeMonitor: cck.util.Option$List FROM> = $r0;
+        $r0 = virtualinvoke this.<avrora.monitors.TripTimeMonitor: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("to", "", "The \"from\" option specifies the list of program points for which to measure from every other instruction in the program. ");
+        this.<avrora.monitors.TripTimeMonitor: cck.util.Option$List TO> = $r0;
+        $r1 = virtualinvoke this.<avrora.monitors.TripTimeMonitor: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("distribution", 0, "This option, when specified, causes the trip time monitor to print a complete distribution of the trip times for each pair of program points. WARNING: this option can consume large amounts of memory and generate a large amount of output.");
+        this.<avrora.monitors.TripTimeMonitor: cck.util.Option$Bool DISTRIBUTION> = $r1;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.TripTimeMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.TripTimeMonitor$PointToPointMon tmp$547607538;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.TripTimeMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$547607538 = new avrora.monitors.TripTimeMonitor$PointToPointMon;
+        specialinvoke tmp$547607538.<avrora.monitors.TripTimeMonitor$PointToPointMon: void <init>(avrora.monitors.TripTimeMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$547607538;
+        return tmp;
+    }
+}

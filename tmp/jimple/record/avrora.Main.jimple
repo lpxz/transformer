@@ -1,0 +1,597 @@
+public class avrora.Main extends java.lang.Object
+{
+    static final cck.util.Options mainOptions;
+    public static final cck.util.Option$Str INPUT;
+    public static final cck.util.Option$Str ACTION;
+    public static final cck.util.Option$Bool COLORS;
+    public static final cck.util.Option$Bool BANNER;
+    public static final cck.util.Option$Bool STATUS;
+    public static final cck.util.Option$Bool STATUS_TIMING;
+    public static final cck.util.Option$List VERBOSE;
+    public static final cck.util.Option$Bool HELP;
+    public static final cck.util.Option$Bool LICENSE;
+    public static final cck.util.Option$Bool HTML;
+    public static final cck.util.Option$Str CONFIGFILE;
+
+    public void <init>()
+    {
+        avrora.Main this;
+
+        this := @this: avrora.Main;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public static void main(java.lang.String[])
+    {
+        java.lang.String[] args, $r4;
+        cck.util.Util$Error e, $r5;
+        cck.util.Option$Str $r0;
+        boolean $z0;
+        java.lang.String $r1;
+        int $i0;
+        cck.util.Option$Bool $r2;
+        cck.util.Options $r3;
+        java.lang.Exception $r6, e;
+        long tid_main;
+        java.lang.Thread thread_main;
+
+        args := @parameter0: java.lang.String[];
+        thread_main = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_main = virtualinvoke thread_main.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStartRun(long,java.lang.String,java.lang.String[])>(tid_main, "avrora.Main.main", args);
+
+     label0:
+        staticinvoke <avrora.Main: void loadUserDefaults()>();
+        staticinvoke <avrora.Main: void parseOptions(java.lang.String[])>(args);
+        $r0 = <avrora.Main: cck.util.Option$Str CONFIGFILE>;
+        $z0 = virtualinvoke $r0.<cck.util.Option$Str: boolean isBlank()>();
+        if $z0 != 0 goto label1;
+
+        $r0 = <avrora.Main: cck.util.Option$Str CONFIGFILE>;
+        $r1 = virtualinvoke $r0.<cck.util.Option$Str: java.lang.String get()>();
+        staticinvoke <avrora.Main: void loadFile(java.lang.String)>($r1);
+        staticinvoke <avrora.Main: void parseOptions(java.lang.String[])>(args);
+
+     label1:
+        $i0 = lengthof args;
+        if $i0 == 0 goto label2;
+
+        $r2 = <avrora.Main: cck.util.Option$Bool HELP>;
+        $z0 = virtualinvoke $r2.<cck.util.Option$Bool: boolean get()>();
+        if $z0 == 0 goto label3;
+
+     label2:
+        $r3 = <avrora.Main: cck.util.Options mainOptions>;
+        $r4 = virtualinvoke $r3.<cck.util.Options: java.lang.String[] getArguments()>();
+        staticinvoke <avrora.Main: void printHelp(java.lang.String[])>($r4);
+        goto label4;
+
+     label3:
+        staticinvoke <avrora.Main: void runAction()>();
+
+     label4:
+        goto label7;
+
+     label5:
+        $r5 := @caughtexception;
+        e = $r5;
+        virtualinvoke e.<cck.util.Util$Error: void report()>();
+        goto label7;
+
+     label6:
+        $r6 := @caughtexception;
+        e = $r6;
+        virtualinvoke e.<java.lang.Exception: void printStackTrace()>();
+
+     label7:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "avrora.Main.main", args);
+        return;
+
+        catch cck.util.Util$Error from label0 to label4 with label5;
+        catch java.lang.Exception from label0 to label4 with label6;
+    }
+
+    private static void runAction() throws java.lang.Exception
+    {
+        cck.util.Option$Str $r0, $r1;
+        avrora.actions.Action a;
+        java.lang.String $r2, $r3;
+        cck.util.Options $r4, $r5;
+        java.lang.String[] $r6;
+
+        nop;
+        staticinvoke <avrora.Main: void banner()>();
+        $r0 = <avrora.Main: cck.util.Option$Str ACTION>;
+        $r2 = virtualinvoke $r0.<cck.util.Option$Str: java.lang.String get()>();
+        a = staticinvoke <avrora.Defaults: avrora.actions.Action getAction(java.lang.String)>($r2);
+        if a != null goto label0;
+
+        $r1 = <avrora.Main: cck.util.Option$Str ACTION>;
+        $r3 = virtualinvoke $r1.<cck.util.Option$Str: java.lang.String get()>();
+        $r3 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>($r3);
+        staticinvoke <cck.util.Util: void userError(java.lang.String,java.lang.String)>("Unknown Action", $r3);
+
+     label0:
+        $r4 = a.<avrora.actions.Action: cck.util.Options options>;
+        $r5 = <avrora.Main: cck.util.Options mainOptions>;
+        virtualinvoke $r4.<cck.util.Options: void process(cck.util.Options)>($r5);
+        $r5 = <avrora.Main: cck.util.Options mainOptions>;
+        $r6 = virtualinvoke $r5.<cck.util.Options: java.lang.String[] getArguments()>();
+        virtualinvoke a.<avrora.actions.Action: void run(java.lang.String[])>($r6);
+        return;
+    }
+
+    private static void loadUserDefaults() throws java.io.IOException
+    {
+        java.lang.String hdir, $r1, $r3;
+        java.lang.StringBuilder $r0;
+        java.io.File f, $r2;
+        java.util.Properties defs, $r4;
+        boolean $z0;
+        java.io.FileInputStream $r5;
+        cck.util.Options $r6;
+
+        nop;
+        hdir = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("user.home");
+        if hdir == null goto label0;
+
+        $r1 = "";
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>(hdir);
+        if $z0 == 0 goto label1;
+
+     label0:
+        return;
+
+     label1:
+        $r2 = new java.io.File;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(hdir);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/.avrora");
+        $r3 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke $r2.<java.io.File: void <init>(java.lang.String)>($r3);
+        f = $r2;
+        $z0 = virtualinvoke f.<java.io.File: boolean exists()>();
+        if $z0 == 0 goto label2;
+
+        $r4 = new java.util.Properties;
+        specialinvoke $r4.<java.util.Properties: void <init>()>();
+        defs = $r4;
+        $r5 = new java.io.FileInputStream;
+        specialinvoke $r5.<java.io.FileInputStream: void <init>(java.io.File)>(f);
+        virtualinvoke defs.<java.util.Properties: void load(java.io.InputStream)>($r5);
+        $r6 = <avrora.Main: cck.util.Options mainOptions>;
+        virtualinvoke $r6.<cck.util.Options: void process(java.util.Properties)>(defs);
+
+     label2:
+        return;
+    }
+
+    private static void loadFile(java.lang.String) throws java.io.IOException
+    {
+        java.lang.String fname;
+        java.io.File f, $r0;
+        java.util.Properties defs, $r1;
+        java.io.FileInputStream $r2;
+        cck.util.Options $r3;
+
+        fname := @parameter0: java.lang.String;
+        staticinvoke <avrora.Main: void checkFileExists(java.lang.String)>(fname);
+        $r0 = new java.io.File;
+        specialinvoke $r0.<java.io.File: void <init>(java.lang.String)>(fname);
+        f = $r0;
+        $r1 = new java.util.Properties;
+        specialinvoke $r1.<java.util.Properties: void <init>()>();
+        defs = $r1;
+        $r2 = new java.io.FileInputStream;
+        specialinvoke $r2.<java.io.FileInputStream: void <init>(java.io.File)>(f);
+        virtualinvoke defs.<java.util.Properties: void load(java.io.InputStream)>($r2);
+        $r3 = <avrora.Main: cck.util.Options mainOptions>;
+        virtualinvoke $r3.<cck.util.Options: void process(java.util.Properties)>(defs);
+        return;
+    }
+
+    static cck.help.HelpCategory buildHelpCategory()
+    {
+        cck.help.HelpCategory $r0, hc;
+        cck.util.Options $r1;
+        java.util.List $r2;
+
+        nop;
+        $r0 = new cck.help.HelpCategory;
+        specialinvoke $r0.<cck.help.HelpCategory: void <init>(java.lang.String,java.lang.String)>("main", "");
+        hc = $r0;
+        virtualinvoke hc.<cck.help.HelpCategory: void addSection(java.lang.String,java.lang.String)>("OVERVIEW", "Avrora is a tool for working with assembly language programs for the AVR architecture microcontrollers and building simulations of hardward devices based on this microcontroller.It contains tools to read AVR programs in multiple formats, perform actions on them, and generate output in multiple formats.\nTypical usage is to specify a list of files that contain a program in some format supported by Avrora and then specifying the action to perform on that program. For example, giving the name of a file that contains a program written in assembly language and a simulate action might look like: \n\navrora -action=simulate -input=atmel program.asm \n\nOther actions that are available include generating a control flow graph of the program or running one of the analysis tools on the program. See the actions section for more information.");
+        $r1 = <avrora.Main: cck.util.Options mainOptions>;
+        virtualinvoke hc.<cck.help.HelpCategory: void addOptionSection(java.lang.String,cck.util.Options)>("The main options to Avrora specify the action to be performed as well as the input format and any general configuration parameters for Avrora. The available main options are listed below along with their types and default values. Each action also has its own set of options. To access help for the options related to an action, specify the name of the action along with the \"help\" option.", $r1);
+        $r2 = staticinvoke <avrora.Defaults: java.util.List getMainCategories()>();
+        virtualinvoke hc.<cck.help.HelpCategory: void addSubcategorySection(java.lang.String,java.lang.String,java.util.List)>("ADDITIONAL HELP CATEGORIES", "Additional help is available on a category by category basis. Below is a list of the additional categories available to provide help with actions, input formats, monitors, and more. To access help for a specific category, specify the \"-help\" option followed by the name of category.", $r2);
+        return hc;
+    }
+
+    static void printHelp(java.lang.String[])
+    {
+        java.lang.String[] args;
+        int $i0;
+        cck.help.HelpCategory $r0;
+        java.lang.String $r1;
+        long tid_printHelp;
+        java.lang.Thread thread_printHelp;
+
+        args := @parameter0: java.lang.String[];
+        thread_printHelp = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_printHelp = virtualinvoke thread_printHelp.<java.lang.Thread: long getId()>();
+        staticinvoke <avrora.Main: void title()>();
+        staticinvoke <avrora.Main: void printUsage()>();
+        staticinvoke <avrora.Main: void buildAllCategories()>();
+        $i0 = lengthof args;
+        if $i0 != 0 goto label0;
+
+        $r0 = staticinvoke <avrora.Main: cck.help.HelpCategory buildHelpCategory()>();
+        virtualinvoke $r0.<cck.help.HelpCategory: void printHelp()>();
+        goto label2;
+
+     label0:
+        $i0 = lengthof args;
+        if $i0 != 1 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 18, tid_printHelp, "avrora.Main", 202, 0, $r1);
+        $r1 = args[0];
+        staticinvoke <avrora.Main: void printHelp(java.lang.String)>($r1);
+        goto label2;
+
+     label1:
+        staticinvoke <cck.util.Util: void userError(java.lang.String)>("help available for only one category at a time.");
+
+     label2:
+        staticinvoke <avrora.Main: void printFooter()>();
+        return;
+    }
+
+    private static void buildAllCategories()
+    {
+        cck.help.HelpCategory $r0, hc;
+        java.util.List $r1;
+
+        nop;
+        $r0 = new cck.help.HelpCategory;
+        specialinvoke $r0.<cck.help.HelpCategory: void <init>(java.lang.String,java.lang.String)>("all", "Print a list of all categories for which help is available.");
+        hc = $r0;
+        virtualinvoke hc.<cck.help.HelpCategory: void addSection(java.lang.String,java.lang.String)>("OVERVIEW", "Avrora provides help in many categories that are all accessible from the command line.");
+        $r1 = staticinvoke <avrora.Defaults: java.util.List getAllCategories()>();
+        virtualinvoke hc.<cck.help.HelpCategory: void addSubcategorySection(java.lang.String,java.lang.String,java.util.List)>("ALL HELP CATEGORIES", "Below is a listing of all the help categories available.", $r1);
+        staticinvoke <avrora.Defaults: void addMainCategory(cck.help.HelpCategory)>(hc);
+        return;
+    }
+
+    private static void printUsage()
+    {
+        int[] colors, colors2, $r0;
+        java.lang.String[] strs, strs2, $r1;
+        long tid_printUsage;
+        java.lang.Thread thread_printUsage;
+
+        thread_printUsage = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_printUsage = virtualinvoke thread_printUsage.<java.lang.Thread: long getId()>();
+        nop;
+        $r0 = newarray (int)[12];
+        $r0[0] = 1;
+        $r0[1] = -1;
+        $r0[2] = 2;
+        $r0[3] = -1;
+        $r0[4] = 2;
+        $r0[5] = -1;
+        $r0[6] = 11;
+        $r0[7] = -1;
+        $r0[8] = 11;
+        $r0[9] = -1;
+        $r0[10] = 11;
+        $r0[11] = -1;
+        colors = $r0;
+        $r1 = newarray (java.lang.String)[11];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 233, 0, "Usage");
+        $r1[0] = "Usage";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 233, 1, ": ");
+        $r1[1] = ": ";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 233, 2, "avrora");
+        $r1[2] = "avrora";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 233, 3, " [");
+        $r1[3] = " [";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 233, 4, "-action");
+        $r1[4] = "-action";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 233, 5, "=");
+        $r1[5] = "=";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 233, 6, "action");
+        $r1[6] = "action";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 233, 7, "] [");
+        $r1[7] = "] [";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 233, 8, "options");
+        $r1[8] = "options";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 233, 9, "] ");
+        $r1[9] = "] ";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 233, 10, "<files>");
+        $r1[10] = "<files>";
+        strs = $r1;
+        staticinvoke <cck.text.Terminal: void print(int[],java.lang.String[])>(colors, strs);
+        staticinvoke <cck.text.Terminal: void nextln()>();
+        $r0 = newarray (int)[6];
+        $r0[0] = 1;
+        $r0[1] = -1;
+        $r0[2] = 2;
+        $r0[3] = -1;
+        $r0[4] = 11;
+        $r0[5] = -1;
+        colors2 = $r0;
+        $r1 = newarray (java.lang.String)[6];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 244, 0, "Usage");
+        $r1[0] = "Usage";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 244, 1, ": ");
+        $r1[1] = ": ";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 244, 2, "avrora -help");
+        $r1[2] = "avrora -help";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 244, 3, " [");
+        $r1[3] = " [";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 244, 4, "category");
+        $r1[4] = "category";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printUsage, "avrora.Main", 244, 5, "]");
+        $r1[5] = "]";
+        strs2 = $r1;
+        staticinvoke <cck.text.Terminal: void print(int[],java.lang.String[])>(colors2, strs2);
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>("\n");
+        return;
+    }
+
+    private static void printFooter()
+    {
+        cck.util.VersionTag $r0;
+        java.lang.String $r1;
+
+        nop;
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>("For more information, see the online documentation at ");
+        staticinvoke <cck.text.Terminal: void printCyan(java.lang.String)>("http://compilers.cs.ucla.edu/avrora");
+        staticinvoke <cck.text.Terminal: void nextln()>();
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>("To report bugs or seek help, consult the Avrora mailing list: ");
+        staticinvoke <cck.text.Terminal: void printCyan(java.lang.String)>("http://lists.ucla.edu/cgi-bin/mailman/listinfo/avrora");
+        staticinvoke <cck.text.Terminal: void nextln()>();
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>("Please include the version number [");
+        $r0 = <avrora.Version: cck.util.VersionTag TAG>;
+        $r1 = virtualinvoke $r0.<cck.util.VersionTag: java.lang.String toString()>();
+        staticinvoke <cck.text.Terminal: void printBrightBlue(java.lang.String)>($r1);
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>("] when posting to the list.");
+        staticinvoke <cck.text.Terminal: void nextln()>();
+        return;
+    }
+
+    private static void printHelp(java.lang.String)
+    {
+        java.lang.String a;
+        cck.help.HelpCategory hc;
+
+        a := @parameter0: java.lang.String;
+        hc = staticinvoke <avrora.Defaults: cck.help.HelpCategory getHelpCategory(java.lang.String)>(a);
+        virtualinvoke hc.<cck.help.HelpCategory: void printHelp()>();
+        return;
+    }
+
+    static void banner()
+    {
+        cck.util.Option$Bool $r0;
+        java.lang.String notice, $r1;
+        boolean $z0;
+
+        nop;
+        $r0 = <avrora.Main: cck.util.Option$Bool BANNER>;
+        $z0 = virtualinvoke $r0.<cck.util.Option$Bool: boolean get()>();
+        if $z0 != 0 goto label0;
+
+        return;
+
+     label0:
+        staticinvoke <avrora.Main: void title()>();
+        $r0 = <avrora.Main: cck.util.Option$Bool LICENSE>;
+        $z0 = virtualinvoke $r0.<cck.util.Option$Bool: boolean get()>();
+        if $z0 == 0 goto label1;
+
+        notice = "Copyright (c) 2003-2007, Regents of the University of California \nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:\n\nRedistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.\n\nRedistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.\n\nNeither the name of the University of California, Los Angeles nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n\n";
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String formatParagraphs(java.lang.String,int,int,int)>(notice, 0, 0, 78);
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>($r1);
+
+     label1:
+        return;
+    }
+
+    static void title()
+    {
+        cck.util.VersionTag $r0;
+        java.lang.String $r1;
+
+        nop;
+        staticinvoke <cck.text.Terminal: void printBrightBlue(java.lang.String)>("Avrora ");
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>("[");
+        $r0 = <avrora.Version: cck.util.VersionTag TAG>;
+        $r1 = virtualinvoke $r0.<cck.util.VersionTag: java.lang.String toString()>();
+        staticinvoke <cck.text.Terminal: void printBrightBlue(java.lang.String)>($r1);
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>("]");
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>(" - (c) 2003-2007 UCLA Compilers Group\n\n");
+        return;
+    }
+
+    public static void parseOptions(java.lang.String[])
+    {
+        java.lang.String[] args;
+        cck.util.Options $r0;
+        java.util.List verbose;
+        java.util.Iterator i;
+        cck.util.Option$Bool $r1;
+        boolean $z0;
+        cck.util.Option$List $r2;
+        java.lang.Object $r3;
+        java.lang.String $r4;
+        long tid_parseOptions;
+        java.lang.Thread thread_parseOptions;
+
+        args := @parameter0: java.lang.String[];
+        thread_parseOptions = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_parseOptions = virtualinvoke thread_parseOptions.<java.lang.Thread: long getId()>();
+        $r0 = <avrora.Main: cck.util.Options mainOptions>;
+        virtualinvoke $r0.<cck.util.Options: void parseCommandLine(java.lang.String[])>(args);
+        $r1 = <avrora.Main: cck.util.Option$Bool COLORS>;
+        $z0 = virtualinvoke $r1.<cck.util.Option$Bool: boolean get()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,boolean)>(182, tid_parseOptions, "avroraavrora.Main", 324, $z0);
+        <cck.text.Terminal: boolean useColors> = $z0;
+        $r1 = <avrora.Main: cck.util.Option$Bool HTML>;
+        $z0 = virtualinvoke $r1.<cck.util.Option$Bool: boolean get()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,boolean)>(183, tid_parseOptions, "avroraavrora.Main", 325, $z0);
+        <cck.text.Terminal: boolean htmlColors> = $z0;
+        $r1 = <avrora.Main: cck.util.Option$Bool STATUS>;
+        $z0 = virtualinvoke $r1.<cck.util.Option$Bool: boolean get()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,boolean)>(198, tid_parseOptions, "avroraavrora.Main", 326, $z0);
+        <cck.text.Status: boolean ENABLED> = $z0;
+        $r1 = <avrora.Main: cck.util.Option$Bool STATUS_TIMING>;
+        $z0 = virtualinvoke $r1.<cck.util.Option$Bool: boolean get()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,boolean)>(199, tid_parseOptions, "avroraavrora.Main", 327, $z0);
+        <cck.text.Status: boolean TIMING> = $z0;
+        $r2 = <avrora.Main: cck.util.Option$List VERBOSE>;
+        verbose = virtualinvoke $r2.<cck.util.Option$List: java.util.List get()>();
+        i = interfaceinvoke verbose.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r3 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        $r4 = (java.lang.String) $r3;
+        staticinvoke <cck.text.Verbose: void setVerbose(java.lang.String,boolean)>($r4, 1);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    public static avrora.core.Program loadProgram(java.lang.String[]) throws java.lang.Exception
+    {
+        java.lang.String[] args;
+        java.lang.StringBuilder $r0;
+        avrora.core.ProgramReader reader;
+        avrora.core.Program program;
+        java.lang.String $r1, $r2;
+        cck.util.Option$Str $r3;
+        cck.util.Options $r4, $r5;
+        long tid_loadProgram;
+        java.lang.Thread thread_loadProgram;
+
+        args := @parameter0: java.lang.String[];
+        thread_loadProgram = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_loadProgram = virtualinvoke thread_loadProgram.<java.lang.Thread: long getId()>();
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Loading ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 18, tid_loadProgram, "avrora.Main", 346, 0, $r1);
+        $r1 = args[0];
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.text.Status: void begin(java.lang.String)>($r2);
+        $r3 = <avrora.Main: cck.util.Option$Str INPUT>;
+        $r2 = virtualinvoke $r3.<cck.util.Option$Str: java.lang.String get()>();
+        reader = staticinvoke <avrora.Defaults: avrora.core.ProgramReader getProgramReader(java.lang.String)>($r2);
+        $r4 = reader.<avrora.core.ProgramReader: cck.util.Options options>;
+        $r5 = <avrora.Main: cck.util.Options mainOptions>;
+        virtualinvoke $r4.<cck.util.Options: void process(cck.util.Options)>($r5);
+        program = virtualinvoke reader.<avrora.core.ProgramReader: avrora.core.Program read(java.lang.String[])>(args);
+        staticinvoke <cck.text.Status: void success()>();
+        return program;
+    }
+
+    public static void checkFilesExist(java.lang.String[])
+    {
+        java.lang.String[] files;
+        int cntr, $i0;
+        java.lang.String $r0;
+        long tid_checkFilesExist;
+        java.lang.Thread thread_checkFilesExist;
+
+        files := @parameter0: java.lang.String[];
+        thread_checkFilesExist = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_checkFilesExist = virtualinvoke thread_checkFilesExist.<java.lang.Thread: long getId()>();
+        cntr = 0;
+
+     label0:
+        $i0 = lengthof files;
+        if cntr >= $i0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(files, 18, tid_checkFilesExist, "avrora.Main", 356, cntr, $r0);
+        $r0 = files[cntr];
+        staticinvoke <avrora.Main: void checkFileExists(java.lang.String)>($r0);
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    public static void checkFileExists(java.lang.String)
+    {
+        java.lang.String fstr;
+        java.io.File $r0, f;
+        boolean $z0;
+
+        fstr := @parameter0: java.lang.String;
+        $r0 = new java.io.File;
+        specialinvoke $r0.<java.io.File: void <init>(java.lang.String)>(fstr);
+        f = $r0;
+        $z0 = virtualinvoke f.<java.io.File: boolean exists()>();
+        if $z0 != 0 goto label0;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String,java.lang.String)>("File not found", fstr);
+
+     label0:
+        return;
+    }
+
+    static void <clinit>()
+    {
+        cck.util.Options $r0;
+        cck.util.Option$Str $r1;
+        cck.util.Option$Bool $r2;
+        cck.util.Option$List $r3;
+
+        $r0 = new cck.util.Options;
+        specialinvoke $r0.<cck.util.Options: void <init>()>();
+        <avrora.Main: cck.util.Options mainOptions> = $r0;
+        $r0 = <avrora.Main: cck.util.Options mainOptions>;
+        $r1 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("input", "auto", "This option selects among the available program formats as input to Avrora. For example, the default input format, \"atmel\" selects the assembly language format supported by Atmel\'s assembler.");
+        <avrora.Main: cck.util.Option$Str INPUT> = $r1;
+        $r0 = <avrora.Main: cck.util.Options mainOptions>;
+        $r1 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("action", "simulate", "This option selects the action to perform. For example, an action might be to load a program into the simulator and run it. For more information, see the section on actions.");
+        <avrora.Main: cck.util.Option$Str ACTION> = $r1;
+        $r0 = <avrora.Main: cck.util.Options mainOptions>;
+        $r2 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("colors", 1, "This option is used to enable or disable the terminal colors.");
+        <avrora.Main: cck.util.Option$Bool COLORS> = $r2;
+        $r0 = <avrora.Main: cck.util.Options mainOptions>;
+        $r2 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("banner", 1, "This option is used to enable or disable the printing of the banner.");
+        <avrora.Main: cck.util.Option$Bool BANNER> = $r2;
+        $r0 = <avrora.Main: cck.util.Options mainOptions>;
+        $r2 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("status", 1, "This option enables and disables printing of status information, for example when the simulator is loading a program.");
+        <avrora.Main: cck.util.Option$Bool STATUS> = $r2;
+        $r0 = <avrora.Main: cck.util.Options mainOptions>;
+        $r2 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("status-timing", 0, "This option enables and disables printing of timing with status information, for example when the simulator is loading a program.");
+        <avrora.Main: cck.util.Option$Bool STATUS_TIMING> = $r2;
+        $r0 = <avrora.Main: cck.util.Options mainOptions>;
+        $r3 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("verbose", "", "This option allows users to enable verbose printing of individual subsystems within Avrora. A list can be given with individual items separated by commas. For example: -verbose=loader,atmel.flash");
+        <avrora.Main: cck.util.Option$List VERBOSE> = $r3;
+        $r0 = <avrora.Main: cck.util.Options mainOptions>;
+        $r2 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("help", 0, "Displays this help message.");
+        <avrora.Main: cck.util.Option$Bool HELP> = $r2;
+        $r0 = <avrora.Main: cck.util.Options mainOptions>;
+        $r2 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("license", 0, "Display the detailed copyright and license text.");
+        <avrora.Main: cck.util.Option$Bool LICENSE> = $r2;
+        $r0 = <avrora.Main: cck.util.Options mainOptions>;
+        $r2 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("html", 0, "For terminal colors. Display terminal colors as HTML tags for easier inclusion in webpages.");
+        <avrora.Main: cck.util.Option$Bool HTML> = $r2;
+        $r0 = <avrora.Main: cck.util.Options mainOptions>;
+        $r1 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("config-file", "", "This option can be used to specify a file that contains additional command line options to Avrora. Any command-line option can be specified in this file. For repeated runs with similar options, the common options can be stored in this file for use over multiple runs. Options are processed in the following order: \n   1) The .avrora file in your home directory \n   2) A configuration file specified on the command line \n   3) Command line options to Avrora");
+        <avrora.Main: cck.util.Option$Str CONFIGFILE> = $r1;
+        return;
+    }
+}

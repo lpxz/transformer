@@ -1,0 +1,73 @@
+public class avrora.sim.mcu.RegisterSet$Field extends java.lang.Object
+{
+    public int value;
+
+    public void <init>()
+    {
+        avrora.sim.mcu.RegisterSet$Field this;
+
+        this := @this: avrora.sim.mcu.RegisterSet$Field;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public void write(int, int)
+    {
+        avrora.sim.mcu.RegisterSet$Field this;
+        int nval, wmask, $i0, $i1;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.mcu.RegisterSet$Field;
+        nval := @parameter0: int;
+        wmask := @parameter1: int;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 89, tid_write, "avrora.sim.mcu.RegisterSet$Field", 72, $i0);
+        $i0 = this.<avrora.sim.mcu.RegisterSet$Field: int value>;
+        $i1 = wmask ^ -1;
+        $i0 = $i0 & $i1;
+        $i0 = $i0 | nval;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 89, tid_write, "avrora.sim.mcu.RegisterSet$Field", 72, $i0);
+        this.<avrora.sim.mcu.RegisterSet$Field: int value> = $i0;
+        virtualinvoke this.<avrora.sim.mcu.RegisterSet$Field: void update()>();
+        return;
+    }
+
+    public void write(int)
+    {
+        avrora.sim.mcu.RegisterSet$Field this;
+        int nval;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.mcu.RegisterSet$Field;
+        nval := @parameter0: int;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 89, tid_write, "avrora.sim.mcu.RegisterSet$Field", 77, nval);
+        this.<avrora.sim.mcu.RegisterSet$Field: int value> = nval;
+        virtualinvoke this.<avrora.sim.mcu.RegisterSet$Field: void update()>();
+        return;
+    }
+
+    public void set(int)
+    {
+        avrora.sim.mcu.RegisterSet$Field this;
+        int nval;
+        cck.util.Util$InternalError $r0;
+
+        this := @this: avrora.sim.mcu.RegisterSet$Field;
+        nval := @parameter0: int;
+        $r0 = staticinvoke <cck.util.Util: cck.util.Util$InternalError unimplemented()>();
+        throw $r0;
+    }
+
+    public void update()
+    {
+        avrora.sim.mcu.RegisterSet$Field this;
+
+        this := @this: avrora.sim.mcu.RegisterSet$Field;
+        return;
+    }
+}

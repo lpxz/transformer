@@ -1,0 +1,1560 @@
+public abstract class avrora.sim.AtmelInterpreter extends avrora.sim.Interpreter implements avrora.arch.legacy.LegacyInstrVisitor
+{
+    public static final boolean INSTRUMENTED;
+    public static final boolean UNINSTRUMENTED;
+    public static final int NUM_REGS;
+    protected avrora.arch.legacy.LegacyInstr[] shared_instr;
+    protected int pc;
+    protected int nextPC;
+    protected int cyclesConsumed;
+    protected boolean I;
+    protected boolean T;
+    protected boolean H;
+    protected boolean S;
+    protected boolean V;
+    protected boolean N;
+    protected boolean Z;
+    protected boolean C;
+    protected byte[] sram;
+    protected final int sram_start;
+    protected final int sram_max;
+    protected avrora.sim.util.MulticastWatch[] sram_watches;
+    protected final avrora.sim.state.VolatileBehavior[] sram_volatile;
+    protected final avrora.sim.ActiveRegister[] ioregs;
+    protected final avrora.sim.CodeSegment flash;
+    protected final avrora.sim.RWRegister SPL_reg;
+    protected final avrora.sim.RWRegister SPH_reg;
+    public final int RAMPZ;
+    public final int SREG;
+    protected final avrora.sim.mcu.RegisterSet registers;
+    protected final avrora.sim.AtmelInterpreter$StateImpl state;
+    protected int bootPC;
+    protected int interruptBase;
+    protected avrora.sim.util.MulticastWatch error_watch;
+    protected final avrora.sim.util.MulticastProbe globalProbe;
+    protected long delayCycles;
+    protected boolean shouldRun;
+    protected boolean sleeping;
+    protected boolean justReturnedFromInterrupt;
+
+    protected void <init>(avrora.sim.Simulator, avrora.core.Program, avrora.arch.avr.AVRProperties)
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.sim.Simulator simulator;
+        avrora.core.Program p;
+        avrora.arch.avr.AVRProperties pr;
+        avrora.sim.state.VolatileBehavior b, $r10;
+        int i, $i0, $i1, $i2, $i3;
+        java.lang.Class $r0;
+        boolean $z0;
+        avrora.sim.AtmelInterpreter$StateImpl $r1;
+        avrora.sim.util.MulticastProbe $r2;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r4;
+        cck.util.Util$InternalError $r5;
+        byte[] $r6;
+        avrora.sim.mcu.Microcontroller $r7;
+        avrora.sim.mcu.RegisterSet $r8;
+        avrora.sim.state.VolatileBehavior[] $r9, $r11;
+        avrora.sim.ActiveRegister[] $r12, $r14;
+        avrora.sim.AtmelInterpreter$IORegBehavior $r13;
+        avrora.sim.ActiveRegister $r15, $r21;
+        avrora.sim.AtmelInterpreter$SREGBehavior $r16;
+        avrora.sim.CodeSegment$Factory $r17;
+        avrora.sim.CodeSegment $r18;
+        avrora.arch.legacy.LegacyInstr[] $r19;
+        avrora.sim.InterruptTable $r20;
+        avrora.sim.RWRegister $r22;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        simulator := @parameter0: avrora.sim.Simulator;
+        p := @parameter1: avrora.core.Program;
+        pr := @parameter2: avrora.arch.avr.AVRProperties;
+        specialinvoke this.<avrora.sim.Interpreter: void <init>(avrora.sim.Simulator)>(simulator);
+        $r0 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+        staticinvoke <java.lang.Compiler: boolean compileClass(java.lang.Class)>($r0);
+        $r1 = new avrora.sim.AtmelInterpreter$StateImpl;
+        specialinvoke $r1.<avrora.sim.AtmelInterpreter$StateImpl: void <init>(avrora.sim.AtmelInterpreter)>(this);
+        this.<avrora.sim.AtmelInterpreter: avrora.sim.AtmelInterpreter$StateImpl state> = $r1;
+        $r2 = new avrora.sim.util.MulticastProbe;
+        specialinvoke $r2.<avrora.sim.util.MulticastProbe: void <init>()>();
+        this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastProbe globalProbe> = $r2;
+        $i0 = virtualinvoke pr.<avrora.arch.avr.AVRProperties: int getIOReg(java.lang.String)>("SREG");
+        this.<avrora.sim.AtmelInterpreter: int SREG> = $i0;
+        $z0 = virtualinvoke pr.<avrora.arch.avr.AVRProperties: boolean hasIOReg(java.lang.String)>("RAMPZ");
+        if $z0 == 0 goto label0;
+
+        $i0 = virtualinvoke pr.<avrora.arch.avr.AVRProperties: int getIOReg(java.lang.String)>("RAMPZ");
+        this.<avrora.sim.AtmelInterpreter: int RAMPZ> = $i0;
+        goto label1;
+
+     label0:
+        this.<avrora.sim.AtmelInterpreter: int RAMPZ> = -1;
+
+     label1:
+        $i1 = p.<avrora.core.Program: int program_end>;
+        $i0 = pr.<avrora.arch.avr.AVRProperties: int flash_size>;
+        if $i1 <= $i0 goto label2;
+
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("program will not fit into ");
+        $i0 = pr.<avrora.arch.avr.AVRProperties: int flash_size>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bytes");
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r5 = staticinvoke <cck.util.Util: cck.util.Util$InternalError failure(java.lang.String)>($r4);
+        throw $r5;
+
+     label2:
+        $i0 = pr.<avrora.arch.avr.AVRProperties: int ioreg_size>;
+        $i0 = staticinvoke <avrora.sim.AtmelInterpreter: int toSRAM(int)>($i0);
+        this.<avrora.sim.AtmelInterpreter: int sram_start> = $i0;
+        $i2 = pr.<avrora.arch.avr.AVRProperties: int ioreg_size>;
+        $i0 = 32 + $i2;
+        $i2 = pr.<avrora.arch.avr.AVRProperties: int sram_size>;
+        $i0 = $i0 + $i2;
+        this.<avrora.sim.AtmelInterpreter: int sram_max> = $i0;
+        $i0 = this.<avrora.sim.AtmelInterpreter: int sram_max>;
+        $r6 = newarray (byte)[$i0];
+        this.<avrora.sim.AtmelInterpreter: byte[] sram> = $r6;
+        $r7 = virtualinvoke simulator.<avrora.sim.Simulator: avrora.sim.mcu.Microcontroller getMicrocontroller()>();
+        $r8 = interfaceinvoke $r7.<avrora.sim.mcu.Microcontroller: avrora.sim.mcu.RegisterSet getRegisterSet()>();
+        this.<avrora.sim.AtmelInterpreter: avrora.sim.mcu.RegisterSet registers> = $r8;
+        $i0 = this.<avrora.sim.AtmelInterpreter: int sram_start>;
+        $r9 = newarray (avrora.sim.state.VolatileBehavior)[$i0];
+        this.<avrora.sim.AtmelInterpreter: avrora.sim.state.VolatileBehavior[] sram_volatile> = $r9;
+        $r10 = new avrora.sim.state.VolatileBehavior;
+        specialinvoke $r10.<avrora.sim.state.VolatileBehavior: void <init>()>();
+        b = $r10;
+        i = 0;
+
+     label3:
+        $r9 = this.<avrora.sim.AtmelInterpreter: avrora.sim.state.VolatileBehavior[] sram_volatile>;
+        $i0 = lengthof $r9;
+        if i >= $i0 goto label4;
+
+        $r11 = this.<avrora.sim.AtmelInterpreter: avrora.sim.state.VolatileBehavior[] sram_volatile>;
+        $r11[i] = b;
+        i = i + 1;
+        goto label3;
+
+     label4:
+        $r8 = this.<avrora.sim.AtmelInterpreter: avrora.sim.mcu.RegisterSet registers>;
+        $r12 = virtualinvoke $r8.<avrora.sim.mcu.RegisterSet: avrora.sim.ActiveRegister[] share()>();
+        this.<avrora.sim.AtmelInterpreter: avrora.sim.ActiveRegister[] ioregs> = $r12;
+        i = 0;
+
+     label5:
+        $r12 = this.<avrora.sim.AtmelInterpreter: avrora.sim.ActiveRegister[] ioregs>;
+        $i0 = lengthof $r12;
+        if i >= $i0 goto label6;
+
+        $r11 = this.<avrora.sim.AtmelInterpreter: avrora.sim.state.VolatileBehavior[] sram_volatile>;
+        $i0 = staticinvoke <avrora.sim.AtmelInterpreter: int toSRAM(int)>(i);
+        $r13 = new avrora.sim.AtmelInterpreter$IORegBehavior;
+        $r14 = this.<avrora.sim.AtmelInterpreter: avrora.sim.ActiveRegister[] ioregs>;
+        $r15 = $r14[i];
+        specialinvoke $r13.<avrora.sim.AtmelInterpreter$IORegBehavior: void <init>(avrora.sim.ActiveRegister)>($r15);
+        $r11[$i0] = $r13;
+        i = i + 1;
+        goto label5;
+
+     label6:
+        $r11 = this.<avrora.sim.AtmelInterpreter: avrora.sim.state.VolatileBehavior[] sram_volatile>;
+        $i0 = this.<avrora.sim.AtmelInterpreter: int SREG>;
+        $i0 = staticinvoke <avrora.sim.AtmelInterpreter: int toSRAM(int)>($i0);
+        $r16 = new avrora.sim.AtmelInterpreter$SREGBehavior;
+        specialinvoke $r16.<avrora.sim.AtmelInterpreter$SREGBehavior: void <init>(avrora.sim.AtmelInterpreter,avrora.sim.AtmelInterpreter$1)>(this, null);
+        $r11[$i0] = $r16;
+        $r17 = pr.<avrora.arch.avr.AVRProperties: avrora.sim.CodeSegment$Factory codeSegmentFactory>;
+        $r18 = interfaceinvoke $r17.<avrora.sim.CodeSegment$Factory: avrora.sim.CodeSegment newCodeSegment(java.lang.String,avrora.sim.AtmelInterpreter,avrora.core.Program)>("flash", this, p);
+        this.<avrora.sim.AtmelInterpreter: avrora.sim.CodeSegment flash> = $r18;
+        $r18 = this.<avrora.sim.AtmelInterpreter: avrora.sim.CodeSegment flash>;
+        $r19 = virtualinvoke $r18.<avrora.sim.CodeSegment: avrora.arch.legacy.LegacyInstr[] shareCode(avrora.sim.CodeSegment$CodeSharer)>(null);
+        this.<avrora.sim.AtmelInterpreter: avrora.arch.legacy.LegacyInstr[] shared_instr> = $r19;
+        $r20 = new avrora.sim.InterruptTable;
+        $i3 = pr.<avrora.arch.avr.AVRProperties: int num_interrupts>;
+        specialinvoke $r20.<avrora.sim.InterruptTable: void <init>(avrora.sim.Interpreter,int)>(this, $i3);
+        this.<avrora.sim.AtmelInterpreter: avrora.sim.InterruptTable interrupts> = $r20;
+        $r12 = this.<avrora.sim.AtmelInterpreter: avrora.sim.ActiveRegister[] ioregs>;
+        $i2 = virtualinvoke pr.<avrora.arch.avr.AVRProperties: int getIOReg(java.lang.String)>("SPL");
+        $r21 = $r12[$i2];
+        $r22 = (avrora.sim.RWRegister) $r21;
+        this.<avrora.sim.AtmelInterpreter: avrora.sim.RWRegister SPL_reg> = $r22;
+        $r12 = this.<avrora.sim.AtmelInterpreter: avrora.sim.ActiveRegister[] ioregs>;
+        $i2 = virtualinvoke pr.<avrora.arch.avr.AVRProperties: int getIOReg(java.lang.String)>("SPH");
+        $r21 = $r12[$i2];
+        $r22 = (avrora.sim.RWRegister) $r21;
+        this.<avrora.sim.AtmelInterpreter: avrora.sim.RWRegister SPH_reg> = $r22;
+        return;
+    }
+
+    public void start()
+    {
+        avrora.sim.AtmelInterpreter this;
+        long tid_start;
+        java.lang.Thread thread_start;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        thread_start = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_start = virtualinvoke thread_start.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 4, tid_start, "avrora.sim.AtmelInterpreter", 381, 1);
+        this.<avrora.sim.AtmelInterpreter: boolean shouldRun> = 1;
+        virtualinvoke this.<avrora.sim.AtmelInterpreter: void runLoop()>();
+        return;
+    }
+
+    public void stop()
+    {
+        avrora.sim.AtmelInterpreter this;
+        long tid_stop;
+        java.lang.Thread thread_stop;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        thread_stop = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_stop = virtualinvoke thread_stop.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 4, tid_stop, "avrora.sim.AtmelInterpreter", 386, 0);
+        this.<avrora.sim.AtmelInterpreter: boolean shouldRun> = 0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 9, tid_stop, "avrora.sim.AtmelInterpreter", 387, 0);
+        this.<avrora.sim.AtmelInterpreter: boolean innerLoop> = 0;
+        return;
+    }
+
+    public avrora.sim.State getState()
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.sim.AtmelInterpreter$StateImpl $r0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.AtmelInterpreter$StateImpl state>;
+        return $r0;
+    }
+
+    protected abstract void runLoop();
+
+    protected int getInterruptVectorAddress(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int inum, $i0, $i1;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        inum := @parameter0: int;
+        $i0 = this.<avrora.sim.AtmelInterpreter: int interruptBase>;
+        $i1 = inum - 1;
+        $i1 = $i1 * 4;
+        $i0 = $i0 + $i1;
+        return $i0;
+    }
+
+    public void setPosted(int, boolean)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int inum;
+        boolean post;
+        avrora.sim.InterruptTable $r0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        inum := @parameter0: int;
+        post := @parameter1: boolean;
+        if post == 0 goto label0;
+
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.InterruptTable interrupts>;
+        virtualinvoke $r0.<avrora.sim.InterruptTable: void post(int)>(inum);
+        goto label1;
+
+     label0:
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.InterruptTable interrupts>;
+        virtualinvoke $r0.<avrora.sim.InterruptTable: void unpost(int)>(inum);
+
+     label1:
+        return;
+    }
+
+    public void setEnabled(int, boolean)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int inum;
+        boolean enabled;
+        avrora.sim.InterruptTable $r0;
+        long tid_setEnabled;
+        java.lang.Thread thread_setEnabled;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        inum := @parameter0: int;
+        enabled := @parameter1: boolean;
+        thread_setEnabled = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setEnabled = virtualinvoke thread_setEnabled.<java.lang.Thread: long getId()>();
+        if enabled == 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 9, tid_setEnabled, "avrora.sim.AtmelInterpreter", 428, 0);
+        this.<avrora.sim.AtmelInterpreter: boolean innerLoop> = 0;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.InterruptTable interrupts>;
+        virtualinvoke $r0.<avrora.sim.InterruptTable: void enable(int)>(inum);
+        goto label1;
+
+     label0:
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.InterruptTable interrupts>;
+        virtualinvoke $r0.<avrora.sim.InterruptTable: void disable(int)>(inum);
+
+     label1:
+        return;
+    }
+
+    protected void insertProbe(avrora.sim.Simulator$Probe, int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.sim.Simulator$Probe p;
+        int addr;
+        avrora.sim.CodeSegment $r0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        p := @parameter0: avrora.sim.Simulator$Probe;
+        addr := @parameter1: int;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.CodeSegment flash>;
+        virtualinvoke $r0.<avrora.sim.CodeSegment: void insertProbe(int,avrora.sim.Simulator$Probe)>(addr, p);
+        return;
+    }
+
+    protected void insertErrorWatch(avrora.sim.Simulator$Watch)
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.sim.Simulator$Watch watch;
+        avrora.sim.util.MulticastWatch $r0, $r1;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        watch := @parameter0: avrora.sim.Simulator$Watch;
+        $r1 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch error_watch>;
+        if $r1 != null goto label0;
+
+        $r0 = new avrora.sim.util.MulticastWatch;
+        specialinvoke $r0.<avrora.sim.util.MulticastWatch: void <init>()>();
+        this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch error_watch> = $r0;
+
+     label0:
+        $r1 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch error_watch>;
+        virtualinvoke $r1.<avrora.sim.util.MulticastWatch: void add(java.lang.Object)>(watch);
+        return;
+    }
+
+    protected void insertProbe(avrora.sim.Simulator$Probe)
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.sim.Simulator$Probe p;
+        avrora.sim.util.MulticastProbe $r0;
+        long tid_insertProbe;
+        java.lang.Thread thread_insertProbe;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        p := @parameter0: avrora.sim.Simulator$Probe;
+        thread_insertProbe = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_insertProbe = virtualinvoke thread_insertProbe.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 9, tid_insertProbe, "avrora.sim.AtmelInterpreter", 460, 0);
+        this.<avrora.sim.AtmelInterpreter: boolean innerLoop> = 0;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastProbe globalProbe>;
+        virtualinvoke $r0.<avrora.sim.util.MulticastProbe: void add(java.lang.Object)>(p);
+        return;
+    }
+
+    protected void removeProbe(avrora.sim.Simulator$Probe, int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.sim.Simulator$Probe p;
+        int addr;
+        avrora.sim.CodeSegment $r0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        p := @parameter0: avrora.sim.Simulator$Probe;
+        addr := @parameter1: int;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.CodeSegment flash>;
+        virtualinvoke $r0.<avrora.sim.CodeSegment: void removeProbe(int,avrora.sim.Simulator$Probe)>(addr, p);
+        return;
+    }
+
+    public void removeProbe(avrora.sim.Simulator$Probe)
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.sim.Simulator$Probe b;
+        avrora.sim.util.MulticastProbe $r0;
+        long tid_removeProbe;
+        java.lang.Thread thread_removeProbe;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        b := @parameter0: avrora.sim.Simulator$Probe;
+        thread_removeProbe = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_removeProbe = virtualinvoke thread_removeProbe.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 9, tid_removeProbe, "avrora.sim.AtmelInterpreter", 481, 0);
+        this.<avrora.sim.AtmelInterpreter: boolean innerLoop> = 0;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastProbe globalProbe>;
+        virtualinvoke $r0.<avrora.sim.util.MulticastProbe: void remove(java.lang.Object)>(b);
+        return;
+    }
+
+    protected void insertWatch(avrora.sim.Simulator$Watch, int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.sim.Simulator$Watch p;
+        int data_addr, $i0;
+        avrora.sim.util.MulticastWatch w, $r0;
+        avrora.sim.util.MulticastWatch[] $r1, $r3;
+        byte[] $r2;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        p := @parameter0: avrora.sim.Simulator$Watch;
+        data_addr := @parameter1: int;
+        $r1 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch[] sram_watches>;
+        if $r1 != null goto label0;
+
+        $r2 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        $i0 = lengthof $r2;
+        $r3 = newarray (avrora.sim.util.MulticastWatch)[$i0];
+        this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch[] sram_watches> = $r3;
+
+     label0:
+        $r1 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch[] sram_watches>;
+        w = $r1[data_addr];
+        if w != null goto label1;
+
+        $r1 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch[] sram_watches>;
+        $r0 = new avrora.sim.util.MulticastWatch;
+        specialinvoke $r0.<avrora.sim.util.MulticastWatch: void <init>()>();
+        $r1[data_addr] = $r0;
+        w = $r0;
+
+     label1:
+        virtualinvoke w.<avrora.sim.util.MulticastWatch: void add(java.lang.Object)>(p);
+        return;
+    }
+
+    protected void removeWatch(avrora.sim.Simulator$Watch, int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.sim.Simulator$Watch p;
+        int data_addr;
+        avrora.sim.util.MulticastWatch w;
+        avrora.sim.util.MulticastWatch[] $r0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        p := @parameter0: avrora.sim.Simulator$Watch;
+        data_addr := @parameter1: int;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch[] sram_watches>;
+        if $r0 != null goto label0;
+
+        return;
+
+     label0:
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch[] sram_watches>;
+        w = $r0[data_addr];
+        if w != null goto label1;
+
+        return;
+
+     label1:
+        virtualinvoke w.<avrora.sim.util.MulticastWatch: void remove(java.lang.Object)>(p);
+        return;
+    }
+
+    protected void advanceClock(long)
+    {
+        avrora.sim.AtmelInterpreter this;
+        long delta, tid_advanceClock;
+        avrora.sim.clock.MainClock $r0;
+        java.lang.Thread thread_advanceClock;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        delta := @parameter0: long;
+        thread_advanceClock = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_advanceClock = virtualinvoke thread_advanceClock.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.clock.MainClock clock>;
+        virtualinvoke $r0.<avrora.sim.clock.MainClock: void advance(long)>(delta);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 3, tid_advanceClock, "avrora.sim.AtmelInterpreter", 523, 0);
+        this.<avrora.sim.AtmelInterpreter: int cyclesConsumed> = 0;
+        return;
+    }
+
+    protected void delay(long)
+    {
+        avrora.sim.AtmelInterpreter this;
+        long cycles, $l0, tid_delay;
+        java.lang.Thread thread_delay;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        cycles := @parameter0: long;
+        thread_delay = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_delay = virtualinvoke thread_delay.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 9, tid_delay, "avrora.sim.AtmelInterpreter", 533, 0);
+        this.<avrora.sim.AtmelInterpreter: boolean innerLoop> = 0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 5, tid_delay, "avrora.sim.AtmelInterpreter", 534, $l0);
+        $l0 = this.<avrora.sim.AtmelInterpreter: long delayCycles>;
+        $l0 = $l0 + cycles;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 5, tid_delay, "avrora.sim.AtmelInterpreter", 534, $l0);
+        this.<avrora.sim.AtmelInterpreter: long delayCycles> = $l0;
+        return;
+    }
+
+    protected void storeProgramMemory()
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.sim.CodeSegment $r0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.CodeSegment flash>;
+        virtualinvoke $r0.<avrora.sim.CodeSegment: void update()>();
+        return;
+    }
+
+    public byte getRegisterByte(avrora.arch.legacy.LegacyRegister)
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.arch.legacy.LegacyRegister reg;
+        byte[] $r0;
+        int $i0;
+        byte $b1;
+        long tid_getRegisterByte;
+        java.lang.Thread thread_getRegisterByte;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        reg := @parameter0: avrora.arch.legacy.LegacyRegister;
+        thread_getRegisterByte = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getRegisterByte = virtualinvoke thread_getRegisterByte.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        $i0 = virtualinvoke reg.<avrora.arch.legacy.LegacyRegister: int getNumber()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_getRegisterByte, "avrora.sim.AtmelInterpreter", 552, $i0, $b1);
+        $b1 = $r0[$i0];
+        return $b1;
+    }
+
+    public byte getRegisterByte(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int reg;
+        byte[] $r0;
+        byte $b0;
+        long tid_getRegisterByte;
+        java.lang.Thread thread_getRegisterByte;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        reg := @parameter0: int;
+        thread_getRegisterByte = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getRegisterByte = virtualinvoke thread_getRegisterByte.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_getRegisterByte, "avrora.sim.AtmelInterpreter", 556, reg, $b0);
+        $b0 = $r0[reg];
+        return $b0;
+    }
+
+    public int getRegisterUnsigned(avrora.arch.legacy.LegacyRegister)
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.arch.legacy.LegacyRegister reg;
+        byte[] $r0;
+        int $i0;
+        byte $b1;
+        short $s2;
+        long tid_getRegisterUnsigned;
+        java.lang.Thread thread_getRegisterUnsigned;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        reg := @parameter0: avrora.arch.legacy.LegacyRegister;
+        thread_getRegisterUnsigned = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getRegisterUnsigned = virtualinvoke thread_getRegisterUnsigned.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        $i0 = virtualinvoke reg.<avrora.arch.legacy.LegacyRegister: int getNumber()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_getRegisterUnsigned, "avrora.sim.AtmelInterpreter", 566, $i0, $b1);
+        $b1 = $r0[$i0];
+        $s2 = $b1 & 255;
+        return $s2;
+    }
+
+    public int getRegisterUnsigned(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int reg;
+        byte[] $r0;
+        byte $b0;
+        short $s1;
+        long tid_getRegisterUnsigned;
+        java.lang.Thread thread_getRegisterUnsigned;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        reg := @parameter0: int;
+        thread_getRegisterUnsigned = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getRegisterUnsigned = virtualinvoke thread_getRegisterUnsigned.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_getRegisterUnsigned, "avrora.sim.AtmelInterpreter", 575, reg, $b0);
+        $b0 = $r0[reg];
+        $s1 = $b0 & 255;
+        return $s1;
+    }
+
+    public int getRegisterWord(avrora.arch.legacy.LegacyRegister)
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.arch.legacy.LegacyRegister reg, $r0;
+        byte low, high;
+        char $c0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        reg := @parameter0: avrora.arch.legacy.LegacyRegister;
+        low = virtualinvoke this.<avrora.sim.AtmelInterpreter: byte getRegisterByte(avrora.arch.legacy.LegacyRegister)>(reg);
+        $r0 = virtualinvoke reg.<avrora.arch.legacy.LegacyRegister: avrora.arch.legacy.LegacyRegister nextRegister()>();
+        high = virtualinvoke this.<avrora.sim.AtmelInterpreter: byte getRegisterByte(avrora.arch.legacy.LegacyRegister)>($r0);
+        $c0 = staticinvoke <cck.util.Arithmetic: char uword(byte,byte)>(low, high);
+        return $c0;
+    }
+
+    public int getRegisterWord(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int reg, $i0;
+        byte low, high;
+        char $c1;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        reg := @parameter0: int;
+        low = virtualinvoke this.<avrora.sim.AtmelInterpreter: byte getRegisterByte(int)>(reg);
+        $i0 = reg + 1;
+        high = virtualinvoke this.<avrora.sim.AtmelInterpreter: byte getRegisterByte(int)>($i0);
+        $c1 = staticinvoke <cck.util.Arithmetic: char uword(byte,byte)>(low, high);
+        return $c1;
+    }
+
+    public boolean getFlag(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int bit;
+        boolean $z0;
+        long tid_getFlag;
+        java.lang.Thread thread_getFlag;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        bit := @parameter0: int;
+        thread_getFlag = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getFlag = virtualinvoke thread_getFlag.<java.lang.Thread: long getId()>();
+        tableswitch(bit)
+        {
+            case 0: goto label7;
+            case 1: goto label6;
+            case 2: goto label5;
+            case 3: goto label4;
+            case 4: goto label3;
+            case 5: goto label2;
+            case 6: goto label1;
+            case 7: goto label0;
+            default: goto label8;
+        };
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 7, tid_getFlag, "avrora.sim.AtmelInterpreter", 610, $z0);
+        $z0 = this.<avrora.sim.AtmelInterpreter: boolean I>;
+        return $z0;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 16, tid_getFlag, "avrora.sim.AtmelInterpreter", 611, $z0);
+        $z0 = this.<avrora.sim.AtmelInterpreter: boolean T>;
+        return $z0;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 11, tid_getFlag, "avrora.sim.AtmelInterpreter", 612, $z0);
+        $z0 = this.<avrora.sim.AtmelInterpreter: boolean H>;
+        return $z0;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 15, tid_getFlag, "avrora.sim.AtmelInterpreter", 613, $z0);
+        $z0 = this.<avrora.sim.AtmelInterpreter: boolean S>;
+        return $z0;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 14, tid_getFlag, "avrora.sim.AtmelInterpreter", 614, $z0);
+        $z0 = this.<avrora.sim.AtmelInterpreter: boolean V>;
+        return $z0;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 12, tid_getFlag, "avrora.sim.AtmelInterpreter", 615, $z0);
+        $z0 = this.<avrora.sim.AtmelInterpreter: boolean N>;
+        return $z0;
+
+     label6:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 13, tid_getFlag, "avrora.sim.AtmelInterpreter", 616, $z0);
+        $z0 = this.<avrora.sim.AtmelInterpreter: boolean Z>;
+        return $z0;
+
+     label7:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 10, tid_getFlag, "avrora.sim.AtmelInterpreter", 617, $z0);
+        $z0 = this.<avrora.sim.AtmelInterpreter: boolean C>;
+        return $z0;
+
+     label8:
+        return 0;
+    }
+
+    public void setFlag(int, boolean)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int bit;
+        boolean on;
+        long tid_setFlag;
+        java.lang.Thread thread_setFlag;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        bit := @parameter0: int;
+        on := @parameter1: boolean;
+        thread_setFlag = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setFlag = virtualinvoke thread_setFlag.<java.lang.Thread: long getId()>();
+        tableswitch(bit)
+        {
+            case 0: goto label8;
+            case 1: goto label7;
+            case 2: goto label6;
+            case 3: goto label5;
+            case 4: goto label4;
+            case 5: goto label3;
+            case 6: goto label2;
+            case 7: goto label0;
+            default: goto label9;
+        };
+
+     label0:
+        if on == 0 goto label1;
+
+        virtualinvoke this.<avrora.sim.AtmelInterpreter: void enableInterrupts()>();
+        goto label9;
+
+     label1:
+        virtualinvoke this.<avrora.sim.AtmelInterpreter: void disableInterrupts()>();
+        goto label9;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 16, tid_setFlag, "avrora.sim.AtmelInterpreter", 628, on);
+        this.<avrora.sim.AtmelInterpreter: boolean T> = on;
+        goto label9;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 11, tid_setFlag, "avrora.sim.AtmelInterpreter", 629, on);
+        this.<avrora.sim.AtmelInterpreter: boolean H> = on;
+        goto label9;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 15, tid_setFlag, "avrora.sim.AtmelInterpreter", 630, on);
+        this.<avrora.sim.AtmelInterpreter: boolean S> = on;
+        goto label9;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 14, tid_setFlag, "avrora.sim.AtmelInterpreter", 631, on);
+        this.<avrora.sim.AtmelInterpreter: boolean V> = on;
+        goto label9;
+
+     label6:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 12, tid_setFlag, "avrora.sim.AtmelInterpreter", 632, on);
+        this.<avrora.sim.AtmelInterpreter: boolean N> = on;
+        goto label9;
+
+     label7:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 13, tid_setFlag, "avrora.sim.AtmelInterpreter", 633, on);
+        this.<avrora.sim.AtmelInterpreter: boolean Z> = on;
+        goto label9;
+
+     label8:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 10, tid_setFlag, "avrora.sim.AtmelInterpreter", 634, on);
+        this.<avrora.sim.AtmelInterpreter: boolean C> = on;
+
+     label9:
+        return;
+    }
+
+    protected void setIORegBit(int, int, boolean)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int ior, bit, $i0;
+        boolean on;
+        byte curv;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        ior := @parameter0: int;
+        bit := @parameter1: int;
+        on := @parameter2: boolean;
+        $i0 = staticinvoke <avrora.sim.AtmelInterpreter: int toSRAM(int)>(ior);
+        curv = specialinvoke this.<avrora.sim.AtmelInterpreter: byte readSRAM(boolean,int)>(1, $i0);
+        curv = staticinvoke <cck.util.Arithmetic: byte setBit(byte,int,boolean)>(curv, bit, on);
+        $i0 = staticinvoke <avrora.sim.AtmelInterpreter: int toSRAM(int)>(ior);
+        specialinvoke this.<avrora.sim.AtmelInterpreter: void writeSRAM(boolean,int,byte)>(1, $i0, curv);
+        return;
+    }
+
+    protected boolean getIORegBit(int, int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int ior, bit, $i0;
+        byte $b1;
+        boolean $z0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        ior := @parameter0: int;
+        bit := @parameter1: int;
+        $i0 = staticinvoke <avrora.sim.AtmelInterpreter: int toSRAM(int)>(ior);
+        $b1 = specialinvoke this.<avrora.sim.AtmelInterpreter: byte readSRAM(boolean,int)>(1, $i0);
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>($b1, bit);
+        return $z0;
+    }
+
+    public byte getDataByte(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int address;
+        byte $b0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        address := @parameter0: int;
+        $b0 = specialinvoke this.<avrora.sim.AtmelInterpreter: byte readSRAM(boolean,int)>(1, address);
+        return $b0;
+    }
+
+    private byte readSRAM(boolean, int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        boolean w;
+        int addr, $i1;
+        byte val, $b0, $b2;
+        byte[] $r0, $r1;
+        long tid_readSRAM;
+        java.lang.Thread thread_readSRAM;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        w := @parameter0: boolean;
+        addr := @parameter1: int;
+        thread_readSRAM = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_readSRAM = virtualinvoke thread_readSRAM.<java.lang.Thread: long getId()>();
+        if addr >= 0 goto label0;
+
+        $b0 = specialinvoke this.<avrora.sim.AtmelInterpreter: byte fireReadError(boolean,int)>(w, addr);
+        return $b0;
+
+     label0:
+        $r0 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        $i1 = lengthof $r0;
+        if addr >= $i1 goto label3;
+
+        specialinvoke this.<avrora.sim.AtmelInterpreter: void fireBeforeRead(boolean,int)>(w, addr);
+        $i1 = this.<avrora.sim.AtmelInterpreter: int sram_start>;
+        if addr >= $i1 goto label1;
+
+        $r1 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        $b2 = specialinvoke this.<avrora.sim.AtmelInterpreter: byte readVolatile(int)>(addr);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r1, 0, tid_readSRAM, "avrora.sim.AtmelInterpreter", 670, addr, $b2);
+        $r1[addr] = $b2;
+        val = $b2;
+        goto label2;
+
+     label1:
+        $r1 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r1, 0, tid_readSRAM, "avrora.sim.AtmelInterpreter", 671, addr, val);
+        val = $r1[addr];
+
+     label2:
+        specialinvoke this.<avrora.sim.AtmelInterpreter: void fireAfterRead(boolean,int,byte)>(w, addr, val);
+        return val;
+
+     label3:
+        $b0 = specialinvoke this.<avrora.sim.AtmelInterpreter: byte fireReadError(boolean,int)>(w, addr);
+        return $b0;
+    }
+
+    private void writeSRAM(boolean, int, byte)
+    {
+        avrora.sim.AtmelInterpreter this;
+        boolean w;
+        int addr, $i0;
+        byte val, $b1;
+        byte[] $r0, $r1;
+        long tid_writeSRAM;
+        java.lang.Thread thread_writeSRAM;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        w := @parameter0: boolean;
+        addr := @parameter1: int;
+        val := @parameter2: byte;
+        thread_writeSRAM = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_writeSRAM = virtualinvoke thread_writeSRAM.<java.lang.Thread: long getId()>();
+        if addr >= 0 goto label0;
+
+        specialinvoke this.<avrora.sim.AtmelInterpreter: void fireWriteError(boolean,int,byte)>(w, addr, val);
+        goto label4;
+
+     label0:
+        $r0 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        $i0 = lengthof $r0;
+        if addr >= $i0 goto label3;
+
+        specialinvoke this.<avrora.sim.AtmelInterpreter: void fireBeforeWrite(boolean,int,byte)>(w, addr, val);
+        $i0 = this.<avrora.sim.AtmelInterpreter: int sram_start>;
+        if addr >= $i0 goto label1;
+
+        $r1 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        $b1 = specialinvoke this.<avrora.sim.AtmelInterpreter: byte writeVolatile(int,byte)>(addr, val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r1, 0, tid_writeSRAM, "avrora.sim.AtmelInterpreter", 688, addr, $b1);
+        $r1[addr] = $b1;
+        goto label2;
+
+     label1:
+        $r1 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r1, 0, tid_writeSRAM, "avrora.sim.AtmelInterpreter", 689, addr, val);
+        $r1[addr] = val;
+
+     label2:
+        specialinvoke this.<avrora.sim.AtmelInterpreter: void fireAfterWrite(boolean,int,byte)>(w, addr, val);
+        goto label4;
+
+     label3:
+        specialinvoke this.<avrora.sim.AtmelInterpreter: void fireWriteError(boolean,int,byte)>(w, addr, val);
+
+     label4:
+        return;
+    }
+
+    private void fireWriteError(boolean, int, byte)
+    {
+        avrora.sim.AtmelInterpreter this;
+        boolean w;
+        int addr;
+        byte val;
+        avrora.sim.util.MulticastWatch $r0;
+        avrora.sim.AtmelInterpreter$StateImpl $r1;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        w := @parameter0: boolean;
+        addr := @parameter1: int;
+        val := @parameter2: byte;
+        if w == 0 goto label0;
+
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch error_watch>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch error_watch>;
+        $r1 = this.<avrora.sim.AtmelInterpreter: avrora.sim.AtmelInterpreter$StateImpl state>;
+        virtualinvoke $r0.<avrora.sim.util.MulticastWatch: void fireBeforeWrite(avrora.sim.State,int,byte)>($r1, addr, val);
+
+     label0:
+        return;
+    }
+
+    private byte fireReadError(boolean, int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        boolean w;
+        int addr;
+        avrora.sim.util.MulticastWatch $r0;
+        avrora.sim.AtmelInterpreter$StateImpl $r1;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        w := @parameter0: boolean;
+        addr := @parameter1: int;
+        if w == 0 goto label0;
+
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch error_watch>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch error_watch>;
+        $r1 = this.<avrora.sim.AtmelInterpreter: avrora.sim.AtmelInterpreter$StateImpl state>;
+        virtualinvoke $r0.<avrora.sim.util.MulticastWatch: void fireBeforeRead(avrora.sim.State,int)>($r1, addr);
+
+     label0:
+        return 0;
+    }
+
+    private byte readVolatile(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int addr, $i2;
+        avrora.sim.state.VolatileBehavior behavior;
+        avrora.sim.state.VolatileBehavior[] $r0;
+        byte[] $r1;
+        byte $b0, $b3;
+        short $s1;
+        long tid_readVolatile;
+        java.lang.Thread thread_readVolatile;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        addr := @parameter0: int;
+        thread_readVolatile = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_readVolatile = virtualinvoke thread_readVolatile.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.state.VolatileBehavior[] sram_volatile>;
+        behavior = $r0[addr];
+        $r1 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r1, 0, tid_readVolatile, "avrora.sim.AtmelInterpreter", 750, addr, $b0);
+        $b0 = $r1[addr];
+        $s1 = $b0 & 255;
+        $i2 = virtualinvoke behavior.<avrora.sim.state.VolatileBehavior: int read(int)>($s1);
+        $b3 = (byte) $i2;
+        return $b3;
+    }
+
+    private byte writeVolatile(int, byte)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int addr, $i3;
+        byte val, $b0, $b4;
+        avrora.sim.state.VolatileBehavior behavior;
+        avrora.sim.state.VolatileBehavior[] $r0;
+        byte[] $r1;
+        short $s1, $s2;
+        long tid_writeVolatile;
+        java.lang.Thread thread_writeVolatile;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        addr := @parameter0: int;
+        val := @parameter1: byte;
+        thread_writeVolatile = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_writeVolatile = virtualinvoke thread_writeVolatile.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.state.VolatileBehavior[] sram_volatile>;
+        behavior = $r0[addr];
+        $r1 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r1, 0, tid_writeVolatile, "avrora.sim.AtmelInterpreter", 755, addr, $b0);
+        $b0 = $r1[addr];
+        $s1 = $b0 & 255;
+        $s2 = val & 255;
+        $i3 = virtualinvoke behavior.<avrora.sim.state.VolatileBehavior: int write(int,int)>($s1, $s2);
+        $b4 = (byte) $i3;
+        return $b4;
+    }
+
+    private void fireBeforeRead(boolean, int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        boolean w;
+        int addr;
+        avrora.sim.util.MulticastWatch p;
+        avrora.sim.util.MulticastWatch[] $r0;
+        avrora.sim.AtmelInterpreter$StateImpl $r1;
+        avrora.sim.Simulator$Watch tmp;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        w := @parameter0: boolean;
+        addr := @parameter1: int;
+        if w == 0 goto label0;
+
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch[] sram_watches>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch[] sram_watches>;
+        p = $r0[addr];
+        if p == null goto label0;
+
+        $r1 = this.<avrora.sim.AtmelInterpreter: avrora.sim.AtmelInterpreter$StateImpl state>;
+        tmp = (avrora.sim.Simulator$Watch) p;
+        interfaceinvoke tmp.<avrora.sim.Simulator$Watch: void fireBeforeRead(avrora.sim.State,int)>($r1, addr);
+
+     label0:
+        return;
+    }
+
+    private void fireAfterRead(boolean, int, byte)
+    {
+        avrora.sim.AtmelInterpreter this;
+        boolean w;
+        int addr;
+        byte val;
+        avrora.sim.util.MulticastWatch p;
+        avrora.sim.util.MulticastWatch[] $r0;
+        avrora.sim.AtmelInterpreter$StateImpl $r1;
+        avrora.sim.Simulator$Watch tmp;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        w := @parameter0: boolean;
+        addr := @parameter1: int;
+        val := @parameter2: byte;
+        if w == 0 goto label0;
+
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch[] sram_watches>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch[] sram_watches>;
+        p = $r0[addr];
+        if p == null goto label0;
+
+        $r1 = this.<avrora.sim.AtmelInterpreter: avrora.sim.AtmelInterpreter$StateImpl state>;
+        tmp = (avrora.sim.Simulator$Watch) p;
+        interfaceinvoke tmp.<avrora.sim.Simulator$Watch: void fireAfterRead(avrora.sim.State,int,byte)>($r1, addr, val);
+
+     label0:
+        return;
+    }
+
+    private void fireBeforeWrite(boolean, int, byte)
+    {
+        avrora.sim.AtmelInterpreter this;
+        boolean w;
+        int addr;
+        byte val;
+        avrora.sim.util.MulticastWatch p;
+        avrora.sim.util.MulticastWatch[] $r0;
+        avrora.sim.AtmelInterpreter$StateImpl $r1;
+        avrora.sim.Simulator$Watch tmp;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        w := @parameter0: boolean;
+        addr := @parameter1: int;
+        val := @parameter2: byte;
+        if w == 0 goto label0;
+
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch[] sram_watches>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch[] sram_watches>;
+        p = $r0[addr];
+        if p == null goto label0;
+
+        $r1 = this.<avrora.sim.AtmelInterpreter: avrora.sim.AtmelInterpreter$StateImpl state>;
+        tmp = (avrora.sim.Simulator$Watch) p;
+        interfaceinvoke tmp.<avrora.sim.Simulator$Watch: void fireBeforeWrite(avrora.sim.State,int,byte)>($r1, addr, val);
+
+     label0:
+        return;
+    }
+
+    private void fireAfterWrite(boolean, int, byte)
+    {
+        avrora.sim.AtmelInterpreter this;
+        boolean w;
+        int addr;
+        byte val;
+        avrora.sim.util.MulticastWatch p;
+        avrora.sim.util.MulticastWatch[] $r0;
+        avrora.sim.AtmelInterpreter$StateImpl $r1;
+        avrora.sim.Simulator$Watch tmp;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        w := @parameter0: boolean;
+        addr := @parameter1: int;
+        val := @parameter2: byte;
+        if w == 0 goto label0;
+
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch[] sram_watches>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.util.MulticastWatch[] sram_watches>;
+        p = $r0[addr];
+        if p == null goto label0;
+
+        $r1 = this.<avrora.sim.AtmelInterpreter: avrora.sim.AtmelInterpreter$StateImpl state>;
+        tmp = (avrora.sim.Simulator$Watch) p;
+        interfaceinvoke tmp.<avrora.sim.Simulator$Watch: void fireAfterWrite(avrora.sim.State,int,byte)>($r1, addr, val);
+
+     label0:
+        return;
+    }
+
+    public int getInstrSize(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int npc, $i0;
+        avrora.arch.legacy.LegacyInstr $r0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        npc := @parameter0: int;
+        $r0 = virtualinvoke this.<avrora.sim.AtmelInterpreter: avrora.arch.legacy.LegacyInstr getInstr(int)>(npc);
+        $i0 = virtualinvoke $r0.<avrora.arch.legacy.LegacyInstr: int getSize()>();
+        return $i0;
+    }
+
+    public byte getIORegisterByte(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int ioreg, $i0;
+        byte $b1;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        ioreg := @parameter0: int;
+        $i0 = staticinvoke <avrora.sim.AtmelInterpreter: int toSRAM(int)>(ioreg);
+        $b1 = specialinvoke this.<avrora.sim.AtmelInterpreter: byte readSRAM(boolean,int)>(1, $i0);
+        return $b1;
+    }
+
+    public byte getFlashByte(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int address;
+        avrora.sim.CodeSegment $r0;
+        byte $b0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        address := @parameter0: int;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.CodeSegment flash>;
+        $b0 = virtualinvoke $r0.<avrora.sim.CodeSegment: byte read(int)>(address);
+        return $b0;
+    }
+
+    protected void writeRegisterByte(avrora.arch.legacy.LegacyRegister, byte)
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.arch.legacy.LegacyRegister reg;
+        byte val;
+        byte[] $r0;
+        int $i0;
+        long tid_writeRegisterByte;
+        java.lang.Thread thread_writeRegisterByte;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        reg := @parameter0: avrora.arch.legacy.LegacyRegister;
+        val := @parameter1: byte;
+        thread_writeRegisterByte = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_writeRegisterByte = virtualinvoke thread_writeRegisterByte.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        $i0 = virtualinvoke reg.<avrora.arch.legacy.LegacyRegister: int getNumber()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_writeRegisterByte, "avrora.sim.AtmelInterpreter", 833, $i0, val);
+        $r0[$i0] = val;
+        return;
+    }
+
+    protected void writeRegisterWord(avrora.arch.legacy.LegacyRegister, int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.arch.legacy.LegacyRegister reg, $r0;
+        int val;
+        byte low, high;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        reg := @parameter0: avrora.arch.legacy.LegacyRegister;
+        val := @parameter1: int;
+        low = staticinvoke <cck.util.Arithmetic: byte low(int)>(val);
+        high = staticinvoke <cck.util.Arithmetic: byte high(int)>(val);
+        virtualinvoke this.<avrora.sim.AtmelInterpreter: void writeRegisterByte(avrora.arch.legacy.LegacyRegister,byte)>(reg, low);
+        $r0 = virtualinvoke reg.<avrora.arch.legacy.LegacyRegister: avrora.arch.legacy.LegacyRegister nextRegister()>();
+        virtualinvoke this.<avrora.sim.AtmelInterpreter: void writeRegisterByte(avrora.arch.legacy.LegacyRegister,byte)>($r0, high);
+        return;
+    }
+
+    public void writeRegisterByte(int, byte)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int reg;
+        byte val;
+        byte[] $r0;
+        long tid_writeRegisterByte;
+        java.lang.Thread thread_writeRegisterByte;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        reg := @parameter0: int;
+        val := @parameter1: byte;
+        thread_writeRegisterByte = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_writeRegisterByte = virtualinvoke thread_writeRegisterByte.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.AtmelInterpreter: byte[] sram>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_writeRegisterByte, "avrora.sim.AtmelInterpreter", 861, reg, val);
+        $r0[reg] = val;
+        return;
+    }
+
+    public void writeRegisterWord(int, int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int reg, val, $i0;
+        byte low, high;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        reg := @parameter0: int;
+        val := @parameter1: int;
+        low = staticinvoke <cck.util.Arithmetic: byte low(int)>(val);
+        high = staticinvoke <cck.util.Arithmetic: byte high(int)>(val);
+        virtualinvoke this.<avrora.sim.AtmelInterpreter: void writeRegisterByte(int,byte)>(reg, low);
+        $i0 = reg + 1;
+        virtualinvoke this.<avrora.sim.AtmelInterpreter: void writeRegisterByte(int,byte)>($i0, high);
+        return;
+    }
+
+    public void writeDataByte(int, byte)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int address;
+        byte val;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        address := @parameter0: int;
+        val := @parameter1: byte;
+        specialinvoke this.<avrora.sim.AtmelInterpreter: void writeSRAM(boolean,int,byte)>(1, address, val);
+        return;
+    }
+
+    public void writeFlashByte(int, byte)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int address;
+        byte val;
+        avrora.sim.CodeSegment $r0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        address := @parameter0: int;
+        val := @parameter1: byte;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.CodeSegment flash>;
+        virtualinvoke $r0.<avrora.sim.CodeSegment: void set(int,byte)>(address, val);
+        return;
+    }
+
+    public void installIOReg(int, avrora.sim.ActiveRegister)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int ioreg, $i0;
+        avrora.sim.ActiveRegister reg;
+        avrora.sim.AtmelInterpreter$IORegBehavior $r0;
+        avrora.sim.state.VolatileBehavior[] $r1;
+        avrora.sim.ActiveRegister[] $r2;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        ioreg := @parameter0: int;
+        reg := @parameter1: avrora.sim.ActiveRegister;
+        $r1 = this.<avrora.sim.AtmelInterpreter: avrora.sim.state.VolatileBehavior[] sram_volatile>;
+        $i0 = staticinvoke <avrora.sim.AtmelInterpreter: int toSRAM(int)>(ioreg);
+        $r0 = new avrora.sim.AtmelInterpreter$IORegBehavior;
+        specialinvoke $r0.<avrora.sim.AtmelInterpreter$IORegBehavior: void <init>(avrora.sim.ActiveRegister)>(reg);
+        $r1[$i0] = $r0;
+        $r2 = this.<avrora.sim.AtmelInterpreter: avrora.sim.ActiveRegister[] ioregs>;
+        $r2[ioreg] = reg;
+        return;
+    }
+
+    public avrora.sim.ActiveRegister getIOReg(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int ioreg;
+        avrora.sim.ActiveRegister[] $r0;
+        avrora.sim.ActiveRegister $r1;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        ioreg := @parameter0: int;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.ActiveRegister[] ioregs>;
+        $r1 = $r0[ioreg];
+        return $r1;
+    }
+
+    private static int toSRAM(int)
+    {
+        int ioreg, $i0;
+
+        ioreg := @parameter0: int;
+        $i0 = ioreg + 32;
+        return $i0;
+    }
+
+    public void installVolatileBehavior(int, avrora.sim.state.VolatileBehavior)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int addr;
+        avrora.sim.state.VolatileBehavior b;
+        avrora.sim.state.VolatileBehavior[] $r0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        addr := @parameter0: int;
+        b := @parameter1: avrora.sim.state.VolatileBehavior;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.state.VolatileBehavior[] sram_volatile>;
+        $r0[addr] = b;
+        return;
+    }
+
+    public void writeIORegisterByte(int, byte)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int ioreg, $i0;
+        byte val;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        ioreg := @parameter0: int;
+        val := @parameter1: byte;
+        $i0 = staticinvoke <avrora.sim.AtmelInterpreter: int toSRAM(int)>(ioreg);
+        specialinvoke this.<avrora.sim.AtmelInterpreter: void writeSRAM(boolean,int,byte)>(1, $i0, val);
+        return;
+    }
+
+    public byte popByte()
+    {
+        avrora.sim.AtmelInterpreter this;
+        int address, $i0;
+        byte $b1;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        $i0 = virtualinvoke this.<avrora.sim.AtmelInterpreter: int getSP()>();
+        address = $i0 + 1;
+        virtualinvoke this.<avrora.sim.AtmelInterpreter: void setSP(int)>(address);
+        $b1 = virtualinvoke this.<avrora.sim.AtmelInterpreter: byte getDataByte(int)>(address);
+        return $b1;
+    }
+
+    public void pushByte(byte)
+    {
+        avrora.sim.AtmelInterpreter this;
+        byte val;
+        int address, $i0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        val := @parameter0: byte;
+        address = virtualinvoke this.<avrora.sim.AtmelInterpreter: int getSP()>();
+        $i0 = address - 1;
+        virtualinvoke this.<avrora.sim.AtmelInterpreter: void setSP(int)>($i0);
+        virtualinvoke this.<avrora.sim.AtmelInterpreter: void writeDataByte(int,byte)>(address, val);
+        return;
+    }
+
+    public void setSP(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int val;
+        avrora.sim.RWRegister $r0;
+        byte $b0;
+        long tid_setSP;
+        java.lang.Thread thread_setSP;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        val := @parameter0: int;
+        thread_setSP = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setSP = virtualinvoke thread_setSP.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.RWRegister SPL_reg>;
+        $b0 = staticinvoke <cck.util.Arithmetic: byte low(int)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>($r0, 17, tid_setSP, "avrora.sim.AtmelInterpreter", 978, $b0);
+        $r0.<avrora.sim.RWRegister: byte value> = $b0;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.RWRegister SPH_reg>;
+        $b0 = staticinvoke <cck.util.Arithmetic: byte high(int)>(val);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>($r0, 17, tid_setSP, "avrora.sim.AtmelInterpreter", 979, $b0);
+        $r0.<avrora.sim.RWRegister: byte value> = $b0;
+        return;
+    }
+
+    public void setBootPC(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int npc;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        npc := @parameter0: int;
+        this.<avrora.sim.AtmelInterpreter: int bootPC> = npc;
+        return;
+    }
+
+    public int getInterruptBase()
+    {
+        avrora.sim.AtmelInterpreter this;
+        int $i0;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        $i0 = this.<avrora.sim.AtmelInterpreter: int interruptBase>;
+        return $i0;
+    }
+
+    public void setInterruptBase(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int npc;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        npc := @parameter0: int;
+        this.<avrora.sim.AtmelInterpreter: int interruptBase> = npc;
+        return;
+    }
+
+    public avrora.arch.legacy.LegacyInstr getInstr(int)
+    {
+        avrora.sim.AtmelInterpreter this;
+        int address;
+        avrora.sim.CodeSegment $r0;
+        avrora.arch.legacy.LegacyInstr $r1;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        address := @parameter0: int;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.CodeSegment flash>;
+        $r1 = virtualinvoke $r0.<avrora.sim.CodeSegment: avrora.arch.legacy.LegacyInstr readInstr(int)>(address);
+        return $r1;
+    }
+
+    public int getSP()
+    {
+        avrora.sim.AtmelInterpreter this;
+        byte low, high;
+        avrora.sim.RWRegister $r0;
+        char $c0;
+        long tid_getSP;
+        java.lang.Thread thread_getSP;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        thread_getSP = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getSP = virtualinvoke thread_getSP.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.RWRegister SPL_reg>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>($r0, 17, tid_getSP, "avrora.sim.AtmelInterpreter", 1030, low);
+        low = $r0.<avrora.sim.RWRegister: byte value>;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.RWRegister SPH_reg>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>($r0, 17, tid_getSP, "avrora.sim.AtmelInterpreter", 1031, high);
+        high = $r0.<avrora.sim.RWRegister: byte value>;
+        $c0 = staticinvoke <cck.util.Arithmetic: char uword(byte,byte)>(low, high);
+        return $c0;
+    }
+
+    public void enableInterrupts()
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.sim.InterruptTable $r0;
+        long tid_enableInterrupts;
+        java.lang.Thread thread_enableInterrupts;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        thread_enableInterrupts = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_enableInterrupts = virtualinvoke thread_enableInterrupts.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 7, tid_enableInterrupts, "avrora.sim.AtmelInterpreter", 1039, 1);
+        this.<avrora.sim.AtmelInterpreter: boolean I> = 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 9, tid_enableInterrupts, "avrora.sim.AtmelInterpreter", 1040, 0);
+        this.<avrora.sim.AtmelInterpreter: boolean innerLoop> = 0;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.InterruptTable interrupts>;
+        virtualinvoke $r0.<avrora.sim.InterruptTable: void enableAll()>();
+        return;
+    }
+
+    public void disableInterrupts()
+    {
+        avrora.sim.AtmelInterpreter this;
+        avrora.sim.InterruptTable $r0;
+        long tid_disableInterrupts;
+        java.lang.Thread thread_disableInterrupts;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        thread_disableInterrupts = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_disableInterrupts = virtualinvoke thread_disableInterrupts.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 7, tid_disableInterrupts, "avrora.sim.AtmelInterpreter", 1048, 0);
+        this.<avrora.sim.AtmelInterpreter: boolean I> = 0;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.InterruptTable interrupts>;
+        virtualinvoke $r0.<avrora.sim.InterruptTable: void disableAll()>();
+        return;
+    }
+
+    protected void commit()
+    {
+        avrora.sim.AtmelInterpreter this;
+        int $i0;
+        avrora.sim.clock.MainClock $r0;
+        long $l1, tid_commit;
+        java.lang.Thread thread_commit;
+
+        this := @this: avrora.sim.AtmelInterpreter;
+        thread_commit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_commit = virtualinvoke thread_commit.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 2, tid_commit, "avrora.sim.AtmelInterpreter", 1057, $i0);
+        $i0 = this.<avrora.sim.AtmelInterpreter: int nextPC>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 1, tid_commit, "avrora.sim.AtmelInterpreter", 1057, $i0);
+        this.<avrora.sim.AtmelInterpreter: int pc> = $i0;
+        $r0 = this.<avrora.sim.AtmelInterpreter: avrora.sim.clock.MainClock clock>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 3, tid_commit, "avrora.sim.AtmelInterpreter", 1058, $i0);
+        $i0 = this.<avrora.sim.AtmelInterpreter: int cyclesConsumed>;
+        $l1 = (long) $i0;
+        virtualinvoke $r0.<avrora.sim.clock.MainClock: void advance(long)>($l1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 3, tid_commit, "avrora.sim.AtmelInterpreter", 1059, 0);
+        this.<avrora.sim.AtmelInterpreter: int cyclesConsumed> = 0;
+        return;
+    }
+
+    static byte access$000(avrora.sim.AtmelInterpreter, boolean, int)
+    {
+        avrora.sim.AtmelInterpreter x0;
+        boolean x1;
+        int x2;
+        byte $b0;
+
+        x0 := @parameter0: avrora.sim.AtmelInterpreter;
+        x1 := @parameter1: boolean;
+        x2 := @parameter2: int;
+        $b0 = specialinvoke x0.<avrora.sim.AtmelInterpreter: byte readSRAM(boolean,int)>(x1, x2);
+        return $b0;
+    }
+}

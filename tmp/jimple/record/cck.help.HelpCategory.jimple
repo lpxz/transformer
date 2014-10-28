@@ -1,0 +1,340 @@
+public class cck.help.HelpCategory extends java.lang.Object implements cck.help.HelpItem
+{
+    public final cck.util.Options options;
+    public java.lang.String name;
+    public final java.lang.String help;
+    private final java.util.LinkedList sections;
+    public static final java.util.Comparator COMPARATOR;
+
+    protected cck.util.Option$Bool newOption(java.lang.String, boolean, java.lang.String)
+    {
+        cck.help.HelpCategory this;
+        java.lang.String name, desc;
+        boolean val;
+        cck.util.Options $r0;
+        cck.util.Option$Bool $r1;
+
+        this := @this: cck.help.HelpCategory;
+        name := @parameter0: java.lang.String;
+        val := @parameter1: boolean;
+        desc := @parameter2: java.lang.String;
+        $r0 = this.<cck.help.HelpCategory: cck.util.Options options>;
+        $r1 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>(name, val, desc);
+        return $r1;
+    }
+
+    protected cck.util.Option$Long newOption(java.lang.String, long, java.lang.String)
+    {
+        cck.help.HelpCategory this;
+        java.lang.String name, desc;
+        long val;
+        cck.util.Options $r0;
+        cck.util.Option$Long $r1;
+
+        this := @this: cck.help.HelpCategory;
+        name := @parameter0: java.lang.String;
+        val := @parameter1: long;
+        desc := @parameter2: java.lang.String;
+        $r0 = this.<cck.help.HelpCategory: cck.util.Options options>;
+        $r1 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Long newOption(java.lang.String,long,java.lang.String)>(name, val, desc);
+        return $r1;
+    }
+
+    protected cck.util.Option$Double newOption(java.lang.String, double, java.lang.String)
+    {
+        cck.help.HelpCategory this;
+        java.lang.String name, desc;
+        double val;
+        cck.util.Options $r0;
+        cck.util.Option$Double $r1;
+
+        this := @this: cck.help.HelpCategory;
+        name := @parameter0: java.lang.String;
+        val := @parameter1: double;
+        desc := @parameter2: java.lang.String;
+        $r0 = this.<cck.help.HelpCategory: cck.util.Options options>;
+        $r1 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Double newOption(java.lang.String,double,java.lang.String)>(name, val, desc);
+        return $r1;
+    }
+
+    protected cck.util.Option$Interval newOption(java.lang.String, long, long, java.lang.String)
+    {
+        cck.help.HelpCategory this;
+        java.lang.String name, desc;
+        long l, h;
+        cck.util.Options $r0;
+        cck.util.Option$Interval $r1;
+
+        this := @this: cck.help.HelpCategory;
+        name := @parameter0: java.lang.String;
+        l := @parameter1: long;
+        h := @parameter2: long;
+        desc := @parameter3: java.lang.String;
+        $r0 = this.<cck.help.HelpCategory: cck.util.Options options>;
+        $r1 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Interval newOption(java.lang.String,long,long,java.lang.String)>(name, l, h, desc);
+        return $r1;
+    }
+
+    protected cck.util.Option$Str newOption(java.lang.String, java.lang.String, java.lang.String)
+    {
+        cck.help.HelpCategory this;
+        java.lang.String name, val, desc;
+        cck.util.Options $r0;
+        cck.util.Option$Str $r1;
+
+        this := @this: cck.help.HelpCategory;
+        name := @parameter0: java.lang.String;
+        val := @parameter1: java.lang.String;
+        desc := @parameter2: java.lang.String;
+        $r0 = this.<cck.help.HelpCategory: cck.util.Options options>;
+        $r1 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>(name, val, desc);
+        return $r1;
+    }
+
+    protected cck.util.Option$List newOptionList(java.lang.String, java.lang.String, java.lang.String)
+    {
+        cck.help.HelpCategory this;
+        java.lang.String name, val, desc;
+        cck.util.Options $r0;
+        cck.util.Option$List $r1;
+
+        this := @this: cck.help.HelpCategory;
+        name := @parameter0: java.lang.String;
+        val := @parameter1: java.lang.String;
+        desc := @parameter2: java.lang.String;
+        $r0 = this.<cck.help.HelpCategory: cck.util.Options options>;
+        $r1 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>(name, val, desc);
+        return $r1;
+    }
+
+    public void <init>(java.lang.String, java.lang.String)
+    {
+        cck.help.HelpCategory this;
+        java.lang.String name, help;
+        cck.util.Options $r0;
+        java.util.LinkedList $r1;
+
+        this := @this: cck.help.HelpCategory;
+        name := @parameter0: java.lang.String;
+        help := @parameter1: java.lang.String;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new cck.util.Options;
+        specialinvoke $r0.<cck.util.Options: void <init>()>();
+        this.<cck.help.HelpCategory: cck.util.Options options> = $r0;
+        this.<cck.help.HelpCategory: java.lang.String name> = name;
+        this.<cck.help.HelpCategory: java.lang.String help> = help;
+        $r1 = new java.util.LinkedList;
+        specialinvoke $r1.<java.util.LinkedList: void <init>()>();
+        this.<cck.help.HelpCategory: java.util.LinkedList sections> = $r1;
+        return;
+    }
+
+    public java.lang.String getHelp()
+    {
+        cck.help.HelpCategory this;
+        java.lang.String $r0;
+
+        this := @this: cck.help.HelpCategory;
+        $r0 = this.<cck.help.HelpCategory: java.lang.String help>;
+        return $r0;
+    }
+
+    public java.lang.String getName()
+    {
+        cck.help.HelpCategory this;
+        java.lang.String $r0;
+
+        this := @this: cck.help.HelpCategory;
+        $r0 = this.<cck.help.HelpCategory: java.lang.String name>;
+        return $r0;
+    }
+
+    public void setName(java.lang.String)
+    {
+        cck.help.HelpCategory this;
+        java.lang.String nm;
+
+        this := @this: cck.help.HelpCategory;
+        nm := @parameter0: java.lang.String;
+        this.<cck.help.HelpCategory: java.lang.String name> = nm;
+        return;
+    }
+
+    public void addSection(java.lang.String, java.lang.String)
+    {
+        cck.help.HelpCategory this;
+        java.lang.String title, paragraph;
+        cck.help.HelpCategory$ParagraphSection $r0;
+        java.util.LinkedList $r1;
+
+        this := @this: cck.help.HelpCategory;
+        title := @parameter0: java.lang.String;
+        paragraph := @parameter1: java.lang.String;
+        $r1 = this.<cck.help.HelpCategory: java.util.LinkedList sections>;
+        $r0 = new cck.help.HelpCategory$ParagraphSection;
+        specialinvoke $r0.<cck.help.HelpCategory$ParagraphSection: void <init>(cck.help.HelpCategory,java.lang.String,java.lang.String)>(this, title, paragraph);
+        virtualinvoke $r1.<java.util.LinkedList: void addLast(java.lang.Object)>($r0);
+        return;
+    }
+
+    public void addOptionSection(java.lang.String, cck.util.Options)
+    {
+        cck.help.HelpCategory this;
+        java.lang.String para;
+        cck.util.Options opts;
+        cck.help.HelpCategory$OptionsSection $r0;
+        java.util.LinkedList $r1;
+
+        this := @this: cck.help.HelpCategory;
+        para := @parameter0: java.lang.String;
+        opts := @parameter1: cck.util.Options;
+        $r1 = this.<cck.help.HelpCategory: java.util.LinkedList sections>;
+        $r0 = new cck.help.HelpCategory$OptionsSection;
+        specialinvoke $r0.<cck.help.HelpCategory$OptionsSection: void <init>(cck.help.HelpCategory,java.lang.String,cck.util.Options)>(this, para, opts);
+        virtualinvoke $r1.<java.util.LinkedList: void addLast(java.lang.Object)>($r0);
+        return;
+    }
+
+    public void addListSection(java.lang.String, java.lang.String, java.util.List)
+    {
+        cck.help.HelpCategory this;
+        java.lang.String title, para;
+        java.util.List l;
+        cck.help.HelpCategory$ListSection $r0;
+        java.util.LinkedList $r1;
+
+        this := @this: cck.help.HelpCategory;
+        title := @parameter0: java.lang.String;
+        para := @parameter1: java.lang.String;
+        l := @parameter2: java.util.List;
+        $r1 = this.<cck.help.HelpCategory: java.util.LinkedList sections>;
+        $r0 = new cck.help.HelpCategory$ListSection;
+        specialinvoke $r0.<cck.help.HelpCategory$ListSection: void <init>(cck.help.HelpCategory,java.lang.String,java.lang.String,java.util.List)>(this, title, para, l);
+        virtualinvoke $r1.<java.util.LinkedList: void addLast(java.lang.Object)>($r0);
+        return;
+    }
+
+    public void addSubcategorySection(java.lang.String, java.lang.String, java.util.List)
+    {
+        cck.help.HelpCategory this, hc;
+        java.lang.String title, para;
+        java.util.List l;
+        java.util.Iterator i;
+        java.util.LinkedList sl, $r0;
+        boolean $z0;
+        java.lang.Object $r1;
+        cck.help.SubcategoryItem $r2;
+
+        this := @this: cck.help.HelpCategory;
+        title := @parameter0: java.lang.String;
+        para := @parameter1: java.lang.String;
+        l := @parameter2: java.util.List;
+        i = interfaceinvoke l.<java.util.List: java.util.Iterator iterator()>();
+        $r0 = new java.util.LinkedList;
+        specialinvoke $r0.<java.util.LinkedList: void <init>()>();
+        sl = $r0;
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r1 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        hc = (cck.help.HelpCategory) $r1;
+        $r2 = new cck.help.SubcategoryItem;
+        specialinvoke $r2.<cck.help.SubcategoryItem: void <init>(int,cck.help.HelpCategory)>(4, hc);
+        virtualinvoke sl.<java.util.LinkedList: void addLast(java.lang.Object)>($r2);
+        goto label0;
+
+     label1:
+        virtualinvoke this.<cck.help.HelpCategory: void addListSection(java.lang.String,java.lang.String,java.util.List)>(title, para, sl);
+        return;
+    }
+
+    public void addOptionValueSection(java.lang.String, java.lang.String, java.lang.String, cck.util.ClassMap)
+    {
+        cck.help.HelpCategory this;
+        java.lang.String title, para, optname, s;
+        cck.util.ClassMap optvals;
+        java.util.LinkedList $r0, list;
+        java.util.Iterator i;
+        java.util.List $r1;
+        boolean $z0;
+        java.lang.Object $r2;
+        cck.help.ClassMapValueItem $r3;
+
+        this := @this: cck.help.HelpCategory;
+        title := @parameter0: java.lang.String;
+        para := @parameter1: java.lang.String;
+        optname := @parameter2: java.lang.String;
+        optvals := @parameter3: cck.util.ClassMap;
+        $r0 = new java.util.LinkedList;
+        specialinvoke $r0.<java.util.LinkedList: void <init>()>();
+        list = $r0;
+        $r1 = virtualinvoke optvals.<cck.util.ClassMap: java.util.List getSortedList()>();
+        i = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r2 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        s = (java.lang.String) $r2;
+        $r3 = new cck.help.ClassMapValueItem;
+        specialinvoke $r3.<cck.help.ClassMapValueItem: void <init>(int,java.lang.String,java.lang.String,cck.util.ClassMap)>(4, optname, s, optvals);
+        virtualinvoke list.<java.util.LinkedList: void addLast(java.lang.Object)>($r3);
+        goto label0;
+
+     label1:
+        virtualinvoke this.<cck.help.HelpCategory: void addListSection(java.lang.String,java.lang.String,java.util.List)>(title, para, list);
+        return;
+    }
+
+    public void addCommandExample(java.lang.String, java.lang.String)
+    {
+        cck.help.HelpCategory this;
+        java.lang.String prefix, command;
+        cck.util.Util$InternalError $r0;
+
+        this := @this: cck.help.HelpCategory;
+        prefix := @parameter0: java.lang.String;
+        command := @parameter1: java.lang.String;
+        $r0 = staticinvoke <cck.util.Util: cck.util.Util$InternalError unimplemented()>();
+        throw $r0;
+    }
+
+    public void printHelp()
+    {
+        cck.help.HelpCategory this;
+        java.util.Iterator i;
+        cck.help.HelpCategory$Section s;
+        java.util.LinkedList $r0;
+        boolean $z0;
+        java.lang.Object $r1;
+
+        this := @this: cck.help.HelpCategory;
+        $r0 = this.<cck.help.HelpCategory: java.util.LinkedList sections>;
+        i = virtualinvoke $r0.<java.util.LinkedList: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r1 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        s = (cck.help.HelpCategory$Section) $r1;
+        virtualinvoke s.<cck.help.HelpCategory$Section: void printHelp()>();
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    static void <clinit>()
+    {
+        cck.help.HelpCategory$1 $r0;
+
+        $r0 = new cck.help.HelpCategory$1;
+        specialinvoke $r0.<cck.help.HelpCategory$1: void <init>()>();
+        <cck.help.HelpCategory: java.util.Comparator COMPARATOR> = $r0;
+        return;
+    }
+}

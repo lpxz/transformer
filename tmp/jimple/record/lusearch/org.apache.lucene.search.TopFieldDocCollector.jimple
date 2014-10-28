@@ -1,0 +1,126 @@
+public class org.apache.lucene.search.TopFieldDocCollector extends org.apache.lucene.search.TopDocCollector
+{
+    private org.apache.lucene.search.FieldDoc reusableFD;
+
+    public void <init>(org.apache.lucene.index.IndexReader, org.apache.lucene.search.Sort, int) throws java.io.IOException
+    {
+        org.apache.lucene.search.TopFieldDocCollector this;
+        org.apache.lucene.index.IndexReader reader;
+        org.apache.lucene.search.Sort sort;
+        int numHits;
+        org.apache.lucene.search.SortField[] $r1;
+        org.apache.lucene.search.FieldSortedHitQueue tmp$546969416;
+        org.apache.lucene.util.PriorityQueue tmp;
+
+        this := @this: org.apache.lucene.search.TopFieldDocCollector;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        sort := @parameter1: org.apache.lucene.search.Sort;
+        numHits := @parameter2: int;
+        tmp$546969416 = new org.apache.lucene.search.FieldSortedHitQueue;
+        $r1 = sort.<org.apache.lucene.search.Sort: org.apache.lucene.search.SortField[] fields>;
+        specialinvoke tmp$546969416.<org.apache.lucene.search.FieldSortedHitQueue: void <init>(org.apache.lucene.index.IndexReader,org.apache.lucene.search.SortField[],int)>(reader, $r1, numHits);
+        tmp = (org.apache.lucene.util.PriorityQueue) tmp$546969416;
+        specialinvoke this.<org.apache.lucene.search.TopDocCollector: void <init>(org.apache.lucene.util.PriorityQueue)>(tmp);
+        return;
+    }
+
+    public void collect(int, float)
+    {
+        org.apache.lucene.search.TopFieldDocCollector this;
+        int doc, $i1;
+        float score;
+        byte $b0;
+        org.apache.lucene.search.FieldDoc $r1, $r2, $r4;
+        org.apache.lucene.util.PriorityQueue $r3;
+        java.lang.Object $r5;
+        long tid_collect;
+        java.lang.Thread thread_collect;
+
+        this := @this: org.apache.lucene.search.TopFieldDocCollector;
+        doc := @parameter0: int;
+        score := @parameter1: float;
+        thread_collect = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_collect = virtualinvoke thread_collect.<java.lang.Thread: long getId()>();
+        $b0 = score cmpl 0.0F;
+        if $b0 <= 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 116, tid_collect, "org.apache.lucene.search.TopFieldDocCollector", 49, $i1);
+        $i1 = this.<org.apache.lucene.search.TopFieldDocCollector: int totalHits>;
+        $i1 = $i1 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 116, tid_collect, "org.apache.lucene.search.TopFieldDocCollector", 49, $i1);
+        this.<org.apache.lucene.search.TopFieldDocCollector: int totalHits> = $i1;
+        $r1 = this.<org.apache.lucene.search.TopFieldDocCollector: org.apache.lucene.search.FieldDoc reusableFD>;
+        if $r1 != null goto label0;
+
+        $r2 = new org.apache.lucene.search.FieldDoc;
+        specialinvoke $r2.<org.apache.lucene.search.FieldDoc: void <init>(int,float)>(doc, score);
+        this.<org.apache.lucene.search.TopFieldDocCollector: org.apache.lucene.search.FieldDoc reusableFD> = $r2;
+        goto label1;
+
+     label0:
+        $r1 = this.<org.apache.lucene.search.TopFieldDocCollector: org.apache.lucene.search.FieldDoc reusableFD>;
+        $r1.<org.apache.lucene.search.FieldDoc: float score> = score;
+        $r1 = this.<org.apache.lucene.search.TopFieldDocCollector: org.apache.lucene.search.FieldDoc reusableFD>;
+        $r1.<org.apache.lucene.search.FieldDoc: int doc> = doc;
+
+     label1:
+        $r3 = this.<org.apache.lucene.search.TopFieldDocCollector: org.apache.lucene.util.PriorityQueue hq>;
+        $r4 = this.<org.apache.lucene.search.TopFieldDocCollector: org.apache.lucene.search.FieldDoc reusableFD>;
+        $r5 = virtualinvoke $r3.<org.apache.lucene.util.PriorityQueue: java.lang.Object insertWithOverflow(java.lang.Object)>($r4);
+        $r2 = (org.apache.lucene.search.FieldDoc) $r5;
+        this.<org.apache.lucene.search.TopFieldDocCollector: org.apache.lucene.search.FieldDoc reusableFD> = $r2;
+
+     label2:
+        return;
+    }
+
+    public org.apache.lucene.search.TopDocs topDocs()
+    {
+        org.apache.lucene.search.TopFieldDocCollector this;
+        org.apache.lucene.search.FieldSortedHitQueue fshq;
+        java.lang.Object[] scoreDocs;
+        int i, $i0, $i1;
+        org.apache.lucene.util.PriorityQueue $r0;
+        java.lang.Object $r1;
+        org.apache.lucene.search.FieldDoc $r2, $r3;
+        org.apache.lucene.search.SortField[] $r5;
+        float $f0;
+        org.apache.lucene.search.TopFieldDocs tmp$546411386;
+        org.apache.lucene.search.ScoreDoc[] tmp;
+        org.apache.lucene.search.TopDocs tmp;
+        long tid_topDocs;
+        java.lang.Thread thread_topDocs;
+
+        this := @this: org.apache.lucene.search.TopFieldDocCollector;
+        thread_topDocs = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_topDocs = virtualinvoke thread_topDocs.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.search.TopFieldDocCollector: org.apache.lucene.util.PriorityQueue hq>;
+        fshq = (org.apache.lucene.search.FieldSortedHitQueue) $r0;
+        $i0 = virtualinvoke fshq.<org.apache.lucene.search.FieldSortedHitQueue: int size()>();
+        scoreDocs = newarray (org.apache.lucene.search.ScoreDoc)[$i0];
+        $i0 = virtualinvoke fshq.<org.apache.lucene.search.FieldSortedHitQueue: int size()>();
+        i = $i0 - 1;
+
+     label0:
+        if i < 0 goto label1;
+
+        $r1 = virtualinvoke fshq.<org.apache.lucene.search.FieldSortedHitQueue: java.lang.Object pop()>();
+        $r2 = (org.apache.lucene.search.FieldDoc) $r1;
+        $r3 = virtualinvoke fshq.<org.apache.lucene.search.FieldSortedHitQueue: org.apache.lucene.search.FieldDoc fillFields(org.apache.lucene.search.FieldDoc)>($r2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(scoreDocs, 141, tid_topDocs, "org.apache.lucene.search.TopFieldDocCollector", 70, i, $r3);
+        scoreDocs[i] = $r3;
+        i = i + -1;
+        goto label0;
+
+     label1:
+        tmp$546411386 = new org.apache.lucene.search.TopFieldDocs;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 116, tid_topDocs, "org.apache.lucene.search.TopFieldDocCollector", 72, $i1);
+        $i1 = this.<org.apache.lucene.search.TopFieldDocCollector: int totalHits>;
+        $r5 = virtualinvoke fshq.<org.apache.lucene.search.FieldSortedHitQueue: org.apache.lucene.search.SortField[] getFields()>();
+        $f0 = virtualinvoke fshq.<org.apache.lucene.search.FieldSortedHitQueue: float getMaxScore()>();
+        tmp = (org.apache.lucene.search.ScoreDoc[]) scoreDocs;
+        specialinvoke tmp$546411386.<org.apache.lucene.search.TopFieldDocs: void <init>(int,org.apache.lucene.search.ScoreDoc[],org.apache.lucene.search.SortField[],float)>($i1, tmp, $r5, $f0);
+        tmp = (org.apache.lucene.search.TopDocs) tmp$546411386;
+        return tmp;
+    }
+}

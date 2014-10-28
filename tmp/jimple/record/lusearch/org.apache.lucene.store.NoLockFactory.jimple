@@ -1,0 +1,61 @@
+public class org.apache.lucene.store.NoLockFactory extends org.apache.lucene.store.LockFactory
+{
+    private static org.apache.lucene.store.NoLock singletonLock;
+    private static org.apache.lucene.store.NoLockFactory singleton;
+
+    public void <init>()
+    {
+        org.apache.lucene.store.NoLockFactory this;
+
+        this := @this: org.apache.lucene.store.NoLockFactory;
+        specialinvoke this.<org.apache.lucene.store.LockFactory: void <init>()>();
+        return;
+    }
+
+    public static org.apache.lucene.store.NoLockFactory getNoLockFactory()
+    {
+        org.apache.lucene.store.NoLockFactory $r0;
+
+        nop;
+        $r0 = <org.apache.lucene.store.NoLockFactory: org.apache.lucene.store.NoLockFactory singleton>;
+        return $r0;
+    }
+
+    public org.apache.lucene.store.Lock makeLock(java.lang.String)
+    {
+        org.apache.lucene.store.NoLockFactory this;
+        java.lang.String lockName;
+        org.apache.lucene.store.NoLock $r0;
+        org.apache.lucene.store.Lock tmp;
+
+        this := @this: org.apache.lucene.store.NoLockFactory;
+        lockName := @parameter0: java.lang.String;
+        $r0 = <org.apache.lucene.store.NoLockFactory: org.apache.lucene.store.NoLock singletonLock>;
+        tmp = (org.apache.lucene.store.Lock) $r0;
+        return tmp;
+    }
+
+    public void clearLock(java.lang.String)
+    {
+        org.apache.lucene.store.NoLockFactory this;
+        java.lang.String lockName;
+
+        this := @this: org.apache.lucene.store.NoLockFactory;
+        lockName := @parameter0: java.lang.String;
+        return;
+    }
+
+    static void <clinit>()
+    {
+        org.apache.lucene.store.NoLock $r0;
+        org.apache.lucene.store.NoLockFactory $r1;
+
+        $r0 = new org.apache.lucene.store.NoLock;
+        specialinvoke $r0.<org.apache.lucene.store.NoLock: void <init>()>();
+        <org.apache.lucene.store.NoLockFactory: org.apache.lucene.store.NoLock singletonLock> = $r0;
+        $r1 = new org.apache.lucene.store.NoLockFactory;
+        specialinvoke $r1.<org.apache.lucene.store.NoLockFactory: void <init>()>();
+        <org.apache.lucene.store.NoLockFactory: org.apache.lucene.store.NoLockFactory singleton> = $r1;
+        return;
+    }
+}

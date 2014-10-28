@@ -1,0 +1,113 @@
+public class avrora.monitors.SPIMonitor extends avrora.monitors.MonitorFactory
+{
+    protected final cck.util.Option$List PORTS;
+    protected final cck.util.Option$Long BPS;
+    protected final cck.util.Option$Bool MASTER;
+    java.util.HashMap portMap;
+
+    public void <init>()
+    {
+        avrora.monitors.SPIMonitor this;
+        cck.util.Option$List $r0;
+        cck.util.Option$Long $r1;
+        cck.util.Option$Bool $r2;
+        java.util.HashMap $r3;
+
+        this := @this: avrora.monitors.SPIMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"spi\" monitor allows the SPI of a node in the simulation to be connected to a socket so that data from the program running in the simulation can be outputted, and external data can be fed into the SPI of the simulated node.");
+        $r0 = virtualinvoke this.<avrora.monitors.SPIMonitor: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("ports", "0:2391", "The \"ports\" option specifies a list of server ports that the simulator will listen on to connect to the serial forwarder for each node. The format is to first give the node number, and then the port number ($node:$port,$node:$port).");
+        this.<avrora.monitors.SPIMonitor: cck.util.Option$List PORTS> = $r0;
+        $r1 = virtualinvoke this.<avrora.monitors.SPIMonitor: cck.util.Option$Long newOption(java.lang.String,long,java.lang.String)>("bps", 2400L, "This option controls the bit rate of the controlling SPI transfer device.");
+        this.<avrora.monitors.SPIMonitor: cck.util.Option$Long BPS> = $r1;
+        $r2 = virtualinvoke this.<avrora.monitors.SPIMonitor: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("master", 1, "This option controls whether the SPI forwarder device will act as the master or the slave in the SPI connection.");
+        this.<avrora.monitors.SPIMonitor: cck.util.Option$Bool MASTER> = $r2;
+        $r3 = new java.util.HashMap;
+        specialinvoke $r3.<java.util.HashMap: void <init>()>();
+        this.<avrora.monitors.SPIMonitor: java.util.HashMap portMap> = $r3;
+        return;
+    }
+
+    public void processOptions(cck.util.Options)
+    {
+        avrora.monitors.SPIMonitor this;
+        cck.util.Options o;
+
+        this := @this: avrora.monitors.SPIMonitor;
+        o := @parameter0: cck.util.Options;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void processOptions(cck.util.Options)>(o);
+        specialinvoke this.<avrora.monitors.SPIMonitor: void processSocketConnections()>();
+        return;
+    }
+
+    private void processSocketConnections()
+    {
+        avrora.monitors.SPIMonitor this;
+        java.util.Iterator i;
+        java.lang.String pid, $r3;
+        java.lang.String[] str;
+        int nid, port, $i0;
+        avrora.monitors.SPIMonitor$SocketConnection conn, $r4;
+        cck.util.Option$List $r0;
+        java.util.List $r1;
+        boolean $z0;
+        java.lang.Object $r2;
+        java.util.HashMap $r5;
+        java.lang.Integer $r6;
+        long tid_processSocketConnections;
+        java.lang.Thread thread_processSocketConnections;
+
+        this := @this: avrora.monitors.SPIMonitor;
+        thread_processSocketConnections = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_processSocketConnections = virtualinvoke thread_processSocketConnections.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.monitors.SPIMonitor: cck.util.Option$List PORTS>;
+        $r1 = virtualinvoke $r0.<cck.util.Option$List: java.util.List get()>();
+        i = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r2 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        pid = (java.lang.String) $r2;
+        str = virtualinvoke pid.<java.lang.String: java.lang.String[] split(java.lang.String)>(":");
+        $i0 = lengthof str;
+        if $i0 >= 2 goto label1;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String)>("Format error in \"ports\" option");
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(str, 18, tid_processSocketConnections, "avrora.monitors.SPIMonitor", 132, 0, $r3);
+        $r3 = str[0];
+        nid = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(str, 18, tid_processSocketConnections, "avrora.monitors.SPIMonitor", 133, 1, $r3);
+        $r3 = str[1];
+        port = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r3);
+        $r4 = new avrora.monitors.SPIMonitor$SocketConnection;
+        specialinvoke $r4.<avrora.monitors.SPIMonitor$SocketConnection: void <init>(avrora.monitors.SPIMonitor)>(this);
+        conn = $r4;
+        conn.<avrora.monitors.SPIMonitor$SocketConnection: int port> = port;
+        $r5 = this.<avrora.monitors.SPIMonitor: java.util.HashMap portMap>;
+        $r6 = new java.lang.Integer;
+        specialinvoke $r6.<java.lang.Integer: void <init>(int)>(nid);
+        virtualinvoke $r5.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r6, conn);
+        goto label0;
+
+     label2:
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.SPIMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.SPIMonitor$Monitor tmp$542708645;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.SPIMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$542708645 = new avrora.monitors.SPIMonitor$Monitor;
+        specialinvoke tmp$542708645.<avrora.monitors.SPIMonitor$Monitor: void <init>(avrora.monitors.SPIMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$542708645;
+        return tmp;
+    }
+}

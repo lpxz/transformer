@@ -1,0 +1,318 @@
+public class org.apache.lucene.search.IndexSearcher extends org.apache.lucene.search.Searcher
+{
+    org.apache.lucene.index.IndexReader reader;
+    private boolean closeReader;
+
+    public void <init>(java.lang.String) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        java.lang.String path;
+        org.apache.lucene.index.IndexReader $r0;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        path := @parameter0: java.lang.String;
+        $r0 = staticinvoke <org.apache.lucene.index.IndexReader: org.apache.lucene.index.IndexReader open(java.lang.String)>(path);
+        specialinvoke this.<org.apache.lucene.search.IndexSearcher: void <init>(org.apache.lucene.index.IndexReader,boolean)>($r0, 1);
+        return;
+    }
+
+    public void <init>(org.apache.lucene.store.Directory) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        org.apache.lucene.store.Directory directory;
+        org.apache.lucene.index.IndexReader $r0;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        directory := @parameter0: org.apache.lucene.store.Directory;
+        $r0 = staticinvoke <org.apache.lucene.index.IndexReader: org.apache.lucene.index.IndexReader open(org.apache.lucene.store.Directory)>(directory);
+        specialinvoke this.<org.apache.lucene.search.IndexSearcher: void <init>(org.apache.lucene.index.IndexReader,boolean)>($r0, 1);
+        return;
+    }
+
+    public void <init>(org.apache.lucene.index.IndexReader)
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        org.apache.lucene.index.IndexReader r;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        r := @parameter0: org.apache.lucene.index.IndexReader;
+        specialinvoke this.<org.apache.lucene.search.IndexSearcher: void <init>(org.apache.lucene.index.IndexReader,boolean)>(r, 0);
+        return;
+    }
+
+    private void <init>(org.apache.lucene.index.IndexReader, boolean)
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        org.apache.lucene.index.IndexReader r;
+        boolean closeReader;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        r := @parameter0: org.apache.lucene.index.IndexReader;
+        closeReader := @parameter1: boolean;
+        specialinvoke this.<org.apache.lucene.search.Searcher: void <init>()>();
+        this.<org.apache.lucene.search.IndexSearcher: org.apache.lucene.index.IndexReader reader> = r;
+        this.<org.apache.lucene.search.IndexSearcher: boolean closeReader> = closeReader;
+        return;
+    }
+
+    public org.apache.lucene.index.IndexReader getIndexReader()
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        org.apache.lucene.index.IndexReader $r0;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        $r0 = this.<org.apache.lucene.search.IndexSearcher: org.apache.lucene.index.IndexReader reader>;
+        return $r0;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        boolean $z0;
+        org.apache.lucene.index.IndexReader $r0;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        $z0 = this.<org.apache.lucene.search.IndexSearcher: boolean closeReader>;
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<org.apache.lucene.search.IndexSearcher: org.apache.lucene.index.IndexReader reader>;
+        virtualinvoke $r0.<org.apache.lucene.index.IndexReader: void close()>();
+
+     label0:
+        return;
+    }
+
+    public int docFreq(org.apache.lucene.index.Term) throws java.io.IOException
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        org.apache.lucene.index.Term term;
+        org.apache.lucene.index.IndexReader $r0;
+        int $i0;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        term := @parameter0: org.apache.lucene.index.Term;
+        $r0 = this.<org.apache.lucene.search.IndexSearcher: org.apache.lucene.index.IndexReader reader>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: int docFreq(org.apache.lucene.index.Term)>(term);
+        return $i0;
+    }
+
+    public org.apache.lucene.document.Document doc(int) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        int i;
+        org.apache.lucene.index.IndexReader $r0;
+        org.apache.lucene.document.Document $r1;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        i := @parameter0: int;
+        $r0 = this.<org.apache.lucene.search.IndexSearcher: org.apache.lucene.index.IndexReader reader>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: org.apache.lucene.document.Document document(int)>(i);
+        return $r1;
+    }
+
+    public org.apache.lucene.document.Document doc(int, org.apache.lucene.document.FieldSelector) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        int i;
+        org.apache.lucene.document.FieldSelector fieldSelector;
+        org.apache.lucene.index.IndexReader $r0;
+        org.apache.lucene.document.Document $r1;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        i := @parameter0: int;
+        fieldSelector := @parameter1: org.apache.lucene.document.FieldSelector;
+        $r0 = this.<org.apache.lucene.search.IndexSearcher: org.apache.lucene.index.IndexReader reader>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: org.apache.lucene.document.Document document(int,org.apache.lucene.document.FieldSelector)>(i, fieldSelector);
+        return $r1;
+    }
+
+    public int maxDoc() throws java.io.IOException
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        org.apache.lucene.index.IndexReader $r0;
+        int $i0;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        $r0 = this.<org.apache.lucene.search.IndexSearcher: org.apache.lucene.index.IndexReader reader>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: int maxDoc()>();
+        return $i0;
+    }
+
+    public org.apache.lucene.search.TopDocs search(org.apache.lucene.search.Weight, org.apache.lucene.search.Filter, int) throws java.io.IOException
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        org.apache.lucene.search.Weight weight;
+        org.apache.lucene.search.Filter filter;
+        int nDocs;
+        org.apache.lucene.search.TopDocCollector collector, $r1;
+        java.lang.IllegalArgumentException $r0;
+        org.apache.lucene.search.TopDocs $r2;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        weight := @parameter0: org.apache.lucene.search.Weight;
+        filter := @parameter1: org.apache.lucene.search.Filter;
+        nDocs := @parameter2: int;
+        if nDocs > 0 goto label0;
+
+        $r0 = new java.lang.IllegalArgumentException;
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("nDocs must be > 0");
+        throw $r0;
+
+     label0:
+        $r1 = new org.apache.lucene.search.TopDocCollector;
+        specialinvoke $r1.<org.apache.lucene.search.TopDocCollector: void <init>(int)>(nDocs);
+        collector = $r1;
+        virtualinvoke this.<org.apache.lucene.search.IndexSearcher: void search(org.apache.lucene.search.Weight,org.apache.lucene.search.Filter,org.apache.lucene.search.HitCollector)>(weight, filter, collector);
+        $r2 = virtualinvoke collector.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.search.TopDocs topDocs()>();
+        return $r2;
+    }
+
+    public org.apache.lucene.search.TopFieldDocs search(org.apache.lucene.search.Weight, org.apache.lucene.search.Filter, int, org.apache.lucene.search.Sort) throws java.io.IOException
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        org.apache.lucene.search.Weight weight;
+        org.apache.lucene.search.Filter filter;
+        int nDocs;
+        org.apache.lucene.search.Sort sort;
+        org.apache.lucene.search.TopFieldDocCollector $r0, collector;
+        org.apache.lucene.index.IndexReader $r1;
+        org.apache.lucene.search.TopDocs $r2;
+        org.apache.lucene.search.TopFieldDocs $r3;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        weight := @parameter0: org.apache.lucene.search.Weight;
+        filter := @parameter1: org.apache.lucene.search.Filter;
+        nDocs := @parameter2: int;
+        sort := @parameter3: org.apache.lucene.search.Sort;
+        $r0 = new org.apache.lucene.search.TopFieldDocCollector;
+        $r1 = this.<org.apache.lucene.search.IndexSearcher: org.apache.lucene.index.IndexReader reader>;
+        specialinvoke $r0.<org.apache.lucene.search.TopFieldDocCollector: void <init>(org.apache.lucene.index.IndexReader,org.apache.lucene.search.Sort,int)>($r1, sort, nDocs);
+        collector = $r0;
+        virtualinvoke this.<org.apache.lucene.search.IndexSearcher: void search(org.apache.lucene.search.Weight,org.apache.lucene.search.Filter,org.apache.lucene.search.HitCollector)>(weight, filter, collector);
+        $r2 = virtualinvoke collector.<org.apache.lucene.search.TopFieldDocCollector: org.apache.lucene.search.TopDocs topDocs()>();
+        $r3 = (org.apache.lucene.search.TopFieldDocs) $r2;
+        return $r3;
+    }
+
+    public void search(org.apache.lucene.search.Weight, org.apache.lucene.search.Filter, org.apache.lucene.search.HitCollector) throws java.io.IOException
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        org.apache.lucene.search.Weight weight;
+        org.apache.lucene.search.Filter filter;
+        org.apache.lucene.search.HitCollector results;
+        org.apache.lucene.search.Scorer scorer;
+        org.apache.lucene.search.DocIdSetIterator filterDocIdIterator;
+        boolean more, $z0;
+        int filterDocId, scorerDocId, $i0;
+        org.apache.lucene.index.IndexReader $r0;
+        org.apache.lucene.search.DocIdSet $r1;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        weight := @parameter0: org.apache.lucene.search.Weight;
+        filter := @parameter1: org.apache.lucene.search.Filter;
+        results := @parameter2: org.apache.lucene.search.HitCollector;
+        $r0 = this.<org.apache.lucene.search.IndexSearcher: org.apache.lucene.index.IndexReader reader>;
+        scorer = interfaceinvoke weight.<org.apache.lucene.search.Weight: org.apache.lucene.search.Scorer scorer(org.apache.lucene.index.IndexReader)>($r0);
+        if scorer != null goto label0;
+
+        return;
+
+     label0:
+        if filter != null goto label1;
+
+        virtualinvoke scorer.<org.apache.lucene.search.Scorer: void score(org.apache.lucene.search.HitCollector)>(results);
+        return;
+
+     label1:
+        $r0 = this.<org.apache.lucene.search.IndexSearcher: org.apache.lucene.index.IndexReader reader>;
+        $r1 = virtualinvoke filter.<org.apache.lucene.search.Filter: org.apache.lucene.search.DocIdSet getDocIdSet(org.apache.lucene.index.IndexReader)>($r0);
+        filterDocIdIterator = virtualinvoke $r1.<org.apache.lucene.search.DocIdSet: org.apache.lucene.search.DocIdSetIterator iterator()>();
+        $z0 = virtualinvoke filterDocIdIterator.<org.apache.lucene.search.DocIdSetIterator: boolean next()>();
+        if $z0 == 0 goto label2;
+
+        $i0 = virtualinvoke filterDocIdIterator.<org.apache.lucene.search.DocIdSetIterator: int doc()>();
+        $z0 = virtualinvoke scorer.<org.apache.lucene.search.Scorer: boolean skipTo(int)>($i0);
+        if $z0 == 0 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        more = $z0;
+
+     label4:
+        if more == 0 goto label8;
+
+        filterDocId = virtualinvoke filterDocIdIterator.<org.apache.lucene.search.DocIdSetIterator: int doc()>();
+        $i0 = virtualinvoke scorer.<org.apache.lucene.search.Scorer: int doc()>();
+        if filterDocId <= $i0 goto label5;
+
+        $z0 = virtualinvoke scorer.<org.apache.lucene.search.Scorer: boolean skipTo(int)>(filterDocId);
+        if $z0 != 0 goto label5;
+
+        more = 0;
+        goto label7;
+
+     label5:
+        scorerDocId = virtualinvoke scorer.<org.apache.lucene.search.Scorer: int doc()>();
+        if scorerDocId != filterDocId goto label6;
+
+        $f0 = virtualinvoke scorer.<org.apache.lucene.search.Scorer: float score()>();
+        virtualinvoke results.<org.apache.lucene.search.HitCollector: void collect(int,float)>(scorerDocId, $f0);
+        more = virtualinvoke filterDocIdIterator.<org.apache.lucene.search.DocIdSetIterator: boolean next()>();
+        goto label7;
+
+     label6:
+        more = virtualinvoke filterDocIdIterator.<org.apache.lucene.search.DocIdSetIterator: boolean skipTo(int)>(scorerDocId);
+
+     label7:
+        goto label4;
+
+     label8:
+        return;
+    }
+
+    public org.apache.lucene.search.Query rewrite(org.apache.lucene.search.Query) throws java.io.IOException
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        org.apache.lucene.search.Query original, query, rewrittenQuery;
+        org.apache.lucene.index.IndexReader $r0;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        original := @parameter0: org.apache.lucene.search.Query;
+        query = original;
+        $r0 = this.<org.apache.lucene.search.IndexSearcher: org.apache.lucene.index.IndexReader reader>;
+        rewrittenQuery = virtualinvoke query.<org.apache.lucene.search.Query: org.apache.lucene.search.Query rewrite(org.apache.lucene.index.IndexReader)>($r0);
+
+     label0:
+        if rewrittenQuery == query goto label1;
+
+        query = rewrittenQuery;
+        $r0 = this.<org.apache.lucene.search.IndexSearcher: org.apache.lucene.index.IndexReader reader>;
+        rewrittenQuery = virtualinvoke query.<org.apache.lucene.search.Query: org.apache.lucene.search.Query rewrite(org.apache.lucene.index.IndexReader)>($r0);
+        goto label0;
+
+     label1:
+        return query;
+    }
+
+    public org.apache.lucene.search.Explanation explain(org.apache.lucene.search.Weight, int) throws java.io.IOException
+    {
+        org.apache.lucene.search.IndexSearcher this;
+        org.apache.lucene.search.Weight weight;
+        int doc;
+        org.apache.lucene.index.IndexReader $r0;
+        org.apache.lucene.search.Explanation $r1;
+
+        this := @this: org.apache.lucene.search.IndexSearcher;
+        weight := @parameter0: org.apache.lucene.search.Weight;
+        doc := @parameter1: int;
+        $r0 = this.<org.apache.lucene.search.IndexSearcher: org.apache.lucene.index.IndexReader reader>;
+        $r1 = interfaceinvoke weight.<org.apache.lucene.search.Weight: org.apache.lucene.search.Explanation explain(org.apache.lucene.index.IndexReader,int)>($r0, doc);
+        return $r1;
+    }
+}

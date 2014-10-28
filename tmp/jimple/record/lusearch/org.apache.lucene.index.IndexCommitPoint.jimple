@@ -1,0 +1,9 @@
+public interface  org.apache.lucene.index.IndexCommitPoint extends java.lang.Object
+{
+
+    public abstract java.lang.String getSegmentsFileName();
+
+    public abstract java.util.Collection getFileNames() throws java.io.IOException;
+
+    public abstract void delete();
+}

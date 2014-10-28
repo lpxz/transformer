@@ -1,0 +1,41 @@
+class avrora.sim.platform.sensors.LightSensor$PowerPin extends java.lang.Object implements avrora.sim.mcu.Microcontroller$Pin$Output
+{
+    final avrora.sim.platform.sensors.LightSensor this$0;
+
+    void <init>(avrora.sim.platform.sensors.LightSensor)
+    {
+        avrora.sim.platform.sensors.LightSensor$PowerPin this;
+        avrora.sim.platform.sensors.LightSensor l1;
+
+        this := @this: avrora.sim.platform.sensors.LightSensor$PowerPin;
+        l1 := @parameter0: avrora.sim.platform.sensors.LightSensor;
+        this.<avrora.sim.platform.sensors.LightSensor$PowerPin: avrora.sim.platform.sensors.LightSensor this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public void write(boolean)
+    {
+        avrora.sim.platform.sensors.LightSensor$PowerPin this;
+        boolean val;
+        avrora.sim.platform.sensors.LightSensor $r0, $r2;
+        avrora.sim.FiniteStateMachine $r1;
+        int $i0;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.platform.sensors.LightSensor$PowerPin;
+        val := @parameter0: boolean;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.platform.sensors.LightSensor$PowerPin: avrora.sim.platform.sensors.LightSensor this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r0, 56, tid_write, "avrora.sim.platform.sensors.LightSensor$PowerPin", 75, val);
+        $r0.<avrora.sim.platform.sensors.LightSensor: boolean power> = val;
+        $r0 = this.<avrora.sim.platform.sensors.LightSensor$PowerPin: avrora.sim.platform.sensors.LightSensor this$0>;
+        $r1 = $r0.<avrora.sim.platform.sensors.LightSensor: avrora.sim.FiniteStateMachine fsm>;
+        $r2 = this.<avrora.sim.platform.sensors.LightSensor$PowerPin: avrora.sim.platform.sensors.LightSensor this$0>;
+        $i0 = staticinvoke <avrora.sim.platform.sensors.LightSensor: int access$000(avrora.sim.platform.sensors.LightSensor)>($r2);
+        virtualinvoke $r1.<avrora.sim.FiniteStateMachine: void transition(int)>($i0);
+        return;
+    }
+}

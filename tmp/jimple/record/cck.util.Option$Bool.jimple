@@ -1,0 +1,93 @@
+public class cck.util.Option$Bool extends cck.util.Option
+{
+    protected final boolean defvalue;
+    protected boolean value;
+
+    public void <init>(java.lang.String, boolean, java.lang.String)
+    {
+        cck.util.Option$Bool this;
+        java.lang.String nm, desc;
+        boolean val;
+
+        this := @this: cck.util.Option$Bool;
+        nm := @parameter0: java.lang.String;
+        val := @parameter1: boolean;
+        desc := @parameter2: java.lang.String;
+        specialinvoke this.<cck.util.Option: void <init>(java.lang.String,java.lang.String)>(nm, desc);
+        this.<cck.util.Option$Bool: boolean value> = val;
+        this.<cck.util.Option$Bool: boolean defvalue> = val;
+        return;
+    }
+
+    public void set(java.lang.String)
+    {
+        cck.util.Option$Bool this;
+        java.lang.String val, $r0, $r1;
+        boolean $z0;
+
+        this := @this: cck.util.Option$Bool;
+        val := @parameter0: java.lang.String;
+        $r0 = "true";
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>(val);
+        if $z0 != 0 goto label0;
+
+        $r0 = "";
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>(val);
+        if $z0 == 0 goto label1;
+
+     label0:
+        this.<cck.util.Option$Bool: boolean value> = 1;
+        goto label3;
+
+     label1:
+        $r0 = "false";
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>(val);
+        if $z0 == 0 goto label2;
+
+        this.<cck.util.Option$Bool: boolean value> = 0;
+        goto label3;
+
+     label2:
+        $r1 = this.<cck.util.Option$Bool: java.lang.String name>;
+        virtualinvoke this.<cck.util.Option$Bool: void parseError(java.lang.String,java.lang.String,java.lang.String)>($r1, "boolean", val);
+
+     label3:
+        return;
+    }
+
+    public boolean get()
+    {
+        cck.util.Option$Bool this;
+        boolean $z0;
+
+        this := @this: cck.util.Option$Bool;
+        $z0 = this.<cck.util.Option$Bool: boolean value>;
+        return $z0;
+    }
+
+    public java.lang.String stringValue()
+    {
+        cck.util.Option$Bool this;
+        boolean $z0;
+        java.lang.String $r0;
+
+        this := @this: cck.util.Option$Bool;
+        $z0 = this.<cck.util.Option$Bool: boolean value>;
+        $r0 = staticinvoke <java.lang.String: java.lang.String valueOf(boolean)>($z0);
+        return $r0;
+    }
+
+    public void printHelp()
+    {
+        cck.util.Option$Bool this;
+        boolean $z0;
+        java.lang.String $r0;
+
+        this := @this: cck.util.Option$Bool;
+        $z0 = this.<cck.util.Option$Bool: boolean defvalue>;
+        $r0 = staticinvoke <java.lang.String: java.lang.String valueOf(boolean)>($z0);
+        virtualinvoke this.<cck.util.Option$Bool: void printHeader(java.lang.String,java.lang.String)>("boolean", $r0);
+        virtualinvoke this.<cck.util.Option$Bool: void printDescription()>();
+        return;
+    }
+}

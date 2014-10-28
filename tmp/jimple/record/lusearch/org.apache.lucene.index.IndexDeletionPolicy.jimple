@@ -1,0 +1,7 @@
+public interface  org.apache.lucene.index.IndexDeletionPolicy extends java.lang.Object
+{
+
+    public abstract void onInit(java.util.List) throws java.io.IOException;
+
+    public abstract void onCommit(java.util.List) throws java.io.IOException;
+}

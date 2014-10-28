@@ -1,0 +1,27 @@
+public class avrora.monitors.BreakMonitor extends avrora.monitors.MonitorFactory
+{
+
+    public void <init>()
+    {
+        avrora.monitors.BreakMonitor this;
+
+        this := @this: avrora.monitors.BreakMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"break\" monitor watches for execution of an AVR break instruction, which can be used to implement things like assertion failures.  When a break is executed the simulator prints a stack trace.");
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.BreakMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.BreakMonitor$Mon tmp$548786427;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.BreakMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$548786427 = new avrora.monitors.BreakMonitor$Mon;
+        specialinvoke tmp$548786427.<avrora.monitors.BreakMonitor$Mon: void <init>(avrora.monitors.BreakMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$548786427;
+        return tmp;
+    }
+}

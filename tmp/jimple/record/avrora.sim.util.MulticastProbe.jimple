@@ -1,0 +1,80 @@
+public class avrora.sim.util.MulticastProbe extends avrora.sim.util.TransactionalList implements avrora.sim.Simulator$Probe
+{
+
+    public void <init>()
+    {
+        avrora.sim.util.MulticastProbe this;
+
+        this := @this: avrora.sim.util.MulticastProbe;
+        specialinvoke this.<avrora.sim.util.TransactionalList: void <init>()>();
+        return;
+    }
+
+    public void fireBefore(avrora.sim.State, int)
+    {
+        avrora.sim.util.MulticastProbe this;
+        avrora.sim.State state;
+        int pc;
+        avrora.sim.util.TransactionalList$Link pos;
+        java.lang.Object $r0;
+        avrora.sim.Simulator$Probe $r1;
+        long tid_fireBefore;
+        java.lang.Thread thread_fireBefore;
+
+        this := @this: avrora.sim.util.MulticastProbe;
+        state := @parameter0: avrora.sim.State;
+        pc := @parameter1: int;
+        thread_fireBefore = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_fireBefore = virtualinvoke thread_fireBefore.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<avrora.sim.util.MulticastProbe: void beginTransaction()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_fireBefore, "avrora.sim.util.MulticastProbe", 57, pos);
+        pos = this.<avrora.sim.util.MulticastProbe: avrora.sim.util.TransactionalList$Link head>;
+
+     label0:
+        if pos == null goto label1;
+
+        $r0 = pos.<avrora.sim.util.TransactionalList$Link: java.lang.Object object>;
+        $r1 = (avrora.sim.Simulator$Probe) $r0;
+        interfaceinvoke $r1.<avrora.sim.Simulator$Probe: void fireBefore(avrora.sim.State,int)>(state, pc);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 79, tid_fireBefore, "avrora.sim.util.MulticastProbe", 57, pos);
+        pos = pos.<avrora.sim.util.TransactionalList$Link: avrora.sim.util.TransactionalList$Link next>;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    public void fireAfter(avrora.sim.State, int)
+    {
+        avrora.sim.util.MulticastProbe this;
+        avrora.sim.State state;
+        int pc;
+        avrora.sim.util.TransactionalList$Link pos;
+        java.lang.Object $r0;
+        avrora.sim.Simulator$Probe $r1;
+        long tid_fireAfter;
+        java.lang.Thread thread_fireAfter;
+
+        this := @this: avrora.sim.util.MulticastProbe;
+        state := @parameter0: avrora.sim.State;
+        pc := @parameter1: int;
+        thread_fireAfter = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_fireAfter = virtualinvoke thread_fireAfter.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_fireAfter, "avrora.sim.util.MulticastProbe", 70, pos);
+        pos = this.<avrora.sim.util.MulticastProbe: avrora.sim.util.TransactionalList$Link head>;
+
+     label0:
+        if pos == null goto label1;
+
+        $r0 = pos.<avrora.sim.util.TransactionalList$Link: java.lang.Object object>;
+        $r1 = (avrora.sim.Simulator$Probe) $r0;
+        interfaceinvoke $r1.<avrora.sim.Simulator$Probe: void fireAfter(avrora.sim.State,int)>(state, pc);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 79, tid_fireAfter, "avrora.sim.util.MulticastProbe", 70, pos);
+        pos = pos.<avrora.sim.util.TransactionalList$Link: avrora.sim.util.TransactionalList$Link next>;
+        goto label0;
+
+     label1:
+        virtualinvoke this.<avrora.sim.util.MulticastProbe: void endTransaction()>();
+        return;
+    }
+}

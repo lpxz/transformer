@@ -1,0 +1,18 @@
+public abstract class org.apache.lucene.search.DocIdSetIterator extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        org.apache.lucene.search.DocIdSetIterator this;
+
+        this := @this: org.apache.lucene.search.DocIdSetIterator;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public abstract int doc();
+
+    public abstract boolean next() throws java.io.IOException;
+
+    public abstract boolean skipTo(int) throws java.io.IOException;
+}

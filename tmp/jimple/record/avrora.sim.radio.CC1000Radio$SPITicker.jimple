@@ -1,0 +1,130 @@
+class avrora.sim.radio.CC1000Radio$SPITicker extends java.lang.Object implements avrora.sim.Simulator$Event
+{
+    protected avrora.sim.mcu.SPIDevice spiDevice;
+    protected boolean activated;
+    final avrora.sim.radio.CC1000Radio this$0;
+
+    private void <init>(avrora.sim.radio.CC1000Radio)
+    {
+        avrora.sim.radio.CC1000Radio$SPITicker this;
+        avrora.sim.radio.CC1000Radio l1;
+
+        this := @this: avrora.sim.radio.CC1000Radio$SPITicker;
+        l1 := @parameter0: avrora.sim.radio.CC1000Radio;
+        this.<avrora.sim.radio.CC1000Radio$SPITicker: avrora.sim.radio.CC1000Radio this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public void fire()
+    {
+        avrora.sim.radio.CC1000Radio$SPITicker this;
+        avrora.sim.mcu.SPI$Frame frame, $r4;
+        avrora.sim.radio.CC1000Radio $r0, $r1, $r6;
+        avrora.sim.clock.Clock $r2, $r5;
+        long $l0, $l3, tid_fire;
+        avrora.sim.mcu.SPIDevice $r3;
+        int $i1;
+        byte $b2;
+        avrora.sim.radio.CC1000Radio$Receiver $r7;
+        java.lang.Thread thread_fire;
+
+        this := @this: avrora.sim.radio.CC1000Radio$SPITicker;
+        thread_fire = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_fire = virtualinvoke thread_fire.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.radio.CC1000Radio$SPITicker: avrora.sim.radio.CC1000Radio this$0>;
+        $r1 = this.<avrora.sim.radio.CC1000Radio$SPITicker: avrora.sim.radio.CC1000Radio this$0>;
+        $r2 = $r1.<avrora.sim.radio.CC1000Radio: avrora.sim.clock.Clock clock>;
+        $l0 = virtualinvoke $r2.<avrora.sim.clock.Clock: long getCount()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>($r0, 171, tid_fire, "avrora.sim.radio.CC1000Radio$SPITicker", 1030, $l0);
+        $r0.<avrora.sim.radio.CC1000Radio: long spiTick> = $l0;
+        $r3 = this.<avrora.sim.radio.CC1000Radio$SPITicker: avrora.sim.mcu.SPIDevice spiDevice>;
+        $r1 = this.<avrora.sim.radio.CC1000Radio$SPITicker: avrora.sim.radio.CC1000Radio this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 172, tid_fire, "avrora.sim.radio.CC1000Radio$SPITicker", 1031, $i1);
+        $i1 = $r1.<avrora.sim.radio.CC1000Radio: int rxBuffer>;
+        $i1 = $i1 >> 8;
+        $b2 = (byte) $i1;
+        $r4 = staticinvoke <avrora.sim.mcu.SPI: avrora.sim.mcu.SPI$Frame newFrame(byte)>($b2);
+        frame = interfaceinvoke $r3.<avrora.sim.mcu.SPIDevice: avrora.sim.mcu.SPI$Frame exchange(avrora.sim.mcu.SPI$Frame)>($r4);
+        $r0 = this.<avrora.sim.radio.CC1000Radio$SPITicker: avrora.sim.radio.CC1000Radio this$0>;
+        $b2 = frame.<avrora.sim.mcu.SPI$Frame: byte data>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>($r0, 170, tid_fire, "avrora.sim.radio.CC1000Radio$SPITicker", 1032, $b2);
+        $r0.<avrora.sim.radio.CC1000Radio: byte txBuffer> = $b2;
+        $r0 = this.<avrora.sim.radio.CC1000Radio$SPITicker: avrora.sim.radio.CC1000Radio this$0>;
+        $r5 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.clock.Clock clock>;
+        $r6 = this.<avrora.sim.radio.CC1000Radio$SPITicker: avrora.sim.radio.CC1000Radio this$0>;
+        $r7 = $r6.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$Receiver receiver>;
+        $l3 = $r7.<avrora.sim.radio.CC1000Radio$Receiver: long cyclesPerByte>;
+        virtualinvoke $r5.<avrora.sim.clock.Clock: void insertEvent(avrora.sim.Simulator$Event,long)>(this, $l3);
+        return;
+    }
+
+    protected void activate()
+    {
+        avrora.sim.radio.CC1000Radio$SPITicker this;
+        boolean $z0;
+        avrora.sim.radio.CC1000Radio $r0, $r2;
+        avrora.sim.clock.Clock $r1;
+        avrora.sim.radio.CC1000Radio$Receiver $r3;
+        long $l0, tid_activate;
+        java.lang.Thread thread_activate;
+
+        this := @this: avrora.sim.radio.CC1000Radio$SPITicker;
+        thread_activate = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_activate = virtualinvoke thread_activate.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 173, tid_activate, "avrora.sim.radio.CC1000Radio$SPITicker", 1036, $z0);
+        $z0 = this.<avrora.sim.radio.CC1000Radio$SPITicker: boolean activated>;
+        if $z0 != 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 173, tid_activate, "avrora.sim.radio.CC1000Radio$SPITicker", 1037, 1);
+        this.<avrora.sim.radio.CC1000Radio$SPITicker: boolean activated> = 1;
+        $r0 = this.<avrora.sim.radio.CC1000Radio$SPITicker: avrora.sim.radio.CC1000Radio this$0>;
+        $r1 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.clock.Clock clock>;
+        $r2 = this.<avrora.sim.radio.CC1000Radio$SPITicker: avrora.sim.radio.CC1000Radio this$0>;
+        $r3 = $r2.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$Receiver receiver>;
+        $l0 = $r3.<avrora.sim.radio.CC1000Radio$Receiver: long cyclesPerByte>;
+        virtualinvoke $r1.<avrora.sim.clock.Clock: void insertEvent(avrora.sim.Simulator$Event,long)>(this, $l0);
+
+     label0:
+        return;
+    }
+
+    protected void deactivate()
+    {
+        avrora.sim.radio.CC1000Radio$SPITicker this;
+        boolean $z0;
+        avrora.sim.radio.CC1000Radio $r0;
+        avrora.sim.clock.Clock $r1;
+        long tid_deactivate;
+        java.lang.Thread thread_deactivate;
+
+        this := @this: avrora.sim.radio.CC1000Radio$SPITicker;
+        thread_deactivate = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_deactivate = virtualinvoke thread_deactivate.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 173, tid_deactivate, "avrora.sim.radio.CC1000Radio$SPITicker", 1042, $z0);
+        $z0 = this.<avrora.sim.radio.CC1000Radio$SPITicker: boolean activated>;
+        if $z0 == 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 173, tid_deactivate, "avrora.sim.radio.CC1000Radio$SPITicker", 1043, 0);
+        this.<avrora.sim.radio.CC1000Radio$SPITicker: boolean activated> = 0;
+        $r0 = this.<avrora.sim.radio.CC1000Radio$SPITicker: avrora.sim.radio.CC1000Radio this$0>;
+        $r1 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.clock.Clock clock>;
+        virtualinvoke $r1.<avrora.sim.clock.Clock: void removeEvent(avrora.sim.Simulator$Event)>(this);
+
+     label0:
+        return;
+    }
+
+    void <init>(avrora.sim.radio.CC1000Radio, avrora.sim.radio.CC1000Radio$1)
+    {
+        avrora.sim.radio.CC1000Radio$SPITicker this;
+        avrora.sim.radio.CC1000Radio x0;
+        avrora.sim.radio.CC1000Radio$1 x1;
+
+        this := @this: avrora.sim.radio.CC1000Radio$SPITicker;
+        x0 := @parameter0: avrora.sim.radio.CC1000Radio;
+        x1 := @parameter1: avrora.sim.radio.CC1000Radio$1;
+        specialinvoke this.<avrora.sim.radio.CC1000Radio$SPITicker: void <init>(avrora.sim.radio.CC1000Radio)>(x0);
+        return;
+    }
+}

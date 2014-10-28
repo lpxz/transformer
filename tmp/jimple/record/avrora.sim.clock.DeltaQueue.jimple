@@ -1,0 +1,546 @@
+public class avrora.sim.clock.DeltaQueue extends java.lang.Object
+{
+    protected avrora.sim.clock.DeltaQueue$Link head;
+    protected avrora.sim.clock.DeltaQueue$Link freeLinks;
+    protected avrora.sim.clock.DeltaQueue$EventList freeEventLists;
+    protected long count;
+
+    public void <init>()
+    {
+        avrora.sim.clock.DeltaQueue this;
+
+        this := @this: avrora.sim.clock.DeltaQueue;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public void insertEvent(avrora.sim.Simulator$Event, long)
+    {
+        avrora.sim.clock.DeltaQueue this;
+        avrora.sim.Simulator$Event t;
+        long cycles, $l0, tid_insertEvent;
+        avrora.sim.clock.DeltaQueue$Link prev, pos, $r0, $r1;
+        byte $b1;
+        java.lang.Thread thread_insertEvent;
+
+        this := @this: avrora.sim.clock.DeltaQueue;
+        t := @parameter0: avrora.sim.Simulator$Event;
+        cycles := @parameter1: long;
+        thread_insertEvent = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_insertEvent = virtualinvoke thread_insertEvent.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_insertEvent, "avrora.sim.clock.DeltaQueue", 161, $r0);
+        $r0 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head>;
+        if $r0 != null goto label0;
+
+        $r1 = specialinvoke this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link newLink(avrora.sim.Simulator$Event,long,avrora.sim.clock.DeltaQueue$Link)>(t, cycles, null);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_insertEvent, "avrora.sim.clock.DeltaQueue", 162, $r1);
+        this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head> = $r1;
+        return;
+
+     label0:
+        prev = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_insertEvent, "avrora.sim.clock.DeltaQueue", 168, pos);
+        pos = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head>;
+
+     label1:
+        if pos == null goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(pos, 101, tid_insertEvent, "avrora.sim.clock.DeltaQueue", 169, $l0);
+        $l0 = pos.<avrora.sim.clock.DeltaQueue$Link: long delta>;
+        $b1 = cycles cmp $l0;
+        if $b1 <= 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(pos, 101, tid_insertEvent, "avrora.sim.clock.DeltaQueue", 170, $l0);
+        $l0 = pos.<avrora.sim.clock.DeltaQueue$Link: long delta>;
+        cycles = cycles - $l0;
+        prev = pos;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 102, tid_insertEvent, "avrora.sim.clock.DeltaQueue", 172, pos);
+        pos = pos.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$Link next>;
+        goto label1;
+
+     label2:
+        if pos != null goto label3;
+
+        specialinvoke this.<avrora.sim.clock.DeltaQueue: void insertAfter(avrora.sim.clock.DeltaQueue$Link,avrora.sim.Simulator$Event,long,avrora.sim.clock.DeltaQueue$Link)>(prev, t, cycles, null);
+        goto label5;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(pos, 101, tid_insertEvent, "avrora.sim.clock.DeltaQueue", 178, $l0);
+        $l0 = pos.<avrora.sim.clock.DeltaQueue$Link: long delta>;
+        $b1 = cycles cmp $l0;
+        if $b1 != 0 goto label4;
+
+        virtualinvoke pos.<avrora.sim.clock.DeltaQueue$Link: void add(avrora.sim.Simulator$Event)>(t);
+        goto label5;
+
+     label4:
+        specialinvoke this.<avrora.sim.clock.DeltaQueue: void insertAfter(avrora.sim.clock.DeltaQueue$Link,avrora.sim.Simulator$Event,long,avrora.sim.clock.DeltaQueue$Link)>(prev, t, cycles, pos);
+
+     label5:
+        return;
+    }
+
+    private void insertAfter(avrora.sim.clock.DeltaQueue$Link, avrora.sim.Simulator$Event, long, avrora.sim.clock.DeltaQueue$Link)
+    {
+        avrora.sim.clock.DeltaQueue this;
+        avrora.sim.clock.DeltaQueue$Link prev, next, $r0;
+        avrora.sim.Simulator$Event t;
+        long cycles, tid_insertAfter;
+        java.lang.Thread thread_insertAfter;
+
+        this := @this: avrora.sim.clock.DeltaQueue;
+        prev := @parameter0: avrora.sim.clock.DeltaQueue$Link;
+        t := @parameter1: avrora.sim.Simulator$Event;
+        cycles := @parameter2: long;
+        next := @parameter3: avrora.sim.clock.DeltaQueue$Link;
+        thread_insertAfter = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_insertAfter = virtualinvoke thread_insertAfter.<java.lang.Thread: long getId()>();
+        if prev == null goto label0;
+
+        $r0 = specialinvoke this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link newLink(avrora.sim.Simulator$Event,long,avrora.sim.clock.DeltaQueue$Link)>(t, cycles, next);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(prev, 102, tid_insertAfter, "avrora.sim.clock.DeltaQueue", 189, $r0);
+        prev.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$Link next> = $r0;
+        goto label1;
+
+     label0:
+        $r0 = specialinvoke this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link newLink(avrora.sim.Simulator$Event,long,avrora.sim.clock.DeltaQueue$Link)>(t, cycles, next);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_insertAfter, "avrora.sim.clock.DeltaQueue", 191, $r0);
+        this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head> = $r0;
+
+     label1:
+        return;
+    }
+
+    public void removeEvent(avrora.sim.Simulator$Event)
+    {
+        avrora.sim.clock.DeltaQueue this;
+        avrora.sim.Simulator$Event e;
+        avrora.sim.clock.DeltaQueue$Link prev, pos, next, $r0, $r2;
+        avrora.sim.clock.DeltaQueue$EventList $r1;
+        long $l0, $l1, tid_removeEvent;
+        java.lang.Thread thread_removeEvent;
+
+        this := @this: avrora.sim.clock.DeltaQueue;
+        e := @parameter0: avrora.sim.Simulator$Event;
+        thread_removeEvent = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_removeEvent = virtualinvoke thread_removeEvent.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_removeEvent, "avrora.sim.clock.DeltaQueue", 200, $r0);
+        $r0 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head>;
+        if $r0 != null goto label0;
+
+        return;
+
+     label0:
+        prev = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_removeEvent, "avrora.sim.clock.DeltaQueue", 204, pos);
+        pos = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head>;
+
+     label1:
+        if pos == null goto label7;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 102, tid_removeEvent, "avrora.sim.clock.DeltaQueue", 206, next);
+        next = pos.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$Link next>;
+        virtualinvoke pos.<avrora.sim.clock.DeltaQueue$Link: void remove(avrora.sim.Simulator$Event)>(e);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 103, tid_removeEvent, "avrora.sim.clock.DeltaQueue", 209, $r1);
+        $r1 = pos.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$EventList events>;
+        if $r1 != null goto label5;
+
+        if prev != null goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 102, tid_removeEvent, "avrora.sim.clock.DeltaQueue", 212, $r2);
+        $r2 = pos.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$Link next>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_removeEvent, "avrora.sim.clock.DeltaQueue", 212, $r2);
+        this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head> = $r2;
+        goto label3;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 102, tid_removeEvent, "avrora.sim.clock.DeltaQueue", 214, $r2);
+        $r2 = pos.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$Link next>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(prev, 102, tid_removeEvent, "avrora.sim.clock.DeltaQueue", 214, $r2);
+        prev.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$Link next> = $r2;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 102, tid_removeEvent, "avrora.sim.clock.DeltaQueue", 217, $r0);
+        $r0 = pos.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$Link next>;
+        if $r0 == null goto label4;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 102, tid_removeEvent, "avrora.sim.clock.DeltaQueue", 218, $r0);
+        $r0 = pos.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$Link next>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>($r0, 101, tid_removeEvent, "avrora.sim.clock.DeltaQueue", 218, $l0);
+        $l0 = $r0.<avrora.sim.clock.DeltaQueue$Link: long delta>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(pos, 101, tid_removeEvent, "avrora.sim.clock.DeltaQueue", 218, $l1);
+        $l1 = pos.<avrora.sim.clock.DeltaQueue$Link: long delta>;
+        $l0 = $l0 + $l1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>($r0, 101, tid_removeEvent, "avrora.sim.clock.DeltaQueue", 218, $l0);
+        $r0.<avrora.sim.clock.DeltaQueue$Link: long delta> = $l0;
+
+     label4:
+        specialinvoke this.<avrora.sim.clock.DeltaQueue: void free(avrora.sim.clock.DeltaQueue$Link)>(pos);
+        goto label6;
+
+     label5:
+        prev = pos;
+
+     label6:
+        pos = next;
+        goto label1;
+
+     label7:
+        return;
+    }
+
+    public void advance(long)
+    {
+        avrora.sim.clock.DeltaQueue this;
+        long cycles, $l0, $l1, tid_advance;
+        avrora.sim.clock.DeltaQueue$Link $r0;
+        byte $b2;
+        java.lang.Thread thread_advance;
+
+        this := @this: avrora.sim.clock.DeltaQueue;
+        cycles := @parameter0: long;
+        thread_advance = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_advance = virtualinvoke thread_advance.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_advance, "avrora.sim.clock.DeltaQueue", 238, $r0);
+        $r0 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head>;
+        if $r0 != null goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_advance, "avrora.sim.clock.DeltaQueue", 240, $l0);
+        $l0 = this.<avrora.sim.clock.DeltaQueue: long count>;
+        $l0 = $l0 + cycles;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_advance, "avrora.sim.clock.DeltaQueue", 240, $l0);
+        this.<avrora.sim.clock.DeltaQueue: long count> = $l0;
+        return;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_advance, "avrora.sim.clock.DeltaQueue", 244, $r0);
+        $r0 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>($r0, 101, tid_advance, "avrora.sim.clock.DeltaQueue", 244, $l1);
+        $l1 = $r0.<avrora.sim.clock.DeltaQueue$Link: long delta>;
+        $b2 = $l1 cmp cycles;
+        if $b2 <= 0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_advance, "avrora.sim.clock.DeltaQueue", 246, $l0);
+        $l0 = this.<avrora.sim.clock.DeltaQueue: long count>;
+        $l0 = $l0 + cycles;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_advance, "avrora.sim.clock.DeltaQueue", 246, $l0);
+        this.<avrora.sim.clock.DeltaQueue: long count> = $l0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_advance, "avrora.sim.clock.DeltaQueue", 247, $r0);
+        $r0 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>($r0, 101, tid_advance, "avrora.sim.clock.DeltaQueue", 247, $l0);
+        $l0 = $r0.<avrora.sim.clock.DeltaQueue$Link: long delta>;
+        $l0 = $l0 - cycles;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>($r0, 101, tid_advance, "avrora.sim.clock.DeltaQueue", 247, $l0);
+        $r0.<avrora.sim.clock.DeltaQueue$Link: long delta> = $l0;
+        return;
+
+     label1:
+        specialinvoke this.<avrora.sim.clock.DeltaQueue: void advanceSlow(long)>(cycles);
+        return;
+    }
+
+    public void skipAhead()
+    {
+        avrora.sim.clock.DeltaQueue this;
+        avrora.sim.clock.DeltaQueue$Link h, $r0, $r2;
+        long $l0, $l1, tid_skipAhead;
+        java.lang.Thread thread_skipAhead;
+
+        this := @this: avrora.sim.clock.DeltaQueue;
+        thread_skipAhead = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_skipAhead = virtualinvoke thread_skipAhead.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_skipAhead, "avrora.sim.clock.DeltaQueue", 259, $r0);
+        $r0 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head>;
+        if $r0 != null goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_skipAhead, "avrora.sim.clock.DeltaQueue", 261, $l0);
+        $l0 = this.<avrora.sim.clock.DeltaQueue: long count>;
+        $l0 = $l0 + 1L;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_skipAhead, "avrora.sim.clock.DeltaQueue", 261, $l0);
+        this.<avrora.sim.clock.DeltaQueue: long count> = $l0;
+        return;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_skipAhead, "avrora.sim.clock.DeltaQueue", 265, h);
+        h = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_skipAhead, "avrora.sim.clock.DeltaQueue", 266, $l0);
+        $l0 = this.<avrora.sim.clock.DeltaQueue: long count>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(h, 101, tid_skipAhead, "avrora.sim.clock.DeltaQueue", 266, $l1);
+        $l1 = h.<avrora.sim.clock.DeltaQueue$Link: long delta>;
+        $l0 = $l0 + $l1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_skipAhead, "avrora.sim.clock.DeltaQueue", 266, $l0);
+        this.<avrora.sim.clock.DeltaQueue: long count> = $l0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(h, 102, tid_skipAhead, "avrora.sim.clock.DeltaQueue", 267, $r2);
+        $r2 = h.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$Link next>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_skipAhead, "avrora.sim.clock.DeltaQueue", 267, $r2);
+        this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head> = $r2;
+        virtualinvoke h.<avrora.sim.clock.DeltaQueue$Link: void fire()>();
+        specialinvoke this.<avrora.sim.clock.DeltaQueue: void free(avrora.sim.clock.DeltaQueue$Link)>(h);
+        return;
+    }
+
+    private void advanceSlow(long)
+    {
+        avrora.sim.clock.DeltaQueue this;
+        long cycles, delta, leftover, $l1, tid_advanceSlow;
+        avrora.sim.clock.DeltaQueue$Link pos, next, $r0;
+        byte $b0;
+        java.lang.Thread thread_advanceSlow;
+
+        this := @this: avrora.sim.clock.DeltaQueue;
+        cycles := @parameter0: long;
+        thread_advanceSlow = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_advanceSlow = virtualinvoke thread_advanceSlow.<java.lang.Thread: long getId()>();
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_advanceSlow, "avrora.sim.clock.DeltaQueue", 274, $r0);
+        $r0 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head>;
+        if $r0 == null goto label2;
+
+        $b0 = cycles cmp 0L;
+        if $b0 <= 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_advanceSlow, "avrora.sim.clock.DeltaQueue", 276, pos);
+        pos = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 102, tid_advanceSlow, "avrora.sim.clock.DeltaQueue", 277, next);
+        next = pos.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$Link next>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(pos, 101, tid_advanceSlow, "avrora.sim.clock.DeltaQueue", 280, delta);
+        delta = pos.<avrora.sim.clock.DeltaQueue$Link: long delta>;
+        leftover = cycles - delta;
+        $b0 = leftover cmp 0L;
+        if $b0 >= 0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_advanceSlow, "avrora.sim.clock.DeltaQueue", 286, $l1);
+        $l1 = this.<avrora.sim.clock.DeltaQueue: long count>;
+        $l1 = $l1 + cycles;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_advanceSlow, "avrora.sim.clock.DeltaQueue", 286, $l1);
+        this.<avrora.sim.clock.DeltaQueue: long count> = $l1;
+        $l1 = neg leftover;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(pos, 101, tid_advanceSlow, "avrora.sim.clock.DeltaQueue", 287, $l1);
+        pos.<avrora.sim.clock.DeltaQueue$Link: long delta> = $l1;
+        return;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_advanceSlow, "avrora.sim.clock.DeltaQueue", 292, $l1);
+        $l1 = this.<avrora.sim.clock.DeltaQueue: long count>;
+        $l1 = $l1 + delta;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_advanceSlow, "avrora.sim.clock.DeltaQueue", 292, $l1);
+        this.<avrora.sim.clock.DeltaQueue: long count> = $l1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_advanceSlow, "avrora.sim.clock.DeltaQueue", 295, next);
+        this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head> = next;
+        virtualinvoke pos.<avrora.sim.clock.DeltaQueue$Link: void fire()>();
+        specialinvoke this.<avrora.sim.clock.DeltaQueue: void free(avrora.sim.clock.DeltaQueue$Link)>(pos);
+        cycles = leftover;
+        goto label0;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_advanceSlow, "avrora.sim.clock.DeltaQueue", 308, $l1);
+        $l1 = this.<avrora.sim.clock.DeltaQueue: long count>;
+        $l1 = $l1 + cycles;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_advanceSlow, "avrora.sim.clock.DeltaQueue", 308, $l1);
+        this.<avrora.sim.clock.DeltaQueue: long count> = $l1;
+        return;
+    }
+
+    public long getFirstEventTime()
+    {
+        avrora.sim.clock.DeltaQueue this;
+        avrora.sim.clock.DeltaQueue$Link $r0;
+        long $l0, tid_getFirstEventTime;
+        java.lang.Thread thread_getFirstEventTime;
+
+        this := @this: avrora.sim.clock.DeltaQueue;
+        thread_getFirstEventTime = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getFirstEventTime = virtualinvoke thread_getFirstEventTime.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_getFirstEventTime, "avrora.sim.clock.DeltaQueue", 318, $r0);
+        $r0 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head>;
+        if $r0 == null goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 100, tid_getFirstEventTime, "avrora.sim.clock.DeltaQueue", 318, $r0);
+        $r0 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link head>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>($r0, 101, tid_getFirstEventTime, "avrora.sim.clock.DeltaQueue", 318, $l0);
+        $l0 = $r0.<avrora.sim.clock.DeltaQueue$Link: long delta>;
+        return $l0;
+
+     label0:
+        return -1L;
+    }
+
+    public long getCount()
+    {
+        avrora.sim.clock.DeltaQueue this;
+        long $l0, tid_getCount;
+        java.lang.Thread thread_getCount;
+
+        this := @this: avrora.sim.clock.DeltaQueue;
+        thread_getCount = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getCount = virtualinvoke thread_getCount.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 104, tid_getCount, "avrora.sim.clock.DeltaQueue", 329, $l0);
+        $l0 = this.<avrora.sim.clock.DeltaQueue: long count>;
+        return $l0;
+    }
+
+    private void free(avrora.sim.clock.DeltaQueue$Link)
+    {
+        avrora.sim.clock.DeltaQueue this;
+        avrora.sim.clock.DeltaQueue$Link l, $r0;
+        avrora.sim.clock.DeltaQueue$EventList $r1;
+        long tid_free;
+        java.lang.Thread thread_free;
+
+        this := @this: avrora.sim.clock.DeltaQueue;
+        l := @parameter0: avrora.sim.clock.DeltaQueue$Link;
+        thread_free = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_free = virtualinvoke thread_free.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 105, tid_free, "avrora.sim.clock.DeltaQueue", 333, $r0);
+        $r0 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link freeLinks>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(l, 102, tid_free, "avrora.sim.clock.DeltaQueue", 333, $r0);
+        l.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$Link next> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 105, tid_free, "avrora.sim.clock.DeltaQueue", 334, l);
+        this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link freeLinks> = l;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(l, 103, tid_free, "avrora.sim.clock.DeltaQueue", 336, $r1);
+        $r1 = l.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$EventList events>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 106, tid_free, "avrora.sim.clock.DeltaQueue", 336, $r1);
+        this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$EventList freeEventLists> = $r1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(l, 103, tid_free, "avrora.sim.clock.DeltaQueue", 337, null);
+        l.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$EventList events> = null;
+        return;
+    }
+
+    private void free(avrora.sim.clock.DeltaQueue$EventList)
+    {
+        avrora.sim.clock.DeltaQueue this;
+        avrora.sim.clock.DeltaQueue$EventList l, $r0;
+        long tid_free;
+        java.lang.Thread thread_free;
+
+        this := @this: avrora.sim.clock.DeltaQueue;
+        l := @parameter0: avrora.sim.clock.DeltaQueue$EventList;
+        thread_free = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_free = virtualinvoke thread_free.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(l, 107, tid_free, "avrora.sim.clock.DeltaQueue", 341, null);
+        l.<avrora.sim.clock.DeltaQueue$EventList: avrora.sim.Simulator$Event event> = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 106, tid_free, "avrora.sim.clock.DeltaQueue", 342, $r0);
+        $r0 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$EventList freeEventLists>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(l, 108, tid_free, "avrora.sim.clock.DeltaQueue", 342, $r0);
+        l.<avrora.sim.clock.DeltaQueue$EventList: avrora.sim.clock.DeltaQueue$EventList next> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 106, tid_free, "avrora.sim.clock.DeltaQueue", 343, l);
+        this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$EventList freeEventLists> = l;
+        return;
+    }
+
+    private avrora.sim.clock.DeltaQueue$Link newLink(avrora.sim.Simulator$Event, long, avrora.sim.clock.DeltaQueue$Link)
+    {
+        avrora.sim.clock.DeltaQueue this;
+        avrora.sim.Simulator$Event t;
+        long cycles, $l0, tid_newLink;
+        avrora.sim.clock.DeltaQueue$Link next, l, $r0, $r1;
+        java.lang.Thread thread_newLink;
+
+        this := @this: avrora.sim.clock.DeltaQueue;
+        t := @parameter0: avrora.sim.Simulator$Event;
+        cycles := @parameter1: long;
+        next := @parameter2: avrora.sim.clock.DeltaQueue$Link;
+        thread_newLink = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_newLink = virtualinvoke thread_newLink.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 105, tid_newLink, "avrora.sim.clock.DeltaQueue", 348, $r0);
+        $r0 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link freeLinks>;
+        if $r0 != null goto label0;
+
+        $r0 = new avrora.sim.clock.DeltaQueue$Link;
+        specialinvoke $r0.<avrora.sim.clock.DeltaQueue$Link: void <init>(avrora.sim.clock.DeltaQueue,avrora.sim.Simulator$Event,long)>(this, t, cycles);
+        l = $r0;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 105, tid_newLink, "avrora.sim.clock.DeltaQueue", 353, l);
+        l = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link freeLinks>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 105, tid_newLink, "avrora.sim.clock.DeltaQueue", 354, $r1);
+        $r1 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link freeLinks>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r1, 102, tid_newLink, "avrora.sim.clock.DeltaQueue", 354, $r1);
+        $r1 = $r1.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$Link next>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 105, tid_newLink, "avrora.sim.clock.DeltaQueue", 354, $r1);
+        this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$Link freeLinks> = $r1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(l, 101, tid_newLink, "avrora.sim.clock.DeltaQueue", 355, cycles);
+        l.<avrora.sim.clock.DeltaQueue$Link: long delta> = cycles;
+        virtualinvoke l.<avrora.sim.clock.DeltaQueue$Link: void add(avrora.sim.Simulator$Event)>(t);
+
+     label1:
+        if next == null goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(next, 101, tid_newLink, "avrora.sim.clock.DeltaQueue", 361, $l0);
+        $l0 = next.<avrora.sim.clock.DeltaQueue$Link: long delta>;
+        $l0 = $l0 - cycles;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(next, 101, tid_newLink, "avrora.sim.clock.DeltaQueue", 361, $l0);
+        next.<avrora.sim.clock.DeltaQueue$Link: long delta> = $l0;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(l, 102, tid_newLink, "avrora.sim.clock.DeltaQueue", 364, next);
+        l.<avrora.sim.clock.DeltaQueue$Link: avrora.sim.clock.DeltaQueue$Link next> = next;
+        return l;
+    }
+
+    private avrora.sim.clock.DeltaQueue$EventList newEventList(avrora.sim.Simulator$Event, avrora.sim.clock.DeltaQueue$EventList)
+    {
+        avrora.sim.clock.DeltaQueue this;
+        avrora.sim.Simulator$Event t;
+        avrora.sim.clock.DeltaQueue$EventList next, l, $r0, $r1;
+        long tid_newEventList;
+        java.lang.Thread thread_newEventList;
+
+        this := @this: avrora.sim.clock.DeltaQueue;
+        t := @parameter0: avrora.sim.Simulator$Event;
+        next := @parameter1: avrora.sim.clock.DeltaQueue$EventList;
+        thread_newEventList = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_newEventList = virtualinvoke thread_newEventList.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 106, tid_newEventList, "avrora.sim.clock.DeltaQueue", 371, $r0);
+        $r0 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$EventList freeEventLists>;
+        if $r0 != null goto label0;
+
+        $r0 = new avrora.sim.clock.DeltaQueue$EventList;
+        specialinvoke $r0.<avrora.sim.clock.DeltaQueue$EventList: void <init>(avrora.sim.Simulator$Event,avrora.sim.clock.DeltaQueue$EventList)>(t, next);
+        l = $r0;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 106, tid_newEventList, "avrora.sim.clock.DeltaQueue", 376, l);
+        l = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$EventList freeEventLists>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 106, tid_newEventList, "avrora.sim.clock.DeltaQueue", 377, $r1);
+        $r1 = this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$EventList freeEventLists>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r1, 108, tid_newEventList, "avrora.sim.clock.DeltaQueue", 377, $r1);
+        $r1 = $r1.<avrora.sim.clock.DeltaQueue$EventList: avrora.sim.clock.DeltaQueue$EventList next>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 106, tid_newEventList, "avrora.sim.clock.DeltaQueue", 377, $r1);
+        this.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$EventList freeEventLists> = $r1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(l, 108, tid_newEventList, "avrora.sim.clock.DeltaQueue", 378, next);
+        l.<avrora.sim.clock.DeltaQueue$EventList: avrora.sim.clock.DeltaQueue$EventList next> = next;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(l, 107, tid_newEventList, "avrora.sim.clock.DeltaQueue", 379, t);
+        l.<avrora.sim.clock.DeltaQueue$EventList: avrora.sim.Simulator$Event event> = t;
+
+     label1:
+        return l;
+    }
+
+    static avrora.sim.clock.DeltaQueue$EventList access$000(avrora.sim.clock.DeltaQueue, avrora.sim.Simulator$Event, avrora.sim.clock.DeltaQueue$EventList)
+    {
+        avrora.sim.clock.DeltaQueue x0;
+        avrora.sim.Simulator$Event x1;
+        avrora.sim.clock.DeltaQueue$EventList x2, $r0;
+
+        x0 := @parameter0: avrora.sim.clock.DeltaQueue;
+        x1 := @parameter1: avrora.sim.Simulator$Event;
+        x2 := @parameter2: avrora.sim.clock.DeltaQueue$EventList;
+        $r0 = specialinvoke x0.<avrora.sim.clock.DeltaQueue: avrora.sim.clock.DeltaQueue$EventList newEventList(avrora.sim.Simulator$Event,avrora.sim.clock.DeltaQueue$EventList)>(x1, x2);
+        return $r0;
+    }
+
+    static void access$100(avrora.sim.clock.DeltaQueue, avrora.sim.clock.DeltaQueue$EventList)
+    {
+        avrora.sim.clock.DeltaQueue x0;
+        avrora.sim.clock.DeltaQueue$EventList x1;
+
+        x0 := @parameter0: avrora.sim.clock.DeltaQueue;
+        x1 := @parameter1: avrora.sim.clock.DeltaQueue$EventList;
+        specialinvoke x0.<avrora.sim.clock.DeltaQueue: void free(avrora.sim.clock.DeltaQueue$EventList)>(x1);
+        return;
+    }
+}

@@ -1,0 +1,3077 @@
+class org.apache.lucene.index.SegmentReader extends org.apache.lucene.index.DirectoryIndexReader
+{
+    private java.lang.String segment;
+    private org.apache.lucene.index.SegmentInfo si;
+    private int readBufferSize;
+    org.apache.lucene.index.FieldInfos fieldInfos;
+    private org.apache.lucene.index.FieldsReader fieldsReader;
+    org.apache.lucene.index.TermInfosReader tis;
+    org.apache.lucene.index.TermVectorsReader termVectorsReaderOrig;
+    org.apache.lucene.util.CloseableThreadLocal termVectorsLocal;
+    org.apache.lucene.util.BitVector deletedDocs;
+    private boolean deletedDocsDirty;
+    private boolean normsDirty;
+    private boolean undeleteAll;
+    private int pendingDeleteCount;
+    private boolean rollbackDeletedDocsDirty;
+    private boolean rollbackNormsDirty;
+    private boolean rollbackUndeleteAll;
+    private int rollbackPendingDeleteCount;
+    private boolean readOnly;
+    org.apache.lucene.store.IndexInput freqStream;
+    org.apache.lucene.store.IndexInput proxStream;
+    private org.apache.lucene.store.IndexInput singleNormStream;
+    org.apache.lucene.index.CompoundFileReader cfsReader;
+    org.apache.lucene.index.CompoundFileReader storeCFSReader;
+    private org.apache.lucene.index.SegmentReader referencedSegmentReader;
+    java.util.Map norms;
+    private static java.lang.Class IMPL;
+    private static java.lang.Class READONLY_IMPL;
+    private byte[] ones;
+    static java.lang.Class class$org$apache$lucene$index$SegmentReader;
+    static java.lang.Class class$org$apache$lucene$index$ReadOnlySegmentReader;
+    static final boolean $assertionsDisabled;
+
+    void <init>()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.util.CloseableThreadLocal $r0;
+        java.util.HashMap $r1;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        specialinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void <init>()>();
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader termVectorsReaderOrig> = null;
+        $r0 = new org.apache.lucene.util.CloseableThreadLocal;
+        specialinvoke $r0.<org.apache.lucene.util.CloseableThreadLocal: void <init>()>();
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.CloseableThreadLocal termVectorsLocal> = $r0;
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs> = null;
+        this.<org.apache.lucene.index.SegmentReader: boolean deletedDocsDirty> = 0;
+        this.<org.apache.lucene.index.SegmentReader: boolean normsDirty> = 0;
+        this.<org.apache.lucene.index.SegmentReader: boolean undeleteAll> = 0;
+        this.<org.apache.lucene.index.SegmentReader: boolean rollbackDeletedDocsDirty> = 0;
+        this.<org.apache.lucene.index.SegmentReader: boolean rollbackNormsDirty> = 0;
+        this.<org.apache.lucene.index.SegmentReader: boolean rollbackUndeleteAll> = 0;
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader cfsReader> = null;
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader storeCFSReader> = null;
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader referencedSegmentReader> = null;
+        $r1 = new java.util.HashMap;
+        specialinvoke $r1.<java.util.HashMap: void <init>()>();
+        this.<org.apache.lucene.index.SegmentReader: java.util.Map norms> = $r1;
+        return;
+    }
+
+    public void incRef()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.util.Iterator it;
+        org.apache.lucene.index.SegmentReader$Norm norm;
+        java.util.Map $r0;
+        java.util.Collection $r1;
+        boolean $z0;
+        java.lang.Object $r2, localthislockincRef;
+        java.lang.Throwable throwableLocal0;
+        long tid_incRef;
+        java.lang.Thread thread_incRef;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        thread_incRef = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_incRef = virtualinvoke thread_incRef.<java.lang.Thread: long getId()>();
+        localthislockincRef = this;
+
+     label0:
+        entermonitor localthislockincRef;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockincRef, 0, tid_incRef);
+        specialinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void incRef()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r1 = interfaceinvoke $r0.<java.util.Map: java.util.Collection values()>();
+        it = interfaceinvoke $r1.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r2 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+        norm = (org.apache.lucene.index.SegmentReader$Norm) $r2;
+        virtualinvoke norm.<org.apache.lucene.index.SegmentReader$Norm: void incRef()>();
+        goto label1;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockincRef, 0, tid_incRef);
+        exitmonitor localthislockincRef;
+        goto label3;
+
+     label3:
+        return;
+
+     label4:
+        throwableLocal0 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockincRef, 0, tid_incRef);
+        exitmonitor localthislockincRef;
+
+     label6:
+        throw throwableLocal0;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    private void incRefReaderNotNorms()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.lang.Object localthislockincRefReaderNotNorms;
+        java.lang.Throwable throwableLocal1;
+        long tid_incRefReaderNotNorms;
+        java.lang.Thread thread_incRefReaderNotNorms;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        thread_incRefReaderNotNorms = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_incRefReaderNotNorms = virtualinvoke thread_incRefReaderNotNorms.<java.lang.Thread: long getId()>();
+        localthislockincRefReaderNotNorms = this;
+
+     label0:
+        entermonitor localthislockincRefReaderNotNorms;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockincRefReaderNotNorms, 0, tid_incRefReaderNotNorms);
+        specialinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void incRef()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockincRefReaderNotNorms, 0, tid_incRefReaderNotNorms);
+        exitmonitor localthislockincRefReaderNotNorms;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        throwableLocal1 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockincRefReaderNotNorms, 0, tid_incRefReaderNotNorms);
+        exitmonitor localthislockincRefReaderNotNorms;
+
+     label4:
+        throw throwableLocal1;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public void decRef() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.util.Iterator it;
+        org.apache.lucene.index.SegmentReader$Norm norm;
+        java.util.Map $r0;
+        java.util.Collection $r1;
+        boolean $z0;
+        java.lang.Object $r2, localthislockdecRef;
+        java.lang.Throwable throwableLocal2;
+        long tid_decRef;
+        java.lang.Thread thread_decRef;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        thread_decRef = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_decRef = virtualinvoke thread_decRef.<java.lang.Thread: long getId()>();
+        localthislockdecRef = this;
+
+     label0:
+        entermonitor localthislockdecRef;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockdecRef, 0, tid_decRef);
+        specialinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void decRef()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r1 = interfaceinvoke $r0.<java.util.Map: java.util.Collection values()>();
+        it = interfaceinvoke $r1.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r2 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+        norm = (org.apache.lucene.index.SegmentReader$Norm) $r2;
+        virtualinvoke norm.<org.apache.lucene.index.SegmentReader$Norm: void decRef()>();
+        goto label1;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockdecRef, 0, tid_decRef);
+        exitmonitor localthislockdecRef;
+        goto label3;
+
+     label3:
+        return;
+
+     label4:
+        throwableLocal2 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockdecRef, 0, tid_decRef);
+        exitmonitor localthislockdecRef;
+
+     label6:
+        throw throwableLocal2;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    private void decRefReaderNotNorms() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.lang.Object localthislockdecRefReaderNotNorms;
+        java.lang.Throwable throwableLocal3;
+        long tid_decRefReaderNotNorms;
+        java.lang.Thread thread_decRefReaderNotNorms;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        thread_decRefReaderNotNorms = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_decRefReaderNotNorms = virtualinvoke thread_decRefReaderNotNorms.<java.lang.Thread: long getId()>();
+        localthislockdecRefReaderNotNorms = this;
+
+     label0:
+        entermonitor localthislockdecRefReaderNotNorms;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockdecRefReaderNotNorms, 0, tid_decRefReaderNotNorms);
+        specialinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void decRef()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockdecRefReaderNotNorms, 0, tid_decRefReaderNotNorms);
+        exitmonitor localthislockdecRefReaderNotNorms;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        throwableLocal3 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockdecRefReaderNotNorms, 0, tid_decRefReaderNotNorms);
+        exitmonitor localthislockdecRefReaderNotNorms;
+
+     label4:
+        throw throwableLocal3;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public static org.apache.lucene.index.SegmentReader get(org.apache.lucene.index.SegmentInfo) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo si;
+        org.apache.lucene.store.Directory $r0;
+        org.apache.lucene.index.SegmentReader $r1;
+        long tid_get;
+        java.lang.Thread thread_get;
+
+        si := @parameter0: org.apache.lucene.index.SegmentInfo;
+        thread_get = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_get = virtualinvoke thread_get.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(si, 0, tid_get, "org.apache.lucene.index.SegmentReader", 220, $r0);
+        $r0 = si.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $r1 = staticinvoke <org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader get(boolean,org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfo,org.apache.lucene.index.SegmentInfos,boolean,boolean,int,boolean)>(0, $r0, si, null, 0, 0, 1024, 1);
+        return $r1;
+    }
+
+    public static org.apache.lucene.index.SegmentReader get(boolean, org.apache.lucene.index.SegmentInfo) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        boolean readOnly;
+        org.apache.lucene.index.SegmentInfo si;
+        org.apache.lucene.store.Directory $r0;
+        org.apache.lucene.index.SegmentReader $r1;
+        long tid_get;
+        java.lang.Thread thread_get;
+
+        readOnly := @parameter0: boolean;
+        si := @parameter1: org.apache.lucene.index.SegmentInfo;
+        thread_get = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_get = virtualinvoke thread_get.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(si, 0, tid_get, "org.apache.lucene.index.SegmentReader", 228, $r0);
+        $r0 = si.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $r1 = staticinvoke <org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader get(boolean,org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfo,org.apache.lucene.index.SegmentInfos,boolean,boolean,int,boolean)>(readOnly, $r0, si, null, 0, 0, 1024, 1);
+        return $r1;
+    }
+
+    static org.apache.lucene.index.SegmentReader get(org.apache.lucene.index.SegmentInfo, boolean) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo si;
+        boolean doOpenStores;
+        org.apache.lucene.store.Directory $r0;
+        org.apache.lucene.index.SegmentReader $r1;
+        long tid_get;
+        java.lang.Thread thread_get;
+
+        si := @parameter0: org.apache.lucene.index.SegmentInfo;
+        doOpenStores := @parameter1: boolean;
+        thread_get = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_get = virtualinvoke thread_get.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(si, 0, tid_get, "org.apache.lucene.index.SegmentReader", 236, $r0);
+        $r0 = si.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $r1 = staticinvoke <org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader get(boolean,org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfo,org.apache.lucene.index.SegmentInfos,boolean,boolean,int,boolean)>(0, $r0, si, null, 0, 0, 1024, doOpenStores);
+        return $r1;
+    }
+
+    public static org.apache.lucene.index.SegmentReader get(org.apache.lucene.index.SegmentInfo, int) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo si;
+        int readBufferSize;
+        org.apache.lucene.store.Directory $r0;
+        org.apache.lucene.index.SegmentReader $r1;
+        long tid_get;
+        java.lang.Thread thread_get;
+
+        si := @parameter0: org.apache.lucene.index.SegmentInfo;
+        readBufferSize := @parameter1: int;
+        thread_get = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_get = virtualinvoke thread_get.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(si, 0, tid_get, "org.apache.lucene.index.SegmentReader", 244, $r0);
+        $r0 = si.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $r1 = staticinvoke <org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader get(boolean,org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfo,org.apache.lucene.index.SegmentInfos,boolean,boolean,int,boolean)>(0, $r0, si, null, 0, 0, readBufferSize, 1);
+        return $r1;
+    }
+
+    static org.apache.lucene.index.SegmentReader get(org.apache.lucene.index.SegmentInfo, int, boolean) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo si;
+        int readBufferSize;
+        boolean doOpenStores;
+        org.apache.lucene.store.Directory $r0;
+        org.apache.lucene.index.SegmentReader $r1;
+        long tid_get;
+        java.lang.Thread thread_get;
+
+        si := @parameter0: org.apache.lucene.index.SegmentInfo;
+        readBufferSize := @parameter1: int;
+        doOpenStores := @parameter2: boolean;
+        thread_get = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_get = virtualinvoke thread_get.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(si, 0, tid_get, "org.apache.lucene.index.SegmentReader", 252, $r0);
+        $r0 = si.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $r1 = staticinvoke <org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader get(boolean,org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfo,org.apache.lucene.index.SegmentInfos,boolean,boolean,int,boolean)>(0, $r0, si, null, 0, 0, readBufferSize, doOpenStores);
+        return $r1;
+    }
+
+    static org.apache.lucene.index.SegmentReader get(boolean, org.apache.lucene.index.SegmentInfo, int, boolean) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        boolean readOnly, doOpenStores;
+        org.apache.lucene.index.SegmentInfo si;
+        int readBufferSize;
+        org.apache.lucene.store.Directory $r0;
+        org.apache.lucene.index.SegmentReader $r1;
+        long tid_get;
+        java.lang.Thread thread_get;
+
+        readOnly := @parameter0: boolean;
+        si := @parameter1: org.apache.lucene.index.SegmentInfo;
+        readBufferSize := @parameter2: int;
+        doOpenStores := @parameter3: boolean;
+        thread_get = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_get = virtualinvoke thread_get.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(si, 0, tid_get, "org.apache.lucene.index.SegmentReader", 260, $r0);
+        $r0 = si.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $r1 = staticinvoke <org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader get(boolean,org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfo,org.apache.lucene.index.SegmentInfos,boolean,boolean,int,boolean)>(readOnly, $r0, si, null, 0, 0, readBufferSize, doOpenStores);
+        return $r1;
+    }
+
+    public static org.apache.lucene.index.SegmentReader get(boolean, org.apache.lucene.index.SegmentInfos, org.apache.lucene.index.SegmentInfo, boolean) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        boolean readOnly, closeDir;
+        org.apache.lucene.index.SegmentInfos sis;
+        org.apache.lucene.index.SegmentInfo si;
+        org.apache.lucene.store.Directory $r0;
+        org.apache.lucene.index.SegmentReader $r1;
+        long tid_get;
+        java.lang.Thread thread_get;
+
+        readOnly := @parameter0: boolean;
+        sis := @parameter1: org.apache.lucene.index.SegmentInfos;
+        si := @parameter2: org.apache.lucene.index.SegmentInfo;
+        closeDir := @parameter3: boolean;
+        thread_get = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_get = virtualinvoke thread_get.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(si, 0, tid_get, "org.apache.lucene.index.SegmentReader", 269, $r0);
+        $r0 = si.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $r1 = staticinvoke <org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader get(boolean,org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfo,org.apache.lucene.index.SegmentInfos,boolean,boolean,int,boolean)>(readOnly, $r0, si, sis, closeDir, 1, 1024, 1);
+        return $r1;
+    }
+
+    public static org.apache.lucene.index.SegmentReader get(org.apache.lucene.store.Directory, org.apache.lucene.index.SegmentInfo, org.apache.lucene.index.SegmentInfos, boolean, boolean, int) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.store.Directory dir;
+        org.apache.lucene.index.SegmentInfo si;
+        org.apache.lucene.index.SegmentInfos sis;
+        boolean closeDir, ownDir;
+        int readBufferSize;
+        org.apache.lucene.index.SegmentReader $r0;
+
+        dir := @parameter0: org.apache.lucene.store.Directory;
+        si := @parameter1: org.apache.lucene.index.SegmentInfo;
+        sis := @parameter2: org.apache.lucene.index.SegmentInfos;
+        closeDir := @parameter3: boolean;
+        ownDir := @parameter4: boolean;
+        readBufferSize := @parameter5: int;
+        $r0 = staticinvoke <org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader get(boolean,org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfo,org.apache.lucene.index.SegmentInfos,boolean,boolean,int,boolean)>(0, dir, si, sis, closeDir, ownDir, readBufferSize, 1);
+        return $r0;
+    }
+
+    public static org.apache.lucene.index.SegmentReader get(boolean, org.apache.lucene.store.Directory, org.apache.lucene.index.SegmentInfo, org.apache.lucene.index.SegmentInfos, boolean, boolean, int, boolean) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        boolean readOnly, closeDir, ownDir, doOpenStores;
+        org.apache.lucene.store.Directory dir;
+        org.apache.lucene.index.SegmentInfo si;
+        org.apache.lucene.index.SegmentInfos sis;
+        int readBufferSize;
+        org.apache.lucene.index.SegmentReader instance;
+        java.lang.Exception e, $r3;
+        java.lang.StringBuffer $r0;
+        java.lang.Class $r1;
+        java.lang.Object $r2;
+        java.lang.RuntimeException $r4;
+        java.lang.String $r5;
+
+        readOnly := @parameter0: boolean;
+        dir := @parameter1: org.apache.lucene.store.Directory;
+        si := @parameter2: org.apache.lucene.index.SegmentInfo;
+        sis := @parameter3: org.apache.lucene.index.SegmentInfos;
+        closeDir := @parameter4: boolean;
+        ownDir := @parameter5: boolean;
+        readBufferSize := @parameter6: int;
+        doOpenStores := @parameter7: boolean;
+
+     label0:
+        if readOnly == 0 goto label1;
+
+        $r1 = <org.apache.lucene.index.SegmentReader: java.lang.Class READONLY_IMPL>;
+        $r2 = virtualinvoke $r1.<java.lang.Class: java.lang.Object newInstance()>();
+        instance = (org.apache.lucene.index.SegmentReader) $r2;
+        goto label2;
+
+     label1:
+        $r1 = <org.apache.lucene.index.SegmentReader: java.lang.Class IMPL>;
+        $r2 = virtualinvoke $r1.<java.lang.Class: java.lang.Object newInstance()>();
+        instance = (org.apache.lucene.index.SegmentReader) $r2;
+
+     label2:
+        goto label4;
+
+     label3:
+        $r3 := @caughtexception;
+        e = $r3;
+        $r4 = new java.lang.RuntimeException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cannot load SegmentReader class: ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(e);
+        $r5 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r4.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r5, e);
+        throw $r4;
+
+     label4:
+        virtualinvoke instance.<org.apache.lucene.index.SegmentReader: void init(org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfos,boolean,boolean)>(dir, sis, closeDir, readOnly);
+        specialinvoke instance.<org.apache.lucene.index.SegmentReader: void initialize(org.apache.lucene.index.SegmentInfo,int,boolean)>(si, readBufferSize, doOpenStores);
+        return instance;
+
+        catch java.lang.Exception from label0 to label2 with label3;
+    }
+
+    private void initialize(org.apache.lucene.index.SegmentInfo, int, boolean) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.index.SegmentInfo si;
+        int readBufferSize, numFields, i, $i0, $i1, $i2, $i3, $i4;
+        boolean doOpenStores, success, anyProx, $z0;
+        org.apache.lucene.store.Directory cfsDir, storeDir, $r3;
+        java.lang.StringBuffer $r0, $r13;
+        java.lang.String fieldsSegment, vectorsSegment, $r1, $r4, $r5, $r14, $r16;
+        java.lang.Throwable l11, $r20;
+        org.apache.lucene.index.CompoundFileReader $r2;
+        org.apache.lucene.index.FieldInfos $r6, $r7, $r10;
+        org.apache.lucene.index.FieldInfo $r8;
+        org.apache.lucene.index.FieldsReader $r9, $r11, $r15;
+        org.apache.lucene.index.CorruptIndexException $r12;
+        org.apache.lucene.index.TermInfosReader $r17;
+        org.apache.lucene.store.IndexInput $r18;
+        org.apache.lucene.index.TermVectorsReader $r19;
+        long tid_initialize;
+        java.lang.Thread thread_initialize;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        si := @parameter0: org.apache.lucene.index.SegmentInfo;
+        readBufferSize := @parameter1: int;
+        doOpenStores := @parameter2: boolean;
+        thread_initialize = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_initialize = virtualinvoke thread_initialize.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(si, 1, tid_initialize, "org.apache.lucene.index.SegmentReader", 311, $r1);
+        $r1 = si.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        this.<org.apache.lucene.index.SegmentReader: java.lang.String segment> = $r1;
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si> = si;
+        this.<org.apache.lucene.index.SegmentReader: int readBufferSize> = readBufferSize;
+        success = 0;
+
+     label0:
+        cfsDir = virtualinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.Directory directory()>();
+        $z0 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: boolean getUseCompoundFile()>();
+        if $z0 == 0 goto label1;
+
+        $r2 = new org.apache.lucene.index.CompoundFileReader;
+        $r3 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.Directory directory()>();
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r4 = this.<org.apache.lucene.index.SegmentReader: java.lang.String segment>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cfs");
+        $r5 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r2.<org.apache.lucene.index.CompoundFileReader: void <init>(org.apache.lucene.store.Directory,java.lang.String,int)>($r3, $r5, readBufferSize);
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader cfsReader> = $r2;
+        cfsDir = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader cfsReader>;
+
+     label1:
+        if doOpenStores == 0 goto label4;
+
+        $i0 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: int getDocStoreOffset()>();
+        if $i0 == -1 goto label3;
+
+        $z0 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: boolean getDocStoreIsCompoundFile()>();
+        if $z0 == 0 goto label2;
+
+        $r2 = new org.apache.lucene.index.CompoundFileReader;
+        $r3 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.Directory directory()>();
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r4 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: java.lang.String getDocStoreSegment()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cfx");
+        $r5 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r2.<org.apache.lucene.index.CompoundFileReader: void <init>(org.apache.lucene.store.Directory,java.lang.String,int)>($r3, $r5, readBufferSize);
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader storeCFSReader> = $r2;
+        storeDir = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader storeCFSReader>;
+        goto label5;
+
+     label2:
+        storeDir = virtualinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.Directory directory()>();
+        goto label5;
+
+     label3:
+        storeDir = cfsDir;
+        goto label5;
+
+     label4:
+        storeDir = null;
+
+     label5:
+        $r6 = new org.apache.lucene.index.FieldInfos;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r4 = this.<org.apache.lucene.index.SegmentReader: java.lang.String segment>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".fnm");
+        $r5 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r6.<org.apache.lucene.index.FieldInfos: void <init>(org.apache.lucene.store.Directory,java.lang.String)>(cfsDir, $r5);
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos> = $r6;
+        anyProx = 0;
+        $r7 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        numFields = virtualinvoke $r7.<org.apache.lucene.index.FieldInfos: int size()>();
+        i = 0;
+
+     label6:
+        if anyProx != 0 goto label8;
+
+        if i >= numFields goto label8;
+
+        $r7 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r8 = virtualinvoke $r7.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(int)>(i);
+        $z0 = $r8.<org.apache.lucene.index.FieldInfo: boolean omitTf>;
+        if $z0 != 0 goto label7;
+
+        anyProx = 1;
+
+     label7:
+        i = i + 1;
+        goto label6;
+
+     label8:
+        $i0 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: int getDocStoreOffset()>();
+        if $i0 == -1 goto label9;
+
+        fieldsSegment = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: java.lang.String getDocStoreSegment()>();
+        goto label10;
+
+     label9:
+        fieldsSegment = this.<org.apache.lucene.index.SegmentReader: java.lang.String segment>;
+
+     label10:
+        if doOpenStores == 0 goto label11;
+
+        $r9 = new org.apache.lucene.index.FieldsReader;
+        $r10 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $i1 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: int getDocStoreOffset()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(si, 2, tid_initialize, "org.apache.lucene.index.SegmentReader", 357, $i2);
+        $i2 = si.<org.apache.lucene.index.SegmentInfo: int docCount>;
+        specialinvoke $r9.<org.apache.lucene.index.FieldsReader: void <init>(org.apache.lucene.store.Directory,java.lang.String,org.apache.lucene.index.FieldInfos,int,int,int)>(storeDir, fieldsSegment, $r10, readBufferSize, $i1, $i2);
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldsReader fieldsReader> = $r9;
+        $i0 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: int getDocStoreOffset()>();
+        if $i0 != -1 goto label11;
+
+        $r11 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldsReader fieldsReader>;
+        $i0 = virtualinvoke $r11.<org.apache.lucene.index.FieldsReader: int size()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(si, 2, tid_initialize, "org.apache.lucene.index.SegmentReader", 361, $i3);
+        $i3 = si.<org.apache.lucene.index.SegmentInfo: int docCount>;
+        if $i0 == $i3 goto label11;
+
+        $r12 = new org.apache.lucene.index.CorruptIndexException;
+        $r13 = new java.lang.StringBuffer;
+        specialinvoke $r13.<java.lang.StringBuffer: void <init>()>();
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("doc counts differ for segment ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(si, 1, tid_initialize, "org.apache.lucene.index.SegmentReader", 362, $r14);
+        $r14 = si.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r14);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(": fieldsReader shows ");
+        $r15 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldsReader fieldsReader>;
+        $i4 = virtualinvoke $r15.<org.apache.lucene.index.FieldsReader: int size()>();
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i4);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" but segmentInfo shows ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(si, 2, tid_initialize, "org.apache.lucene.index.SegmentReader", 362, $i4);
+        $i4 = si.<org.apache.lucene.index.SegmentInfo: int docCount>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i4);
+        $r16 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r12.<org.apache.lucene.index.CorruptIndexException: void <init>(java.lang.String)>($r16);
+        throw $r12;
+
+     label11:
+        $r17 = new org.apache.lucene.index.TermInfosReader;
+        $r5 = this.<org.apache.lucene.index.SegmentReader: java.lang.String segment>;
+        $r10 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        specialinvoke $r17.<org.apache.lucene.index.TermInfosReader: void <init>(org.apache.lucene.store.Directory,java.lang.String,org.apache.lucene.index.FieldInfos,int)>(cfsDir, $r5, $r10, readBufferSize);
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermInfosReader tis> = $r17;
+        specialinvoke this.<org.apache.lucene.index.SegmentReader: void loadDeletedDocs()>();
+        $r13 = new java.lang.StringBuffer;
+        specialinvoke $r13.<java.lang.StringBuffer: void <init>()>();
+        $r14 = this.<org.apache.lucene.index.SegmentReader: java.lang.String segment>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r14);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".frq");
+        $r16 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.String toString()>();
+        $r18 = virtualinvoke cfsDir.<org.apache.lucene.store.Directory: org.apache.lucene.store.IndexInput openInput(java.lang.String,int)>($r16, readBufferSize);
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput freqStream> = $r18;
+        if anyProx == 0 goto label12;
+
+        $r13 = new java.lang.StringBuffer;
+        specialinvoke $r13.<java.lang.StringBuffer: void <init>()>();
+        $r14 = this.<org.apache.lucene.index.SegmentReader: java.lang.String segment>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r14);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".prx");
+        $r16 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.String toString()>();
+        $r18 = virtualinvoke cfsDir.<org.apache.lucene.store.Directory: org.apache.lucene.store.IndexInput openInput(java.lang.String,int)>($r16, readBufferSize);
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput proxStream> = $r18;
+
+     label12:
+        specialinvoke this.<org.apache.lucene.index.SegmentReader: void openNorms(org.apache.lucene.store.Directory,int)>(cfsDir, readBufferSize);
+        if doOpenStores == 0 goto label15;
+
+        $r7 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $z0 = virtualinvoke $r7.<org.apache.lucene.index.FieldInfos: boolean hasVectors()>();
+        if $z0 == 0 goto label15;
+
+        $i0 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: int getDocStoreOffset()>();
+        if $i0 == -1 goto label13;
+
+        vectorsSegment = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: java.lang.String getDocStoreSegment()>();
+        goto label14;
+
+     label13:
+        vectorsSegment = this.<org.apache.lucene.index.SegmentReader: java.lang.String segment>;
+
+     label14:
+        $r19 = new org.apache.lucene.index.TermVectorsReader;
+        $r10 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $i1 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: int getDocStoreOffset()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(si, 2, tid_initialize, "org.apache.lucene.index.SegmentReader", 383, $i2);
+        $i2 = si.<org.apache.lucene.index.SegmentInfo: int docCount>;
+        specialinvoke $r19.<org.apache.lucene.index.TermVectorsReader: void <init>(org.apache.lucene.store.Directory,java.lang.String,org.apache.lucene.index.FieldInfos,int,int,int)>(storeDir, vectorsSegment, $r10, readBufferSize, $i1, $i2);
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader termVectorsReaderOrig> = $r19;
+
+     label15:
+        success = 1;
+        goto label21;
+
+     label16:
+        goto label20;
+
+     label17:
+        $r20 := @caughtexception;
+
+     label18:
+        l11 = $r20;
+        goto label23;
+
+     label19:
+        throw l11;
+
+     label20:
+        return;
+
+     label21:
+        if success != 0 goto label22;
+
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void doClose()>();
+
+     label22:
+        goto label16;
+
+     label23:
+        if success != 0 goto label24;
+
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void doClose()>();
+
+     label24:
+        goto label19;
+
+        catch java.lang.Throwable from label0 to label16 with label17;
+        catch java.lang.Throwable from label18 to label19 with label17;
+    }
+
+    private void loadDeletedDocs() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.util.BitVector $r0, $r8;
+        org.apache.lucene.index.SegmentInfo $r1, $r3, $r7;
+        boolean $z0;
+        org.apache.lucene.store.Directory $r2;
+        java.lang.String $r4, $r9, $r10;
+        int $i0, $i1, $i2;
+        java.lang.AssertionError $r5;
+        java.lang.StringBuffer $r6;
+        long tid_loadDeletedDocs;
+        java.lang.Thread thread_loadDeletedDocs;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        thread_loadDeletedDocs = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_loadDeletedDocs = virtualinvoke thread_loadDeletedDocs.<java.lang.Thread: long getId()>();
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $z0 = staticinvoke <org.apache.lucene.index.SegmentReader: boolean hasDeletions(org.apache.lucene.index.SegmentInfo)>($r1);
+        if $z0 == 0 goto label1;
+
+        $r0 = new org.apache.lucene.util.BitVector;
+        $r2 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.Directory directory()>();
+        $r3 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $r4 = virtualinvoke $r3.<org.apache.lucene.index.SegmentInfo: java.lang.String getDelFileName()>();
+        specialinvoke $r0.<org.apache.lucene.util.BitVector: void <init>(org.apache.lucene.store.Directory,java.lang.String)>($r2, $r4);
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs> = $r0;
+        $z0 = <org.apache.lucene.index.SegmentReader: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label0;
+
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $i0 = virtualinvoke $r1.<org.apache.lucene.index.SegmentInfo: int getDelCount()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs>;
+        $i1 = virtualinvoke $r0.<org.apache.lucene.util.BitVector: int count()>();
+        if $i0 == $i1 goto label0;
+
+        $r5 = new java.lang.AssertionError;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("delete count mismatch: info=");
+        $r7 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $i2 = virtualinvoke $r7.<org.apache.lucene.index.SegmentInfo: int getDelCount()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i2);
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" vs BitVector=");
+        $r8 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs>;
+        $i2 = virtualinvoke $r8.<org.apache.lucene.util.BitVector: int count()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i2);
+        $r9 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r5.<java.lang.AssertionError: void <init>(java.lang.Object)>($r9);
+        throw $r5;
+
+     label0:
+        $z0 = <org.apache.lucene.index.SegmentReader: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label2;
+
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $i0 = virtualinvoke $r1.<org.apache.lucene.index.SegmentInfo: int getDelCount()>();
+        $i1 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: int maxDoc()>();
+        if $i0 <= $i1 goto label2;
+
+        $r5 = new java.lang.AssertionError;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("delete count mismatch: ");
+        $r8 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs>;
+        $i2 = virtualinvoke $r8.<org.apache.lucene.util.BitVector: int count()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i2);
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(") exceeds max doc (");
+        $i2 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: int maxDoc()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i2);
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(") for segment ");
+        $r7 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r7, 1, tid_loadDeletedDocs, "org.apache.lucene.index.SegmentReader", 410, $r10);
+        $r10 = $r7.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r10);
+        $r9 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r5.<java.lang.AssertionError: void <init>(java.lang.Object)>($r9);
+        throw $r5;
+
+     label1:
+        $z0 = <org.apache.lucene.index.SegmentReader: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label2;
+
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $i0 = virtualinvoke $r1.<org.apache.lucene.index.SegmentInfo: int getDelCount()>();
+        if $i0 == 0 goto label2;
+
+        $r5 = new java.lang.AssertionError;
+        specialinvoke $r5.<java.lang.AssertionError: void <init>()>();
+        throw $r5;
+
+     label2:
+        return;
+    }
+
+    protected org.apache.lucene.index.DirectoryIndexReader doReopen(org.apache.lucene.index.SegmentInfos) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this, newReader;
+        org.apache.lucene.index.SegmentInfos infos;
+        org.apache.lucene.index.SegmentInfo si, $r2, $r3;
+        int $i0;
+        java.lang.String $r0, $r1;
+        boolean $z0, $z1, $z2;
+        org.apache.lucene.index.ReadOnlyMultiSegmentReader $r4;
+        org.apache.lucene.store.Directory $r5;
+        org.apache.lucene.index.SegmentReader[] $r6;
+        org.apache.lucene.index.MultiSegmentReader $r7;
+        java.lang.Object localthislockdoReopen;
+        java.lang.Throwable throwableLocal4;
+        long tid_doReopen;
+        java.lang.Thread thread_doReopen;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        infos := @parameter0: org.apache.lucene.index.SegmentInfos;
+        thread_doReopen = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_doReopen = virtualinvoke thread_doReopen.<java.lang.Thread: long getId()>();
+        localthislockdoReopen = this;
+
+     label0:
+        entermonitor localthislockdoReopen;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockdoReopen, 0, tid_doReopen);
+        $i0 = virtualinvoke infos.<org.apache.lucene.index.SegmentInfos: int size()>();
+        if $i0 != 1 goto label3;
+
+        si = virtualinvoke infos.<org.apache.lucene.index.SegmentInfos: org.apache.lucene.index.SegmentInfo info(int)>(0);
+        $r0 = this.<org.apache.lucene.index.SegmentReader: java.lang.String segment>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(si, 1, tid_doReopen, "org.apache.lucene.index.SegmentReader", 421, $r1);
+        $r1 = si.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+        if $z0 == 0 goto label1;
+
+        $z0 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: boolean getUseCompoundFile()>();
+        $r2 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $z1 = virtualinvoke $r2.<org.apache.lucene.index.SegmentInfo: boolean getUseCompoundFile()>();
+        if $z0 != $z1 goto label1;
+
+        newReader = virtualinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader reopenSegment(org.apache.lucene.index.SegmentInfo)>(si);
+        goto label2;
+
+     label1:
+        $z0 = this.<org.apache.lucene.index.SegmentReader: boolean readOnly>;
+        $r3 = virtualinvoke infos.<org.apache.lucene.index.SegmentInfos: org.apache.lucene.index.SegmentInfo info(int)>(0);
+        newReader = staticinvoke <org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader get(boolean,org.apache.lucene.index.SegmentInfos,org.apache.lucene.index.SegmentInfo,boolean)>($z0, infos, $r3, 0);
+
+     label2:
+        goto label7;
+
+     label3:
+        $z0 = this.<org.apache.lucene.index.SegmentReader: boolean readOnly>;
+        if $z0 == 0 goto label5;
+
+        $r4 = new org.apache.lucene.index.ReadOnlyMultiSegmentReader;
+        $r5 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.Directory directory>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 3, tid_doReopen, "org.apache.lucene.index.SegmentReader", 430, $z2);
+        $z2 = this.<org.apache.lucene.index.SegmentReader: boolean closeDirectory>;
+        $r6 = newarray (org.apache.lucene.index.SegmentReader)[1];
+        $r6[0] = this;
+        specialinvoke $r4.<org.apache.lucene.index.ReadOnlyMultiSegmentReader: void <init>(org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfos,boolean,org.apache.lucene.index.SegmentReader[],int[],java.util.Map)>($r5, infos, $z2, $r6, null, null);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockdoReopen, 0, tid_doReopen);
+        exitmonitor localthislockdoReopen;
+        goto label4;
+
+     label4:
+        return $r4;
+
+     label5:
+        $r7 = new org.apache.lucene.index.MultiSegmentReader;
+        $r5 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.Directory directory>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 3, tid_doReopen, "org.apache.lucene.index.SegmentReader", 432, $z2);
+        $z2 = this.<org.apache.lucene.index.SegmentReader: boolean closeDirectory>;
+        $r6 = newarray (org.apache.lucene.index.SegmentReader)[1];
+        $r6[0] = this;
+        specialinvoke $r7.<org.apache.lucene.index.MultiSegmentReader: void <init>(org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfos,boolean,org.apache.lucene.index.SegmentReader[],int[],java.util.Map,boolean)>($r5, infos, $z2, $r6, null, null, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockdoReopen, 0, tid_doReopen);
+        exitmonitor localthislockdoReopen;
+        goto label6;
+
+     label6:
+        return $r7;
+
+     label7:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockdoReopen, 0, tid_doReopen);
+        exitmonitor localthislockdoReopen;
+        goto label8;
+
+     label8:
+        return newReader;
+
+     label9:
+        throwableLocal4 := @caughtexception;
+
+     label10:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockdoReopen, 0, tid_doReopen);
+        exitmonitor localthislockdoReopen;
+
+     label11:
+        throw throwableLocal4;
+
+        catch java.lang.Throwable from label0 to label8 with label9;
+        catch java.lang.Throwable from label10 to label11 with label9;
+    }
+
+    org.apache.lucene.index.SegmentReader reopenSegment(org.apache.lucene.index.SegmentInfo) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this, clone, $r6, $r25;
+        org.apache.lucene.index.SegmentInfo si, $r0;
+        boolean deletionsUpToDate, normsUpToDate, success, $z0, $z1;
+        boolean[] fieldNormsChanged;
+        int i, $i0, $i1, $i2, $i3, $i4, $i5, $i6;
+        org.apache.lucene.store.Directory storeDir, d, $r7, $r23;
+        java.lang.String fieldsSegment, curField, field, fileName, $r1, $r2;
+        org.apache.lucene.index.SegmentReader$Norm norm;
+        java.util.Iterator it;
+        org.apache.lucene.index.FieldInfo fi, $r18;
+        java.lang.Throwable l13, $r24, throwableLocal5;
+        org.apache.lucene.index.FieldInfos $r3, $r4, $r15;
+        org.apache.lucene.index.ReadOnlySegmentReader $r5;
+        org.apache.lucene.index.CompoundFileReader $r8, $r12;
+        org.apache.lucene.index.TermInfosReader $r9;
+        org.apache.lucene.store.IndexInput $r10, $r22;
+        org.apache.lucene.index.TermVectorsReader $r11;
+        org.apache.lucene.index.FieldsReader $r13, $r14;
+        org.apache.lucene.util.BitVector $r16;
+        java.util.HashMap $r17;
+        java.util.Map $r19;
+        java.lang.Object $r20, localthislockreopenSegment;
+        java.util.Set $r21;
+        long tid_reopenSegment;
+        java.lang.Thread thread_reopenSegment;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        si := @parameter0: org.apache.lucene.index.SegmentInfo;
+        thread_reopenSegment = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_reopenSegment = virtualinvoke thread_reopenSegment.<java.lang.Thread: long getId()>();
+        localthislockreopenSegment = this;
+
+     label0:
+        entermonitor localthislockreopenSegment;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockreopenSegment, 0, tid_reopenSegment);
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.index.SegmentInfo: boolean hasDeletions()>();
+        $z1 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: boolean hasDeletions()>();
+        if $z0 != $z1 goto label2;
+
+        $z0 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: boolean hasDeletions()>();
+        if $z0 == 0 goto label1;
+
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.SegmentInfo: java.lang.String getDelFileName()>();
+        $r2 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: java.lang.String getDelFileName()>();
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+        if $z0 == 0 goto label2;
+
+     label1:
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        deletionsUpToDate = $z0;
+        normsUpToDate = 1;
+        $r3 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $i0 = virtualinvoke $r3.<org.apache.lucene.index.FieldInfos: int size()>();
+        fieldNormsChanged = newarray (boolean)[$i0];
+        if normsUpToDate == 0 goto label6;
+
+        i = 0;
+
+     label4:
+        $r4 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $i1 = virtualinvoke $r4.<org.apache.lucene.index.FieldInfos: int size()>();
+        if i >= $i1 goto label6;
+
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.SegmentInfo: java.lang.String getNormFileName(int)>(i);
+        $r2 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: java.lang.String getNormFileName(int)>(i);
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+        if $z0 != 0 goto label5;
+
+        normsUpToDate = 0;
+        fieldNormsChanged[i] = 1;
+
+     label5:
+        i = i + 1;
+        goto label4;
+
+     label6:
+        if normsUpToDate == 0 goto label8;
+
+        if deletionsUpToDate == 0 goto label8;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockreopenSegment, 0, tid_reopenSegment);
+        exitmonitor localthislockreopenSegment;
+        goto label7;
+
+     label7:
+        return this;
+
+     label8:
+        $z0 = this.<org.apache.lucene.index.SegmentReader: boolean readOnly>;
+        if $z0 == 0 goto label9;
+
+        $r5 = new org.apache.lucene.index.ReadOnlySegmentReader;
+        specialinvoke $r5.<org.apache.lucene.index.ReadOnlySegmentReader: void <init>()>();
+        clone = $r5;
+        goto label10;
+
+     label9:
+        $r6 = new org.apache.lucene.index.SegmentReader;
+        specialinvoke $r6.<org.apache.lucene.index.SegmentReader: void <init>()>();
+        clone = $r6;
+
+     label10:
+        success = 0;
+
+     label11:
+        $z1 = this.<org.apache.lucene.index.SegmentReader: boolean readOnly>;
+        clone.<org.apache.lucene.index.SegmentReader: boolean readOnly> = $z1;
+        $r7 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.Directory directory>;
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.Directory directory> = $r7;
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si> = si;
+        $r2 = this.<org.apache.lucene.index.SegmentReader: java.lang.String segment>;
+        clone.<org.apache.lucene.index.SegmentReader: java.lang.String segment> = $r2;
+        $i1 = this.<org.apache.lucene.index.SegmentReader: int readBufferSize>;
+        clone.<org.apache.lucene.index.SegmentReader: int readBufferSize> = $i1;
+        $r8 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader cfsReader>;
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader cfsReader> = $r8;
+        $r8 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader storeCFSReader>;
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader storeCFSReader> = $r8;
+        $r4 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos> = $r4;
+        $r9 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermInfosReader tis>;
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermInfosReader tis> = $r9;
+        $r10 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput freqStream>;
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput freqStream> = $r10;
+        $r10 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput proxStream>;
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput proxStream> = $r10;
+        $r11 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader termVectorsReaderOrig>;
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader termVectorsReaderOrig> = $r11;
+        storeDir = virtualinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.Directory directory()>();
+        $i0 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: int getDocStoreOffset()>();
+        if $i0 == -1 goto label12;
+
+        fieldsSegment = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: java.lang.String getDocStoreSegment()>();
+        $r12 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader storeCFSReader>;
+        if $r12 == null goto label13;
+
+        storeDir = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader storeCFSReader>;
+        goto label13;
+
+     label12:
+        fieldsSegment = this.<org.apache.lucene.index.SegmentReader: java.lang.String segment>;
+        $r12 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader cfsReader>;
+        if $r12 == null goto label13;
+
+        storeDir = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader cfsReader>;
+
+     label13:
+        $r13 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldsReader fieldsReader>;
+        if $r13 == null goto label14;
+
+        $r14 = new org.apache.lucene.index.FieldsReader;
+        $r15 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $i2 = this.<org.apache.lucene.index.SegmentReader: int readBufferSize>;
+        $i3 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: int getDocStoreOffset()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(si, 2, tid_reopenSegment, "org.apache.lucene.index.SegmentReader", 503, $i4);
+        $i4 = si.<org.apache.lucene.index.SegmentInfo: int docCount>;
+        specialinvoke $r14.<org.apache.lucene.index.FieldsReader: void <init>(org.apache.lucene.store.Directory,java.lang.String,org.apache.lucene.index.FieldInfos,int,int,int)>(storeDir, fieldsSegment, $r15, $i2, $i3, $i4);
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldsReader fieldsReader> = $r14;
+
+     label14:
+        if deletionsUpToDate != 0 goto label15;
+
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs> = null;
+        specialinvoke clone.<org.apache.lucene.index.SegmentReader: void loadDeletedDocs()>();
+        goto label16;
+
+     label15:
+        $r16 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs>;
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs> = $r16;
+
+     label16:
+        $r17 = new java.util.HashMap;
+        specialinvoke $r17.<java.util.HashMap: void <init>()>();
+        clone.<org.apache.lucene.index.SegmentReader: java.util.Map norms> = $r17;
+        if normsUpToDate != 0 goto label22;
+
+        i = 0;
+
+     label17:
+        $i1 = lengthof fieldNormsChanged;
+        if i >= $i1 goto label19;
+
+        $z0 = fieldNormsChanged[i];
+        if $z0 != 0 goto label18;
+
+        $r3 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r18 = virtualinvoke $r3.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(int)>(i);
+        curField = $r18.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $r19 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r20 = interfaceinvoke $r19.<java.util.Map: java.lang.Object get(java.lang.Object)>(curField);
+        norm = (org.apache.lucene.index.SegmentReader$Norm) $r20;
+        virtualinvoke norm.<org.apache.lucene.index.SegmentReader$Norm: void incRef()>();
+        $r19 = clone.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        interfaceinvoke $r19.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(curField, norm);
+
+     label18:
+        i = i + 1;
+        goto label17;
+
+     label19:
+        $r6 = clone;
+        $z1 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: boolean getUseCompoundFile()>();
+        if $z1 == 0 goto label20;
+
+        $r7 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader cfsReader>;
+        goto label21;
+
+     label20:
+        $r7 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.Directory directory()>();
+
+     label21:
+        $i5 = this.<org.apache.lucene.index.SegmentReader: int readBufferSize>;
+        specialinvoke $r6.<org.apache.lucene.index.SegmentReader: void openNorms(org.apache.lucene.store.Directory,int)>($r7, $i5);
+        goto label24;
+
+     label22:
+        $r19 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r21 = interfaceinvoke $r19.<java.util.Map: java.util.Set keySet()>();
+        it = interfaceinvoke $r21.<java.util.Set: java.util.Iterator iterator()>();
+
+     label23:
+        $z0 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label24;
+
+        $r20 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+        field = (java.lang.String) $r20;
+        $r19 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r20 = interfaceinvoke $r19.<java.util.Map: java.lang.Object get(java.lang.Object)>(field);
+        norm = (org.apache.lucene.index.SegmentReader$Norm) $r20;
+        virtualinvoke norm.<org.apache.lucene.index.SegmentReader$Norm: void incRef()>();
+        $r19 = clone.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        interfaceinvoke $r19.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(field, norm);
+        goto label23;
+
+     label24:
+        $r22 = clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput singleNormStream>;
+        if $r22 != null goto label30;
+
+        i = 0;
+
+     label25:
+        $r4 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $i1 = virtualinvoke $r4.<org.apache.lucene.index.FieldInfos: int size()>();
+        if i >= $i1 goto label30;
+
+        $r3 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        fi = virtualinvoke $r3.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(int)>(i);
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        if $z0 == 0 goto label29;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean omitNorms>;
+        if $z0 != 0 goto label29;
+
+        $z0 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: boolean getUseCompoundFile()>();
+        if $z0 == 0 goto label26;
+
+        $r23 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader cfsReader>;
+        goto label27;
+
+     label26:
+        $r23 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.Directory directory()>();
+
+     label27:
+        d = $r23;
+        $i1 = fi.<org.apache.lucene.index.FieldInfo: int number>;
+        fileName = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: java.lang.String getNormFileName(int)>($i1);
+        $i1 = fi.<org.apache.lucene.index.FieldInfo: int number>;
+        $z0 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: boolean hasSeparateNorms(int)>($i1);
+        if $z0 == 0 goto label28;
+
+        goto label29;
+
+     label28:
+        $z0 = virtualinvoke fileName.<java.lang.String: boolean endsWith(java.lang.String)>(".nrm");
+        if $z0 == 0 goto label29;
+
+        $i6 = this.<org.apache.lucene.index.SegmentReader: int readBufferSize>;
+        $r10 = virtualinvoke d.<org.apache.lucene.store.Directory: org.apache.lucene.store.IndexInput openInput(java.lang.String,int)>(fileName, $i6);
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput singleNormStream> = $r10;
+        goto label30;
+
+     label29:
+        i = i + 1;
+        goto label25;
+
+     label30:
+        success = 1;
+        goto label37;
+
+     label31:
+        goto label35;
+
+     label32:
+        $r24 := @caughtexception;
+
+     label33:
+        l13 = $r24;
+        goto label41;
+
+     label34:
+        throw l13;
+
+     label35:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockreopenSegment, 0, tid_reopenSegment);
+        exitmonitor localthislockreopenSegment;
+        goto label36;
+
+     label36:
+        return clone;
+
+     label37:
+        $r6 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader referencedSegmentReader>;
+        if $r6 == null goto label38;
+
+        $r25 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader referencedSegmentReader>;
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader referencedSegmentReader> = $r25;
+        $r6 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader referencedSegmentReader>;
+        specialinvoke $r6.<org.apache.lucene.index.SegmentReader: void incRefReaderNotNorms()>();
+        goto label39;
+
+     label38:
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader referencedSegmentReader> = this;
+        specialinvoke this.<org.apache.lucene.index.SegmentReader: void incRefReaderNotNorms()>();
+
+     label39:
+        if success != 0 goto label40;
+
+        virtualinvoke clone.<org.apache.lucene.index.SegmentReader: void decRef()>();
+
+     label40:
+        goto label31;
+
+     label41:
+        $r6 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader referencedSegmentReader>;
+        if $r6 == null goto label42;
+
+        $r25 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader referencedSegmentReader>;
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader referencedSegmentReader> = $r25;
+        $r6 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader referencedSegmentReader>;
+        specialinvoke $r6.<org.apache.lucene.index.SegmentReader: void incRefReaderNotNorms()>();
+        goto label43;
+
+     label42:
+        clone.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader referencedSegmentReader> = this;
+        specialinvoke this.<org.apache.lucene.index.SegmentReader: void incRefReaderNotNorms()>();
+
+     label43:
+        if success != 0 goto label44;
+
+        virtualinvoke clone.<org.apache.lucene.index.SegmentReader: void decRef()>();
+
+     label44:
+        goto label34;
+
+     label45:
+        throwableLocal5 := @caughtexception;
+
+     label46:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockreopenSegment, 0, tid_reopenSegment);
+        exitmonitor localthislockreopenSegment;
+
+     label47:
+        throw throwableLocal5;
+
+        catch java.lang.Throwable from label0 to label44 with label45;
+        catch java.lang.Throwable from label46 to label47 with label45;
+        catch java.lang.Throwable from label11 to label31 with label32;
+        catch java.lang.Throwable from label33 to label34 with label32;
+    }
+
+    protected void commitChanges() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.util.Iterator it;
+        org.apache.lucene.index.SegmentReader$Norm norm;
+        boolean $z0;
+        org.apache.lucene.index.SegmentInfo $r0, $r3, $r5;
+        org.apache.lucene.util.BitVector $r1;
+        org.apache.lucene.store.Directory $r2;
+        java.lang.String $r4;
+        int $i0, $i1;
+        org.apache.lucene.index.FieldInfos $r6;
+        java.util.Map $r7;
+        java.util.Collection $r8;
+        java.lang.Object $r9;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        $z0 = this.<org.apache.lucene.index.SegmentReader: boolean deletedDocsDirty>;
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        virtualinvoke $r0.<org.apache.lucene.index.SegmentInfo: void advanceDelGen()>();
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs>;
+        $r2 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.Directory directory()>();
+        $r3 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $r4 = virtualinvoke $r3.<org.apache.lucene.index.SegmentInfo: java.lang.String getDelFileName()>();
+        virtualinvoke $r1.<org.apache.lucene.util.BitVector: void write(org.apache.lucene.store.Directory,java.lang.String)>($r2, $r4);
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $r5 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $i0 = virtualinvoke $r5.<org.apache.lucene.index.SegmentInfo: int getDelCount()>();
+        $i1 = this.<org.apache.lucene.index.SegmentReader: int pendingDeleteCount>;
+        $i0 = $i0 + $i1;
+        virtualinvoke $r0.<org.apache.lucene.index.SegmentInfo: void setDelCount(int)>($i0);
+        this.<org.apache.lucene.index.SegmentReader: int pendingDeleteCount> = 0;
+
+     label0:
+        $z0 = this.<org.apache.lucene.index.SegmentReader: boolean undeleteAll>;
+        if $z0 == 0 goto label1;
+
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.index.SegmentInfo: boolean hasDeletions()>();
+        if $z0 == 0 goto label1;
+
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        virtualinvoke $r0.<org.apache.lucene.index.SegmentInfo: void clearDelGen()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        virtualinvoke $r0.<org.apache.lucene.index.SegmentInfo: void setDelCount(int)>(0);
+
+     label1:
+        $z0 = this.<org.apache.lucene.index.SegmentReader: boolean normsDirty>;
+        if $z0 == 0 goto label4;
+
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $r6 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $i0 = virtualinvoke $r6.<org.apache.lucene.index.FieldInfos: int size()>();
+        virtualinvoke $r0.<org.apache.lucene.index.SegmentInfo: void setNumFields(int)>($i0);
+        $r7 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r8 = interfaceinvoke $r7.<java.util.Map: java.util.Collection values()>();
+        it = interfaceinvoke $r8.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label4;
+
+        $r9 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+        norm = (org.apache.lucene.index.SegmentReader$Norm) $r9;
+        $z0 = staticinvoke <org.apache.lucene.index.SegmentReader$Norm: boolean access$000(org.apache.lucene.index.SegmentReader$Norm)>(norm);
+        if $z0 == 0 goto label3;
+
+        $r5 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        staticinvoke <org.apache.lucene.index.SegmentReader$Norm: void access$100(org.apache.lucene.index.SegmentReader$Norm,org.apache.lucene.index.SegmentInfo)>(norm, $r5);
+
+     label3:
+        goto label2;
+
+     label4:
+        this.<org.apache.lucene.index.SegmentReader: boolean deletedDocsDirty> = 0;
+        this.<org.apache.lucene.index.SegmentReader: boolean normsDirty> = 0;
+        this.<org.apache.lucene.index.SegmentReader: boolean undeleteAll> = 0;
+        return;
+    }
+
+    org.apache.lucene.index.FieldsReader getFieldsReader()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.index.FieldsReader $r0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldsReader fieldsReader>;
+        return $r0;
+    }
+
+    protected void doClose() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this, $r0;
+        boolean hasReferencedReader, $z0;
+        org.apache.lucene.util.CloseableThreadLocal $r1;
+        org.apache.lucene.store.IndexInput $r2;
+        org.apache.lucene.index.FieldsReader $r3;
+        org.apache.lucene.index.TermInfosReader $r4;
+        org.apache.lucene.index.TermVectorsReader $r5;
+        org.apache.lucene.index.CompoundFileReader $r6;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader referencedSegmentReader>;
+        if $r0 == null goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        hasReferencedReader = $z0;
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.CloseableThreadLocal termVectorsLocal>;
+        virtualinvoke $r1.<org.apache.lucene.util.CloseableThreadLocal: void close()>();
+        if hasReferencedReader == 0 goto label2;
+
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader referencedSegmentReader>;
+        specialinvoke $r0.<org.apache.lucene.index.SegmentReader: void decRefReaderNotNorms()>();
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader referencedSegmentReader> = null;
+
+     label2:
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs> = null;
+        $r2 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput singleNormStream>;
+        if $r2 == null goto label3;
+
+        $r2 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput singleNormStream>;
+        virtualinvoke $r2.<org.apache.lucene.store.IndexInput: void close()>();
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput singleNormStream> = null;
+
+     label3:
+        $r3 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldsReader fieldsReader>;
+        if $r3 == null goto label4;
+
+        $r3 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldsReader fieldsReader>;
+        virtualinvoke $r3.<org.apache.lucene.index.FieldsReader: void close()>();
+
+     label4:
+        if hasReferencedReader != 0 goto label10;
+
+        $r4 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermInfosReader tis>;
+        if $r4 == null goto label5;
+
+        $r4 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermInfosReader tis>;
+        virtualinvoke $r4.<org.apache.lucene.index.TermInfosReader: void close()>();
+
+     label5:
+        $r2 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput freqStream>;
+        if $r2 == null goto label6;
+
+        $r2 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput freqStream>;
+        virtualinvoke $r2.<org.apache.lucene.store.IndexInput: void close()>();
+
+     label6:
+        $r2 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput proxStream>;
+        if $r2 == null goto label7;
+
+        $r2 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput proxStream>;
+        virtualinvoke $r2.<org.apache.lucene.store.IndexInput: void close()>();
+
+     label7:
+        $r5 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader termVectorsReaderOrig>;
+        if $r5 == null goto label8;
+
+        $r5 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader termVectorsReaderOrig>;
+        virtualinvoke $r5.<org.apache.lucene.index.TermVectorsReader: void close()>();
+
+     label8:
+        $r6 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader cfsReader>;
+        if $r6 == null goto label9;
+
+        $r6 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader cfsReader>;
+        virtualinvoke $r6.<org.apache.lucene.index.CompoundFileReader: void close()>();
+
+     label9:
+        $r6 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader storeCFSReader>;
+        if $r6 == null goto label10;
+
+        $r6 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.CompoundFileReader storeCFSReader>;
+        virtualinvoke $r6.<org.apache.lucene.index.CompoundFileReader: void close()>();
+
+     label10:
+        specialinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void doClose()>();
+        return;
+    }
+
+    static boolean hasDeletions(org.apache.lucene.index.SegmentInfo) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo si;
+        boolean $z0;
+
+        si := @parameter0: org.apache.lucene.index.SegmentInfo;
+        $z0 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: boolean hasDeletions()>();
+        return $z0;
+    }
+
+    public boolean hasDeletions()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.util.BitVector $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs>;
+        if $r0 == null goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    static boolean usesCompoundFile(org.apache.lucene.index.SegmentInfo) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo si;
+        boolean $z0;
+
+        si := @parameter0: org.apache.lucene.index.SegmentInfo;
+        $z0 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: boolean getUseCompoundFile()>();
+        return $z0;
+    }
+
+    static boolean hasSeparateNorms(org.apache.lucene.index.SegmentInfo) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo si;
+        boolean $z0;
+
+        si := @parameter0: org.apache.lucene.index.SegmentInfo;
+        $z0 = virtualinvoke si.<org.apache.lucene.index.SegmentInfo: boolean hasSeparateNorms()>();
+        return $z0;
+    }
+
+    protected void doDelete(int)
+    {
+        org.apache.lucene.index.SegmentReader this;
+        int docNum, $i0, $i1;
+        org.apache.lucene.util.BitVector $r0, $r1;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        docNum := @parameter0: int;
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs>;
+        if $r1 != null goto label0;
+
+        $r0 = new org.apache.lucene.util.BitVector;
+        $i0 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: int maxDoc()>();
+        specialinvoke $r0.<org.apache.lucene.util.BitVector: void <init>(int)>($i0);
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs> = $r0;
+
+     label0:
+        this.<org.apache.lucene.index.SegmentReader: boolean deletedDocsDirty> = 1;
+        this.<org.apache.lucene.index.SegmentReader: boolean undeleteAll> = 0;
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs>;
+        $z0 = virtualinvoke $r1.<org.apache.lucene.util.BitVector: boolean getAndSet(int)>(docNum);
+        if $z0 != 0 goto label1;
+
+        $i1 = this.<org.apache.lucene.index.SegmentReader: int pendingDeleteCount>;
+        $i1 = $i1 + 1;
+        this.<org.apache.lucene.index.SegmentReader: int pendingDeleteCount> = $i1;
+
+     label1:
+        return;
+    }
+
+    protected void doUndeleteAll()
+    {
+        org.apache.lucene.index.SegmentReader this;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs> = null;
+        this.<org.apache.lucene.index.SegmentReader: boolean deletedDocsDirty> = 0;
+        this.<org.apache.lucene.index.SegmentReader: boolean undeleteAll> = 1;
+        return;
+    }
+
+    java.util.List files() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.util.ArrayList $r0;
+        org.apache.lucene.index.SegmentInfo $r1;
+        java.util.List $r2;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        $r0 = new java.util.ArrayList;
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $r2 = virtualinvoke $r1.<org.apache.lucene.index.SegmentInfo: java.util.List files()>();
+        specialinvoke $r0.<java.util.ArrayList: void <init>(java.util.Collection)>($r2);
+        return $r0;
+    }
+
+    public org.apache.lucene.index.TermEnum terms()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.index.TermInfosReader $r0;
+        org.apache.lucene.index.SegmentTermEnum $r1;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermInfosReader tis>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.TermInfosReader: org.apache.lucene.index.SegmentTermEnum terms()>();
+        return $r1;
+    }
+
+    public org.apache.lucene.index.TermEnum terms(org.apache.lucene.index.Term) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.index.Term t;
+        org.apache.lucene.index.TermInfosReader $r0;
+        org.apache.lucene.index.SegmentTermEnum $r1;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        t := @parameter0: org.apache.lucene.index.Term;
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermInfosReader tis>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.TermInfosReader: org.apache.lucene.index.SegmentTermEnum terms(org.apache.lucene.index.Term)>(t);
+        return $r1;
+    }
+
+    org.apache.lucene.index.FieldInfos getFieldInfos()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.index.FieldInfos $r0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        return $r0;
+    }
+
+    public org.apache.lucene.document.Document document(int, org.apache.lucene.document.FieldSelector) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        int n;
+        org.apache.lucene.document.FieldSelector fieldSelector;
+        boolean $z0;
+        java.lang.IllegalArgumentException $r0;
+        org.apache.lucene.index.FieldsReader $r1;
+        org.apache.lucene.document.Document $r2;
+        java.lang.Object localthislockdocument;
+        java.lang.Throwable throwableLocal6;
+        long tid_document;
+        java.lang.Thread thread_document;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        n := @parameter0: int;
+        fieldSelector := @parameter1: org.apache.lucene.document.FieldSelector;
+        thread_document = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_document = virtualinvoke thread_document.<java.lang.Thread: long getId()>();
+        localthislockdocument = this;
+
+     label0:
+        entermonitor localthislockdocument;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockdocument, 0, tid_document);
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void ensureOpen()>();
+        $z0 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: boolean isDeleted(int)>(n);
+        if $z0 == 0 goto label1;
+
+        $r0 = new java.lang.IllegalArgumentException;
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("attempt to access a deleted document");
+        throw $r0;
+
+     label1:
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldsReader fieldsReader>;
+        $r2 = virtualinvoke $r1.<org.apache.lucene.index.FieldsReader: org.apache.lucene.document.Document doc(int,org.apache.lucene.document.FieldSelector)>(n, fieldSelector);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockdocument, 0, tid_document);
+        exitmonitor localthislockdocument;
+        goto label2;
+
+     label2:
+        return $r2;
+
+     label3:
+        throwableLocal6 := @caughtexception;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockdocument, 0, tid_document);
+        exitmonitor localthislockdocument;
+
+     label5:
+        throw throwableLocal6;
+
+        catch java.lang.Throwable from label0 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    public boolean isDeleted(int)
+    {
+        org.apache.lucene.index.SegmentReader this;
+        int n;
+        org.apache.lucene.util.BitVector $r0;
+        boolean $z0;
+        java.lang.Object localthislockisDeleted;
+        java.lang.Throwable throwableLocal7;
+        long tid_isDeleted;
+        java.lang.Thread thread_isDeleted;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        n := @parameter0: int;
+        thread_isDeleted = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_isDeleted = virtualinvoke thread_isDeleted.<java.lang.Thread: long getId()>();
+        localthislockisDeleted = this;
+
+     label0:
+        entermonitor localthislockisDeleted;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockisDeleted, 0, tid_isDeleted);
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs>;
+        if $r0 == null goto label1;
+
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.util.BitVector: boolean get(int)>(n);
+        if $z0 == 0 goto label1;
+
+        $z0 = 1;
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockisDeleted, 0, tid_isDeleted);
+        exitmonitor localthislockisDeleted;
+        goto label3;
+
+     label3:
+        return $z0;
+
+     label4:
+        throwableLocal7 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockisDeleted, 0, tid_isDeleted);
+        exitmonitor localthislockisDeleted;
+
+     label6:
+        throw throwableLocal7;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public org.apache.lucene.index.TermDocs termDocs() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.index.SegmentTermDocs $r0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void ensureOpen()>();
+        $r0 = new org.apache.lucene.index.SegmentTermDocs;
+        specialinvoke $r0.<org.apache.lucene.index.SegmentTermDocs: void <init>(org.apache.lucene.index.SegmentReader)>(this);
+        return $r0;
+    }
+
+    public org.apache.lucene.index.TermPositions termPositions() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.index.SegmentTermPositions tmp$545592842;
+        org.apache.lucene.index.TermPositions tmp;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void ensureOpen()>();
+        tmp$545592842 = new org.apache.lucene.index.SegmentTermPositions;
+        specialinvoke tmp$545592842.<org.apache.lucene.index.SegmentTermPositions: void <init>(org.apache.lucene.index.SegmentReader)>(this);
+        tmp = (org.apache.lucene.index.TermPositions) tmp$545592842;
+        return tmp;
+    }
+
+    public int docFreq(org.apache.lucene.index.Term) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.index.Term t;
+        org.apache.lucene.index.TermInfo ti;
+        org.apache.lucene.index.TermInfosReader $r0;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        t := @parameter0: org.apache.lucene.index.Term;
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermInfosReader tis>;
+        ti = virtualinvoke $r0.<org.apache.lucene.index.TermInfosReader: org.apache.lucene.index.TermInfo get(org.apache.lucene.index.Term)>(t);
+        if ti == null goto label0;
+
+        $i0 = ti.<org.apache.lucene.index.TermInfo: int docFreq>;
+        return $i0;
+
+     label0:
+        return 0;
+    }
+
+    public int numDocs()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        int n, $i0;
+        org.apache.lucene.util.BitVector $r0, $r1;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        n = virtualinvoke this.<org.apache.lucene.index.SegmentReader: int maxDoc()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs>;
+        if $r0 == null goto label0;
+
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.BitVector deletedDocs>;
+        $i0 = virtualinvoke $r1.<org.apache.lucene.util.BitVector: int count()>();
+        n = n - $i0;
+
+     label0:
+        return n;
+    }
+
+    public int maxDoc()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.index.SegmentInfo $r0;
+        int $i0;
+        long tid_maxDoc;
+        java.lang.Thread thread_maxDoc;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        thread_maxDoc = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_maxDoc = virtualinvoke thread_maxDoc.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r0, 2, tid_maxDoc, "org.apache.lucene.index.SegmentReader", 769, $i0);
+        $i0 = $r0.<org.apache.lucene.index.SegmentInfo: int docCount>;
+        return $i0;
+    }
+
+    public void setTermInfosIndexDivisor(int) throws java.lang.IllegalStateException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        int indexDivisor;
+        org.apache.lucene.index.TermInfosReader $r0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        indexDivisor := @parameter0: int;
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermInfosReader tis>;
+        virtualinvoke $r0.<org.apache.lucene.index.TermInfosReader: void setIndexDivisor(int)>(indexDivisor);
+        return;
+    }
+
+    public int getTermInfosIndexDivisor()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.index.TermInfosReader $r0;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermInfosReader tis>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.index.TermInfosReader: int getIndexDivisor()>();
+        return $i0;
+    }
+
+    public java.util.Collection getFieldNames(org.apache.lucene.index.IndexReader$FieldOption)
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.index.IndexReader$FieldOption fieldOption, $r3;
+        java.util.HashSet fieldSet, $r0;
+        int i, $i0;
+        org.apache.lucene.index.FieldInfo fi;
+        org.apache.lucene.index.FieldInfos $r1, $r2;
+        java.lang.String $r4;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        fieldOption := @parameter0: org.apache.lucene.index.IndexReader$FieldOption;
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void ensureOpen()>();
+        $r0 = new java.util.HashSet;
+        specialinvoke $r0.<java.util.HashSet: void <init>()>();
+        fieldSet = $r0;
+        i = 0;
+
+     label0:
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $i0 = virtualinvoke $r1.<org.apache.lucene.index.FieldInfos: int size()>();
+        if i >= $i0 goto label12;
+
+        $r2 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        fi = virtualinvoke $r2.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(int)>(i);
+        $r3 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption ALL>;
+        if fieldOption != $r3 goto label1;
+
+        $r4 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        interfaceinvoke fieldSet.<java.util.Set: boolean add(java.lang.Object)>($r4);
+        goto label11;
+
+     label1:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        if $z0 != 0 goto label2;
+
+        $r3 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption UNINDEXED>;
+        if fieldOption != $r3 goto label2;
+
+        $r4 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        interfaceinvoke fieldSet.<java.util.Set: boolean add(java.lang.Object)>($r4);
+        goto label11;
+
+     label2:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean omitTf>;
+        if $z0 == 0 goto label3;
+
+        $r3 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption OMIT_TF>;
+        if fieldOption != $r3 goto label3;
+
+        $r4 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        interfaceinvoke fieldSet.<java.util.Set: boolean add(java.lang.Object)>($r4);
+        goto label11;
+
+     label3:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storePayloads>;
+        if $z0 == 0 goto label4;
+
+        $r3 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption STORES_PAYLOADS>;
+        if fieldOption != $r3 goto label4;
+
+        $r4 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        interfaceinvoke fieldSet.<java.util.Set: boolean add(java.lang.Object)>($r4);
+        goto label11;
+
+     label4:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        if $z0 == 0 goto label5;
+
+        $r3 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption INDEXED>;
+        if fieldOption != $r3 goto label5;
+
+        $r4 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        interfaceinvoke fieldSet.<java.util.Set: boolean add(java.lang.Object)>($r4);
+        goto label11;
+
+     label5:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        if $z0 == 0 goto label6;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storeTermVector>;
+        if $z0 != 0 goto label6;
+
+        $r3 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption INDEXED_NO_TERMVECTOR>;
+        if fieldOption != $r3 goto label6;
+
+        $r4 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        interfaceinvoke fieldSet.<java.util.Set: boolean add(java.lang.Object)>($r4);
+        goto label11;
+
+     label6:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storeTermVector>;
+        if $z0 != 1 goto label7;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector>;
+        if $z0 != 0 goto label7;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector>;
+        if $z0 != 0 goto label7;
+
+        $r3 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption TERMVECTOR>;
+        if fieldOption != $r3 goto label7;
+
+        $r4 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        interfaceinvoke fieldSet.<java.util.Set: boolean add(java.lang.Object)>($r4);
+        goto label11;
+
+     label7:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        if $z0 == 0 goto label8;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storeTermVector>;
+        if $z0 == 0 goto label8;
+
+        $r3 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption INDEXED_WITH_TERMVECTOR>;
+        if fieldOption != $r3 goto label8;
+
+        $r4 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        interfaceinvoke fieldSet.<java.util.Set: boolean add(java.lang.Object)>($r4);
+        goto label11;
+
+     label8:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector>;
+        if $z0 == 0 goto label9;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector>;
+        if $z0 != 0 goto label9;
+
+        $r3 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption TERMVECTOR_WITH_POSITION>;
+        if fieldOption != $r3 goto label9;
+
+        $r4 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        interfaceinvoke fieldSet.<java.util.Set: boolean add(java.lang.Object)>($r4);
+        goto label11;
+
+     label9:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector>;
+        if $z0 == 0 goto label10;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector>;
+        if $z0 != 0 goto label10;
+
+        $r3 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption TERMVECTOR_WITH_OFFSET>;
+        if fieldOption != $r3 goto label10;
+
+        $r4 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        interfaceinvoke fieldSet.<java.util.Set: boolean add(java.lang.Object)>($r4);
+        goto label11;
+
+     label10:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector>;
+        if $z0 == 0 goto label11;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector>;
+        if $z0 == 0 goto label11;
+
+        $r3 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption TERMVECTOR_WITH_POSITION_OFFSET>;
+        if fieldOption != $r3 goto label11;
+
+        $r4 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        interfaceinvoke fieldSet.<java.util.Set: boolean add(java.lang.Object)>($r4);
+
+     label11:
+        i = i + 1;
+        goto label0;
+
+     label12:
+        return fieldSet;
+    }
+
+    public boolean hasNorms(java.lang.String)
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.lang.String field;
+        java.util.Map $r0;
+        boolean $z0;
+        java.lang.Object localthislockhasNorms;
+        java.lang.Throwable throwableLocal8;
+        long tid_hasNorms;
+        java.lang.Thread thread_hasNorms;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        field := @parameter0: java.lang.String;
+        thread_hasNorms = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_hasNorms = virtualinvoke thread_hasNorms.<java.lang.Thread: long getId()>();
+        localthislockhasNorms = this;
+
+     label0:
+        entermonitor localthislockhasNorms;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockhasNorms, 0, tid_hasNorms);
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $z0 = interfaceinvoke $r0.<java.util.Map: boolean containsKey(java.lang.Object)>(field);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockhasNorms, 0, tid_hasNorms);
+        exitmonitor localthislockhasNorms;
+        goto label1;
+
+     label1:
+        return $z0;
+
+     label2:
+        throwableLocal8 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockhasNorms, 0, tid_hasNorms);
+        exitmonitor localthislockhasNorms;
+
+     label4:
+        throw throwableLocal8;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    static byte[] createFakeNorms(int)
+    {
+        int size;
+        byte[] ones;
+        byte $b0;
+
+        size := @parameter0: int;
+        ones = newarray (byte)[size];
+        $b0 = staticinvoke <org.apache.lucene.search.DefaultSimilarity: byte encodeNorm(float)>(1.0F);
+        staticinvoke <java.util.Arrays: void fill(byte[],byte)>(ones, $b0);
+        return ones;
+    }
+
+    private byte[] fakeNorms()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        byte[] $r0, $r1;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        $r0 = this.<org.apache.lucene.index.SegmentReader: byte[] ones>;
+        if $r0 != null goto label0;
+
+        $i0 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: int maxDoc()>();
+        $r1 = staticinvoke <org.apache.lucene.index.SegmentReader: byte[] createFakeNorms(int)>($i0);
+        this.<org.apache.lucene.index.SegmentReader: byte[] ones> = $r1;
+
+     label0:
+        $r0 = this.<org.apache.lucene.index.SegmentReader: byte[] ones>;
+        return $r0;
+    }
+
+    protected byte[] getNorms(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.lang.String field;
+        org.apache.lucene.index.SegmentReader$Norm norm, l3;
+        byte[] bytes, $r3;
+        java.lang.Throwable l5, $r4, throwableLocal9;
+        java.util.Map $r0;
+        java.lang.Object $r1, localthislockgetNorms;
+        int $i0;
+        long tid_getNorms;
+        java.lang.Thread thread_getNorms;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        field := @parameter0: java.lang.String;
+        thread_getNorms = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getNorms = virtualinvoke thread_getNorms.<java.lang.Thread: long getId()>();
+        localthislockgetNorms = this;
+
+     label0:
+        entermonitor localthislockgetNorms;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockgetNorms, 0, tid_getNorms);
+        $r0 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r1 = interfaceinvoke $r0.<java.util.Map: java.lang.Object get(java.lang.Object)>(field);
+        norm = (org.apache.lucene.index.SegmentReader$Norm) $r1;
+        if norm != null goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockgetNorms, 0, tid_getNorms);
+        exitmonitor localthislockgetNorms;
+        goto label1;
+
+     label1:
+        return null;
+
+     label2:
+        l3 = norm;
+        entermonitor norm;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(norm, 1, tid_getNorms);
+
+     label3:
+        $r3 = staticinvoke <org.apache.lucene.index.SegmentReader$Norm: byte[] access$200(org.apache.lucene.index.SegmentReader$Norm)>(norm);
+        if $r3 != null goto label4;
+
+        $i0 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: int maxDoc()>();
+        bytes = newarray (byte)[$i0];
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void norms(java.lang.String,byte[],int)>(field, bytes, 0);
+        staticinvoke <org.apache.lucene.index.SegmentReader$Norm: byte[] access$202(org.apache.lucene.index.SegmentReader$Norm,byte[])>(norm, bytes);
+        staticinvoke <org.apache.lucene.index.SegmentReader$Norm: void access$300(org.apache.lucene.index.SegmentReader$Norm)>(norm);
+
+     label4:
+        $r3 = staticinvoke <org.apache.lucene.index.SegmentReader$Norm: byte[] access$200(org.apache.lucene.index.SegmentReader$Norm)>(norm);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 1, tid_getNorms);
+        exitmonitor l3;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockgetNorms, 0, tid_getNorms);
+        exitmonitor localthislockgetNorms;
+        goto label6;
+
+     label6:
+        return $r3;
+
+     label7:
+        $r4 := @caughtexception;
+
+     label8:
+        l5 = $r4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 1, tid_getNorms);
+        exitmonitor l3;
+
+     label9:
+        throw l5;
+
+     label10:
+        throwableLocal9 := @caughtexception;
+
+     label11:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockgetNorms, 0, tid_getNorms);
+        exitmonitor localthislockgetNorms;
+
+     label12:
+        throw throwableLocal9;
+
+        catch java.lang.Throwable from label0 to label9 with label10;
+        catch java.lang.Throwable from label11 to label12 with label10;
+        catch java.lang.Throwable from label3 to label5 with label7;
+        catch java.lang.Throwable from label8 to label9 with label7;
+    }
+
+    public byte[] norms(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.lang.String field;
+        byte[] bytes;
+        java.lang.Object localthislocknorms;
+        java.lang.Throwable throwableLocal10;
+        long tid_norms;
+        java.lang.Thread thread_norms;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        field := @parameter0: java.lang.String;
+        thread_norms = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_norms = virtualinvoke thread_norms.<java.lang.Thread: long getId()>();
+        localthislocknorms = this;
+
+     label0:
+        entermonitor localthislocknorms;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislocknorms, 0, tid_norms);
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void ensureOpen()>();
+        bytes = virtualinvoke this.<org.apache.lucene.index.SegmentReader: byte[] getNorms(java.lang.String)>(field);
+        if bytes != null goto label1;
+
+        bytes = specialinvoke this.<org.apache.lucene.index.SegmentReader: byte[] fakeNorms()>();
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislocknorms, 0, tid_norms);
+        exitmonitor localthislocknorms;
+        goto label2;
+
+     label2:
+        return bytes;
+
+     label3:
+        throwableLocal10 := @caughtexception;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislocknorms, 0, tid_norms);
+        exitmonitor localthislocknorms;
+
+     label5:
+        throw throwableLocal10;
+
+        catch java.lang.Throwable from label0 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    protected void doSetNorm(int, java.lang.String, byte) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        int doc;
+        java.lang.String field;
+        byte value;
+        org.apache.lucene.index.SegmentReader$Norm norm;
+        java.util.Map $r0;
+        java.lang.Object $r1;
+        byte[] $r2;
+        long tid_doSetNorm;
+        java.lang.Thread thread_doSetNorm;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        doc := @parameter0: int;
+        field := @parameter1: java.lang.String;
+        value := @parameter2: byte;
+        thread_doSetNorm = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_doSetNorm = virtualinvoke thread_doSetNorm.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r1 = interfaceinvoke $r0.<java.util.Map: java.lang.Object get(java.lang.Object)>(field);
+        norm = (org.apache.lucene.index.SegmentReader$Norm) $r1;
+        if norm != null goto label0;
+
+        return;
+
+     label0:
+        staticinvoke <org.apache.lucene.index.SegmentReader$Norm: boolean access$002(org.apache.lucene.index.SegmentReader$Norm,boolean)>(norm, 1);
+        this.<org.apache.lucene.index.SegmentReader: boolean normsDirty> = 1;
+        $r2 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: byte[] norms(java.lang.String)>(field);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r2, 4, tid_doSetNorm, "org.apache.lucene.index.SegmentReader", 882, doc, value);
+        $r2[doc] = value;
+        return;
+    }
+
+    public void norms(java.lang.String, byte[], int) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.lang.String field;
+        byte[] bytes, $r2;
+        int offset, $i0, $i2;
+        org.apache.lucene.index.SegmentReader$Norm norm, l5;
+        org.apache.lucene.store.IndexInput normStream;
+        java.lang.Throwable l7, $r4, throwableLocal11;
+        java.util.Map $r0;
+        java.lang.Object $r1, localthislocknorms;
+        boolean $z0;
+        long $l1, tid_norms;
+        java.lang.Thread thread_norms;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        field := @parameter0: java.lang.String;
+        bytes := @parameter1: byte[];
+        offset := @parameter2: int;
+        thread_norms = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_norms = virtualinvoke thread_norms.<java.lang.Thread: long getId()>();
+        localthislocknorms = this;
+
+     label0:
+        entermonitor localthislocknorms;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislocknorms, 0, tid_norms);
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r1 = interfaceinvoke $r0.<java.util.Map: java.lang.Object get(java.lang.Object)>(field);
+        norm = (org.apache.lucene.index.SegmentReader$Norm) $r1;
+        if norm != null goto label2;
+
+        $r2 = specialinvoke this.<org.apache.lucene.index.SegmentReader: byte[] fakeNorms()>();
+        $i0 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: int maxDoc()>();
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, 0, bytes, offset, $i0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislocknorms, 0, tid_norms);
+        exitmonitor localthislocknorms;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        l5 = norm;
+        entermonitor norm;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(norm, 1, tid_norms);
+
+     label3:
+        $r2 = staticinvoke <org.apache.lucene.index.SegmentReader$Norm: byte[] access$200(org.apache.lucene.index.SegmentReader$Norm)>(norm);
+        if $r2 == null goto label6;
+
+        $r2 = staticinvoke <org.apache.lucene.index.SegmentReader$Norm: byte[] access$200(org.apache.lucene.index.SegmentReader$Norm)>(norm);
+        $i0 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: int maxDoc()>();
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, 0, bytes, offset, $i0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l5, 1, tid_norms);
+        exitmonitor l5;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislocknorms, 0, tid_norms);
+        exitmonitor localthislocknorms;
+        goto label5;
+
+     label5:
+        return;
+
+     label6:
+        $z0 = norm.<org.apache.lucene.index.SegmentReader$Norm: boolean useSingleNormStream>;
+        if $z0 == 0 goto label7;
+
+        normStream = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput singleNormStream>;
+        goto label8;
+
+     label7:
+        normStream = staticinvoke <org.apache.lucene.index.SegmentReader$Norm: org.apache.lucene.store.IndexInput access$400(org.apache.lucene.index.SegmentReader$Norm)>(norm);
+
+     label8:
+        $l1 = staticinvoke <org.apache.lucene.index.SegmentReader$Norm: long access$500(org.apache.lucene.index.SegmentReader$Norm)>(norm);
+        virtualinvoke normStream.<org.apache.lucene.store.IndexInput: void seek(long)>($l1);
+        $i2 = virtualinvoke this.<org.apache.lucene.index.SegmentReader: int maxDoc()>();
+        virtualinvoke normStream.<org.apache.lucene.store.IndexInput: void readBytes(byte[],int,int)>(bytes, offset, $i2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l5, 1, tid_norms);
+        exitmonitor l5;
+
+     label9:
+        goto label13;
+
+     label10:
+        $r4 := @caughtexception;
+
+     label11:
+        l7 = $r4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l5, 1, tid_norms);
+        exitmonitor l5;
+
+     label12:
+        throw l7;
+
+     label13:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislocknorms, 0, tid_norms);
+        exitmonitor localthislocknorms;
+        goto label14;
+
+     label14:
+        return;
+
+     label15:
+        throwableLocal11 := @caughtexception;
+
+     label16:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislocknorms, 0, tid_norms);
+        exitmonitor localthislocknorms;
+
+     label17:
+        throw throwableLocal11;
+
+        catch java.lang.Throwable from label0 to label14 with label15;
+        catch java.lang.Throwable from label16 to label17 with label15;
+        catch java.lang.Throwable from label3 to label4 with label10;
+        catch java.lang.Throwable from label6 to label9 with label10;
+        catch java.lang.Throwable from label11 to label12 with label10;
+    }
+
+    private void openNorms(org.apache.lucene.store.Directory, int) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.store.Directory cfsDir, d;
+        int readBufferSize, maxDoc, i, $i0, $i1, $i2;
+        byte[] $r0;
+        long nextNormSeek, normSeek, $l3;
+        org.apache.lucene.index.FieldInfo fi;
+        java.lang.String fileName, $r4;
+        boolean singleNormFile, $z0;
+        null_type normInput;
+        org.apache.lucene.index.FieldInfos $r1, $r2;
+        java.util.Map $r3;
+        org.apache.lucene.index.SegmentInfo $r5;
+        org.apache.lucene.store.IndexInput $r6, $r7, normInput;
+        org.apache.lucene.index.SegmentReader$Norm $r8;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        cfsDir := @parameter0: org.apache.lucene.store.Directory;
+        readBufferSize := @parameter1: int;
+        $r0 = <org.apache.lucene.index.SegmentMerger: byte[] NORMS_HEADER>;
+        $i0 = lengthof $r0;
+        nextNormSeek = (long) $i0;
+        maxDoc = virtualinvoke this.<org.apache.lucene.index.SegmentReader: int maxDoc()>();
+        i = 0;
+
+     label0:
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $i1 = virtualinvoke $r1.<org.apache.lucene.index.FieldInfos: int size()>();
+        if i >= $i1 goto label7;
+
+        $r2 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        fi = virtualinvoke $r2.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(int)>(i);
+        $r3 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r4 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $z0 = interfaceinvoke $r3.<java.util.Map: boolean containsKey(java.lang.Object)>($r4);
+        if $z0 == 0 goto label1;
+
+        goto label6;
+
+     label1:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        if $z0 == 0 goto label6;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean omitNorms>;
+        if $z0 != 0 goto label6;
+
+        d = virtualinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.Directory directory()>();
+        $r5 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $i1 = fi.<org.apache.lucene.index.FieldInfo: int number>;
+        fileName = virtualinvoke $r5.<org.apache.lucene.index.SegmentInfo: java.lang.String getNormFileName(int)>($i1);
+        $r5 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        $i1 = fi.<org.apache.lucene.index.FieldInfo: int number>;
+        $z0 = virtualinvoke $r5.<org.apache.lucene.index.SegmentInfo: boolean hasSeparateNorms(int)>($i1);
+        if $z0 != 0 goto label2;
+
+        d = cfsDir;
+
+     label2:
+        singleNormFile = virtualinvoke fileName.<java.lang.String: boolean endsWith(java.lang.String)>(".nrm");
+        normInput = null;
+        if singleNormFile == 0 goto label4;
+
+        normSeek = nextNormSeek;
+        $r6 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput singleNormStream>;
+        if $r6 != null goto label3;
+
+        $r7 = virtualinvoke d.<org.apache.lucene.store.Directory: org.apache.lucene.store.IndexInput openInput(java.lang.String,int)>(fileName, readBufferSize);
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput singleNormStream> = $r7;
+
+     label3:
+        normInput = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput singleNormStream>;
+        goto label5;
+
+     label4:
+        normSeek = 0L;
+        normInput = virtualinvoke d.<org.apache.lucene.store.Directory: org.apache.lucene.store.IndexInput openInput(java.lang.String)>(fileName);
+
+     label5:
+        $r3 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r4 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $r8 = new org.apache.lucene.index.SegmentReader$Norm;
+        $i2 = fi.<org.apache.lucene.index.FieldInfo: int number>;
+        specialinvoke $r8.<org.apache.lucene.index.SegmentReader$Norm: void <init>(org.apache.lucene.index.SegmentReader,org.apache.lucene.store.IndexInput,boolean,int,long)>(this, normInput, singleNormFile, $i2, normSeek);
+        interfaceinvoke $r3.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r8);
+        $l3 = (long) maxDoc;
+        nextNormSeek = nextNormSeek + $l3;
+
+     label6:
+        i = i + 1;
+        goto label0;
+
+     label7:
+        return;
+    }
+
+    boolean normsClosed()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.util.Iterator it;
+        org.apache.lucene.index.SegmentReader$Norm norm;
+        org.apache.lucene.store.IndexInput $r0;
+        java.util.Map $r1;
+        java.util.Collection $r2;
+        boolean $z0;
+        java.lang.Object $r3;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.store.IndexInput singleNormStream>;
+        if $r0 == null goto label0;
+
+        return 0;
+
+     label0:
+        $r1 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r2 = interfaceinvoke $r1.<java.util.Map: java.util.Collection values()>();
+        it = interfaceinvoke $r2.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label3;
+
+        $r3 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+        norm = (org.apache.lucene.index.SegmentReader$Norm) $r3;
+        $i0 = norm.<org.apache.lucene.index.SegmentReader$Norm: int refCount>;
+        if $i0 <= 0 goto label2;
+
+        return 0;
+
+     label2:
+        goto label1;
+
+     label3:
+        return 1;
+    }
+
+    boolean normsClosed(java.lang.String)
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.lang.String field;
+        org.apache.lucene.index.SegmentReader$Norm norm;
+        java.util.Map $r0;
+        java.lang.Object $r1;
+        int $i0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        field := @parameter0: java.lang.String;
+        $r0 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r1 = interfaceinvoke $r0.<java.util.Map: java.lang.Object get(java.lang.Object)>(field);
+        norm = (org.apache.lucene.index.SegmentReader$Norm) $r1;
+        $i0 = norm.<org.apache.lucene.index.SegmentReader$Norm: int refCount>;
+        if $i0 != 0 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    private org.apache.lucene.index.TermVectorsReader getTermVectorsReader()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        boolean $z0;
+        org.apache.lucene.index.TermVectorsReader tvReader, $r0;
+        java.lang.CloneNotSupportedException cnse, $r4;
+        java.lang.AssertionError $r1;
+        org.apache.lucene.util.CloseableThreadLocal $r2;
+        java.lang.Object $r3;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        $z0 = <org.apache.lucene.index.SegmentReader: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label0;
+
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader termVectorsReaderOrig>;
+        if $r0 != null goto label0;
+
+        $r1 = new java.lang.AssertionError;
+        specialinvoke $r1.<java.lang.AssertionError: void <init>()>();
+        throw $r1;
+
+     label0:
+        $r2 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.CloseableThreadLocal termVectorsLocal>;
+        $r3 = virtualinvoke $r2.<org.apache.lucene.util.CloseableThreadLocal: java.lang.Object get()>();
+        tvReader = (org.apache.lucene.index.TermVectorsReader) $r3;
+        if tvReader != null goto label5;
+
+     label1:
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader termVectorsReaderOrig>;
+        $r3 = virtualinvoke $r0.<org.apache.lucene.index.TermVectorsReader: java.lang.Object clone()>();
+        tvReader = (org.apache.lucene.index.TermVectorsReader) $r3;
+
+     label2:
+        goto label4;
+
+     label3:
+        $r4 := @caughtexception;
+        cnse = $r4;
+        return null;
+
+     label4:
+        $r2 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.util.CloseableThreadLocal termVectorsLocal>;
+        virtualinvoke $r2.<org.apache.lucene.util.CloseableThreadLocal: void set(java.lang.Object)>(tvReader);
+
+     label5:
+        return tvReader;
+
+        catch java.lang.CloneNotSupportedException from label1 to label2 with label3;
+    }
+
+    public org.apache.lucene.index.TermFreqVector getTermFreqVector(int, java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        int docNumber;
+        java.lang.String field;
+        org.apache.lucene.index.FieldInfo fi;
+        org.apache.lucene.index.TermVectorsReader termVectorsReader, $r1;
+        org.apache.lucene.index.FieldInfos $r0;
+        boolean $z0;
+        org.apache.lucene.index.TermFreqVector $r2;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        docNumber := @parameter0: int;
+        field := @parameter1: java.lang.String;
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        fi = virtualinvoke $r0.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(java.lang.String)>(field);
+        if fi == null goto label0;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storeTermVector>;
+        if $z0 == 0 goto label0;
+
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader termVectorsReaderOrig>;
+        if $r1 != null goto label1;
+
+     label0:
+        return null;
+
+     label1:
+        termVectorsReader = specialinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader getTermVectorsReader()>();
+        if termVectorsReader != null goto label2;
+
+        return null;
+
+     label2:
+        $r2 = virtualinvoke termVectorsReader.<org.apache.lucene.index.TermVectorsReader: org.apache.lucene.index.TermFreqVector get(int,java.lang.String)>(docNumber, field);
+        return $r2;
+    }
+
+    public void getTermFreqVector(int, java.lang.String, org.apache.lucene.index.TermVectorMapper) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        int docNumber;
+        java.lang.String field;
+        org.apache.lucene.index.TermVectorMapper mapper;
+        org.apache.lucene.index.FieldInfo fi;
+        org.apache.lucene.index.TermVectorsReader termVectorsReader, $r1;
+        org.apache.lucene.index.FieldInfos $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        docNumber := @parameter0: int;
+        field := @parameter1: java.lang.String;
+        mapper := @parameter2: org.apache.lucene.index.TermVectorMapper;
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        fi = virtualinvoke $r0.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(java.lang.String)>(field);
+        if fi == null goto label0;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storeTermVector>;
+        if $z0 == 0 goto label0;
+
+        $r1 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader termVectorsReaderOrig>;
+        if $r1 != null goto label1;
+
+     label0:
+        return;
+
+     label1:
+        termVectorsReader = specialinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader getTermVectorsReader()>();
+        if termVectorsReader != null goto label2;
+
+        return;
+
+     label2:
+        virtualinvoke termVectorsReader.<org.apache.lucene.index.TermVectorsReader: void get(int,java.lang.String,org.apache.lucene.index.TermVectorMapper)>(docNumber, field, mapper);
+        return;
+    }
+
+    public void getTermFreqVector(int, org.apache.lucene.index.TermVectorMapper) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        int docNumber;
+        org.apache.lucene.index.TermVectorMapper mapper;
+        org.apache.lucene.index.TermVectorsReader termVectorsReader, $r0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        docNumber := @parameter0: int;
+        mapper := @parameter1: org.apache.lucene.index.TermVectorMapper;
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader termVectorsReaderOrig>;
+        if $r0 != null goto label0;
+
+        return;
+
+     label0:
+        termVectorsReader = specialinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader getTermVectorsReader()>();
+        if termVectorsReader != null goto label1;
+
+        return;
+
+     label1:
+        virtualinvoke termVectorsReader.<org.apache.lucene.index.TermVectorsReader: void get(int,org.apache.lucene.index.TermVectorMapper)>(docNumber, mapper);
+        return;
+    }
+
+    public org.apache.lucene.index.TermFreqVector[] getTermFreqVectors(int) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentReader this;
+        int docNumber;
+        org.apache.lucene.index.TermVectorsReader termVectorsReader, $r0;
+        org.apache.lucene.index.TermFreqVector[] $r1;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        docNumber := @parameter0: int;
+        virtualinvoke this.<org.apache.lucene.index.SegmentReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader termVectorsReaderOrig>;
+        if $r0 != null goto label0;
+
+        return null;
+
+     label0:
+        termVectorsReader = specialinvoke this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader getTermVectorsReader()>();
+        if termVectorsReader != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = virtualinvoke termVectorsReader.<org.apache.lucene.index.TermVectorsReader: org.apache.lucene.index.TermFreqVector[] get(int)>(docNumber);
+        return $r1;
+    }
+
+    org.apache.lucene.index.FieldInfos fieldInfos()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.index.FieldInfos $r0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        return $r0;
+    }
+
+    java.lang.String getSegmentName()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        $r0 = this.<org.apache.lucene.index.SegmentReader: java.lang.String segment>;
+        return $r0;
+    }
+
+    org.apache.lucene.index.SegmentInfo getSegmentInfo()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.index.SegmentInfo $r0;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        $r0 = this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si>;
+        return $r0;
+    }
+
+    void setSegmentInfo(org.apache.lucene.index.SegmentInfo)
+    {
+        org.apache.lucene.index.SegmentReader this;
+        org.apache.lucene.index.SegmentInfo info;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        info := @parameter0: org.apache.lucene.index.SegmentInfo;
+        this.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentInfo si> = info;
+        return;
+    }
+
+    void startCommit()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.util.Iterator it;
+        org.apache.lucene.index.SegmentReader$Norm norm;
+        boolean $z0, $z1;
+        int $i0;
+        java.util.Map $r0;
+        java.util.Collection $r1;
+        java.lang.Object $r2;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        specialinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void startCommit()>();
+        $z0 = this.<org.apache.lucene.index.SegmentReader: boolean deletedDocsDirty>;
+        this.<org.apache.lucene.index.SegmentReader: boolean rollbackDeletedDocsDirty> = $z0;
+        $z0 = this.<org.apache.lucene.index.SegmentReader: boolean normsDirty>;
+        this.<org.apache.lucene.index.SegmentReader: boolean rollbackNormsDirty> = $z0;
+        $z0 = this.<org.apache.lucene.index.SegmentReader: boolean undeleteAll>;
+        this.<org.apache.lucene.index.SegmentReader: boolean rollbackUndeleteAll> = $z0;
+        $i0 = this.<org.apache.lucene.index.SegmentReader: int pendingDeleteCount>;
+        this.<org.apache.lucene.index.SegmentReader: int rollbackPendingDeleteCount> = $i0;
+        $r0 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r1 = interfaceinvoke $r0.<java.util.Map: java.util.Collection values()>();
+        it = interfaceinvoke $r1.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label0:
+        $z1 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+        if $z1 == 0 goto label1;
+
+        $r2 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+        norm = (org.apache.lucene.index.SegmentReader$Norm) $r2;
+        $z0 = staticinvoke <org.apache.lucene.index.SegmentReader$Norm: boolean access$000(org.apache.lucene.index.SegmentReader$Norm)>(norm);
+        staticinvoke <org.apache.lucene.index.SegmentReader$Norm: boolean access$602(org.apache.lucene.index.SegmentReader$Norm,boolean)>(norm, $z0);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    void rollbackCommit()
+    {
+        org.apache.lucene.index.SegmentReader this;
+        java.util.Iterator it;
+        org.apache.lucene.index.SegmentReader$Norm norm;
+        boolean $z0, $z1;
+        int $i0;
+        java.util.Map $r0;
+        java.util.Collection $r1;
+        java.lang.Object $r2;
+
+        this := @this: org.apache.lucene.index.SegmentReader;
+        specialinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void rollbackCommit()>();
+        $z0 = this.<org.apache.lucene.index.SegmentReader: boolean rollbackDeletedDocsDirty>;
+        this.<org.apache.lucene.index.SegmentReader: boolean deletedDocsDirty> = $z0;
+        $z0 = this.<org.apache.lucene.index.SegmentReader: boolean rollbackNormsDirty>;
+        this.<org.apache.lucene.index.SegmentReader: boolean normsDirty> = $z0;
+        $z0 = this.<org.apache.lucene.index.SegmentReader: boolean rollbackUndeleteAll>;
+        this.<org.apache.lucene.index.SegmentReader: boolean undeleteAll> = $z0;
+        $i0 = this.<org.apache.lucene.index.SegmentReader: int rollbackPendingDeleteCount>;
+        this.<org.apache.lucene.index.SegmentReader: int pendingDeleteCount> = $i0;
+        $r0 = this.<org.apache.lucene.index.SegmentReader: java.util.Map norms>;
+        $r1 = interfaceinvoke $r0.<java.util.Map: java.util.Collection values()>();
+        it = interfaceinvoke $r1.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label0:
+        $z1 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+        if $z1 == 0 goto label1;
+
+        $r2 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+        norm = (org.apache.lucene.index.SegmentReader$Norm) $r2;
+        $z0 = staticinvoke <org.apache.lucene.index.SegmentReader$Norm: boolean access$600(org.apache.lucene.index.SegmentReader$Norm)>(norm);
+        staticinvoke <org.apache.lucene.index.SegmentReader$Norm: boolean access$002(org.apache.lucene.index.SegmentReader$Norm,boolean)>(norm, $z0);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    static java.lang.Class class$(java.lang.String)
+    {
+        java.lang.String x0;
+        java.lang.ClassNotFoundException x1, $r1;
+        java.lang.Class $r0;
+        java.lang.NoClassDefFoundError $r2;
+        java.lang.Throwable $r3;
+
+        x0 := @parameter0: java.lang.String;
+
+     label0:
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(x0);
+
+     label1:
+        return $r0;
+
+     label2:
+        $r1 := @caughtexception;
+        x1 = $r1;
+        $r2 = new java.lang.NoClassDefFoundError;
+        specialinvoke $r2.<java.lang.NoClassDefFoundError: void <init>()>();
+        $r3 = virtualinvoke $r2.<java.lang.NoClassDefFoundError: java.lang.Throwable initCause(java.lang.Throwable)>(x1);
+        throw $r3;
+
+        catch java.lang.ClassNotFoundException from label0 to label1 with label2;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0, $r2;
+        java.lang.String name, $r1, $r3, $r7;
+        java.lang.ClassNotFoundException e, $r4, $r9, $r10, $r12;
+        java.lang.SecurityException se, $r8, $r11;
+        boolean $z0;
+        java.lang.RuntimeException $r5;
+        java.lang.StringBuffer $r6;
+
+        $r0 = <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$SegmentReader>;
+        if $r0 != null goto label0;
+
+        $r0 = staticinvoke <org.apache.lucene.index.SegmentReader: java.lang.Class class$(java.lang.String)>("org.apache.lucene.index.SegmentReader");
+        <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$SegmentReader> = $r0;
+        goto label1;
+
+     label0:
+        $r0 = <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$SegmentReader>;
+
+     label1:
+        $z0 = virtualinvoke $r0.<java.lang.Class: boolean desiredAssertionStatus()>();
+        if $z0 != 0 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        <org.apache.lucene.index.SegmentReader: boolean $assertionsDisabled> = $z0;
+
+     label4:
+        $r1 = "org.apache.lucene.SegmentReader.class";
+        $r2 = <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$SegmentReader>;
+        if $r2 != null goto label5;
+
+        $r2 = staticinvoke <org.apache.lucene.index.SegmentReader: java.lang.Class class$(java.lang.String)>("org.apache.lucene.index.SegmentReader");
+        <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$SegmentReader> = $r2;
+        goto label6;
+
+     label5:
+        $r2 = <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$SegmentReader>;
+
+     label6:
+        $r3 = virtualinvoke $r2.<java.lang.Class: java.lang.String getName()>();
+        name = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String,java.lang.String)>($r1, $r3);
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(name);
+        <org.apache.lucene.index.SegmentReader: java.lang.Class IMPL> = $r0;
+
+     label7:
+        goto label15;
+
+     label8:
+        $r4 := @caughtexception;
+        e = $r4;
+        $r5 = new java.lang.RuntimeException;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cannot load SegmentReader class: ");
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(e);
+        $r7 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r5.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r7, e);
+        throw $r5;
+
+     label9:
+        $r8 := @caughtexception;
+        se = $r8;
+
+     label10:
+        $r0 = <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$SegmentReader>;
+        if $r0 != null goto label11;
+
+        $r0 = staticinvoke <org.apache.lucene.index.SegmentReader: java.lang.Class class$(java.lang.String)>("org.apache.lucene.index.SegmentReader");
+        <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$SegmentReader> = $r0;
+        goto label12;
+
+     label11:
+        $r0 = <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$SegmentReader>;
+
+     label12:
+        $r1 = virtualinvoke $r0.<java.lang.Class: java.lang.String getName()>();
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>($r1);
+        <org.apache.lucene.index.SegmentReader: java.lang.Class IMPL> = $r0;
+
+     label13:
+        goto label15;
+
+     label14:
+        $r9 := @caughtexception;
+        e = $r9;
+        $r5 = new java.lang.RuntimeException;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cannot load default SegmentReader class: ");
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(e);
+        $r7 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r5.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r7, e);
+        throw $r5;
+
+     label15:
+        $r1 = "org.apache.lucene.ReadOnlySegmentReader.class";
+        $r2 = <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$ReadOnlySegmentReader>;
+        if $r2 != null goto label16;
+
+        $r2 = staticinvoke <org.apache.lucene.index.SegmentReader: java.lang.Class class$(java.lang.String)>("org.apache.lucene.index.ReadOnlySegmentReader");
+        <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$ReadOnlySegmentReader> = $r2;
+        goto label17;
+
+     label16:
+        $r2 = <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$ReadOnlySegmentReader>;
+
+     label17:
+        $r3 = virtualinvoke $r2.<java.lang.Class: java.lang.String getName()>();
+        name = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String,java.lang.String)>($r1, $r3);
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(name);
+        <org.apache.lucene.index.SegmentReader: java.lang.Class READONLY_IMPL> = $r0;
+
+     label18:
+        goto label26;
+
+     label19:
+        $r10 := @caughtexception;
+        e = $r10;
+        $r5 = new java.lang.RuntimeException;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cannot load ReadOnlySegmentReader class: ");
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(e);
+        $r7 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r5.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r7, e);
+        throw $r5;
+
+     label20:
+        $r11 := @caughtexception;
+        se = $r11;
+
+     label21:
+        $r0 = <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$ReadOnlySegmentReader>;
+        if $r0 != null goto label22;
+
+        $r0 = staticinvoke <org.apache.lucene.index.SegmentReader: java.lang.Class class$(java.lang.String)>("org.apache.lucene.index.ReadOnlySegmentReader");
+        <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$ReadOnlySegmentReader> = $r0;
+        goto label23;
+
+     label22:
+        $r0 = <org.apache.lucene.index.SegmentReader: java.lang.Class class$org$apache$lucene$index$ReadOnlySegmentReader>;
+
+     label23:
+        $r1 = virtualinvoke $r0.<java.lang.Class: java.lang.String getName()>();
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>($r1);
+        <org.apache.lucene.index.SegmentReader: java.lang.Class READONLY_IMPL> = $r0;
+
+     label24:
+        goto label26;
+
+     label25:
+        $r12 := @caughtexception;
+        e = $r12;
+        $r5 = new java.lang.RuntimeException;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cannot load default ReadOnlySegmentReader class: ");
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(e);
+        $r7 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r5.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r7, e);
+        throw $r5;
+
+     label26:
+        return;
+
+        catch java.lang.ClassNotFoundException from label4 to label7 with label8;
+        catch java.lang.SecurityException from label4 to label7 with label9;
+        catch java.lang.ClassNotFoundException from label10 to label13 with label14;
+        catch java.lang.ClassNotFoundException from label15 to label18 with label19;
+        catch java.lang.SecurityException from label15 to label18 with label20;
+        catch java.lang.ClassNotFoundException from label21 to label24 with label25;
+    }
+}

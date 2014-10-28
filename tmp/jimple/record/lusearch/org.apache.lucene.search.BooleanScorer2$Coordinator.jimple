@@ -1,0 +1,109 @@
+class org.apache.lucene.search.BooleanScorer2$Coordinator extends java.lang.Object
+{
+    int maxCoord;
+    private float[] coordFactors;
+    int nrMatchers;
+    private final org.apache.lucene.search.BooleanScorer2 this$0;
+
+    private void <init>(org.apache.lucene.search.BooleanScorer2)
+    {
+        org.apache.lucene.search.BooleanScorer2$Coordinator this;
+        org.apache.lucene.search.BooleanScorer2 l1;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2$Coordinator;
+        l1 := @parameter0: org.apache.lucene.search.BooleanScorer2;
+        this.<org.apache.lucene.search.BooleanScorer2$Coordinator: org.apache.lucene.search.BooleanScorer2 this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.search.BooleanScorer2$Coordinator: int maxCoord> = 0;
+        this.<org.apache.lucene.search.BooleanScorer2$Coordinator: float[] coordFactors> = null;
+        return;
+    }
+
+    void init()
+    {
+        org.apache.lucene.search.BooleanScorer2$Coordinator this;
+        org.apache.lucene.search.Similarity sim;
+        int i, $i0, $i1;
+        float[] $r0, $r2;
+        org.apache.lucene.search.BooleanScorer2 $r1;
+        float $f0;
+        long tid_init;
+        java.lang.Thread thread_init;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2$Coordinator;
+        thread_init = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_init = virtualinvoke thread_init.<java.lang.Thread: long getId()>();
+        $i0 = this.<org.apache.lucene.search.BooleanScorer2$Coordinator: int maxCoord>;
+        $i0 = $i0 + 1;
+        $r0 = newarray (float)[$i0];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 84, tid_init, "org.apache.lucene.search.BooleanScorer2$Coordinator", 41, $r0);
+        this.<org.apache.lucene.search.BooleanScorer2$Coordinator: float[] coordFactors> = $r0;
+        $r1 = this.<org.apache.lucene.search.BooleanScorer2$Coordinator: org.apache.lucene.search.BooleanScorer2 this$0>;
+        sim = virtualinvoke $r1.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Similarity getSimilarity()>();
+        i = 0;
+
+     label0:
+        $i0 = this.<org.apache.lucene.search.BooleanScorer2$Coordinator: int maxCoord>;
+        if i > $i0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 84, tid_init, "org.apache.lucene.search.BooleanScorer2$Coordinator", 44, $r2);
+        $r2 = this.<org.apache.lucene.search.BooleanScorer2$Coordinator: float[] coordFactors>;
+        $i1 = this.<org.apache.lucene.search.BooleanScorer2$Coordinator: int maxCoord>;
+        $f0 = virtualinvoke sim.<org.apache.lucene.search.Similarity: float coord(int,int)>(i, $i1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,float)>($r2, 50, tid_init, "org.apache.lucene.search.BooleanScorer2$Coordinator", 44, i, $f0);
+        $r2[i] = $f0;
+        i = i + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    void initDoc()
+    {
+        org.apache.lucene.search.BooleanScorer2$Coordinator this;
+        long tid_initDoc;
+        java.lang.Thread thread_initDoc;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2$Coordinator;
+        thread_initDoc = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_initDoc = virtualinvoke thread_initDoc.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 85, tid_initDoc, "org.apache.lucene.search.BooleanScorer2$Coordinator", 51, 0);
+        this.<org.apache.lucene.search.BooleanScorer2$Coordinator: int nrMatchers> = 0;
+        return;
+    }
+
+    float coordFactor()
+    {
+        org.apache.lucene.search.BooleanScorer2$Coordinator this;
+        float[] $r0;
+        int $i0;
+        float $f0;
+        long tid_coordFactor;
+        java.lang.Thread thread_coordFactor;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2$Coordinator;
+        thread_coordFactor = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_coordFactor = virtualinvoke thread_coordFactor.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 84, tid_coordFactor, "org.apache.lucene.search.BooleanScorer2$Coordinator", 55, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2$Coordinator: float[] coordFactors>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 85, tid_coordFactor, "org.apache.lucene.search.BooleanScorer2$Coordinator", 55, $i0);
+        $i0 = this.<org.apache.lucene.search.BooleanScorer2$Coordinator: int nrMatchers>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,float)>($r0, 50, tid_coordFactor, "org.apache.lucene.search.BooleanScorer2$Coordinator", 55, $i0, $f0);
+        $f0 = $r0[$i0];
+        return $f0;
+    }
+
+    void <init>(org.apache.lucene.search.BooleanScorer2, org.apache.lucene.search.BooleanScorer2$1)
+    {
+        org.apache.lucene.search.BooleanScorer2$Coordinator this;
+        org.apache.lucene.search.BooleanScorer2 x0;
+        org.apache.lucene.search.BooleanScorer2$1 x1;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2$Coordinator;
+        x0 := @parameter0: org.apache.lucene.search.BooleanScorer2;
+        x1 := @parameter1: org.apache.lucene.search.BooleanScorer2$1;
+        specialinvoke this.<org.apache.lucene.search.BooleanScorer2$Coordinator: void <init>(org.apache.lucene.search.BooleanScorer2)>(x0);
+        return;
+    }
+}

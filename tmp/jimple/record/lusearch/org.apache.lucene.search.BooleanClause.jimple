@@ -1,0 +1,187 @@
+public class org.apache.lucene.search.BooleanClause extends java.lang.Object implements java.io.Serializable
+{
+    private org.apache.lucene.search.Query query;
+    private org.apache.lucene.search.BooleanClause$Occur occur;
+
+    public void <init>(org.apache.lucene.search.Query, org.apache.lucene.search.BooleanClause$Occur)
+    {
+        org.apache.lucene.search.BooleanClause this;
+        org.apache.lucene.search.Query query;
+        org.apache.lucene.search.BooleanClause$Occur occur;
+
+        this := @this: org.apache.lucene.search.BooleanClause;
+        query := @parameter0: org.apache.lucene.search.Query;
+        occur := @parameter1: org.apache.lucene.search.BooleanClause$Occur;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query query> = query;
+        this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.BooleanClause$Occur occur> = occur;
+        return;
+    }
+
+    public org.apache.lucene.search.BooleanClause$Occur getOccur()
+    {
+        org.apache.lucene.search.BooleanClause this;
+        org.apache.lucene.search.BooleanClause$Occur $r0;
+
+        this := @this: org.apache.lucene.search.BooleanClause;
+        $r0 = this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.BooleanClause$Occur occur>;
+        return $r0;
+    }
+
+    public void setOccur(org.apache.lucene.search.BooleanClause$Occur)
+    {
+        org.apache.lucene.search.BooleanClause this;
+        org.apache.lucene.search.BooleanClause$Occur occur;
+
+        this := @this: org.apache.lucene.search.BooleanClause;
+        occur := @parameter0: org.apache.lucene.search.BooleanClause$Occur;
+        this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.BooleanClause$Occur occur> = occur;
+        return;
+    }
+
+    public org.apache.lucene.search.Query getQuery()
+    {
+        org.apache.lucene.search.BooleanClause this;
+        org.apache.lucene.search.Query $r0;
+
+        this := @this: org.apache.lucene.search.BooleanClause;
+        $r0 = this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query query>;
+        return $r0;
+    }
+
+    public void setQuery(org.apache.lucene.search.Query)
+    {
+        org.apache.lucene.search.BooleanClause this;
+        org.apache.lucene.search.Query query;
+
+        this := @this: org.apache.lucene.search.BooleanClause;
+        query := @parameter0: org.apache.lucene.search.Query;
+        this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query query> = query;
+        return;
+    }
+
+    public boolean isProhibited()
+    {
+        org.apache.lucene.search.BooleanClause this;
+        org.apache.lucene.search.BooleanClause$Occur $r0, $r1;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.BooleanClause;
+        $r0 = <org.apache.lucene.search.BooleanClause$Occur: org.apache.lucene.search.BooleanClause$Occur MUST_NOT>;
+        $r1 = this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.BooleanClause$Occur occur>;
+        $z0 = virtualinvoke $r0.<java.lang.Object: boolean equals(java.lang.Object)>($r1);
+        return $z0;
+    }
+
+    public boolean isRequired()
+    {
+        org.apache.lucene.search.BooleanClause this;
+        org.apache.lucene.search.BooleanClause$Occur $r0, $r1;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.BooleanClause;
+        $r0 = <org.apache.lucene.search.BooleanClause$Occur: org.apache.lucene.search.BooleanClause$Occur MUST>;
+        $r1 = this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.BooleanClause$Occur occur>;
+        $z0 = virtualinvoke $r0.<java.lang.Object: boolean equals(java.lang.Object)>($r1);
+        return $z0;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        org.apache.lucene.search.BooleanClause this, other;
+        java.lang.Object o;
+        boolean $z0;
+        org.apache.lucene.search.Query $r0, $r1;
+        org.apache.lucene.search.BooleanClause$Occur $r2, $r3;
+
+        this := @this: org.apache.lucene.search.BooleanClause;
+        o := @parameter0: java.lang.Object;
+        $z0 = o instanceof org.apache.lucene.search.BooleanClause;
+        if $z0 != 0 goto label0;
+
+        return 0;
+
+     label0:
+        other = (org.apache.lucene.search.BooleanClause) o;
+        $r0 = this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query query>;
+        $r1 = other.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query query>;
+        $z0 = virtualinvoke $r0.<java.lang.Object: boolean equals(java.lang.Object)>($r1);
+        if $z0 == 0 goto label1;
+
+        $r2 = this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.BooleanClause$Occur occur>;
+        $r3 = other.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.BooleanClause$Occur occur>;
+        $z0 = virtualinvoke $r2.<java.lang.Object: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label1;
+
+        $z0 = 1;
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public int hashCode()
+    {
+        org.apache.lucene.search.BooleanClause this;
+        org.apache.lucene.search.BooleanClause$Occur $r0, $r2;
+        org.apache.lucene.search.Query $r1;
+        int $i0;
+        boolean $z0;
+        byte $b1;
+
+        this := @this: org.apache.lucene.search.BooleanClause;
+        $r1 = this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query query>;
+        $i0 = virtualinvoke $r1.<java.lang.Object: int hashCode()>();
+        $r0 = <org.apache.lucene.search.BooleanClause$Occur: org.apache.lucene.search.BooleanClause$Occur MUST>;
+        $r2 = this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.BooleanClause$Occur occur>;
+        $z0 = virtualinvoke $r0.<java.lang.Object: boolean equals(java.lang.Object)>($r2);
+        if $z0 == 0 goto label0;
+
+        $b1 = 1;
+        goto label1;
+
+     label0:
+        $b1 = 0;
+
+     label1:
+        $i0 = $i0 ^ $b1;
+        $r0 = <org.apache.lucene.search.BooleanClause$Occur: org.apache.lucene.search.BooleanClause$Occur MUST_NOT>;
+        $r2 = this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.BooleanClause$Occur occur>;
+        $z0 = virtualinvoke $r0.<java.lang.Object: boolean equals(java.lang.Object)>($r2);
+        if $z0 == 0 goto label2;
+
+        $b1 = 2;
+        goto label3;
+
+     label2:
+        $b1 = 0;
+
+     label3:
+        $i0 = $i0 ^ $b1;
+        return $i0;
+    }
+
+    public java.lang.String toString()
+    {
+        org.apache.lucene.search.BooleanClause this;
+        java.lang.StringBuffer $r0;
+        org.apache.lucene.search.BooleanClause$Occur $r1;
+        java.lang.String $r2, $r4;
+        org.apache.lucene.search.Query $r3;
+
+        this := @this: org.apache.lucene.search.BooleanClause;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r1 = this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.BooleanClause$Occur occur>;
+        $r2 = virtualinvoke $r1.<org.apache.lucene.search.BooleanClause$Occur: java.lang.String toString()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r3 = this.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query query>;
+        $r2 = virtualinvoke $r3.<org.apache.lucene.search.Query: java.lang.String toString()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r4 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r4;
+    }
+}

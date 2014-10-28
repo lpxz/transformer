@@ -1,0 +1,822 @@
+public class avrora.sim.clock.RippleSynchronizer extends avrora.sim.clock.Synchronizer
+{
+    protected long notifyPeriod;
+    protected final java.util.HashMap threadMap;
+    protected final avrora.sim.Simulator$Event action;
+    protected int goal;
+    protected long wallTime;
+    protected int meet_count;
+    protected int wait_count;
+    protected avrora.sim.clock.RippleSynchronizer$WaitLink waitListHead;
+    static final boolean $assertionsDisabled;
+
+    public void <init>(long, avrora.sim.Simulator$Event)
+    {
+        avrora.sim.clock.RippleSynchronizer this;
+        long p;
+        avrora.sim.Simulator$Event a;
+        avrora.sim.clock.RippleSynchronizer$WaitLink end, start, $r1;
+        java.util.HashMap $r0;
+        int $i0;
+
+        this := @this: avrora.sim.clock.RippleSynchronizer;
+        p := @parameter0: long;
+        a := @parameter1: avrora.sim.Simulator$Event;
+        specialinvoke this.<avrora.sim.clock.Synchronizer: void <init>()>();
+        this.<avrora.sim.clock.RippleSynchronizer: long notifyPeriod> = p;
+        this.<avrora.sim.clock.RippleSynchronizer: avrora.sim.Simulator$Event action> = a;
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        this.<avrora.sim.clock.RippleSynchronizer: java.util.HashMap threadMap> = $r0;
+        $r1 = new avrora.sim.clock.RippleSynchronizer$WaitLink;
+        specialinvoke $r1.<avrora.sim.clock.RippleSynchronizer$WaitLink: void <init>(long)>(9223372036854775807L);
+        end = $r1;
+        $r1 = new avrora.sim.clock.RippleSynchronizer$WaitLink;
+        specialinvoke $r1.<avrora.sim.clock.RippleSynchronizer$WaitLink: void <init>(long)>(-1L);
+        start = $r1;
+        $i0 = this.<avrora.sim.clock.RippleSynchronizer: int goal>;
+        start.<avrora.sim.clock.RippleSynchronizer$WaitLink: int numPassed> = $i0;
+        start.<avrora.sim.clock.RippleSynchronizer$WaitLink: avrora.sim.clock.RippleSynchronizer$WaitLink next> = end;
+        this.<avrora.sim.clock.RippleSynchronizer: avrora.sim.clock.RippleSynchronizer$WaitLink waitListHead> = start;
+        return;
+    }
+
+    private avrora.sim.clock.RippleSynchronizer$WaitLink advance(long, avrora.sim.clock.RippleSynchronizer$WaitLink)
+    {
+        avrora.sim.clock.RippleSynchronizer this;
+        long time, $l0, tid_advance;
+        avrora.sim.clock.RippleSynchronizer$WaitLink link, prev, nlink, link, $r1;
+        boolean $z0;
+        byte $b1;
+        java.lang.AssertionError $r0;
+        int $i2;
+        java.lang.Thread thread_advance;
+
+        this := @this: avrora.sim.clock.RippleSynchronizer;
+        time := @parameter0: long;
+        link := @parameter1: avrora.sim.clock.RippleSynchronizer$WaitLink;
+        thread_advance = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_advance = virtualinvoke thread_advance.<java.lang.Thread: long getId()>();
+        $z0 = <avrora.sim.clock.RippleSynchronizer: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label0;
+
+        $l0 = link.<avrora.sim.clock.RippleSynchronizer$WaitLink: long time>;
+        $b1 = time cmp $l0;
+        if $b1 >= 0 goto label0;
+
+        $r0 = new java.lang.AssertionError;
+        specialinvoke $r0.<java.lang.AssertionError: void <init>()>();
+        throw $r0;
+
+     label0:
+        $l0 = link.<avrora.sim.clock.RippleSynchronizer$WaitLink: long time>;
+        $b1 = time cmp $l0;
+        if $b1 != 0 goto label1;
+
+        return link;
+
+     label1:
+        prev = link;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(link, 222, tid_advance, "avrora.sim.clock.RippleSynchronizer", 129, link);
+        link = link.<avrora.sim.clock.RippleSynchronizer$WaitLink: avrora.sim.clock.RippleSynchronizer$WaitLink next>;
+
+     label2:
+        $z0 = <avrora.sim.clock.RippleSynchronizer: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label3;
+
+        if link != null goto label3;
+
+        $r0 = new java.lang.AssertionError;
+        specialinvoke $r0.<java.lang.AssertionError: void <init>()>();
+        throw $r0;
+
+     label3:
+        $l0 = link.<avrora.sim.clock.RippleSynchronizer$WaitLink: long time>;
+        $b1 = time cmp $l0;
+        if $b1 >= 0 goto label5;
+
+        $r1 = new avrora.sim.clock.RippleSynchronizer$WaitLink;
+        specialinvoke $r1.<avrora.sim.clock.RippleSynchronizer$WaitLink: void <init>(long)>(time);
+        nlink = $r1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(link, 223, tid_advance, "avrora.sim.clock.RippleSynchronizer", 135, $i2);
+        $i2 = link.<avrora.sim.clock.RippleSynchronizer$WaitLink: int numPassed>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(nlink, 223, tid_advance, "avrora.sim.clock.RippleSynchronizer", 135, $i2);
+        nlink.<avrora.sim.clock.RippleSynchronizer$WaitLink: int numPassed> = $i2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(nlink, 222, tid_advance, "avrora.sim.clock.RippleSynchronizer", 136, link);
+        nlink.<avrora.sim.clock.RippleSynchronizer$WaitLink: avrora.sim.clock.RippleSynchronizer$WaitLink next> = link;
+        $z0 = <avrora.sim.clock.RippleSynchronizer: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label4;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(prev, 222, tid_advance, "avrora.sim.clock.RippleSynchronizer", 138, $r1);
+        $r1 = prev.<avrora.sim.clock.RippleSynchronizer$WaitLink: avrora.sim.clock.RippleSynchronizer$WaitLink next>;
+        if $r1 == link goto label4;
+
+        $r0 = new java.lang.AssertionError;
+        specialinvoke $r0.<java.lang.AssertionError: void <init>()>();
+        throw $r0;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(prev, 222, tid_advance, "avrora.sim.clock.RippleSynchronizer", 139, nlink);
+        prev.<avrora.sim.clock.RippleSynchronizer$WaitLink: avrora.sim.clock.RippleSynchronizer$WaitLink next> = nlink;
+        specialinvoke this.<avrora.sim.clock.RippleSynchronizer: void notifyLink(avrora.sim.clock.RippleSynchronizer$WaitLink)>(nlink);
+        return nlink;
+
+     label5:
+        $l0 = link.<avrora.sim.clock.RippleSynchronizer$WaitLink: long time>;
+        $b1 = time cmp $l0;
+        if $b1 != 0 goto label6;
+
+        specialinvoke this.<avrora.sim.clock.RippleSynchronizer: void notifyLink(avrora.sim.clock.RippleSynchronizer$WaitLink)>(link);
+        return link;
+
+     label6:
+        specialinvoke this.<avrora.sim.clock.RippleSynchronizer: void notifyLink(avrora.sim.clock.RippleSynchronizer$WaitLink)>(link);
+        prev = link;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(link, 222, tid_advance, "avrora.sim.clock.RippleSynchronizer", 129, link);
+        link = link.<avrora.sim.clock.RippleSynchronizer$WaitLink: avrora.sim.clock.RippleSynchronizer$WaitLink next>;
+        goto label2;
+    }
+
+    private void waitFor(long, avrora.sim.clock.RippleSynchronizer$WaitLink) throws java.lang.InterruptedException
+    {
+        avrora.sim.clock.RippleSynchronizer this;
+        long time, $l0, tid_waitFor;
+        avrora.sim.clock.RippleSynchronizer$WaitLink link, prev, nlink, link;
+        byte $b1;
+        boolean $z0;
+        java.lang.AssertionError $r0;
+        java.lang.Thread thread_waitFor;
+
+        this := @this: avrora.sim.clock.RippleSynchronizer;
+        time := @parameter0: long;
+        link := @parameter1: avrora.sim.clock.RippleSynchronizer$WaitLink;
+        thread_waitFor = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_waitFor = virtualinvoke thread_waitFor.<java.lang.Thread: long getId()>();
+        $l0 = link.<avrora.sim.clock.RippleSynchronizer$WaitLink: long time>;
+        $b1 = time cmp $l0;
+        if $b1 > 0 goto label0;
+
+        specialinvoke this.<avrora.sim.clock.RippleSynchronizer: void waitForLink(avrora.sim.clock.RippleSynchronizer$WaitLink)>(link);
+        return;
+
+     label0:
+        prev = link;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(link, 222, tid_waitFor, "avrora.sim.clock.RippleSynchronizer", 160, link);
+        link = link.<avrora.sim.clock.RippleSynchronizer$WaitLink: avrora.sim.clock.RippleSynchronizer$WaitLink next>;
+
+     label1:
+        $z0 = <avrora.sim.clock.RippleSynchronizer: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label2;
+
+        if link != null goto label2;
+
+        $r0 = new java.lang.AssertionError;
+        specialinvoke $r0.<java.lang.AssertionError: void <init>()>();
+        throw $r0;
+
+     label2:
+        $l0 = link.<avrora.sim.clock.RippleSynchronizer$WaitLink: long time>;
+        $b1 = time cmp $l0;
+        if $b1 >= 0 goto label3;
+
+        nlink = specialinvoke this.<avrora.sim.clock.RippleSynchronizer: avrora.sim.clock.RippleSynchronizer$WaitLink insertLink(long,avrora.sim.clock.RippleSynchronizer$WaitLink,avrora.sim.clock.RippleSynchronizer$WaitLink)>(time, prev, link);
+        specialinvoke this.<avrora.sim.clock.RippleSynchronizer: void waitForLink(avrora.sim.clock.RippleSynchronizer$WaitLink)>(nlink);
+        return;
+
+     label3:
+        $l0 = link.<avrora.sim.clock.RippleSynchronizer$WaitLink: long time>;
+        $b1 = time cmp $l0;
+        if $b1 != 0 goto label4;
+
+        specialinvoke this.<avrora.sim.clock.RippleSynchronizer: void waitForLink(avrora.sim.clock.RippleSynchronizer$WaitLink)>(link);
+        return;
+
+     label4:
+        prev = link;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(link, 222, tid_waitFor, "avrora.sim.clock.RippleSynchronizer", 160, link);
+        link = link.<avrora.sim.clock.RippleSynchronizer$WaitLink: avrora.sim.clock.RippleSynchronizer$WaitLink next>;
+        goto label1;
+    }
+
+    private void waitForLink(avrora.sim.clock.RippleSynchronizer$WaitLink) throws java.lang.InterruptedException
+    {
+        avrora.sim.clock.RippleSynchronizer this;
+        avrora.sim.clock.RippleSynchronizer$WaitLink nlink;
+        boolean $z0;
+        int $i0, $i1;
+        java.lang.AssertionError $r0;
+        long tid_waitForLink;
+        java.lang.Thread thread_waitForLink;
+
+        this := @this: avrora.sim.clock.RippleSynchronizer;
+        nlink := @parameter0: avrora.sim.clock.RippleSynchronizer$WaitLink;
+        thread_waitForLink = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_waitForLink = virtualinvoke thread_waitForLink.<java.lang.Thread: long getId()>();
+        $z0 = <avrora.sim.clock.RippleSynchronizer: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(nlink, 223, tid_waitForLink, "avrora.sim.clock.RippleSynchronizer", 179, $i0);
+        $i0 = nlink.<avrora.sim.clock.RippleSynchronizer$WaitLink: int numPassed>;
+        if $i0 >= 1 goto label0;
+
+        $r0 = new java.lang.AssertionError;
+        specialinvoke $r0.<java.lang.AssertionError: void <init>()>();
+        throw $r0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(nlink, 223, tid_waitForLink, "avrora.sim.clock.RippleSynchronizer", 180, $i0);
+        $i0 = nlink.<avrora.sim.clock.RippleSynchronizer$WaitLink: int numPassed>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 224, tid_waitForLink, "avrora.sim.clock.RippleSynchronizer", 180, $i1);
+        $i1 = this.<avrora.sim.clock.RippleSynchronizer: int goal>;
+        if $i0 >= $i1 goto label1;
+
+        virtualinvoke this.<java.lang.Object: void wait()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void waitAfter(java.lang.Object,int,long)>(this, 0, tid_waitForLink);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    private avrora.sim.clock.RippleSynchronizer$WaitLink insertLink(long, avrora.sim.clock.RippleSynchronizer$WaitLink, avrora.sim.clock.RippleSynchronizer$WaitLink)
+    {
+        avrora.sim.clock.RippleSynchronizer this;
+        long time, tid_insertLink;
+        avrora.sim.clock.RippleSynchronizer$WaitLink prev, next, $r0, nlink;
+        int $i0;
+        boolean $z0;
+        java.lang.AssertionError $r1;
+        java.lang.Thread thread_insertLink;
+
+        this := @this: avrora.sim.clock.RippleSynchronizer;
+        time := @parameter0: long;
+        prev := @parameter1: avrora.sim.clock.RippleSynchronizer$WaitLink;
+        next := @parameter2: avrora.sim.clock.RippleSynchronizer$WaitLink;
+        thread_insertLink = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_insertLink = virtualinvoke thread_insertLink.<java.lang.Thread: long getId()>();
+        $r0 = new avrora.sim.clock.RippleSynchronizer$WaitLink;
+        specialinvoke $r0.<avrora.sim.clock.RippleSynchronizer$WaitLink: void <init>(long)>(time);
+        nlink = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(next, 223, tid_insertLink, "avrora.sim.clock.RippleSynchronizer", 187, $i0);
+        $i0 = next.<avrora.sim.clock.RippleSynchronizer$WaitLink: int numPassed>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(nlink, 223, tid_insertLink, "avrora.sim.clock.RippleSynchronizer", 187, $i0);
+        nlink.<avrora.sim.clock.RippleSynchronizer$WaitLink: int numPassed> = $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(nlink, 222, tid_insertLink, "avrora.sim.clock.RippleSynchronizer", 188, next);
+        nlink.<avrora.sim.clock.RippleSynchronizer$WaitLink: avrora.sim.clock.RippleSynchronizer$WaitLink next> = next;
+        $z0 = <avrora.sim.clock.RippleSynchronizer: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label0;
+
+        if prev != null goto label0;
+
+        $r1 = new java.lang.AssertionError;
+        specialinvoke $r1.<java.lang.AssertionError: void <init>()>();
+        throw $r1;
+
+     label0:
+        $z0 = <avrora.sim.clock.RippleSynchronizer: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(prev, 222, tid_insertLink, "avrora.sim.clock.RippleSynchronizer", 191, $r0);
+        $r0 = prev.<avrora.sim.clock.RippleSynchronizer$WaitLink: avrora.sim.clock.RippleSynchronizer$WaitLink next>;
+        if $r0 == next goto label1;
+
+        $r1 = new java.lang.AssertionError;
+        specialinvoke $r1.<java.lang.AssertionError: void <init>()>();
+        throw $r1;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(prev, 222, tid_insertLink, "avrora.sim.clock.RippleSynchronizer", 192, nlink);
+        prev.<avrora.sim.clock.RippleSynchronizer$WaitLink: avrora.sim.clock.RippleSynchronizer$WaitLink next> = nlink;
+        return nlink;
+    }
+
+    private void notifyLink(avrora.sim.clock.RippleSynchronizer$WaitLink)
+    {
+        avrora.sim.clock.RippleSynchronizer this;
+        avrora.sim.clock.RippleSynchronizer$WaitLink link;
+        int $i0, $i1;
+        long tid_notifyLink;
+        java.lang.Thread thread_notifyLink;
+
+        this := @this: avrora.sim.clock.RippleSynchronizer;
+        link := @parameter0: avrora.sim.clock.RippleSynchronizer$WaitLink;
+        thread_notifyLink = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_notifyLink = virtualinvoke thread_notifyLink.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(link, 223, tid_notifyLink, "avrora.sim.clock.RippleSynchronizer", 197, $i0);
+        $i0 = link.<avrora.sim.clock.RippleSynchronizer$WaitLink: int numPassed>;
+        $i1 = $i0 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(link, 223, tid_notifyLink, "avrora.sim.clock.RippleSynchronizer", 197, $i1);
+        link.<avrora.sim.clock.RippleSynchronizer$WaitLink: int numPassed> = $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 224, tid_notifyLink, "avrora.sim.clock.RippleSynchronizer", 197, $i0);
+        $i0 = this.<avrora.sim.clock.RippleSynchronizer: int goal>;
+        if $i1 < $i0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void notifyAllBefore(java.lang.Object,int,long)>(this, 0, tid_notifyLink);
+        virtualinvoke this.<java.lang.Object: void notifyAll()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 225, tid_notifyLink, "avrora.sim.clock.RippleSynchronizer", 199, link);
+        this.<avrora.sim.clock.RippleSynchronizer: avrora.sim.clock.RippleSynchronizer$WaitLink waitListHead> = link;
+
+     label0:
+        return;
+    }
+
+    public void start()
+    {
+        avrora.sim.clock.RippleSynchronizer this;
+        java.util.Iterator threadIterator;
+        avrora.sim.SimulatorThread thread;
+        java.util.HashMap $r0;
+        java.util.Set $r1;
+        boolean $z0;
+        java.lang.Object $r2, localthislockstart;
+        java.lang.Throwable throwableLocal20;
+        long tid_start;
+        java.lang.Thread thread_start;
+
+        this := @this: avrora.sim.clock.RippleSynchronizer;
+        thread_start = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_start = virtualinvoke thread_start.<java.lang.Thread: long getId()>();
+        localthislockstart = this;
+
+     label0:
+        entermonitor localthislockstart;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockstart, 0, tid_start);
+        $r0 = this.<avrora.sim.clock.RippleSynchronizer: java.util.HashMap threadMap>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.util.Set keySet()>();
+        threadIterator = interfaceinvoke $r1.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke threadIterator.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r2 = interfaceinvoke threadIterator.<java.util.Iterator: java.lang.Object next()>();
+        thread = (avrora.sim.SimulatorThread) $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void startRunThreadBefore(java.lang.Thread,long)>(thread, tid_start);
+        virtualinvoke thread.<avrora.sim.SimulatorThread: void start()>();
+        goto label1;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstart, 0, tid_start);
+        exitmonitor localthislockstart;
+        goto label3;
+
+     label3:
+        return;
+
+     label4:
+        throwableLocal20 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstart, 0, tid_start);
+        exitmonitor localthislockstart;
+
+     label6:
+        throw throwableLocal20;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void join() throws java.lang.InterruptedException
+    {
+        avrora.sim.clock.RippleSynchronizer this;
+        java.util.Iterator threadIterator;
+        avrora.sim.SimulatorThread thread;
+        java.util.HashMap $r0;
+        java.util.Set $r1;
+        boolean $z0;
+        java.lang.Object $r2;
+        long tid_join;
+        java.lang.Thread thread_join;
+
+        this := @this: avrora.sim.clock.RippleSynchronizer;
+        thread_join = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_join = virtualinvoke thread_join.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.clock.RippleSynchronizer: java.util.HashMap threadMap>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.util.Set keySet()>();
+        threadIterator = interfaceinvoke $r1.<java.util.Set: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke threadIterator.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r2 = interfaceinvoke threadIterator.<java.util.Iterator: java.lang.Object next()>();
+        thread = (avrora.sim.SimulatorThread) $r2;
+        virtualinvoke thread.<avrora.sim.SimulatorThread: void join()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void joinRunThreadAfter(java.lang.Thread,long)>(thread, tid_join);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    public void stop()
+    {
+        avrora.sim.clock.RippleSynchronizer this;
+        java.util.Iterator threadIterator;
+        avrora.sim.SimulatorThread thread;
+        java.util.HashMap $r0;
+        java.util.Set $r1;
+        boolean $z0;
+        java.lang.Object $r2, localthislockstop;
+        avrora.sim.Simulator $r3;
+        java.lang.Throwable throwableLocal21;
+        long tid_stop;
+        java.lang.Thread thread_stop;
+
+        this := @this: avrora.sim.clock.RippleSynchronizer;
+        thread_stop = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_stop = virtualinvoke thread_stop.<java.lang.Thread: long getId()>();
+        localthislockstop = this;
+
+     label0:
+        entermonitor localthislockstop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockstop, 0, tid_stop);
+        $r0 = this.<avrora.sim.clock.RippleSynchronizer: java.util.HashMap threadMap>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.util.Set keySet()>();
+        threadIterator = interfaceinvoke $r1.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke threadIterator.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r2 = interfaceinvoke threadIterator.<java.util.Iterator: java.lang.Object next()>();
+        thread = (avrora.sim.SimulatorThread) $r2;
+        $r3 = virtualinvoke thread.<avrora.sim.SimulatorThread: avrora.sim.Simulator getSimulator()>();
+        virtualinvoke $r3.<avrora.sim.Simulator: void stop()>();
+        goto label1;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstop, 0, tid_stop);
+        exitmonitor localthislockstop;
+        goto label3;
+
+     label3:
+        return;
+
+     label4:
+        throwableLocal21 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstop, 0, tid_stop);
+        exitmonitor localthislockstop;
+
+     label6:
+        throw throwableLocal21;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void pause()
+    {
+        avrora.sim.clock.RippleSynchronizer this;
+        cck.util.Util$InternalError $r0;
+        java.lang.Object localthislockpause;
+        java.lang.Throwable throwableLocal22;
+        long tid_pause;
+        java.lang.Thread thread_pause;
+
+        this := @this: avrora.sim.clock.RippleSynchronizer;
+        thread_pause = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_pause = virtualinvoke thread_pause.<java.lang.Thread: long getId()>();
+        localthislockpause = this;
+
+     label0:
+        entermonitor localthislockpause;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockpause, 0, tid_pause);
+        $r0 = staticinvoke <cck.util.Util: cck.util.Util$InternalError unimplemented()>();
+
+     label1:
+        throw $r0;
+
+     label2:
+        throwableLocal22 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockpause, 0, tid_pause);
+        exitmonitor localthislockpause;
+
+     label4:
+        throw throwableLocal22;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public void synch(long)
+    {
+        avrora.sim.clock.RippleSynchronizer this;
+        long globalTime, tid_synch;
+        cck.util.Util$InternalError $r0;
+        java.lang.Object localthislocksynch;
+        java.lang.Throwable throwableLocal23;
+        java.lang.Thread thread_synch;
+
+        this := @this: avrora.sim.clock.RippleSynchronizer;
+        globalTime := @parameter0: long;
+        thread_synch = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_synch = virtualinvoke thread_synch.<java.lang.Thread: long getId()>();
+        localthislocksynch = this;
+
+     label0:
+        entermonitor localthislocksynch;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislocksynch, 0, tid_synch);
+        $r0 = staticinvoke <cck.util.Util: cck.util.Util$InternalError unimplemented()>();
+
+     label1:
+        throw $r0;
+
+     label2:
+        throwableLocal23 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislocksynch, 0, tid_synch);
+        exitmonitor localthislocksynch;
+
+     label4:
+        throw throwableLocal23;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public void addNode(avrora.sim.Simulation$Node)
+    {
+        avrora.sim.clock.RippleSynchronizer this;
+        avrora.sim.Simulation$Node t;
+        avrora.sim.SimulatorThread st;
+        avrora.sim.clock.RippleSynchronizer$NotifyEvent event, $r1;
+        java.util.HashMap $r0;
+        boolean $z0;
+        avrora.sim.clock.MainClock $r3;
+        long $l0, tid_addNode;
+        int $i1;
+        java.lang.Object localthislockaddNode;
+        java.lang.Throwable throwableLocal24;
+        java.lang.Thread thread_addNode;
+
+        this := @this: avrora.sim.clock.RippleSynchronizer;
+        t := @parameter0: avrora.sim.Simulation$Node;
+        thread_addNode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addNode = virtualinvoke thread_addNode.<java.lang.Thread: long getId()>();
+        localthislockaddNode = this;
+
+     label0:
+        entermonitor localthislockaddNode;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockaddNode, 0, tid_addNode);
+        st = virtualinvoke t.<avrora.sim.Simulation$Node: avrora.sim.SimulatorThread getThread()>();
+        $r0 = this.<avrora.sim.clock.RippleSynchronizer: java.util.HashMap threadMap>;
+        $z0 = virtualinvoke $r0.<java.util.HashMap: boolean containsKey(java.lang.Object)>(st);
+        if $z0 == 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockaddNode, 0, tid_addNode);
+        exitmonitor localthislockaddNode;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        virtualinvoke st.<avrora.sim.SimulatorThread: void setSynchronizer(avrora.sim.clock.Synchronizer)>(this);
+        $r1 = new avrora.sim.clock.RippleSynchronizer$NotifyEvent;
+        specialinvoke $r1.<avrora.sim.clock.RippleSynchronizer$NotifyEvent: void <init>(avrora.sim.clock.RippleSynchronizer,avrora.sim.SimulatorThread)>(this, st);
+        event = $r1;
+        $r0 = this.<avrora.sim.clock.RippleSynchronizer: java.util.HashMap threadMap>;
+        virtualinvoke $r0.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(st, event);
+        $r3 = event.<avrora.sim.clock.RippleSynchronizer$NotifyEvent: avrora.sim.clock.MainClock clock>;
+        $l0 = this.<avrora.sim.clock.RippleSynchronizer: long notifyPeriod>;
+        virtualinvoke $r3.<avrora.sim.clock.MainClock: void insertEvent(avrora.sim.Simulator$Event,long)>(event, $l0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 224, tid_addNode, "avrora.sim.clock.RippleSynchronizer", 279, $i1);
+        $i1 = this.<avrora.sim.clock.RippleSynchronizer: int goal>;
+        $i1 = $i1 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 224, tid_addNode, "avrora.sim.clock.RippleSynchronizer", 279, $i1);
+        this.<avrora.sim.clock.RippleSynchronizer: int goal> = $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockaddNode, 0, tid_addNode);
+        exitmonitor localthislockaddNode;
+        goto label3;
+
+     label3:
+        return;
+
+     label4:
+        throwableLocal24 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockaddNode, 0, tid_addNode);
+        exitmonitor localthislockaddNode;
+
+     label6:
+        throw throwableLocal24;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void removeNode(avrora.sim.Simulation$Node)
+    {
+        avrora.sim.clock.RippleSynchronizer this, l3;
+        avrora.sim.Simulation$Node t;
+        avrora.sim.SimulatorThread st;
+        java.lang.Throwable l4, $r4, throwableLocal25;
+        java.util.HashMap $r0;
+        boolean $z0;
+        avrora.sim.Simulator $r1;
+        avrora.sim.clock.MainClock $r2;
+        long $l0, tid_removeNode;
+        int $i1;
+        java.lang.Object localthislockremoveNode;
+        java.lang.Thread thread_removeNode;
+
+        this := @this: avrora.sim.clock.RippleSynchronizer;
+        t := @parameter0: avrora.sim.Simulation$Node;
+        thread_removeNode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_removeNode = virtualinvoke thread_removeNode.<java.lang.Thread: long getId()>();
+        localthislockremoveNode = this;
+
+     label0:
+        entermonitor localthislockremoveNode;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockremoveNode, 0, tid_removeNode);
+        st = virtualinvoke t.<avrora.sim.Simulation$Node: avrora.sim.SimulatorThread getThread()>();
+        $r0 = this.<avrora.sim.clock.RippleSynchronizer: java.util.HashMap threadMap>;
+        $z0 = virtualinvoke $r0.<java.util.HashMap: boolean containsKey(java.lang.Object)>(st);
+        if $z0 == 0 goto label6;
+
+        $r1 = virtualinvoke t.<avrora.sim.Simulation$Node: avrora.sim.Simulator getSimulator()>();
+        $r2 = virtualinvoke $r1.<avrora.sim.Simulator: avrora.sim.clock.MainClock getClock()>();
+        $l0 = virtualinvoke $r2.<avrora.sim.clock.MainClock: long getCount()>();
+        virtualinvoke this.<avrora.sim.clock.RippleSynchronizer: void waitForNeighbors(long)>($l0);
+        l3 = this;
+        entermonitor this;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(this, 4, tid_removeNode);
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 224, tid_removeNode, "avrora.sim.clock.RippleSynchronizer", 293, $i1);
+        $i1 = this.<avrora.sim.clock.RippleSynchronizer: int goal>;
+        $i1 = $i1 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 224, tid_removeNode, "avrora.sim.clock.RippleSynchronizer", 293, $i1);
+        this.<avrora.sim.clock.RippleSynchronizer: int goal> = $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void notifyAllBefore(java.lang.Object,int,long)>(this, 0, tid_removeNode);
+        virtualinvoke this.<java.lang.Object: void notifyAll()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 4, tid_removeNode);
+        exitmonitor l3;
+
+     label2:
+        goto label6;
+
+     label3:
+        $r4 := @caughtexception;
+
+     label4:
+        l4 = $r4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 4, tid_removeNode);
+        exitmonitor l3;
+
+     label5:
+        throw l4;
+
+     label6:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockremoveNode, 0, tid_removeNode);
+        exitmonitor localthislockremoveNode;
+        goto label7;
+
+     label7:
+        return;
+
+     label8:
+        throwableLocal25 := @caughtexception;
+
+     label9:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockremoveNode, 0, tid_removeNode);
+        exitmonitor localthislockremoveNode;
+
+     label10:
+        throw throwableLocal25;
+
+        catch java.lang.Throwable from label0 to label7 with label8;
+        catch java.lang.Throwable from label9 to label10 with label8;
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    public void waitForNeighbors(long)
+    {
+        avrora.sim.clock.RippleSynchronizer this, l7;
+        long time, now, tid_waitForNeighbors;
+        java.lang.Thread $r0, thread_waitForNeighbors;
+        avrora.sim.SimulatorThread thread;
+        avrora.sim.clock.RippleSynchronizer$NotifyEvent event;
+        avrora.sim.clock.RippleSynchronizer$WaitLink link, $r7;
+        java.lang.Throwable l9, $r8;
+        java.lang.InterruptedException e, $r9;
+        java.util.HashMap $r1;
+        java.lang.Object $r2;
+        avrora.sim.Simulator $r3;
+        avrora.sim.clock.MainClock $r4;
+        boolean $z0;
+        byte $b0;
+        java.lang.AssertionError $r5;
+        cck.util.Util$InternalError $r10;
+
+        this := @this: avrora.sim.clock.RippleSynchronizer;
+        time := @parameter0: long;
+        thread_waitForNeighbors = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_waitForNeighbors = virtualinvoke thread_waitForNeighbors.<java.lang.Thread: long getId()>();
+        $r0 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        thread = (avrora.sim.SimulatorThread) $r0;
+        $r1 = this.<avrora.sim.clock.RippleSynchronizer: java.util.HashMap threadMap>;
+        $r2 = virtualinvoke $r1.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(thread);
+        event = (avrora.sim.clock.RippleSynchronizer$NotifyEvent) $r2;
+
+     label0:
+        $r3 = virtualinvoke thread.<avrora.sim.SimulatorThread: avrora.sim.Simulator getSimulator()>();
+        $r4 = virtualinvoke $r3.<avrora.sim.Simulator: avrora.sim.clock.MainClock getClock()>();
+        now = virtualinvoke $r4.<avrora.sim.clock.MainClock: long getCount()>();
+        $z0 = <avrora.sim.clock.RippleSynchronizer: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label1;
+
+        $b0 = time cmp now;
+        if $b0 <= 0 goto label1;
+
+        $r5 = new java.lang.AssertionError;
+        specialinvoke $r5.<java.lang.AssertionError: void <init>()>();
+        throw $r5;
+
+     label1:
+        l7 = this;
+        entermonitor this;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(this, 4, tid_waitForNeighbors);
+
+     label2:
+        link = staticinvoke <avrora.sim.clock.RippleSynchronizer$NotifyEvent: avrora.sim.clock.RippleSynchronizer$WaitLink access$100(avrora.sim.clock.RippleSynchronizer$NotifyEvent)>(event);
+        $r7 = specialinvoke this.<avrora.sim.clock.RippleSynchronizer: avrora.sim.clock.RippleSynchronizer$WaitLink advance(long,avrora.sim.clock.RippleSynchronizer$WaitLink)>(now, link);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(event, 226, tid_waitForNeighbors, "avrora.sim.clock.RippleSynchronizer", 314, $r7);
+        event.<avrora.sim.clock.RippleSynchronizer$NotifyEvent: avrora.sim.clock.RippleSynchronizer$WaitLink lastLink> = $r7;
+        specialinvoke this.<avrora.sim.clock.RippleSynchronizer: void waitFor(long,avrora.sim.clock.RippleSynchronizer$WaitLink)>(time, link);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l7, 4, tid_waitForNeighbors);
+        exitmonitor l7;
+
+     label3:
+        goto label7;
+
+     label4:
+        $r8 := @caughtexception;
+
+     label5:
+        l9 = $r8;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l7, 4, tid_waitForNeighbors);
+        exitmonitor l7;
+
+     label6:
+        throw l9;
+
+     label7:
+        goto label9;
+
+     label8:
+        $r9 := @caughtexception;
+        e = $r9;
+        $r10 = staticinvoke <cck.util.Util: cck.util.Util$InternalError unimplemented()>();
+        throw $r10;
+
+     label9:
+        return;
+
+        catch java.lang.Throwable from label2 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+        catch java.lang.InterruptedException from label0 to label7 with label8;
+    }
+
+    static avrora.sim.clock.RippleSynchronizer$WaitLink access$000(avrora.sim.clock.RippleSynchronizer, long, avrora.sim.clock.RippleSynchronizer$WaitLink)
+    {
+        avrora.sim.clock.RippleSynchronizer x0;
+        long x1;
+        avrora.sim.clock.RippleSynchronizer$WaitLink x2, $r0;
+
+        x0 := @parameter0: avrora.sim.clock.RippleSynchronizer;
+        x1 := @parameter1: long;
+        x2 := @parameter2: avrora.sim.clock.RippleSynchronizer$WaitLink;
+        $r0 = specialinvoke x0.<avrora.sim.clock.RippleSynchronizer: avrora.sim.clock.RippleSynchronizer$WaitLink advance(long,avrora.sim.clock.RippleSynchronizer$WaitLink)>(x1, x2);
+        return $r0;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        boolean $z0;
+
+        $r0 = class "avrora/sim/clock/RippleSynchronizer";
+        $z0 = virtualinvoke $r0.<java.lang.Class: boolean desiredAssertionStatus()>();
+        if $z0 != 0 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        <avrora.sim.clock.RippleSynchronizer: boolean $assertionsDisabled> = $z0;
+        return;
+    }
+}

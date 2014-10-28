@@ -1,0 +1,681 @@
+public abstract class avrora.sim.mcu.Timer16Bit extends avrora.sim.mcu.AtmelInternalDevice
+{
+    public static final int MODE_NORMAL;
+    public static final int MODE_PWM_PHASE_CORRECT_8_BIT;
+    public static final int MODE_PWM_PHASE_CORRECT_9_BIT;
+    public static final int MODE_PWM_PHASE_CORRECT_10_BIT;
+    public static final int MODE_CTC_OCRnA;
+    public static final int MODE_FASTPWM_8_BIT;
+    public static final int MODE_FASTPWM_9_BIT;
+    public static final int MODE_FASTPWM_10_BIT;
+    public static final int MODE_PWM_PNF_ICRn;
+    public static final int MODE_PWM_PNF_OCRnA;
+    public static final int MODE_PWN_PHASE_CORRECT_ICRn;
+    public static final int MODE_PWN_PHASE_CORRECT_OCRnA;
+    public static final int MODE_CTC_ICRn;
+    public static final int MODE_FASTPWM_ICRn;
+    public static final int MODE_FASTPWM_OCRnA;
+    public static final int MAX;
+    public static final int BOTTOM;
+    final avrora.sim.mcu.RegisterSet$Field ICESn_flag;
+    final avrora.sim.RWRegister TCNTnH_reg;
+    final avrora.sim.mcu.Timer16Bit$TCNTnRegister TCNTnL_reg;
+    final avrora.sim.mcu.Timer16Bit$PairedRegister TCNTn_reg;
+    final avrora.sim.mcu.Timer16Bit$OutputCompareUnit[] compareUnits;
+    final avrora.sim.Simulator$Event[] tickers;
+    final avrora.sim.RWRegister highTempReg;
+    final avrora.sim.RWRegister ICRnH_reg;
+    final avrora.sim.RWRegister ICRnL_reg;
+    final avrora.sim.mcu.Timer16Bit$PairedRegister ICRn_reg;
+    avrora.sim.Simulator$Event ticker;
+    final avrora.sim.mcu.RegisterSet$Field WGMn;
+    final avrora.sim.mcu.RegisterSet$Field CSn;
+    final avrora.sim.mcu.Timer16Bit$InputCapturePin inputCapturePin;
+    long period;
+    boolean blockCompareMatch;
+    protected final avrora.sim.clock.Clock externalClock;
+    avrora.sim.clock.Clock timerClock;
+    final int n;
+    int OCIEnA;
+    int OCIEnB;
+    int OCIEnC;
+    int TOIEn;
+    int TOVn;
+    int OCFnA;
+    int OCFnB;
+    int OCFnC;
+    int ICFn;
+    int inputCaptureInterrupt;
+    protected avrora.sim.mcu.ATMegaFamily$FlagRegister xTIFR_reg;
+    protected avrora.sim.mcu.ATMegaFamily$MaskRegister xTIMSK_reg;
+    protected avrora.sim.mcu.ATMegaFamily$FlagRegister cTIFR_reg;
+    protected avrora.sim.mcu.ATMegaFamily$MaskRegister cTIMSK_reg;
+    protected int[] periods;
+
+    protected abstract void initValues();
+
+    protected void <init>(int, int, avrora.sim.mcu.AtmelMicrocontroller)
+    {
+        avrora.sim.mcu.Timer16Bit this;
+        int n, numUnits, $i0, $i1;
+        avrora.sim.mcu.AtmelMicrocontroller m;
+        java.lang.StringBuilder $r0, $r2;
+        avrora.sim.mcu.RegisterSet rset;
+        java.lang.String $r1, $r3;
+        avrora.sim.mcu.Timer16Bit$1 $r4;
+        avrora.sim.mcu.RegisterSet$Field $r5;
+        avrora.sim.mcu.Timer16Bit$2 $r6;
+        avrora.sim.mcu.MCUProperties $r7;
+        avrora.sim.mcu.Timer16Bit$InputCapturePin $r8;
+        avrora.sim.RWRegister $r9, $r14, $r16, $r18;
+        avrora.sim.mcu.Timer16Bit$OutputCompareUnit[] $r10;
+        avrora.sim.mcu.ATMegaFamily$FlagRegister $r11;
+        avrora.sim.mcu.Timer16Bit$TCNTnRegister $r12, $r15;
+        avrora.sim.mcu.Timer16Bit$PairedRegister $r13, $r19;
+        avrora.sim.clock.Clock $r17;
+        avrora.sim.Simulator$Event[] $r20;
+
+        this := @this: avrora.sim.mcu.Timer16Bit;
+        n := @parameter0: int;
+        numUnits := @parameter1: int;
+        m := @parameter2: avrora.sim.mcu.AtmelMicrocontroller;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("timer");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(n);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke this.<avrora.sim.mcu.AtmelInternalDevice: void <init>(java.lang.String,avrora.sim.mcu.AtmelMicrocontroller)>($r1, m);
+        this.<avrora.sim.mcu.Timer16Bit: int n> = n;
+        rset = virtualinvoke m.<avrora.sim.mcu.AtmelMicrocontroller: avrora.sim.mcu.RegisterSet getRegisterSet()>();
+        virtualinvoke this.<avrora.sim.mcu.Timer16Bit: void initValues()>();
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("WGM");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(n);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r4 = new avrora.sim.mcu.Timer16Bit$1;
+        specialinvoke $r4.<avrora.sim.mcu.Timer16Bit$1: void <init>(avrora.sim.mcu.Timer16Bit)>(this);
+        $r5 = virtualinvoke rset.<avrora.sim.mcu.RegisterSet: avrora.sim.mcu.RegisterSet$Field installField(java.lang.String,avrora.sim.mcu.RegisterSet$Field)>($r3, $r4);
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.RegisterSet$Field WGMn> = $r5;
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("CS");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(n);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r6 = new avrora.sim.mcu.Timer16Bit$2;
+        specialinvoke $r6.<avrora.sim.mcu.Timer16Bit$2: void <init>(avrora.sim.mcu.Timer16Bit)>(this);
+        $r5 = virtualinvoke rset.<avrora.sim.mcu.RegisterSet: avrora.sim.mcu.RegisterSet$Field installField(java.lang.String,avrora.sim.mcu.RegisterSet$Field)>($r3, $r6);
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.RegisterSet$Field CSn> = $r5;
+        $r7 = virtualinvoke m.<avrora.sim.mcu.AtmelMicrocontroller: avrora.sim.mcu.MCUProperties getProperties()>();
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("TIMER");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(n);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" CAPT");
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        $i0 = virtualinvoke $r7.<avrora.sim.mcu.MCUProperties: int getInterrupt(java.lang.String)>($r3);
+        this.<avrora.sim.mcu.Timer16Bit: int inputCaptureInterrupt> = $i0;
+        $r8 = new avrora.sim.mcu.Timer16Bit$InputCapturePin;
+        specialinvoke $r8.<avrora.sim.mcu.Timer16Bit$InputCapturePin: void <init>(avrora.sim.mcu.Timer16Bit)>(this);
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$InputCapturePin inputCapturePin> = $r8;
+        $r9 = new avrora.sim.RWRegister;
+        specialinvoke $r9.<avrora.sim.RWRegister: void <init>()>();
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister highTempReg> = $r9;
+        $r10 = newarray (avrora.sim.mcu.Timer16Bit$OutputCompareUnit)[numUnits];
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$OutputCompareUnit[] compareUnits> = $r10;
+        $i1 = this.<avrora.sim.mcu.Timer16Bit: int OCFnA>;
+        $r11 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.ATMegaFamily$FlagRegister xTIFR_reg>;
+        virtualinvoke this.<avrora.sim.mcu.Timer16Bit: void newOCU(int,int,avrora.sim.mcu.Microcontroller,avrora.sim.mcu.RegisterSet,char,int,avrora.sim.mcu.ATMegaFamily$FlagRegister)>(0, numUnits, m, rset, 65, $i1, $r11);
+        $i1 = this.<avrora.sim.mcu.Timer16Bit: int OCFnB>;
+        $r11 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.ATMegaFamily$FlagRegister xTIFR_reg>;
+        virtualinvoke this.<avrora.sim.mcu.Timer16Bit: void newOCU(int,int,avrora.sim.mcu.Microcontroller,avrora.sim.mcu.RegisterSet,char,int,avrora.sim.mcu.ATMegaFamily$FlagRegister)>(1, numUnits, m, rset, 66, $i1, $r11);
+        $i1 = this.<avrora.sim.mcu.Timer16Bit: int OCFnC>;
+        $r11 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.ATMegaFamily$FlagRegister cTIFR_reg>;
+        virtualinvoke this.<avrora.sim.mcu.Timer16Bit: void newOCU(int,int,avrora.sim.mcu.Microcontroller,avrora.sim.mcu.RegisterSet,char,int,avrora.sim.mcu.ATMegaFamily$FlagRegister)>(2, numUnits, m, rset, 67, $i1, $r11);
+        $r9 = new avrora.sim.RWRegister;
+        specialinvoke $r9.<avrora.sim.RWRegister: void <init>()>();
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister TCNTnH_reg> = $r9;
+        $r12 = new avrora.sim.mcu.Timer16Bit$TCNTnRegister;
+        specialinvoke $r12.<avrora.sim.mcu.Timer16Bit$TCNTnRegister: void <init>(avrora.sim.mcu.Timer16Bit)>(this);
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$TCNTnRegister TCNTnL_reg> = $r12;
+        $r13 = new avrora.sim.mcu.Timer16Bit$PairedRegister;
+        $r14 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister TCNTnH_reg>;
+        $r15 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$TCNTnRegister TCNTnL_reg>;
+        specialinvoke $r13.<avrora.sim.mcu.Timer16Bit$PairedRegister: void <init>(avrora.sim.mcu.Timer16Bit,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, $r14, $r15);
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$PairedRegister TCNTn_reg> = $r13;
+        $r9 = new avrora.sim.RWRegister;
+        specialinvoke $r9.<avrora.sim.RWRegister: void <init>()>();
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister ICRnH_reg> = $r9;
+        $r9 = new avrora.sim.RWRegister;
+        specialinvoke $r9.<avrora.sim.RWRegister: void <init>()>();
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister ICRnL_reg> = $r9;
+        $r13 = new avrora.sim.mcu.Timer16Bit$PairedRegister;
+        $r14 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister ICRnL_reg>;
+        $r16 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister ICRnH_reg>;
+        specialinvoke $r13.<avrora.sim.mcu.Timer16Bit$PairedRegister: void <init>(avrora.sim.mcu.Timer16Bit,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, $r14, $r16);
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$PairedRegister ICRn_reg> = $r13;
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ICES");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(n);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r5 = virtualinvoke rset.<avrora.sim.mcu.RegisterSet: avrora.sim.mcu.RegisterSet$Field getField(java.lang.String)>($r3);
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.RegisterSet$Field ICESn_flag> = $r5;
+        $r17 = virtualinvoke m.<avrora.sim.mcu.AtmelMicrocontroller: avrora.sim.clock.Clock getClock(java.lang.String)>("external");
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.clock.Clock externalClock> = $r17;
+        $r17 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.clock.Clock mainClock>;
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.clock.Clock timerClock> = $r17;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("TCNT");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(n);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("H");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r18 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister highTempReg>;
+        virtualinvoke this.<avrora.sim.mcu.Timer16Bit: void installIOReg(java.lang.String,avrora.sim.ActiveRegister)>($r1, $r18);
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("TCNT");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(n);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("L");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r19 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$PairedRegister TCNTn_reg>;
+        virtualinvoke this.<avrora.sim.mcu.Timer16Bit: void installIOReg(java.lang.String,avrora.sim.ActiveRegister)>($r1, $r19);
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ICR");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(n);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("H");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r18 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister highTempReg>;
+        virtualinvoke this.<avrora.sim.mcu.Timer16Bit: void installIOReg(java.lang.String,avrora.sim.ActiveRegister)>($r1, $r18);
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ICR");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(n);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("L");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r19 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$PairedRegister ICRn_reg>;
+        virtualinvoke this.<avrora.sim.mcu.Timer16Bit: void installIOReg(java.lang.String,avrora.sim.ActiveRegister)>($r1, $r19);
+        $r20 = newarray (avrora.sim.Simulator$Event)[16];
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers> = $r20;
+        specialinvoke this.<avrora.sim.mcu.Timer16Bit: void installTickers()>();
+        return;
+    }
+
+    private void installTickers()
+    {
+        avrora.sim.mcu.Timer16Bit this;
+        avrora.sim.mcu.Timer16Bit$OutputCompareUnit ocA;
+        avrora.sim.mcu.Timer16Bit$BufferedRegister ocrah, ocral;
+        avrora.sim.mcu.Timer16Bit$Mode_Normal $r0;
+        avrora.sim.mcu.Timer16Bit$OutputCompareUnit[] $r1;
+        avrora.sim.Simulator$Event[] $r2;
+        avrora.sim.mcu.Timer16Bit$Mode_PWMPhaseCorrect $r3;
+        avrora.sim.mcu.Timer16Bit$Mode_CTC $r4;
+        avrora.sim.mcu.Timer16Bit$Mode_FastPWM $r5;
+        avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF $r6;
+        avrora.sim.RWRegister $r7, $r8, $r9;
+        avrora.sim.mcu.Timer16Bit$Mode_Reserved $r10;
+
+        this := @this: avrora.sim.mcu.Timer16Bit;
+        $r1 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$OutputCompareUnit[] compareUnits>;
+        ocA = $r1[0];
+        ocrah = ocA.<avrora.sim.mcu.Timer16Bit$OutputCompareUnit: avrora.sim.mcu.Timer16Bit$BufferedRegister OCRnXH_reg>;
+        ocral = ocA.<avrora.sim.mcu.Timer16Bit$OutputCompareUnit: avrora.sim.mcu.Timer16Bit$BufferedRegister OCRnXL_reg>;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r0 = new avrora.sim.mcu.Timer16Bit$Mode_Normal;
+        specialinvoke $r0.<avrora.sim.mcu.Timer16Bit$Mode_Normal: void <init>(avrora.sim.mcu.Timer16Bit)>(this);
+        $r2[0] = $r0;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r3 = new avrora.sim.mcu.Timer16Bit$Mode_PWMPhaseCorrect;
+        specialinvoke $r3.<avrora.sim.mcu.Timer16Bit$Mode_PWMPhaseCorrect: void <init>(avrora.sim.mcu.Timer16Bit,int,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, 255, null, null);
+        $r2[1] = $r3;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r3 = new avrora.sim.mcu.Timer16Bit$Mode_PWMPhaseCorrect;
+        specialinvoke $r3.<avrora.sim.mcu.Timer16Bit$Mode_PWMPhaseCorrect: void <init>(avrora.sim.mcu.Timer16Bit,int,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, 511, null, null);
+        $r2[2] = $r3;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r3 = new avrora.sim.mcu.Timer16Bit$Mode_PWMPhaseCorrect;
+        specialinvoke $r3.<avrora.sim.mcu.Timer16Bit$Mode_PWMPhaseCorrect: void <init>(avrora.sim.mcu.Timer16Bit,int,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, 1023, null, null);
+        $r2[3] = $r3;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r4 = new avrora.sim.mcu.Timer16Bit$Mode_CTC;
+        specialinvoke $r4.<avrora.sim.mcu.Timer16Bit$Mode_CTC: void <init>(avrora.sim.mcu.Timer16Bit,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, ocrah, ocral);
+        $r2[4] = $r4;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r5 = new avrora.sim.mcu.Timer16Bit$Mode_FastPWM;
+        specialinvoke $r5.<avrora.sim.mcu.Timer16Bit$Mode_FastPWM: void <init>(avrora.sim.mcu.Timer16Bit,int,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, 255, null, null);
+        $r2[5] = $r5;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r5 = new avrora.sim.mcu.Timer16Bit$Mode_FastPWM;
+        specialinvoke $r5.<avrora.sim.mcu.Timer16Bit$Mode_FastPWM: void <init>(avrora.sim.mcu.Timer16Bit,int,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, 511, null, null);
+        $r2[6] = $r5;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r5 = new avrora.sim.mcu.Timer16Bit$Mode_FastPWM;
+        specialinvoke $r5.<avrora.sim.mcu.Timer16Bit$Mode_FastPWM: void <init>(avrora.sim.mcu.Timer16Bit,int,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, 1023, null, null);
+        $r2[7] = $r5;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r6 = new avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF;
+        $r7 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister ICRnH_reg>;
+        $r8 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister ICRnL_reg>;
+        specialinvoke $r6.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: void <init>(avrora.sim.mcu.Timer16Bit,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, $r7, $r8);
+        $r2[8] = $r6;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r6 = new avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF;
+        specialinvoke $r6.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: void <init>(avrora.sim.mcu.Timer16Bit,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, ocrah, ocral);
+        $r2[9] = $r6;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r3 = new avrora.sim.mcu.Timer16Bit$Mode_PWMPhaseCorrect;
+        $r8 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister ICRnH_reg>;
+        $r9 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister ICRnL_reg>;
+        specialinvoke $r3.<avrora.sim.mcu.Timer16Bit$Mode_PWMPhaseCorrect: void <init>(avrora.sim.mcu.Timer16Bit,int,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, 0, $r8, $r9);
+        $r2[10] = $r3;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r3 = new avrora.sim.mcu.Timer16Bit$Mode_PWMPhaseCorrect;
+        specialinvoke $r3.<avrora.sim.mcu.Timer16Bit$Mode_PWMPhaseCorrect: void <init>(avrora.sim.mcu.Timer16Bit,int,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, 0, ocrah, ocral);
+        $r2[11] = $r3;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r4 = new avrora.sim.mcu.Timer16Bit$Mode_CTC;
+        $r7 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister ICRnH_reg>;
+        $r8 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister ICRnL_reg>;
+        specialinvoke $r4.<avrora.sim.mcu.Timer16Bit$Mode_CTC: void <init>(avrora.sim.mcu.Timer16Bit,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, $r7, $r8);
+        $r2[12] = $r4;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r10 = new avrora.sim.mcu.Timer16Bit$Mode_Reserved;
+        specialinvoke $r10.<avrora.sim.mcu.Timer16Bit$Mode_Reserved: void <init>(avrora.sim.mcu.Timer16Bit)>(this);
+        $r2[13] = $r10;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r5 = new avrora.sim.mcu.Timer16Bit$Mode_FastPWM;
+        $r8 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister ICRnH_reg>;
+        $r9 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister ICRnL_reg>;
+        specialinvoke $r5.<avrora.sim.mcu.Timer16Bit$Mode_FastPWM: void <init>(avrora.sim.mcu.Timer16Bit,int,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, 0, $r8, $r9);
+        $r2[14] = $r5;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r5 = new avrora.sim.mcu.Timer16Bit$Mode_FastPWM;
+        specialinvoke $r5.<avrora.sim.mcu.Timer16Bit$Mode_FastPWM: void <init>(avrora.sim.mcu.Timer16Bit,int,avrora.sim.RWRegister,avrora.sim.RWRegister)>(this, 0, ocrah, ocral);
+        $r2[15] = $r5;
+        return;
+    }
+
+    public avrora.sim.state.BooleanView getInputCapturePin()
+    {
+        avrora.sim.mcu.Timer16Bit this;
+        avrora.sim.mcu.Timer16Bit$InputCapturePin $r0;
+
+        this := @this: avrora.sim.mcu.Timer16Bit;
+        $r0 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$InputCapturePin inputCapturePin>;
+        return $r0;
+    }
+
+    void captureInput()
+    {
+        avrora.sim.mcu.Timer16Bit this;
+        avrora.sim.RWRegister $r0, $r2;
+        avrora.sim.mcu.Timer16Bit$TCNTnRegister $r1;
+        byte $b0;
+        avrora.sim.mcu.ATMegaFamily$FlagRegister $r3;
+        int $i1;
+        avrora.sim.AtmelInterpreter $r4;
+        avrora.sim.InterruptTable $r5;
+        long tid_captureInput;
+        java.lang.Thread thread_captureInput;
+
+        this := @this: avrora.sim.mcu.Timer16Bit;
+        thread_captureInput = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_captureInput = virtualinvoke thread_captureInput.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister ICRnL_reg>;
+        $r1 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$TCNTnRegister TCNTnL_reg>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>($r1, 17, tid_captureInput, "avrora.sim.mcu.Timer16Bit", 309, $b0);
+        $b0 = $r1.<avrora.sim.mcu.Timer16Bit$TCNTnRegister: byte value>;
+        virtualinvoke $r0.<avrora.sim.RWRegister: void write(byte)>($b0);
+        $r0 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister ICRnH_reg>;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister TCNTnH_reg>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>($r2, 17, tid_captureInput, "avrora.sim.mcu.Timer16Bit", 310, $b0);
+        $b0 = $r2.<avrora.sim.RWRegister: byte value>;
+        virtualinvoke $r0.<avrora.sim.RWRegister: void write(byte)>($b0);
+        $r3 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.ATMegaFamily$FlagRegister xTIFR_reg>;
+        $i1 = this.<avrora.sim.mcu.Timer16Bit: int ICFn>;
+        virtualinvoke $r3.<avrora.sim.mcu.ATMegaFamily$FlagRegister: void flagBit(int)>($i1);
+        $r4 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.AtmelInterpreter interpreter>;
+        $r5 = virtualinvoke $r4.<avrora.sim.AtmelInterpreter: avrora.sim.InterruptTable getInterruptTable()>();
+        $i1 = this.<avrora.sim.mcu.Timer16Bit: int inputCaptureInterrupt>;
+        virtualinvoke $r5.<avrora.sim.InterruptTable: void post(int)>($i1);
+        return;
+    }
+
+    void newOCU(int, int, avrora.sim.mcu.Microcontroller, avrora.sim.mcu.RegisterSet, char, int, avrora.sim.mcu.ATMegaFamily$FlagRegister)
+    {
+        avrora.sim.mcu.Timer16Bit this;
+        int unit, numUnits, fb;
+        avrora.sim.mcu.Microcontroller m;
+        avrora.sim.mcu.RegisterSet rset;
+        char uname;
+        avrora.sim.mcu.ATMegaFamily$FlagRegister fr;
+        avrora.sim.mcu.Timer16Bit$OutputCompareUnit $r0;
+        avrora.sim.mcu.Timer16Bit$OutputCompareUnit[] $r1;
+
+        this := @this: avrora.sim.mcu.Timer16Bit;
+        unit := @parameter0: int;
+        numUnits := @parameter1: int;
+        m := @parameter2: avrora.sim.mcu.Microcontroller;
+        rset := @parameter3: avrora.sim.mcu.RegisterSet;
+        uname := @parameter4: char;
+        fb := @parameter5: int;
+        fr := @parameter6: avrora.sim.mcu.ATMegaFamily$FlagRegister;
+        if unit >= numUnits goto label0;
+
+        $r1 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$OutputCompareUnit[] compareUnits>;
+        $r0 = new avrora.sim.mcu.Timer16Bit$OutputCompareUnit;
+        specialinvoke $r0.<avrora.sim.mcu.Timer16Bit$OutputCompareUnit: void <init>(avrora.sim.mcu.Timer16Bit,avrora.sim.mcu.Microcontroller,avrora.sim.mcu.RegisterSet,char,int,avrora.sim.mcu.ATMegaFamily$FlagRegister)>(this, m, rset, uname, fb, fr);
+        $r1[unit] = $r0;
+
+     label0:
+        return;
+    }
+
+    protected void overflow()
+    {
+        avrora.sim.mcu.Timer16Bit this;
+        boolean enabled;
+        avrora.sim.output.SimPrinter $r0;
+        avrora.sim.mcu.ATMegaFamily$MaskRegister $r1;
+        int $i0, $i1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3;
+        avrora.sim.mcu.ATMegaFamily$FlagRegister $r4;
+
+        this := @this: avrora.sim.mcu.Timer16Bit;
+        $r0 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.output.SimPrinter devicePrinter>;
+        if $r0 == null goto label0;
+
+        $r1 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.ATMegaFamily$MaskRegister xTIMSK_reg>;
+        $i0 = this.<avrora.sim.mcu.Timer16Bit: int TOIEn>;
+        enabled = virtualinvoke $r1.<avrora.sim.mcu.ATMegaFamily$MaskRegister: boolean readBit(int)>($i0);
+        $r0 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.output.SimPrinter devicePrinter>;
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Timer");
+        $i1 = this.<avrora.sim.mcu.Timer16Bit: int n>;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".overFlow (enabled: ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>(enabled);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("  ");
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r0.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r3);
+
+     label0:
+        $r4 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.ATMegaFamily$FlagRegister xTIFR_reg>;
+        $i0 = this.<avrora.sim.mcu.Timer16Bit: int TOVn>;
+        virtualinvoke $r4.<avrora.sim.mcu.ATMegaFamily$FlagRegister: void flagBit(int)>($i0);
+        return;
+    }
+
+    private void resetPeriod(int)
+    {
+        avrora.sim.mcu.Timer16Bit this;
+        int nPeriod, $i0;
+        java.lang.StringBuilder $r0;
+        avrora.sim.output.SimPrinter $r1;
+        java.lang.String $r2;
+        avrora.sim.Simulator$Event $r3, $r5;
+        avrora.sim.clock.Clock $r4;
+        avrora.sim.mcu.RegisterSet$Field $r6;
+        avrora.sim.Simulator$Event[] $r7;
+        long $l1, $l2, tid_resetPeriod;
+        java.lang.Thread thread_resetPeriod;
+
+        this := @this: avrora.sim.mcu.Timer16Bit;
+        nPeriod := @parameter0: int;
+        thread_resetPeriod = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_resetPeriod = virtualinvoke thread_resetPeriod.<java.lang.Thread: long getId()>();
+        if nPeriod != 0 goto label1;
+
+        $r1 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.output.SimPrinter devicePrinter>;
+        if $r1 == null goto label0;
+
+        $r1 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.output.SimPrinter devicePrinter>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Timer");
+        $i0 = this.<avrora.sim.mcu.Timer16Bit: int n>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" disabled");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r1.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r2);
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 88, tid_resetPeriod, "avrora.sim.mcu.Timer16Bit", 416, $r3);
+        $r3 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event ticker>;
+        if $r3 == null goto label4;
+
+        $r4 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.clock.Clock timerClock>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 88, tid_resetPeriod, "avrora.sim.mcu.Timer16Bit", 416, $r5);
+        $r5 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event ticker>;
+        virtualinvoke $r4.<avrora.sim.clock.Clock: void removeEvent(avrora.sim.Simulator$Event)>($r5);
+        goto label4;
+
+     label1:
+        $r1 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.output.SimPrinter devicePrinter>;
+        if $r1 == null goto label2;
+
+        $r1 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.output.SimPrinter devicePrinter>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Timer");
+        $i0 = this.<avrora.sim.mcu.Timer16Bit: int n>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" enabled: period = ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(nPeriod);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" mode = ");
+        $r6 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.RegisterSet$Field WGMn>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r6, 89, tid_resetPeriod, "avrora.sim.mcu.Timer16Bit", 420, $i0);
+        $i0 = $r6.<avrora.sim.mcu.RegisterSet$Field: int value>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r1.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r2);
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 88, tid_resetPeriod, "avrora.sim.mcu.Timer16Bit", 421, $r3);
+        $r3 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event ticker>;
+        if $r3 == null goto label3;
+
+        $r4 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.clock.Clock timerClock>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 88, tid_resetPeriod, "avrora.sim.mcu.Timer16Bit", 421, $r5);
+        $r5 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event ticker>;
+        virtualinvoke $r4.<avrora.sim.clock.Clock: void removeEvent(avrora.sim.Simulator$Event)>($r5);
+
+     label3:
+        $r7 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event[] tickers>;
+        $r6 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.RegisterSet$Field WGMn>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r6, 89, tid_resetPeriod, "avrora.sim.mcu.Timer16Bit", 422, $i0);
+        $i0 = $r6.<avrora.sim.mcu.RegisterSet$Field: int value>;
+        $r5 = $r7[$i0];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 88, tid_resetPeriod, "avrora.sim.mcu.Timer16Bit", 422, $r5);
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event ticker> = $r5;
+        $l1 = (long) nPeriod;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 90, tid_resetPeriod, "avrora.sim.mcu.Timer16Bit", 423, $l1);
+        this.<avrora.sim.mcu.Timer16Bit: long period> = $l1;
+        $r4 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.clock.Clock timerClock>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 88, tid_resetPeriod, "avrora.sim.mcu.Timer16Bit", 424, $r5);
+        $r5 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event ticker>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 90, tid_resetPeriod, "avrora.sim.mcu.Timer16Bit", 424, $l2);
+        $l2 = this.<avrora.sim.mcu.Timer16Bit: long period>;
+        virtualinvoke $r4.<avrora.sim.clock.Clock: void insertEvent(avrora.sim.Simulator$Event,long)>($r5, $l2);
+
+     label4:
+        return;
+    }
+
+    public void resetTicker(avrora.sim.Simulator$Event)
+    {
+        avrora.sim.mcu.Timer16Bit this;
+        avrora.sim.Simulator$Event e, $r0, $r2;
+        avrora.sim.Simulator $r1;
+        long $l0, tid_resetTicker;
+        java.lang.Thread thread_resetTicker;
+
+        this := @this: avrora.sim.mcu.Timer16Bit;
+        e := @parameter0: avrora.sim.Simulator$Event;
+        thread_resetTicker = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_resetTicker = virtualinvoke thread_resetTicker.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 88, tid_resetTicker, "avrora.sim.mcu.Timer16Bit", 429, $r0);
+        $r0 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event ticker>;
+        if $r0 == null goto label0;
+
+        $r1 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator simulator>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 88, tid_resetTicker, "avrora.sim.mcu.Timer16Bit", 429, $r2);
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event ticker>;
+        virtualinvoke $r1.<avrora.sim.Simulator: void removeEvent(avrora.sim.Simulator$Event)>($r2);
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 88, tid_resetTicker, "avrora.sim.mcu.Timer16Bit", 430, e);
+        this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator$Event ticker> = e;
+        $r1 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.Simulator simulator>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 90, tid_resetTicker, "avrora.sim.mcu.Timer16Bit", 431, $l0);
+        $l0 = this.<avrora.sim.mcu.Timer16Bit: long period>;
+        virtualinvoke $r1.<avrora.sim.Simulator: void insertEvent(avrora.sim.Simulator$Event,long)>(e, $l0);
+        return;
+    }
+
+    private void tickerStart(int)
+    {
+        avrora.sim.mcu.Timer16Bit this;
+        int count, cntr, $i0;
+        boolean $z0;
+        avrora.sim.mcu.Timer16Bit$OutputCompareUnit[] $r0, $r1;
+        avrora.sim.mcu.Timer16Bit$OutputCompareUnit $r2;
+        long tid_tickerStart;
+        java.lang.Thread thread_tickerStart;
+
+        this := @this: avrora.sim.mcu.Timer16Bit;
+        count := @parameter0: int;
+        thread_tickerStart = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_tickerStart = virtualinvoke thread_tickerStart.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 91, tid_tickerStart, "avrora.sim.mcu.Timer16Bit", 624, $z0);
+        $z0 = this.<avrora.sim.mcu.Timer16Bit: boolean blockCompareMatch>;
+        if $z0 != 0 goto label1;
+
+        cntr = 0;
+
+     label0:
+        $r0 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$OutputCompareUnit[] compareUnits>;
+        $i0 = lengthof $r0;
+        if cntr >= $i0 goto label1;
+
+        $r1 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$OutputCompareUnit[] compareUnits>;
+        $r2 = $r1[cntr];
+        virtualinvoke $r2.<avrora.sim.mcu.Timer16Bit$OutputCompareUnit: void compare(int)>(count);
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    private void tickerFinish(avrora.sim.Simulator$Event, int)
+    {
+        avrora.sim.mcu.Timer16Bit this;
+        avrora.sim.Simulator$Event ticker;
+        int ncount;
+        avrora.sim.RWRegister $r0;
+        avrora.sim.mcu.Timer16Bit$TCNTnRegister $r1;
+        long $l0, $l2, tid_tickerFinish;
+        byte $b1;
+        avrora.sim.clock.Clock $r2;
+        java.lang.Thread thread_tickerFinish;
+
+        this := @this: avrora.sim.mcu.Timer16Bit;
+        ticker := @parameter0: avrora.sim.Simulator$Event;
+        ncount := @parameter1: int;
+        thread_tickerFinish = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_tickerFinish = virtualinvoke thread_tickerFinish.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister TCNTnH_reg>;
+        $r1 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$TCNTnRegister TCNTnL_reg>;
+        staticinvoke <avrora.sim.mcu.Timer16Bit: void write16(int,avrora.sim.RWRegister,avrora.sim.RWRegister)>(ncount, $r0, $r1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 91, tid_tickerFinish, "avrora.sim.mcu.Timer16Bit", 633, 0);
+        this.<avrora.sim.mcu.Timer16Bit: boolean blockCompareMatch> = 0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 90, tid_tickerFinish, "avrora.sim.mcu.Timer16Bit", 635, $l0);
+        $l0 = this.<avrora.sim.mcu.Timer16Bit: long period>;
+        $b1 = $l0 cmp 0L;
+        if $b1 == 0 goto label0;
+
+        $r2 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.clock.Clock timerClock>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 90, tid_tickerFinish, "avrora.sim.mcu.Timer16Bit", 635, $l2);
+        $l2 = this.<avrora.sim.mcu.Timer16Bit: long period>;
+        virtualinvoke $r2.<avrora.sim.clock.Clock: void insertEvent(avrora.sim.Simulator$Event,long)>(ticker, $l2);
+
+     label0:
+        return;
+    }
+
+    private void flushOCRnx()
+    {
+        avrora.sim.mcu.Timer16Bit this;
+        int cntr, $i0;
+        avrora.sim.mcu.Timer16Bit$OutputCompareUnit[] $r0, $r1;
+        avrora.sim.mcu.Timer16Bit$OutputCompareUnit $r2;
+
+        this := @this: avrora.sim.mcu.Timer16Bit;
+        cntr = 0;
+
+     label0:
+        $r0 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$OutputCompareUnit[] compareUnits>;
+        $i0 = lengthof $r0;
+        if cntr >= $i0 goto label1;
+
+        $r1 = this.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$OutputCompareUnit[] compareUnits>;
+        $r2 = $r1[cntr];
+        virtualinvoke $r2.<avrora.sim.mcu.Timer16Bit$OutputCompareUnit: void flush()>();
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    static void access$100(avrora.sim.mcu.Timer16Bit, int)
+    {
+        avrora.sim.mcu.Timer16Bit x0;
+        int x1;
+
+        x0 := @parameter0: avrora.sim.mcu.Timer16Bit;
+        x1 := @parameter1: int;
+        specialinvoke x0.<avrora.sim.mcu.Timer16Bit: void resetPeriod(int)>(x1);
+        return;
+    }
+
+    static void access$200(avrora.sim.mcu.Timer16Bit, int)
+    {
+        avrora.sim.mcu.Timer16Bit x0;
+        int x1;
+
+        x0 := @parameter0: avrora.sim.mcu.Timer16Bit;
+        x1 := @parameter1: int;
+        specialinvoke x0.<avrora.sim.mcu.Timer16Bit: void tickerStart(int)>(x1);
+        return;
+    }
+
+    static void access$300(avrora.sim.mcu.Timer16Bit, avrora.sim.Simulator$Event, int)
+    {
+        avrora.sim.mcu.Timer16Bit x0;
+        avrora.sim.Simulator$Event x1;
+        int x2;
+
+        x0 := @parameter0: avrora.sim.mcu.Timer16Bit;
+        x1 := @parameter1: avrora.sim.Simulator$Event;
+        x2 := @parameter2: int;
+        specialinvoke x0.<avrora.sim.mcu.Timer16Bit: void tickerFinish(avrora.sim.Simulator$Event,int)>(x1, x2);
+        return;
+    }
+
+    static void access$400(avrora.sim.mcu.Timer16Bit)
+    {
+        avrora.sim.mcu.Timer16Bit x0;
+
+        x0 := @parameter0: avrora.sim.mcu.Timer16Bit;
+        specialinvoke x0.<avrora.sim.mcu.Timer16Bit: void flushOCRnx()>();
+        return;
+    }
+}

@@ -1,0 +1,126 @@
+public final class org.apache.lucene.analysis.LowerCaseFilter extends org.apache.lucene.analysis.TokenFilter
+{
+    static final boolean $assertionsDisabled;
+    static java.lang.Class class$org$apache$lucene$analysis$LowerCaseFilter;
+
+    public void <init>(org.apache.lucene.analysis.TokenStream)
+    {
+        org.apache.lucene.analysis.LowerCaseFilter this;
+        org.apache.lucene.analysis.TokenStream in;
+
+        this := @this: org.apache.lucene.analysis.LowerCaseFilter;
+        in := @parameter0: org.apache.lucene.analysis.TokenStream;
+        specialinvoke this.<org.apache.lucene.analysis.TokenFilter: void <init>(org.apache.lucene.analysis.TokenStream)>(in);
+        return;
+    }
+
+    public final org.apache.lucene.analysis.Token next(org.apache.lucene.analysis.Token) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.LowerCaseFilter this;
+        org.apache.lucene.analysis.Token reusableToken, nextToken;
+        boolean $z0;
+        char[] buffer;
+        int length, i;
+        java.lang.AssertionError $r0;
+        org.apache.lucene.analysis.TokenStream $r1;
+        char $c0;
+        long tid_next;
+        java.lang.Thread thread_next;
+
+        this := @this: org.apache.lucene.analysis.LowerCaseFilter;
+        reusableToken := @parameter0: org.apache.lucene.analysis.Token;
+        thread_next = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_next = virtualinvoke thread_next.<java.lang.Thread: long getId()>();
+        $z0 = <org.apache.lucene.analysis.LowerCaseFilter: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label0;
+
+        if reusableToken != null goto label0;
+
+        $r0 = new java.lang.AssertionError;
+        specialinvoke $r0.<java.lang.AssertionError: void <init>()>();
+        throw $r0;
+
+     label0:
+        $r1 = this.<org.apache.lucene.analysis.LowerCaseFilter: org.apache.lucene.analysis.TokenStream input>;
+        nextToken = virtualinvoke $r1.<org.apache.lucene.analysis.TokenStream: org.apache.lucene.analysis.Token next(org.apache.lucene.analysis.Token)>(reusableToken);
+        if nextToken == null goto label3;
+
+        buffer = virtualinvoke nextToken.<org.apache.lucene.analysis.Token: char[] termBuffer()>();
+        length = virtualinvoke nextToken.<org.apache.lucene.analysis.Token: int termLength()>();
+        i = 0;
+
+     label1:
+        if i >= length goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(buffer, 25, tid_next, "org.apache.lucene.analysis.LowerCaseFilter", 40, i, $c0);
+        $c0 = buffer[i];
+        $c0 = staticinvoke <java.lang.Character: char toLowerCase(char)>($c0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(buffer, 25, tid_next, "org.apache.lucene.analysis.LowerCaseFilter", 40, i, $c0);
+        buffer[i] = $c0;
+        i = i + 1;
+        goto label1;
+
+     label2:
+        return nextToken;
+
+     label3:
+        return null;
+    }
+
+    static java.lang.Class class$(java.lang.String)
+    {
+        java.lang.String x0;
+        java.lang.ClassNotFoundException x1, $r1;
+        java.lang.Class $r0;
+        java.lang.NoClassDefFoundError $r2;
+        java.lang.Throwable $r3;
+
+        x0 := @parameter0: java.lang.String;
+
+     label0:
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(x0);
+
+     label1:
+        return $r0;
+
+     label2:
+        $r1 := @caughtexception;
+        x1 = $r1;
+        $r2 = new java.lang.NoClassDefFoundError;
+        specialinvoke $r2.<java.lang.NoClassDefFoundError: void <init>()>();
+        $r3 = virtualinvoke $r2.<java.lang.NoClassDefFoundError: java.lang.Throwable initCause(java.lang.Throwable)>(x1);
+        throw $r3;
+
+        catch java.lang.ClassNotFoundException from label0 to label1 with label2;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        boolean $z0;
+
+        $r0 = <org.apache.lucene.analysis.LowerCaseFilter: java.lang.Class class$org$apache$lucene$analysis$LowerCaseFilter>;
+        if $r0 != null goto label0;
+
+        $r0 = staticinvoke <org.apache.lucene.analysis.LowerCaseFilter: java.lang.Class class$(java.lang.String)>("org.apache.lucene.analysis.LowerCaseFilter");
+        <org.apache.lucene.analysis.LowerCaseFilter: java.lang.Class class$org$apache$lucene$analysis$LowerCaseFilter> = $r0;
+        goto label1;
+
+     label0:
+        $r0 = <org.apache.lucene.analysis.LowerCaseFilter: java.lang.Class class$org$apache$lucene$analysis$LowerCaseFilter>;
+
+     label1:
+        $z0 = virtualinvoke $r0.<java.lang.Class: boolean desiredAssertionStatus()>();
+        if $z0 != 0 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        <org.apache.lucene.analysis.LowerCaseFilter: boolean $assertionsDisabled> = $z0;
+        return;
+    }
+}

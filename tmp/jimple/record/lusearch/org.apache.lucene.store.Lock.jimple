@@ -1,0 +1,132 @@
+public abstract class org.apache.lucene.store.Lock extends java.lang.Object
+{
+    public static long LOCK_POLL_INTERVAL;
+    public static final long LOCK_OBTAIN_WAIT_FOREVER;
+    protected java.lang.Throwable failureReason;
+
+    public void <init>()
+    {
+        org.apache.lucene.store.Lock this;
+
+        this := @this: org.apache.lucene.store.Lock;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public abstract boolean obtain() throws java.io.IOException;
+
+    public boolean obtain(long) throws org.apache.lucene.store.LockObtainFailedException, java.io.IOException
+    {
+        org.apache.lucene.store.Lock this;
+        long lockWaitTimeout, maxSleepCount, sleepCount, $l1, $l2;
+        boolean locked;
+        java.lang.String reason, $r2, $r4;
+        org.apache.lucene.store.LockObtainFailedException e, $r7;
+        byte $b0;
+        java.lang.IllegalArgumentException $r0;
+        java.lang.StringBuffer $r1, $r3;
+        java.lang.Throwable $r5, $r6;
+        java.lang.InterruptedException $r8, e;
+        java.io.IOException $r9;
+
+        this := @this: org.apache.lucene.store.Lock;
+        lockWaitTimeout := @parameter0: long;
+        this.<org.apache.lucene.store.Lock: java.lang.Throwable failureReason> = null;
+        locked = virtualinvoke this.<org.apache.lucene.store.Lock: boolean obtain()>();
+        $b0 = lockWaitTimeout cmp 0L;
+        if $b0 >= 0 goto label0;
+
+        $b0 = lockWaitTimeout cmp -1L;
+        if $b0 == 0 goto label0;
+
+        $r0 = new java.lang.IllegalArgumentException;
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("lockWaitTimeout should be LOCK_OBTAIN_WAIT_FOREVER or a non-negative number (got ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(long)>(lockWaitTimeout);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(")");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r2);
+        throw $r0;
+
+     label0:
+        $l1 = <org.apache.lucene.store.Lock: long LOCK_POLL_INTERVAL>;
+        maxSleepCount = lockWaitTimeout / $l1;
+        sleepCount = 0L;
+
+     label1:
+        if locked != 0 goto label8;
+
+        $b0 = lockWaitTimeout cmp -1L;
+        if $b0 == 0 goto label4;
+
+        $l2 = sleepCount;
+        sleepCount = sleepCount + 1L;
+        $b0 = $l2 cmp maxSleepCount;
+        if $b0 < 0 goto label4;
+
+        $r3 = new java.lang.StringBuffer;
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Lock obtain timed out: ");
+        $r4 = virtualinvoke this.<java.lang.Object: java.lang.String toString()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        reason = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+        $r5 = this.<org.apache.lucene.store.Lock: java.lang.Throwable failureReason>;
+        if $r5 == null goto label2;
+
+        $r3 = new java.lang.StringBuffer;
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(reason);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(": ");
+        $r6 = this.<org.apache.lucene.store.Lock: java.lang.Throwable failureReason>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r6);
+        reason = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+
+     label2:
+        $r7 = new org.apache.lucene.store.LockObtainFailedException;
+        specialinvoke $r7.<org.apache.lucene.store.LockObtainFailedException: void <init>(java.lang.String)>(reason);
+        e = $r7;
+        $r5 = this.<org.apache.lucene.store.Lock: java.lang.Throwable failureReason>;
+        if $r5 == null goto label3;
+
+        $r6 = this.<org.apache.lucene.store.Lock: java.lang.Throwable failureReason>;
+        virtualinvoke e.<org.apache.lucene.store.LockObtainFailedException: java.lang.Throwable initCause(java.lang.Throwable)>($r6);
+
+     label3:
+        throw e;
+
+     label4:
+        $l2 = <org.apache.lucene.store.Lock: long LOCK_POLL_INTERVAL>;
+        staticinvoke <java.lang.Thread: void sleep(long)>($l2);
+
+     label5:
+        goto label7;
+
+     label6:
+        $r8 := @caughtexception;
+        e = $r8;
+        $r9 = new java.io.IOException;
+        $r2 = virtualinvoke e.<java.lang.InterruptedException: java.lang.String toString()>();
+        specialinvoke $r9.<java.io.IOException: void <init>(java.lang.String)>($r2);
+        throw $r9;
+
+     label7:
+        locked = virtualinvoke this.<org.apache.lucene.store.Lock: boolean obtain()>();
+        goto label1;
+
+     label8:
+        return locked;
+
+        catch java.lang.InterruptedException from label4 to label5 with label6;
+    }
+
+    public abstract void release() throws java.io.IOException;
+
+    public abstract boolean isLocked();
+
+    static void <clinit>()
+    {
+        <org.apache.lucene.store.Lock: long LOCK_POLL_INTERVAL> = 1000L;
+        return;
+    }
+}

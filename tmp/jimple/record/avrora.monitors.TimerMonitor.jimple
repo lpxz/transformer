@@ -1,0 +1,27 @@
+public class avrora.monitors.TimerMonitor extends avrora.monitors.MonitorFactory
+{
+
+    public void <init>()
+    {
+        avrora.monitors.TimerMonitor this;
+
+        this := @this: avrora.monitors.TimerMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"timer\" monitor watches a dedicated SRAM location for instructions from the simulated program telling it to start or stop a timer.  Be sure to set BASE to an address not otherwise used by your program.");
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.TimerMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.TimerMonitor$Monitor tmp$553586299;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.TimerMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$553586299 = new avrora.monitors.TimerMonitor$Monitor;
+        specialinvoke tmp$553586299.<avrora.monitors.TimerMonitor$Monitor: void <init>(avrora.monitors.TimerMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$553586299;
+        return tmp;
+    }
+}

@@ -1,0 +1,70 @@
+public abstract class avrora.arch.legacy.LegacyInstr$NONE_class extends avrora.arch.legacy.LegacyInstr
+{
+
+    void <init>(avrora.arch.legacy.LegacyInstrProperties)
+    {
+        avrora.arch.legacy.LegacyInstr$NONE_class this;
+        avrora.arch.legacy.LegacyInstrProperties p;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$NONE_class;
+        p := @parameter0: avrora.arch.legacy.LegacyInstrProperties;
+        specialinvoke this.<avrora.arch.legacy.LegacyInstr: void <init>(avrora.arch.legacy.LegacyInstrProperties)>(p);
+        return;
+    }
+
+    public java.lang.String getOperands()
+    {
+        avrora.arch.legacy.LegacyInstr$NONE_class this;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$NONE_class;
+        return "";
+    }
+
+    public avrora.arch.legacy.LegacyInstr build(int, avrora.arch.legacy.LegacyOperand[])
+    {
+        avrora.arch.legacy.LegacyInstr$NONE_class this;
+        int pc;
+        avrora.arch.legacy.LegacyOperand[] ops;
+        avrora.arch.legacy.LegacyInstr $r0;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$NONE_class;
+        pc := @parameter0: int;
+        ops := @parameter1: avrora.arch.legacy.LegacyOperand[];
+        staticinvoke <avrora.arch.legacy.LegacyInstr: void access$000(int,avrora.arch.legacy.LegacyOperand[])>(0, ops);
+        $r0 = virtualinvoke this.<avrora.arch.legacy.LegacyInstr$NONE_class: avrora.arch.legacy.LegacyInstr allocate(int)>(pc);
+        return $r0;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        avrora.arch.legacy.LegacyInstr$NONE_class this, i;
+        java.lang.Object o;
+        boolean $z0;
+        avrora.arch.legacy.LegacyInstrProperties $r0, $r1;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$NONE_class;
+        o := @parameter0: java.lang.Object;
+        if o != this goto label0;
+
+        return 1;
+
+     label0:
+        $z0 = o instanceof avrora.arch.legacy.LegacyInstr$NONE_class;
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        i = (avrora.arch.legacy.LegacyInstr$NONE_class) o;
+        $r0 = i.<avrora.arch.legacy.LegacyInstr$NONE_class: avrora.arch.legacy.LegacyInstrProperties properties>;
+        $r1 = this.<avrora.arch.legacy.LegacyInstr$NONE_class: avrora.arch.legacy.LegacyInstrProperties properties>;
+        if $r0 == $r1 goto label2;
+
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    abstract avrora.arch.legacy.LegacyInstr allocate(int);
+}

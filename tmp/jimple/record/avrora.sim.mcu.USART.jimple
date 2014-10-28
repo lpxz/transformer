@@ -1,0 +1,359 @@
+public class avrora.sim.mcu.USART extends avrora.sim.mcu.AtmelInternalDevice
+{
+    static final int RXCn;
+    static final int TXCn;
+    static final int UDREn;
+    static final int FEn;
+    static final int DORn;
+    static final int UPEn;
+    static final int U2Xn;
+    static final int MPCMn;
+    static final int RXCIEn;
+    static final int TXCIEn;
+    static final int UDRIEn;
+    static final int RXENn;
+    static final int TXENn;
+    static final int UCSZn2;
+    static final int RXB8n;
+    static final int TXB8n;
+    static final int UMSELn;
+    static final int UPMn1;
+    static final int UPMn0;
+    static final int USBSn;
+    static final int UCSZn1;
+    static final int UCSZn0;
+    static final int UCPOLn;
+    static final int PARITY_DISABLED;
+    static final int PARITY_EVEN;
+    static final int PARITY_ODD;
+    static final int[] FRAME_SIZE;
+    final avrora.sim.mcu.USART$DataRegister UDRn_reg;
+    final avrora.sim.mcu.USART$ControlRegisterA UCSRnA_reg;
+    final avrora.sim.mcu.USART$ControlRegisterB UCSRnB_reg;
+    final avrora.sim.mcu.USART$ControlRegisterC UCSRnC_reg;
+    final avrora.sim.mcu.USART$UBRRnLReg UBRRnL_reg;
+    final avrora.sim.mcu.USART$UBRRnHReg UBRRnH_reg;
+    final avrora.sim.mcu.USART$Transmitter transmitter;
+    final avrora.sim.mcu.USART$Receiver receiver;
+    final avrora.sim.mcu.USART$USARTProperties properties;
+    public avrora.sim.mcu.USART$USARTDevice connectedDevice;
+    int period;
+    int UBRRMultiplier;
+
+    static avrora.sim.mcu.USART$USARTProperties getUSARTProperties(java.lang.String, avrora.sim.mcu.Microcontroller)
+    {
+        java.lang.String subID, $r2, $r4, $r5;
+        avrora.sim.mcu.Microcontroller m;
+        avrora.sim.mcu.MCUProperties mp;
+        avrora.sim.mcu.USART$USARTProperties props, $r0;
+        java.lang.StringBuilder $r1, $r3;
+        int $i0, $i1;
+        int[] $r6;
+
+        subID := @parameter0: java.lang.String;
+        m := @parameter1: avrora.sim.mcu.Microcontroller;
+        mp = interfaceinvoke m.<avrora.sim.mcu.Microcontroller: avrora.sim.mcu.MCUProperties getProperties()>();
+        $r0 = new avrora.sim.mcu.USART$USARTProperties;
+        specialinvoke $r0.<avrora.sim.mcu.USART$USARTProperties: void <init>()>();
+        props = $r0;
+        props.<avrora.sim.mcu.USART$USARTProperties: java.lang.String subID> = subID;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("USART");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(subID);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        props.<avrora.sim.mcu.USART$USARTProperties: java.lang.String USART_name> = $r2;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("UDR");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(subID);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        props.<avrora.sim.mcu.USART$USARTProperties: java.lang.String UDR_name> = $r2;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("UCSR");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(subID);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        props.<avrora.sim.mcu.USART$USARTProperties: java.lang.String UCSR_name> = $r2;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("UBRR");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(subID);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        props.<avrora.sim.mcu.USART$USARTProperties: java.lang.String UBRR_name> = $r2;
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+        $r4 = props.<avrora.sim.mcu.USART$USARTProperties: java.lang.String USART_name>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", RX");
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        $i0 = virtualinvoke mp.<avrora.sim.mcu.MCUProperties: int getInterrupt(java.lang.String)>($r5);
+        props.<avrora.sim.mcu.USART$USARTProperties: int USART_RX_inum> = $i0;
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+        $r4 = props.<avrora.sim.mcu.USART$USARTProperties: java.lang.String USART_name>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", UDRE");
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        $i0 = virtualinvoke mp.<avrora.sim.mcu.MCUProperties: int getInterrupt(java.lang.String)>($r5);
+        props.<avrora.sim.mcu.USART$USARTProperties: int USART_UDRE_inum> = $i0;
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+        $r4 = props.<avrora.sim.mcu.USART$USARTProperties: java.lang.String USART_name>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", TX");
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        $i0 = virtualinvoke mp.<avrora.sim.mcu.MCUProperties: int getInterrupt(java.lang.String)>($r5);
+        props.<avrora.sim.mcu.USART$USARTProperties: int USART_TX_inum> = $i0;
+        $r6 = newarray (int)[8];
+        $r6[0] = -1;
+        $r6[1] = -1;
+        $r6[2] = -1;
+        $r6[3] = -1;
+        $r6[4] = -1;
+        $i1 = props.<avrora.sim.mcu.USART$USARTProperties: int USART_UDRE_inum>;
+        $r6[5] = $i1;
+        $i1 = props.<avrora.sim.mcu.USART$USARTProperties: int USART_TX_inum>;
+        $r6[6] = $i1;
+        $i1 = props.<avrora.sim.mcu.USART$USARTProperties: int USART_RX_inum>;
+        $r6[7] = $i1;
+        props.<avrora.sim.mcu.USART$USARTProperties: int[] interruptMapping> = $r6;
+        return props;
+    }
+
+    public avrora.sim.mcu.USART$Frame transmitFrame()
+    {
+        avrora.sim.mcu.USART this;
+        avrora.sim.mcu.USART$Frame $r0;
+        avrora.sim.mcu.USART$DataRegister $r1;
+        avrora.sim.RWRegister $r2;
+        byte $b0;
+        avrora.sim.mcu.USART$ControlRegisterB $r3;
+        boolean $z0;
+        avrora.sim.mcu.USART$ControlRegisterC $r4;
+        int $i1;
+
+        this := @this: avrora.sim.mcu.USART;
+        $r0 = new avrora.sim.mcu.USART$Frame;
+        $r1 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$DataRegister UDRn_reg>;
+        $r2 = $r1.<avrora.sim.mcu.USART$DataRegister: avrora.sim.RWRegister transmitRegister>;
+        $b0 = virtualinvoke $r2.<avrora.sim.RWRegister: byte read()>();
+        $r3 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$ControlRegisterB UCSRnB_reg>;
+        $z0 = virtualinvoke $r3.<avrora.sim.mcu.USART$ControlRegisterB: boolean readBit(int)>(0);
+        $r4 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$ControlRegisterC UCSRnC_reg>;
+        $i1 = virtualinvoke $r4.<avrora.sim.mcu.USART$ControlRegisterC: int getFrameSize()>();
+        specialinvoke $r0.<avrora.sim.mcu.USART$Frame: void <init>(byte,boolean,int)>($b0, $z0, $i1);
+        return $r0;
+    }
+
+    public void receiveFrame(avrora.sim.mcu.USART$Frame)
+    {
+        avrora.sim.mcu.USART this;
+        avrora.sim.mcu.USART$Frame frame;
+        avrora.sim.mcu.USART$DataRegister $r0;
+        avrora.sim.mcu.USART$DataRegister$TwoLevelFIFO $r1;
+
+        this := @this: avrora.sim.mcu.USART;
+        frame := @parameter0: avrora.sim.mcu.USART$Frame;
+        $r0 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$DataRegister UDRn_reg>;
+        $r1 = $r0.<avrora.sim.mcu.USART$DataRegister: avrora.sim.mcu.USART$DataRegister$TwoLevelFIFO receiveRegister>;
+        virtualinvoke $r1.<avrora.sim.mcu.USART$DataRegister$TwoLevelFIFO: void writeFrame(avrora.sim.mcu.USART$Frame)>(frame);
+        return;
+    }
+
+    public void <init>(java.lang.String, avrora.sim.mcu.AtmelMicrocontroller)
+    {
+        avrora.sim.mcu.USART this;
+        java.lang.String subID, $r1, $r13;
+        avrora.sim.mcu.AtmelMicrocontroller m;
+        java.lang.StringBuilder $r0;
+        avrora.sim.mcu.USART$USARTProperties $r2, $r12;
+        avrora.sim.mcu.USART$DataRegister $r3, $r11;
+        avrora.sim.mcu.USART$ControlRegisterA $r4, $r14;
+        avrora.sim.mcu.USART$ControlRegisterB $r5, $r15;
+        avrora.sim.mcu.USART$ControlRegisterC $r6, $r16;
+        avrora.sim.mcu.USART$UBRRnLReg $r7, $r17;
+        avrora.sim.mcu.USART$UBRRnHReg $r8, $r18;
+        avrora.sim.mcu.USART$Transmitter $r9;
+        avrora.sim.mcu.USART$Receiver $r10;
+        avrora.sim.mcu.USART$SerialPrinter $r19;
+
+        this := @this: avrora.sim.mcu.USART;
+        subID := @parameter0: java.lang.String;
+        m := @parameter1: avrora.sim.mcu.AtmelMicrocontroller;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("usart");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(subID);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke this.<avrora.sim.mcu.AtmelInternalDevice: void <init>(java.lang.String,avrora.sim.mcu.AtmelMicrocontroller)>($r1, m);
+        this.<avrora.sim.mcu.USART: int UBRRMultiplier> = 16;
+        $r2 = staticinvoke <avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTProperties getUSARTProperties(java.lang.String,avrora.sim.mcu.Microcontroller)>(subID, m);
+        this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTProperties properties> = $r2;
+        $r3 = new avrora.sim.mcu.USART$DataRegister;
+        specialinvoke $r3.<avrora.sim.mcu.USART$DataRegister: void <init>(avrora.sim.mcu.USART)>(this);
+        this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$DataRegister UDRn_reg> = $r3;
+        $r4 = new avrora.sim.mcu.USART$ControlRegisterA;
+        specialinvoke $r4.<avrora.sim.mcu.USART$ControlRegisterA: void <init>(avrora.sim.mcu.USART)>(this);
+        this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$ControlRegisterA UCSRnA_reg> = $r4;
+        $r5 = new avrora.sim.mcu.USART$ControlRegisterB;
+        specialinvoke $r5.<avrora.sim.mcu.USART$ControlRegisterB: void <init>(avrora.sim.mcu.USART)>(this);
+        this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$ControlRegisterB UCSRnB_reg> = $r5;
+        $r6 = new avrora.sim.mcu.USART$ControlRegisterC;
+        specialinvoke $r6.<avrora.sim.mcu.USART$ControlRegisterC: void <init>(avrora.sim.mcu.USART)>(this);
+        this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$ControlRegisterC UCSRnC_reg> = $r6;
+        $r7 = new avrora.sim.mcu.USART$UBRRnLReg;
+        specialinvoke $r7.<avrora.sim.mcu.USART$UBRRnLReg: void <init>(avrora.sim.mcu.USART)>(this);
+        this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$UBRRnLReg UBRRnL_reg> = $r7;
+        $r8 = new avrora.sim.mcu.USART$UBRRnHReg;
+        specialinvoke $r8.<avrora.sim.mcu.USART$UBRRnHReg: void <init>(avrora.sim.mcu.USART)>(this);
+        this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$UBRRnHReg UBRRnH_reg> = $r8;
+        $r9 = new avrora.sim.mcu.USART$Transmitter;
+        specialinvoke $r9.<avrora.sim.mcu.USART$Transmitter: void <init>(avrora.sim.mcu.USART)>(this);
+        this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$Transmitter transmitter> = $r9;
+        $r10 = new avrora.sim.mcu.USART$Receiver;
+        specialinvoke $r10.<avrora.sim.mcu.USART$Receiver: void <init>(avrora.sim.mcu.USART)>(this);
+        this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$Receiver receiver> = $r10;
+        $r2 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTProperties properties>;
+        $r1 = $r2.<avrora.sim.mcu.USART$USARTProperties: java.lang.String UDR_name>;
+        $r11 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$DataRegister UDRn_reg>;
+        virtualinvoke this.<avrora.sim.mcu.USART: void installIOReg(java.lang.String,avrora.sim.ActiveRegister)>($r1, $r11);
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r12 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTProperties properties>;
+        $r13 = $r12.<avrora.sim.mcu.USART$USARTProperties: java.lang.String UCSR_name>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r13);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("A");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r14 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$ControlRegisterA UCSRnA_reg>;
+        virtualinvoke this.<avrora.sim.mcu.USART: void installIOReg(java.lang.String,avrora.sim.ActiveRegister)>($r1, $r14);
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r12 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTProperties properties>;
+        $r13 = $r12.<avrora.sim.mcu.USART$USARTProperties: java.lang.String UCSR_name>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r13);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("B");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r15 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$ControlRegisterB UCSRnB_reg>;
+        virtualinvoke this.<avrora.sim.mcu.USART: void installIOReg(java.lang.String,avrora.sim.ActiveRegister)>($r1, $r15);
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r12 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTProperties properties>;
+        $r13 = $r12.<avrora.sim.mcu.USART$USARTProperties: java.lang.String UCSR_name>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r13);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("C");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r16 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$ControlRegisterC UCSRnC_reg>;
+        virtualinvoke this.<avrora.sim.mcu.USART: void installIOReg(java.lang.String,avrora.sim.ActiveRegister)>($r1, $r16);
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r12 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTProperties properties>;
+        $r13 = $r12.<avrora.sim.mcu.USART$USARTProperties: java.lang.String UBRR_name>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r13);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("L");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r17 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$UBRRnLReg UBRRnL_reg>;
+        virtualinvoke this.<avrora.sim.mcu.USART: void installIOReg(java.lang.String,avrora.sim.ActiveRegister)>($r1, $r17);
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r12 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTProperties properties>;
+        $r13 = $r12.<avrora.sim.mcu.USART$USARTProperties: java.lang.String UBRR_name>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r13);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("H");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r18 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$UBRRnHReg UBRRnH_reg>;
+        virtualinvoke this.<avrora.sim.mcu.USART: void installIOReg(java.lang.String,avrora.sim.ActiveRegister)>($r1, $r18);
+        $r19 = new avrora.sim.mcu.USART$SerialPrinter;
+        specialinvoke $r19.<avrora.sim.mcu.USART$SerialPrinter: void <init>(avrora.sim.mcu.USART)>(this);
+        virtualinvoke this.<avrora.sim.mcu.USART: void connect(avrora.sim.mcu.USART$USARTDevice)>($r19);
+        return;
+    }
+
+    public void connect(avrora.sim.mcu.USART$USARTDevice)
+    {
+        avrora.sim.mcu.USART this;
+        avrora.sim.mcu.USART$USARTDevice d;
+
+        this := @this: avrora.sim.mcu.USART;
+        d := @parameter0: avrora.sim.mcu.USART$USARTDevice;
+        this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTDevice connectedDevice> = d;
+        return;
+    }
+
+    void updatePeriod()
+    {
+        avrora.sim.mcu.USART this;
+        avrora.sim.mcu.USART$UBRRnHReg $r0;
+        avrora.sim.mcu.USART$UBRRnLReg $r1;
+        int $i0, $i1;
+        avrora.sim.output.SimPrinter $r2;
+        java.lang.StringBuilder $r3;
+        avrora.sim.mcu.USART$USARTProperties $r4;
+        java.lang.String $r5, $r6;
+        long tid_updatePeriod;
+        java.lang.Thread thread_updatePeriod;
+
+        this := @this: avrora.sim.mcu.USART;
+        thread_updatePeriod = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_updatePeriod = virtualinvoke thread_updatePeriod.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$UBRRnHReg UBRRnH_reg>;
+        $r1 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$UBRRnLReg UBRRnL_reg>;
+        $i0 = staticinvoke <avrora.sim.mcu.USART: int read16(avrora.sim.RWRegister,avrora.sim.RWRegister)>($r0, $r1);
+        $i0 = $i0 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 32, tid_updatePeriod, "avrora.sim.mcu.USART", 231, $i0);
+        this.<avrora.sim.mcu.USART: int period> = $i0;
+        $r2 = this.<avrora.sim.mcu.USART: avrora.sim.output.SimPrinter devicePrinter>;
+        if $r2 == null goto label0;
+
+        $r2 = this.<avrora.sim.mcu.USART: avrora.sim.output.SimPrinter devicePrinter>;
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+        $r4 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTProperties properties>;
+        $r5 = $r4.<avrora.sim.mcu.USART$USARTProperties: java.lang.String USART_name>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": period set to ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 32, tid_updatePeriod, "avrora.sim.mcu.USART", 233, $i1);
+        $i1 = this.<avrora.sim.mcu.USART: int period>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r6);
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 32, tid_updatePeriod, "avrora.sim.mcu.USART", 234, $i0);
+        $i0 = this.<avrora.sim.mcu.USART: int period>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 33, tid_updatePeriod, "avrora.sim.mcu.USART", 234, $i1);
+        $i1 = this.<avrora.sim.mcu.USART: int UBRRMultiplier>;
+        $i0 = $i0 * $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 32, tid_updatePeriod, "avrora.sim.mcu.USART", 234, $i0);
+        this.<avrora.sim.mcu.USART: int period> = $i0;
+        return;
+    }
+
+    public void startReceive()
+    {
+        avrora.sim.mcu.USART this;
+        avrora.sim.mcu.USART$Receiver $r0;
+
+        this := @this: avrora.sim.mcu.USART;
+        $r0 = this.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$Receiver receiver>;
+        virtualinvoke $r0.<avrora.sim.mcu.USART$Receiver: void enableReceive()>();
+        return;
+    }
+
+    static void <clinit>()
+    {
+        int[] $r0;
+
+        $r0 = newarray (int)[8];
+        $r0[0] = 5;
+        $r0[1] = 6;
+        $r0[2] = 7;
+        $r0[3] = 8;
+        $r0[4] = 8;
+        $r0[5] = 8;
+        $r0[6] = 8;
+        $r0[7] = 9;
+        <avrora.sim.mcu.USART: int[] FRAME_SIZE> = $r0;
+        return;
+    }
+}

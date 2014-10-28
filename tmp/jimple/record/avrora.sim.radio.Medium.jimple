@@ -1,0 +1,209 @@
+public class avrora.sim.radio.Medium extends java.lang.Object
+{
+    private static final int BYTE_SIZE;
+    private static int Pn;
+    private static double Pr;
+    public final avrora.sim.clock.Synchronizer synch;
+    public final avrora.sim.radio.Medium$Arbitrator arbitrator;
+    public final int bitsPerSecond;
+    public final int leadBits;
+    public final int minLength;
+    public final int maxLength;
+    protected java.util.List transmissions;
+
+    public void <init>(avrora.sim.clock.Synchronizer, avrora.sim.radio.Medium$Arbitrator, int, int, int, int)
+    {
+        avrora.sim.radio.Medium this;
+        avrora.sim.clock.Synchronizer synch;
+        avrora.sim.radio.Medium$Arbitrator arb;
+        int bps, ltb, mintl, maxtl;
+        java.util.LinkedList $r0;
+        avrora.sim.radio.Medium$BasicArbitrator $r1;
+
+        this := @this: avrora.sim.radio.Medium;
+        synch := @parameter0: avrora.sim.clock.Synchronizer;
+        arb := @parameter1: avrora.sim.radio.Medium$Arbitrator;
+        bps := @parameter2: int;
+        ltb := @parameter3: int;
+        mintl := @parameter4: int;
+        maxtl := @parameter5: int;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new java.util.LinkedList;
+        specialinvoke $r0.<java.util.LinkedList: void <init>()>();
+        this.<avrora.sim.radio.Medium: java.util.List transmissions> = $r0;
+        this.<avrora.sim.radio.Medium: avrora.sim.clock.Synchronizer synch> = synch;
+        this.<avrora.sim.radio.Medium: int bitsPerSecond> = bps;
+        this.<avrora.sim.radio.Medium: int leadBits> = ltb;
+        this.<avrora.sim.radio.Medium: int minLength> = mintl;
+        this.<avrora.sim.radio.Medium: int maxLength> = maxtl;
+        if arb != null goto label0;
+
+        $r1 = new avrora.sim.radio.Medium$BasicArbitrator;
+        specialinvoke $r1.<avrora.sim.radio.Medium$BasicArbitrator: void <init>()>();
+        this.<avrora.sim.radio.Medium: avrora.sim.radio.Medium$Arbitrator arbitrator> = $r1;
+        goto label1;
+
+     label0:
+        this.<avrora.sim.radio.Medium: avrora.sim.radio.Medium$Arbitrator arbitrator> = arb;
+
+     label1:
+        return;
+    }
+
+    protected avrora.sim.radio.Medium$Transmission newTransmission(avrora.sim.radio.Medium$Transmitter, double, double)
+    {
+        avrora.sim.radio.Medium this;
+        avrora.sim.radio.Medium$Transmitter o;
+        double p, f;
+        avrora.sim.radio.Medium$Transmission $r0, tx;
+        java.util.List $r1;
+        java.lang.Object localthislocknewTransmission;
+        java.lang.Throwable throwableLocal18;
+        long tid_newTransmission;
+        java.lang.Thread thread_newTransmission;
+
+        this := @this: avrora.sim.radio.Medium;
+        o := @parameter0: avrora.sim.radio.Medium$Transmitter;
+        p := @parameter1: double;
+        f := @parameter2: double;
+        thread_newTransmission = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_newTransmission = virtualinvoke thread_newTransmission.<java.lang.Thread: long getId()>();
+        localthislocknewTransmission = this;
+
+     label0:
+        entermonitor localthislocknewTransmission;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislocknewTransmission, 0, tid_newTransmission);
+        $r0 = new avrora.sim.radio.Medium$Transmission;
+        specialinvoke $r0.<avrora.sim.radio.Medium$Transmission: void <init>(avrora.sim.radio.Medium,avrora.sim.radio.Medium$Transmitter,double,double)>(this, o, p, f);
+        tx = $r0;
+        $r1 = this.<avrora.sim.radio.Medium: java.util.List transmissions>;
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>(tx);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislocknewTransmission, 0, tid_newTransmission);
+        exitmonitor localthislocknewTransmission;
+        goto label1;
+
+     label1:
+        return tx;
+
+     label2:
+        throwableLocal18 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislocknewTransmission, 0, tid_newTransmission);
+        exitmonitor localthislocknewTransmission;
+
+     label4:
+        throw throwableLocal18;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public static boolean isCorruptedByte(char)
+    {
+        char c, $c0;
+        boolean $z0;
+
+        c := @parameter0: char;
+        $c0 = c & 65280;
+        if $c0 == 0 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public static byte getCorruptedBits(char)
+    {
+        char c, $c0;
+        byte $b1;
+
+        c := @parameter0: char;
+        $c0 = c >> 8;
+        $b1 = (byte) $c0;
+        return $b1;
+    }
+
+    public static byte getTransmittedBits(char)
+    {
+        char c;
+        byte $b0;
+
+        c := @parameter0: char;
+        $b0 = (byte) c;
+        return $b0;
+    }
+
+    static double access$302(double)
+    {
+        double x0;
+        long tid_access$302;
+        java.lang.Thread thread_access$302;
+
+        x0 := @parameter0: double;
+        thread_access$302 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_access$302 = virtualinvoke thread_access$302.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,double)>(168, tid_access$302, "avrora.sim.radioavrora.sim.radio.Medium", 52, x0);
+        <avrora.sim.radio.Medium: double Pr> = x0;
+        return x0;
+    }
+
+    static int access$402(int)
+    {
+        int x0;
+        long tid_access$402;
+        java.lang.Thread thread_access$402;
+
+        x0 := @parameter0: int;
+        thread_access$402 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_access$402 = virtualinvoke thread_access$402.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(169, tid_access$402, "avrora.sim.radioavrora.sim.radio.Medium", 52, x0);
+        <avrora.sim.radio.Medium: int Pn> = x0;
+        return x0;
+    }
+
+    static double access$300()
+    {
+        double $d0;
+        long tid_access$300;
+        java.lang.Thread thread_access$300;
+
+        thread_access$300 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_access$300 = virtualinvoke thread_access$300.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,double)>(168, tid_access$300, "avrora.sim.radioavrora.sim.radio.Medium", 52, $d0);
+        $d0 = <avrora.sim.radio.Medium: double Pr>;
+        return $d0;
+    }
+
+    static int access$400()
+    {
+        int $i0;
+        long tid_access$400;
+        java.lang.Thread thread_access$400;
+
+        thread_access$400 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_access$400 = virtualinvoke thread_access$400.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(169, tid_access$400, "avrora.sim.radioavrora.sim.radio.Medium", 52, $i0);
+        $i0 = <avrora.sim.radio.Medium: int Pn>;
+        return $i0;
+    }
+
+    static void <clinit>()
+    {
+        int $i0;
+        double $d0;
+
+        <avrora.sim.radio.Medium: int Pn> = -95;
+        $i0 = <avrora.sim.radio.Medium: int Pn>;
+        $d0 = (double) $i0;
+        <avrora.sim.radio.Medium: double Pr> = $d0;
+        return;
+    }
+}

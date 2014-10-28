@@ -1,0 +1,45 @@
+public class avrora.Version extends java.lang.Object
+{
+    public static final int commit;
+    public static final cck.util.VersionTag TAG;
+
+    public void <init>()
+    {
+        avrora.Version this;
+
+        this := @this: avrora.Version;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public static void main(java.lang.String[])
+    {
+        java.lang.String[] args;
+        java.io.PrintStream $r0;
+        cck.util.VersionTag $r1;
+        java.lang.String $r2;
+        long tid_main;
+        java.lang.Thread thread_main;
+
+        args := @parameter0: java.lang.String[];
+        thread_main = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_main = virtualinvoke thread_main.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStartRun(long,java.lang.String,java.lang.String[])>(tid_main, "avrora.Version.main", args);
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        $r1 = <avrora.Version: cck.util.VersionTag TAG>;
+        $r2 = $r1.<cck.util.VersionTag: java.lang.String suffix>;
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>($r2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "avrora.Version.main", args);
+        return;
+    }
+
+    static void <clinit>()
+    {
+        cck.util.VersionTag $r0;
+
+        $r0 = new cck.util.VersionTag;
+        specialinvoke $r0.<cck.util.VersionTag: void <init>(java.lang.String,java.lang.String,int,int,int)>("avrora", "Beta", 1, 7, 110);
+        <avrora.Version: cck.util.VersionTag TAG> = $r0;
+        return;
+    }
+}

@@ -1,0 +1,152 @@
+public class avrora.sim.mcu.ATMegaFamily$FlagRegister extends avrora.sim.RWRegister
+{
+    protected final int[] mapping;
+    protected final avrora.sim.AtmelInterpreter interpreter;
+
+    public void <init>(avrora.sim.AtmelInterpreter, int[])
+    {
+        avrora.sim.mcu.ATMegaFamily$FlagRegister this;
+        avrora.sim.AtmelInterpreter interp, $r0;
+        int[] map, $r1, $r3;
+        avrora.sim.InterruptTable it;
+        int cntr, $i0, $i1;
+        avrora.sim.mcu.ATMegaFamily$FlagRegister$Notification $r2;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$FlagRegister;
+        interp := @parameter0: avrora.sim.AtmelInterpreter;
+        map := @parameter1: int[];
+        specialinvoke this.<avrora.sim.RWRegister: void <init>()>();
+        this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: int[] mapping> = map;
+        this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: avrora.sim.AtmelInterpreter interpreter> = interp;
+        $r0 = this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: avrora.sim.AtmelInterpreter interpreter>;
+        it = virtualinvoke $r0.<avrora.sim.AtmelInterpreter: avrora.sim.InterruptTable getInterruptTable()>();
+        cntr = 0;
+
+     label0:
+        if cntr >= 8 goto label2;
+
+        $r1 = this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: int[] mapping>;
+        $i0 = $r1[cntr];
+        if $i0 <= 0 goto label1;
+
+        $r2 = new avrora.sim.mcu.ATMegaFamily$FlagRegister$Notification;
+        specialinvoke $r2.<avrora.sim.mcu.ATMegaFamily$FlagRegister$Notification: void <init>(avrora.sim.mcu.ATMegaFamily$FlagRegister,int)>(this, cntr);
+        $r3 = this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: int[] mapping>;
+        $i1 = $r3[cntr];
+        virtualinvoke it.<avrora.sim.InterruptTable: void registerInternalNotification(avrora.sim.InterruptTable$Notification,int)>($r2, $i1);
+
+     label1:
+        cntr = cntr + 1;
+        goto label0;
+
+     label2:
+        return;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.mcu.ATMegaFamily$FlagRegister this;
+        byte val, $b0, $b1;
+        int cntr;
+        boolean $z0;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$FlagRegister;
+        val := @parameter0: byte;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.mcu.ATMegaFamily$FlagRegister", 126, $b0);
+        $b0 = this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: byte value>;
+        $b1 = val ^ -1;
+        $b0 = $b0 & $b1;
+        $b0 = (byte) $b0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.mcu.ATMegaFamily$FlagRegister", 126, $b0);
+        this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: byte value> = $b0;
+        cntr = 0;
+
+     label0:
+        if cntr >= 8 goto label3;
+
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, cntr);
+        if $z0 != 0 goto label1;
+
+        goto label2;
+
+     label1:
+        specialinvoke this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: void setPosted(int,boolean)>(cntr, 0);
+
+     label2:
+        cntr = cntr + 1;
+        goto label0;
+
+     label3:
+        return;
+    }
+
+    private void setPosted(int, boolean)
+    {
+        avrora.sim.mcu.ATMegaFamily$FlagRegister this;
+        int inum, $i0, $i1;
+        boolean p;
+        int[] $r0, $r2;
+        avrora.sim.AtmelInterpreter $r1;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$FlagRegister;
+        inum := @parameter0: int;
+        p := @parameter1: boolean;
+        $r0 = this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: int[] mapping>;
+        $i0 = $r0[inum];
+        if $i0 <= 0 goto label0;
+
+        $r1 = this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: avrora.sim.AtmelInterpreter interpreter>;
+        $r2 = this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: int[] mapping>;
+        $i1 = $r2[inum];
+        virtualinvoke $r1.<avrora.sim.AtmelInterpreter: void setPosted(int,boolean)>($i1, p);
+
+     label0:
+        return;
+    }
+
+    public void flagBit(int)
+    {
+        avrora.sim.mcu.ATMegaFamily$FlagRegister this;
+        int bit;
+        byte $b0;
+        long tid_flagBit;
+        java.lang.Thread thread_flagBit;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$FlagRegister;
+        bit := @parameter0: int;
+        thread_flagBit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_flagBit = virtualinvoke thread_flagBit.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_flagBit, "avrora.sim.mcu.ATMegaFamily$FlagRegister", 139, $b0);
+        $b0 = this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: byte value>;
+        $b0 = staticinvoke <cck.util.Arithmetic: byte setBit(byte,int)>($b0, bit);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_flagBit, "avrora.sim.mcu.ATMegaFamily$FlagRegister", 139, $b0);
+        this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: byte value> = $b0;
+        specialinvoke this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: void setPosted(int,boolean)>(bit, 1);
+        return;
+    }
+
+    public void unflagBit(int)
+    {
+        avrora.sim.mcu.ATMegaFamily$FlagRegister this;
+        int bit;
+        byte $b0;
+        long tid_unflagBit;
+        java.lang.Thread thread_unflagBit;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$FlagRegister;
+        bit := @parameter0: int;
+        thread_unflagBit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_unflagBit = virtualinvoke thread_unflagBit.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_unflagBit, "avrora.sim.mcu.ATMegaFamily$FlagRegister", 144, $b0);
+        $b0 = this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: byte value>;
+        $b0 = staticinvoke <cck.util.Arithmetic: byte clearBit(byte,int)>($b0, bit);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_unflagBit, "avrora.sim.mcu.ATMegaFamily$FlagRegister", 144, $b0);
+        this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: byte value> = $b0;
+        specialinvoke this.<avrora.sim.mcu.ATMegaFamily$FlagRegister: void setPosted(int,boolean)>(bit, 0);
+        return;
+    }
+}

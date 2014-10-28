@@ -1,0 +1,1181 @@
+final class org.apache.lucene.index.FieldsReader extends java.lang.Object
+{
+    private final org.apache.lucene.index.FieldInfos fieldInfos;
+    private final org.apache.lucene.store.IndexInput cloneableFieldsStream;
+    private final org.apache.lucene.store.IndexInput fieldsStream;
+    private final org.apache.lucene.store.IndexInput indexStream;
+    private int numTotalDocs;
+    private int size;
+    private boolean closed;
+    private final int format;
+    private final int formatSize;
+    private int docStoreOffset;
+    private org.apache.lucene.util.CloseableThreadLocal fieldsStreamTL;
+    static final boolean $assertionsDisabled;
+    static java.lang.Class class$org$apache$lucene$index$FieldsReader;
+
+    void <init>(org.apache.lucene.store.Directory, java.lang.String, org.apache.lucene.index.FieldInfos) throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        org.apache.lucene.store.Directory d;
+        java.lang.String segment;
+        org.apache.lucene.index.FieldInfos fn;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        d := @parameter0: org.apache.lucene.store.Directory;
+        segment := @parameter1: java.lang.String;
+        fn := @parameter2: org.apache.lucene.index.FieldInfos;
+        specialinvoke this.<org.apache.lucene.index.FieldsReader: void <init>(org.apache.lucene.store.Directory,java.lang.String,org.apache.lucene.index.FieldInfos,int,int,int)>(d, segment, fn, 1024, -1, 0);
+        return;
+    }
+
+    void <init>(org.apache.lucene.store.Directory, java.lang.String, org.apache.lucene.index.FieldInfos, int) throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        org.apache.lucene.store.Directory d;
+        java.lang.String segment;
+        org.apache.lucene.index.FieldInfos fn;
+        int readBufferSize;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        d := @parameter0: org.apache.lucene.store.Directory;
+        segment := @parameter1: java.lang.String;
+        fn := @parameter2: org.apache.lucene.index.FieldInfos;
+        readBufferSize := @parameter3: int;
+        specialinvoke this.<org.apache.lucene.index.FieldsReader: void <init>(org.apache.lucene.store.Directory,java.lang.String,org.apache.lucene.index.FieldInfos,int,int,int)>(d, segment, fn, readBufferSize, -1, 0);
+        return;
+    }
+
+    void <init>(org.apache.lucene.store.Directory, java.lang.String, org.apache.lucene.index.FieldInfos, int, int, int) throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        org.apache.lucene.store.Directory d;
+        java.lang.String segment, $r2;
+        org.apache.lucene.index.FieldInfos fn;
+        int readBufferSize, docStoreOffset, size, firstInt, $i0, $i1, $i3, $i5;
+        org.apache.lucene.util.CloseableThreadLocal $r0;
+        boolean success, $z0;
+        long indexSize, $l2, $l4, $l6;
+        java.lang.Throwable l11, $r8;
+        java.lang.StringBuffer $r1;
+        org.apache.lucene.store.IndexInput $r3, $r4;
+        org.apache.lucene.index.CorruptIndexException $r5;
+        java.lang.Object $r6;
+        java.lang.AssertionError $r7;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        d := @parameter0: org.apache.lucene.store.Directory;
+        segment := @parameter1: java.lang.String;
+        fn := @parameter2: org.apache.lucene.index.FieldInfos;
+        readBufferSize := @parameter3: int;
+        docStoreOffset := @parameter4: int;
+        size := @parameter5: int;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new org.apache.lucene.util.CloseableThreadLocal;
+        specialinvoke $r0.<org.apache.lucene.util.CloseableThreadLocal: void <init>()>();
+        this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.util.CloseableThreadLocal fieldsStreamTL> = $r0;
+        success = 0;
+
+     label0:
+        this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.index.FieldInfos fieldInfos> = fn;
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(segment);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("fdt");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+        $r3 = virtualinvoke d.<org.apache.lucene.store.Directory: org.apache.lucene.store.IndexInput openInput(java.lang.String,int)>($r2, readBufferSize);
+        this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput cloneableFieldsStream> = $r3;
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(segment);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("fdx");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+        $r3 = virtualinvoke d.<org.apache.lucene.store.Directory: org.apache.lucene.store.IndexInput openInput(java.lang.String,int)>($r2, readBufferSize);
+        this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput indexStream> = $r3;
+        $r4 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput indexStream>;
+        firstInt = virtualinvoke $r4.<org.apache.lucene.store.IndexInput: int readInt()>();
+        if firstInt != 0 goto label1;
+
+        this.<org.apache.lucene.index.FieldsReader: int format> = 0;
+        goto label2;
+
+     label1:
+        this.<org.apache.lucene.index.FieldsReader: int format> = firstInt;
+
+     label2:
+        $i0 = this.<org.apache.lucene.index.FieldsReader: int format>;
+        if $i0 <= 1 goto label3;
+
+        $r5 = new org.apache.lucene.index.CorruptIndexException;
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Incompatible format version: ");
+        $i1 = this.<org.apache.lucene.index.FieldsReader: int format>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i1);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" expected ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(1);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" or lower");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r5.<org.apache.lucene.index.CorruptIndexException: void <init>(java.lang.String)>($r2);
+        throw $r5;
+
+     label3:
+        $i0 = this.<org.apache.lucene.index.FieldsReader: int format>;
+        if $i0 <= 0 goto label4;
+
+        this.<org.apache.lucene.index.FieldsReader: int formatSize> = 4;
+        goto label5;
+
+     label4:
+        this.<org.apache.lucene.index.FieldsReader: int formatSize> = 0;
+
+     label5:
+        $i0 = this.<org.apache.lucene.index.FieldsReader: int format>;
+        if $i0 >= 1 goto label6;
+
+        $r4 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput cloneableFieldsStream>;
+        virtualinvoke $r4.<org.apache.lucene.store.IndexInput: void setModifiedUTF8StringsMode()>();
+
+     label6:
+        $r3 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput cloneableFieldsStream>;
+        $r6 = virtualinvoke $r3.<org.apache.lucene.store.IndexInput: java.lang.Object clone()>();
+        $r3 = (org.apache.lucene.store.IndexInput) $r6;
+        this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream> = $r3;
+        $r4 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput indexStream>;
+        $l2 = virtualinvoke $r4.<org.apache.lucene.store.IndexInput: long length()>();
+        $i3 = this.<org.apache.lucene.index.FieldsReader: int formatSize>;
+        $l4 = (long) $i3;
+        indexSize = $l2 - $l4;
+        if docStoreOffset == -1 goto label7;
+
+        this.<org.apache.lucene.index.FieldsReader: int docStoreOffset> = docStoreOffset;
+        this.<org.apache.lucene.index.FieldsReader: int size> = size;
+        $z0 = <org.apache.lucene.index.FieldsReader: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label8;
+
+        $l2 = indexSize / 8L;
+        $i0 = (int) $l2;
+        $i3 = this.<org.apache.lucene.index.FieldsReader: int docStoreOffset>;
+        $i5 = size + $i3;
+        if $i0 >= $i5 goto label8;
+
+        $r7 = new java.lang.AssertionError;
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("indexSize=");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(long)>(indexSize);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" size=");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(size);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" docStoreOffset=");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(docStoreOffset);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r7.<java.lang.AssertionError: void <init>(java.lang.Object)>($r2);
+        throw $r7;
+
+     label7:
+        this.<org.apache.lucene.index.FieldsReader: int docStoreOffset> = 0;
+        $l6 = indexSize >> 3;
+        $i5 = (int) $l6;
+        this.<org.apache.lucene.index.FieldsReader: int size> = $i5;
+
+     label8:
+        $l6 = indexSize >> 3;
+        $i5 = (int) $l6;
+        this.<org.apache.lucene.index.FieldsReader: int numTotalDocs> = $i5;
+        success = 1;
+        goto label14;
+
+     label9:
+        goto label13;
+
+     label10:
+        $r8 := @caughtexception;
+
+     label11:
+        l11 = $r8;
+        goto label16;
+
+     label12:
+        throw l11;
+
+     label13:
+        return;
+
+     label14:
+        if success != 0 goto label15;
+
+        virtualinvoke this.<org.apache.lucene.index.FieldsReader: void close()>();
+
+     label15:
+        goto label9;
+
+     label16:
+        if success != 0 goto label17;
+
+        virtualinvoke this.<org.apache.lucene.index.FieldsReader: void close()>();
+
+     label17:
+        goto label12;
+
+        catch java.lang.Throwable from label0 to label9 with label10;
+        catch java.lang.Throwable from label11 to label12 with label10;
+    }
+
+    protected final void ensureOpen() throws org.apache.lucene.store.AlreadyClosedException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        boolean $z0;
+        org.apache.lucene.store.AlreadyClosedException $r0;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        $z0 = this.<org.apache.lucene.index.FieldsReader: boolean closed>;
+        if $z0 == 0 goto label0;
+
+        $r0 = new org.apache.lucene.store.AlreadyClosedException;
+        specialinvoke $r0.<org.apache.lucene.store.AlreadyClosedException: void <init>(java.lang.String)>("this FieldsReader is closed");
+        throw $r0;
+
+     label0:
+        return;
+    }
+
+    final void close() throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        boolean $z0;
+        org.apache.lucene.store.IndexInput $r0;
+        org.apache.lucene.util.CloseableThreadLocal $r1;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        $z0 = this.<org.apache.lucene.index.FieldsReader: boolean closed>;
+        if $z0 != 0 goto label3;
+
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void close()>();
+
+     label0:
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput cloneableFieldsStream>;
+        if $r0 == null goto label1;
+
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput cloneableFieldsStream>;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void close()>();
+
+     label1:
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput indexStream>;
+        if $r0 == null goto label2;
+
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput indexStream>;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void close()>();
+
+     label2:
+        $r1 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.util.CloseableThreadLocal fieldsStreamTL>;
+        virtualinvoke $r1.<org.apache.lucene.util.CloseableThreadLocal: void close()>();
+        this.<org.apache.lucene.index.FieldsReader: boolean closed> = 1;
+
+     label3:
+        return;
+    }
+
+    final int size()
+    {
+        org.apache.lucene.index.FieldsReader this;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        $i0 = this.<org.apache.lucene.index.FieldsReader: int size>;
+        return $i0;
+    }
+
+    private final void seekIndex(int) throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        int docID, $i0, $i2, $i3;
+        org.apache.lucene.store.IndexInput $r0;
+        long $l1, $l4;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        docID := @parameter0: int;
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput indexStream>;
+        $i0 = this.<org.apache.lucene.index.FieldsReader: int formatSize>;
+        $l1 = (long) $i0;
+        $i2 = this.<org.apache.lucene.index.FieldsReader: int docStoreOffset>;
+        $i3 = docID + $i2;
+        $l4 = (long) $i3;
+        $l4 = $l4 * 8L;
+        $l1 = $l1 + $l4;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void seek(long)>($l1);
+        return;
+    }
+
+    boolean canReadRawDocs()
+    {
+        org.apache.lucene.index.FieldsReader this;
+        int $i0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        $i0 = this.<org.apache.lucene.index.FieldsReader: int format>;
+        if $i0 < 1 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    final org.apache.lucene.document.Document doc(int, org.apache.lucene.document.FieldSelector) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        int n, numFields, i, fieldNumber, $i1;
+        org.apache.lucene.document.FieldSelector fieldSelector;
+        long position;
+        org.apache.lucene.document.Document doc, $r1;
+        org.apache.lucene.index.FieldInfo fi;
+        org.apache.lucene.document.FieldSelectorResult acceptField, $r3, $r6;
+        byte bits, $b0;
+        boolean compressed, tokenize, binary, $z0;
+        org.apache.lucene.store.IndexInput $r0;
+        org.apache.lucene.index.FieldInfos $r2;
+        java.lang.String $r4;
+        java.lang.AssertionError $r5;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        n := @parameter0: int;
+        fieldSelector := @parameter1: org.apache.lucene.document.FieldSelector;
+        specialinvoke this.<org.apache.lucene.index.FieldsReader: void seekIndex(int)>(n);
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput indexStream>;
+        position = virtualinvoke $r0.<org.apache.lucene.store.IndexInput: long readLong()>();
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void seek(long)>(position);
+        $r1 = new org.apache.lucene.document.Document;
+        specialinvoke $r1.<org.apache.lucene.document.Document: void <init>()>();
+        doc = $r1;
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        numFields = virtualinvoke $r0.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        i = 0;
+
+     label0:
+        if i >= numFields goto label17;
+
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        fieldNumber = virtualinvoke $r0.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        $r2 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        fi = virtualinvoke $r2.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(int)>(fieldNumber);
+        if fieldSelector != null goto label1;
+
+        $r3 = <org.apache.lucene.document.FieldSelectorResult: org.apache.lucene.document.FieldSelectorResult LOAD>;
+        goto label2;
+
+     label1:
+        $r4 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $r3 = interfaceinvoke fieldSelector.<org.apache.lucene.document.FieldSelector: org.apache.lucene.document.FieldSelectorResult accept(java.lang.String)>($r4);
+
+     label2:
+        acceptField = $r3;
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        bits = virtualinvoke $r0.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        $z0 = <org.apache.lucene.index.FieldsReader: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label3;
+
+        if bits <= 7 goto label3;
+
+        $r5 = new java.lang.AssertionError;
+        specialinvoke $r5.<java.lang.AssertionError: void <init>()>();
+        throw $r5;
+
+     label3:
+        $b0 = bits & 4;
+        if $b0 == 0 goto label4;
+
+        $z0 = 1;
+        goto label5;
+
+     label4:
+        $z0 = 0;
+
+     label5:
+        compressed = $z0;
+        $b0 = bits & 1;
+        if $b0 == 0 goto label6;
+
+        $z0 = 1;
+        goto label7;
+
+     label6:
+        $z0 = 0;
+
+     label7:
+        tokenize = $z0;
+        $b0 = bits & 2;
+        if $b0 == 0 goto label8;
+
+        $z0 = 1;
+        goto label9;
+
+     label8:
+        $z0 = 0;
+
+     label9:
+        binary = $z0;
+        $r6 = <org.apache.lucene.document.FieldSelectorResult: org.apache.lucene.document.FieldSelectorResult LOAD>;
+        $z0 = virtualinvoke acceptField.<org.apache.lucene.document.FieldSelectorResult: boolean equals(java.lang.Object)>($r6);
+        if $z0 == 0 goto label10;
+
+        specialinvoke this.<org.apache.lucene.index.FieldsReader: void addField(org.apache.lucene.document.Document,org.apache.lucene.index.FieldInfo,boolean,boolean,boolean)>(doc, fi, binary, compressed, tokenize);
+        goto label16;
+
+     label10:
+        $r6 = <org.apache.lucene.document.FieldSelectorResult: org.apache.lucene.document.FieldSelectorResult LOAD_FOR_MERGE>;
+        $z0 = virtualinvoke acceptField.<org.apache.lucene.document.FieldSelectorResult: boolean equals(java.lang.Object)>($r6);
+        if $z0 == 0 goto label11;
+
+        specialinvoke this.<org.apache.lucene.index.FieldsReader: void addFieldForMerge(org.apache.lucene.document.Document,org.apache.lucene.index.FieldInfo,boolean,boolean,boolean)>(doc, fi, binary, compressed, tokenize);
+        goto label16;
+
+     label11:
+        $r6 = <org.apache.lucene.document.FieldSelectorResult: org.apache.lucene.document.FieldSelectorResult LOAD_AND_BREAK>;
+        $z0 = virtualinvoke acceptField.<org.apache.lucene.document.FieldSelectorResult: boolean equals(java.lang.Object)>($r6);
+        if $z0 == 0 goto label12;
+
+        specialinvoke this.<org.apache.lucene.index.FieldsReader: void addField(org.apache.lucene.document.Document,org.apache.lucene.index.FieldInfo,boolean,boolean,boolean)>(doc, fi, binary, compressed, tokenize);
+        goto label17;
+
+     label12:
+        $r6 = <org.apache.lucene.document.FieldSelectorResult: org.apache.lucene.document.FieldSelectorResult LAZY_LOAD>;
+        $z0 = virtualinvoke acceptField.<org.apache.lucene.document.FieldSelectorResult: boolean equals(java.lang.Object)>($r6);
+        if $z0 == 0 goto label13;
+
+        specialinvoke this.<org.apache.lucene.index.FieldsReader: void addFieldLazy(org.apache.lucene.document.Document,org.apache.lucene.index.FieldInfo,boolean,boolean,boolean)>(doc, fi, binary, compressed, tokenize);
+        goto label16;
+
+     label13:
+        $r6 = <org.apache.lucene.document.FieldSelectorResult: org.apache.lucene.document.FieldSelectorResult SIZE>;
+        $z0 = virtualinvoke acceptField.<org.apache.lucene.document.FieldSelectorResult: boolean equals(java.lang.Object)>($r6);
+        if $z0 == 0 goto label14;
+
+        $i1 = specialinvoke this.<org.apache.lucene.index.FieldsReader: int addFieldSize(org.apache.lucene.document.Document,org.apache.lucene.index.FieldInfo,boolean,boolean)>(doc, fi, binary, compressed);
+        specialinvoke this.<org.apache.lucene.index.FieldsReader: void skipField(boolean,boolean,int)>(binary, compressed, $i1);
+        goto label16;
+
+     label14:
+        $r6 = <org.apache.lucene.document.FieldSelectorResult: org.apache.lucene.document.FieldSelectorResult SIZE_AND_BREAK>;
+        $z0 = virtualinvoke acceptField.<org.apache.lucene.document.FieldSelectorResult: boolean equals(java.lang.Object)>($r6);
+        if $z0 == 0 goto label15;
+
+        specialinvoke this.<org.apache.lucene.index.FieldsReader: int addFieldSize(org.apache.lucene.document.Document,org.apache.lucene.index.FieldInfo,boolean,boolean)>(doc, fi, binary, compressed);
+        goto label17;
+
+     label15:
+        specialinvoke this.<org.apache.lucene.index.FieldsReader: void skipField(boolean,boolean)>(binary, compressed);
+
+     label16:
+        i = i + 1;
+        goto label0;
+
+     label17:
+        return doc;
+    }
+
+    final org.apache.lucene.store.IndexInput rawDocs(int[], int, int) throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        int[] lengths;
+        int startDocID, numDocs, count, docID, $i0, $i1, $i3;
+        long startOffset, lastOffset, offset, $l2, tid_rawDocs;
+        org.apache.lucene.store.IndexInput $r0;
+        boolean $z0;
+        java.lang.AssertionError $r1;
+        java.lang.Thread thread_rawDocs;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        lengths := @parameter0: int[];
+        startDocID := @parameter1: int;
+        numDocs := @parameter2: int;
+        thread_rawDocs = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_rawDocs = virtualinvoke thread_rawDocs.<java.lang.Thread: long getId()>();
+        specialinvoke this.<org.apache.lucene.index.FieldsReader: void seekIndex(int)>(startDocID);
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput indexStream>;
+        startOffset = virtualinvoke $r0.<org.apache.lucene.store.IndexInput: long readLong()>();
+        lastOffset = startOffset;
+        count = 0;
+
+     label0:
+        if count >= numDocs goto label4;
+
+        $i0 = this.<org.apache.lucene.index.FieldsReader: int docStoreOffset>;
+        $i0 = $i0 + startDocID;
+        $i0 = $i0 + count;
+        docID = $i0 + 1;
+        $z0 = <org.apache.lucene.index.FieldsReader: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label1;
+
+        $i1 = this.<org.apache.lucene.index.FieldsReader: int numTotalDocs>;
+        if docID <= $i1 goto label1;
+
+        $r1 = new java.lang.AssertionError;
+        specialinvoke $r1.<java.lang.AssertionError: void <init>()>();
+        throw $r1;
+
+     label1:
+        $i1 = this.<org.apache.lucene.index.FieldsReader: int numTotalDocs>;
+        if docID >= $i1 goto label2;
+
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput indexStream>;
+        offset = virtualinvoke $r0.<org.apache.lucene.store.IndexInput: long readLong()>();
+        goto label3;
+
+     label2:
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        offset = virtualinvoke $r0.<org.apache.lucene.store.IndexInput: long length()>();
+
+     label3:
+        $i1 = count;
+        count = count + 1;
+        $l2 = offset - lastOffset;
+        $i3 = (int) $l2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(lengths, 22, tid_rawDocs, "org.apache.lucene.index.FieldsReader", 241, $i1, $i3);
+        lengths[$i1] = $i3;
+        lastOffset = offset;
+        goto label0;
+
+     label4:
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void seek(long)>(startOffset);
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        return $r0;
+    }
+
+    private void skipField(boolean, boolean) throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        boolean binary, compressed;
+        org.apache.lucene.store.IndexInput $r0;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        binary := @parameter0: boolean;
+        compressed := @parameter1: boolean;
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        specialinvoke this.<org.apache.lucene.index.FieldsReader: void skipField(boolean,boolean,int)>(binary, compressed, $i0);
+        return;
+    }
+
+    private void skipField(boolean, boolean, int) throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        boolean binary, compressed;
+        int toRead, $i0;
+        org.apache.lucene.store.IndexInput $r0, $r1;
+        long $l1, $l2;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        binary := @parameter0: boolean;
+        compressed := @parameter1: boolean;
+        toRead := @parameter2: int;
+        $i0 = this.<org.apache.lucene.index.FieldsReader: int format>;
+        if $i0 >= 1 goto label0;
+
+        if binary != 0 goto label0;
+
+        if compressed == 0 goto label1;
+
+     label0:
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        $r1 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        $l1 = virtualinvoke $r1.<org.apache.lucene.store.IndexInput: long getFilePointer()>();
+        $l2 = (long) toRead;
+        $l1 = $l1 + $l2;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void seek(long)>($l1);
+        goto label2;
+
+     label1:
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void skipChars(int)>(toRead);
+
+     label2:
+        return;
+    }
+
+    private void addFieldLazy(org.apache.lucene.document.Document, org.apache.lucene.index.FieldInfo, boolean, boolean, boolean) throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        org.apache.lucene.document.Document doc;
+        org.apache.lucene.index.FieldInfo fi;
+        boolean binary, compressed, tokenize, $z0;
+        int toRead, length, $i2;
+        long pointer, $l0, $l1;
+        org.apache.lucene.document.Field$Store $r1, store;
+        org.apache.lucene.document.Field$Index index;
+        org.apache.lucene.document.Field$TermVector termVector;
+        org.apache.lucene.index.FieldsReader$LazyField f, tmp$542072396, tmp$542072459, tmp$542072522, tmp$542072651;
+        org.apache.lucene.store.IndexInput $r2;
+        java.lang.String $r3, $r5;
+        org.apache.lucene.document.Fieldable tmp;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        doc := @parameter0: org.apache.lucene.document.Document;
+        fi := @parameter1: org.apache.lucene.index.FieldInfo;
+        binary := @parameter2: boolean;
+        compressed := @parameter3: boolean;
+        tokenize := @parameter4: boolean;
+        if binary == 0 goto label2;
+
+        $r2 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        toRead = virtualinvoke $r2.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        $r2 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        pointer = virtualinvoke $r2.<org.apache.lucene.store.IndexInput: long getFilePointer()>();
+        if compressed == 0 goto label0;
+
+        tmp$542072396 = new org.apache.lucene.index.FieldsReader$LazyField;
+        $r3 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $r1 = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store COMPRESS>;
+        specialinvoke tmp$542072396.<org.apache.lucene.index.FieldsReader$LazyField: void <init>(org.apache.lucene.index.FieldsReader,java.lang.String,org.apache.lucene.document.Field$Store,int,long,boolean)>(this, $r3, $r1, toRead, pointer, binary);
+        tmp = (org.apache.lucene.document.Fieldable) tmp$542072396;
+        virtualinvoke doc.<org.apache.lucene.document.Document: void add(org.apache.lucene.document.Fieldable)>(tmp);
+        goto label1;
+
+     label0:
+        tmp$542072459 = new org.apache.lucene.index.FieldsReader$LazyField;
+        $r3 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $r1 = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store YES>;
+        specialinvoke tmp$542072459.<org.apache.lucene.index.FieldsReader$LazyField: void <init>(org.apache.lucene.index.FieldsReader,java.lang.String,org.apache.lucene.document.Field$Store,int,long,boolean)>(this, $r3, $r1, toRead, pointer, binary);
+        tmp = (org.apache.lucene.document.Fieldable) tmp$542072459;
+        virtualinvoke doc.<org.apache.lucene.document.Document: void add(org.apache.lucene.document.Fieldable)>(tmp);
+
+     label1:
+        $r2 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        $l0 = (long) toRead;
+        $l1 = pointer + $l0;
+        virtualinvoke $r2.<org.apache.lucene.store.IndexInput: void seek(long)>($l1);
+        goto label7;
+
+     label2:
+        store = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store YES>;
+        index = specialinvoke this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.document.Field$Index getIndexType(org.apache.lucene.index.FieldInfo,boolean)>(fi, tokenize);
+        termVector = specialinvoke this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.document.Field$TermVector getTermVectorType(org.apache.lucene.index.FieldInfo)>(fi);
+        if compressed == 0 goto label3;
+
+        store = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store COMPRESS>;
+        $r2 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        toRead = virtualinvoke $r2.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        $r2 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        pointer = virtualinvoke $r2.<org.apache.lucene.store.IndexInput: long getFilePointer()>();
+        tmp$542072522 = new org.apache.lucene.index.FieldsReader$LazyField;
+        $r5 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        specialinvoke tmp$542072522.<org.apache.lucene.index.FieldsReader$LazyField: void <init>(org.apache.lucene.index.FieldsReader,java.lang.String,org.apache.lucene.document.Field$Store,int,long,boolean)>(this, $r5, store, toRead, pointer, binary);
+        f = tmp$542072522;
+        $r2 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        $l0 = (long) toRead;
+        $l1 = pointer + $l0;
+        virtualinvoke $r2.<org.apache.lucene.store.IndexInput: void seek(long)>($l1);
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean omitNorms>;
+        tmp = (org.apache.lucene.document.Fieldable) f;
+        interfaceinvoke tmp.<org.apache.lucene.document.Fieldable: void setOmitNorms(boolean)>($z0);
+        goto label6;
+
+     label3:
+        $r2 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        length = virtualinvoke $r2.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        $r2 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        pointer = virtualinvoke $r2.<org.apache.lucene.store.IndexInput: long getFilePointer()>();
+        $i2 = this.<org.apache.lucene.index.FieldsReader: int format>;
+        if $i2 < 1 goto label4;
+
+        $r2 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        $l0 = (long) length;
+        $l1 = pointer + $l0;
+        virtualinvoke $r2.<org.apache.lucene.store.IndexInput: void seek(long)>($l1);
+        goto label5;
+
+     label4:
+        $r2 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        virtualinvoke $r2.<org.apache.lucene.store.IndexInput: void skipChars(int)>(length);
+
+     label5:
+        tmp$542072651 = new org.apache.lucene.index.FieldsReader$LazyField;
+        $r5 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        specialinvoke tmp$542072651.<org.apache.lucene.index.FieldsReader$LazyField: void <init>(org.apache.lucene.index.FieldsReader,java.lang.String,org.apache.lucene.document.Field$Store,org.apache.lucene.document.Field$Index,org.apache.lucene.document.Field$TermVector,int,long,boolean)>(this, $r5, store, index, termVector, length, pointer, binary);
+        f = tmp$542072651;
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean omitNorms>;
+        tmp = (org.apache.lucene.document.Fieldable) f;
+        interfaceinvoke tmp.<org.apache.lucene.document.Fieldable: void setOmitNorms(boolean)>($z0);
+
+     label6:
+        tmp = (org.apache.lucene.document.Fieldable) f;
+        virtualinvoke doc.<org.apache.lucene.document.Document: void add(org.apache.lucene.document.Fieldable)>(tmp);
+
+     label7:
+        return;
+    }
+
+    private void addFieldForMerge(org.apache.lucene.document.Document, org.apache.lucene.index.FieldInfo, boolean, boolean, boolean) throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        org.apache.lucene.document.Document doc;
+        org.apache.lucene.index.FieldInfo fi;
+        boolean binary, compressed, tokenize;
+        int toRead, $i0;
+        byte[] b;
+        java.io.Serializable data;
+        org.apache.lucene.store.IndexInput $r0;
+        org.apache.lucene.index.FieldsReader$FieldForMerge tmp$546982013;
+        org.apache.lucene.document.Fieldable tmp;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        doc := @parameter0: org.apache.lucene.document.Document;
+        fi := @parameter1: org.apache.lucene.index.FieldInfo;
+        binary := @parameter2: boolean;
+        compressed := @parameter3: boolean;
+        tokenize := @parameter4: boolean;
+        if binary != 0 goto label0;
+
+        if compressed == 0 goto label1;
+
+     label0:
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        toRead = virtualinvoke $r0.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        b = newarray (byte)[toRead];
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        $i0 = lengthof b;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void readBytes(byte[],int,int)>(b, 0, $i0);
+        data = b;
+        goto label2;
+
+     label1:
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        data = virtualinvoke $r0.<org.apache.lucene.store.IndexInput: java.lang.String readString()>();
+
+     label2:
+        tmp$546982013 = new org.apache.lucene.index.FieldsReader$FieldForMerge;
+        specialinvoke tmp$546982013.<org.apache.lucene.index.FieldsReader$FieldForMerge: void <init>(java.lang.Object,org.apache.lucene.index.FieldInfo,boolean,boolean,boolean)>(data, fi, binary, compressed, tokenize);
+        tmp = (org.apache.lucene.document.Fieldable) tmp$546982013;
+        virtualinvoke doc.<org.apache.lucene.document.Document: void add(org.apache.lucene.document.Fieldable)>(tmp);
+        return;
+    }
+
+    private void addField(org.apache.lucene.document.Document, org.apache.lucene.index.FieldInfo, boolean, boolean, boolean) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        org.apache.lucene.document.Document doc;
+        org.apache.lucene.index.FieldInfo fi;
+        boolean binary, compressed, tokenize, $z0;
+        int toRead, $i0;
+        byte[] b, $r3, $r7;
+        org.apache.lucene.document.Field$Store store, $r4;
+        org.apache.lucene.document.Field$Index index;
+        org.apache.lucene.document.Field$TermVector termVector;
+        org.apache.lucene.document.Field f, $r1, $r5;
+        org.apache.lucene.store.IndexInput $r0, $r8;
+        java.lang.String $r2, $r6;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        doc := @parameter0: org.apache.lucene.document.Document;
+        fi := @parameter1: org.apache.lucene.index.FieldInfo;
+        binary := @parameter2: boolean;
+        compressed := @parameter3: boolean;
+        tokenize := @parameter4: boolean;
+        if binary == 0 goto label2;
+
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        toRead = virtualinvoke $r0.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        b = newarray (byte)[toRead];
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        $i0 = lengthof b;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void readBytes(byte[],int,int)>(b, 0, $i0);
+        if compressed == 0 goto label0;
+
+        $r1 = new org.apache.lucene.document.Field;
+        $r2 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $r3 = specialinvoke this.<org.apache.lucene.index.FieldsReader: byte[] uncompress(byte[])>(b);
+        $r4 = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store COMPRESS>;
+        specialinvoke $r1.<org.apache.lucene.document.Field: void <init>(java.lang.String,byte[],org.apache.lucene.document.Field$Store)>($r2, $r3, $r4);
+        virtualinvoke doc.<org.apache.lucene.document.Document: void add(org.apache.lucene.document.Fieldable)>($r1);
+        goto label1;
+
+     label0:
+        $r1 = new org.apache.lucene.document.Field;
+        $r2 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $r4 = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store YES>;
+        specialinvoke $r1.<org.apache.lucene.document.Field: void <init>(java.lang.String,byte[],org.apache.lucene.document.Field$Store)>($r2, b, $r4);
+        virtualinvoke doc.<org.apache.lucene.document.Document: void add(org.apache.lucene.document.Fieldable)>($r1);
+
+     label1:
+        goto label5;
+
+     label2:
+        store = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store YES>;
+        index = specialinvoke this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.document.Field$Index getIndexType(org.apache.lucene.index.FieldInfo,boolean)>(fi, tokenize);
+        termVector = specialinvoke this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.document.Field$TermVector getTermVectorType(org.apache.lucene.index.FieldInfo)>(fi);
+        if compressed == 0 goto label3;
+
+        store = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store COMPRESS>;
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        toRead = virtualinvoke $r0.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        b = newarray (byte)[toRead];
+        $r0 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        $i0 = lengthof b;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void readBytes(byte[],int,int)>(b, 0, $i0);
+        $r5 = new org.apache.lucene.document.Field;
+        $r6 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $r2 = new java.lang.String;
+        $r7 = specialinvoke this.<org.apache.lucene.index.FieldsReader: byte[] uncompress(byte[])>(b);
+        specialinvoke $r2.<java.lang.String: void <init>(byte[],java.lang.String)>($r7, "UTF-8");
+        specialinvoke $r5.<org.apache.lucene.document.Field: void <init>(java.lang.String,java.lang.String,org.apache.lucene.document.Field$Store,org.apache.lucene.document.Field$Index,org.apache.lucene.document.Field$TermVector)>($r6, $r2, store, index, termVector);
+        f = $r5;
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean omitNorms>;
+        interfaceinvoke f.<org.apache.lucene.document.Fieldable: void setOmitNorms(boolean)>($z0);
+        goto label4;
+
+     label3:
+        $r5 = new org.apache.lucene.document.Field;
+        $r6 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $r8 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        $r2 = virtualinvoke $r8.<org.apache.lucene.store.IndexInput: java.lang.String readString()>();
+        specialinvoke $r5.<org.apache.lucene.document.Field: void <init>(java.lang.String,java.lang.String,org.apache.lucene.document.Field$Store,org.apache.lucene.document.Field$Index,org.apache.lucene.document.Field$TermVector)>($r6, $r2, store, index, termVector);
+        f = $r5;
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean omitNorms>;
+        interfaceinvoke f.<org.apache.lucene.document.Fieldable: void setOmitNorms(boolean)>($z0);
+
+     label4:
+        virtualinvoke doc.<org.apache.lucene.document.Document: void add(org.apache.lucene.document.Fieldable)>(f);
+
+     label5:
+        return;
+    }
+
+    private int addFieldSize(org.apache.lucene.document.Document, org.apache.lucene.index.FieldInfo, boolean, boolean) throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        org.apache.lucene.document.Document doc;
+        org.apache.lucene.index.FieldInfo fi;
+        boolean binary, compressed;
+        int size, bytesize, $i0, $i1;
+        byte[] sizebytes;
+        org.apache.lucene.document.Field$Store $r0;
+        org.apache.lucene.store.IndexInput $r1;
+        byte $b2;
+        org.apache.lucene.document.Field $r2;
+        java.lang.String $r3;
+        long tid_addFieldSize;
+        java.lang.Thread thread_addFieldSize;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        doc := @parameter0: org.apache.lucene.document.Document;
+        fi := @parameter1: org.apache.lucene.index.FieldInfo;
+        binary := @parameter2: boolean;
+        compressed := @parameter3: boolean;
+        thread_addFieldSize = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addFieldSize = virtualinvoke thread_addFieldSize.<java.lang.Thread: long getId()>();
+        $r1 = this.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput fieldsStream>;
+        size = virtualinvoke $r1.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        if binary != 0 goto label0;
+
+        if compressed == 0 goto label1;
+
+     label0:
+        $i0 = size;
+        goto label2;
+
+     label1:
+        $i0 = 2 * size;
+
+     label2:
+        bytesize = $i0;
+        sizebytes = newarray (byte)[4];
+        $i1 = bytesize >>> 24;
+        $b2 = (byte) $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(sizebytes, 4, tid_addFieldSize, "org.apache.lucene.index.FieldsReader", 374, 0, $b2);
+        sizebytes[0] = $b2;
+        $i1 = bytesize >>> 16;
+        $b2 = (byte) $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(sizebytes, 4, tid_addFieldSize, "org.apache.lucene.index.FieldsReader", 375, 1, $b2);
+        sizebytes[1] = $b2;
+        $i1 = bytesize >>> 8;
+        $b2 = (byte) $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(sizebytes, 4, tid_addFieldSize, "org.apache.lucene.index.FieldsReader", 376, 2, $b2);
+        sizebytes[2] = $b2;
+        $b2 = (byte) bytesize;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(sizebytes, 4, tid_addFieldSize, "org.apache.lucene.index.FieldsReader", 377, 3, $b2);
+        sizebytes[3] = $b2;
+        $r2 = new org.apache.lucene.document.Field;
+        $r3 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $r0 = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store YES>;
+        specialinvoke $r2.<org.apache.lucene.document.Field: void <init>(java.lang.String,byte[],org.apache.lucene.document.Field$Store)>($r3, sizebytes, $r0);
+        virtualinvoke doc.<org.apache.lucene.document.Document: void add(org.apache.lucene.document.Fieldable)>($r2);
+        return size;
+    }
+
+    private org.apache.lucene.document.Field$TermVector getTermVectorType(org.apache.lucene.index.FieldInfo)
+    {
+        org.apache.lucene.index.FieldsReader this;
+        org.apache.lucene.index.FieldInfo fi;
+        null_type termVector;
+        boolean $z0;
+        org.apache.lucene.document.Field$TermVector termVector;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        fi := @parameter0: org.apache.lucene.index.FieldInfo;
+        termVector = null;
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storeTermVector>;
+        if $z0 == 0 goto label3;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector>;
+        if $z0 == 0 goto label1;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector>;
+        if $z0 == 0 goto label0;
+
+        termVector = <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector WITH_POSITIONS_OFFSETS>;
+        goto label4;
+
+     label0:
+        termVector = <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector WITH_OFFSETS>;
+        goto label4;
+
+     label1:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector>;
+        if $z0 == 0 goto label2;
+
+        termVector = <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector WITH_POSITIONS>;
+        goto label4;
+
+     label2:
+        termVector = <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector YES>;
+        goto label4;
+
+     label3:
+        termVector = <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector NO>;
+
+     label4:
+        return termVector;
+    }
+
+    private org.apache.lucene.document.Field$Index getIndexType(org.apache.lucene.index.FieldInfo, boolean)
+    {
+        org.apache.lucene.index.FieldsReader this;
+        org.apache.lucene.index.FieldInfo fi;
+        boolean tokenize, $z0;
+        org.apache.lucene.document.Field$Index index;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        fi := @parameter0: org.apache.lucene.index.FieldInfo;
+        tokenize := @parameter1: boolean;
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        if $z0 == 0 goto label0;
+
+        if tokenize == 0 goto label0;
+
+        index = <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index ANALYZED>;
+        goto label2;
+
+     label0:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        if $z0 == 0 goto label1;
+
+        if tokenize != 0 goto label1;
+
+        index = <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index NOT_ANALYZED>;
+        goto label2;
+
+     label1:
+        index = <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index NO>;
+
+     label2:
+        return index;
+    }
+
+    private final byte[] uncompress(byte[]) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader this;
+        byte[] input, buf, $r9;
+        java.io.ByteArrayOutputStream $r0, bos;
+        java.util.zip.Inflater decompressor, $r1;
+        int count, $i0;
+        java.util.zip.DataFormatException e, $r2;
+        org.apache.lucene.index.CorruptIndexException newException, $r3;
+        java.lang.Throwable l7, $r8;
+        boolean $z0;
+        java.lang.StringBuffer $r4;
+        java.lang.String $r5, $r6;
+
+        this := @this: org.apache.lucene.index.FieldsReader;
+        input := @parameter0: byte[];
+        $r0 = new java.io.ByteArrayOutputStream;
+        $i0 = lengthof input;
+        specialinvoke $r0.<java.io.ByteArrayOutputStream: void <init>(int)>($i0);
+        bos = $r0;
+        $r1 = new java.util.zip.Inflater;
+        specialinvoke $r1.<java.util.zip.Inflater: void <init>()>();
+        decompressor = $r1;
+
+     label0:
+        virtualinvoke decompressor.<java.util.zip.Inflater: void setInput(byte[])>(input);
+        buf = newarray (byte)[1024];
+
+     label1:
+        $z0 = virtualinvoke decompressor.<java.util.zip.Inflater: boolean finished()>();
+        if $z0 != 0 goto label5;
+
+     label2:
+        count = virtualinvoke decompressor.<java.util.zip.Inflater: int inflate(byte[])>(buf);
+        virtualinvoke bos.<java.io.ByteArrayOutputStream: void write(byte[],int,int)>(buf, 0, count);
+
+     label3:
+        goto label1;
+
+     label4:
+        $r2 := @caughtexception;
+        e = $r2;
+        $r3 = new org.apache.lucene.index.CorruptIndexException;
+        $r4 = new java.lang.StringBuffer;
+        specialinvoke $r4.<java.lang.StringBuffer: void <init>()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("field data are in wrong format: ");
+        $r5 = virtualinvoke e.<java.util.zip.DataFormatException: java.lang.String toString()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r5);
+        $r6 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r3.<org.apache.lucene.index.CorruptIndexException: void <init>(java.lang.String)>($r6);
+        newException = $r3;
+        virtualinvoke newException.<org.apache.lucene.index.CorruptIndexException: java.lang.Throwable initCause(java.lang.Throwable)>(e);
+        throw newException;
+
+     label5:
+        goto label11;
+
+     label6:
+        goto label10;
+
+     label7:
+        $r8 := @caughtexception;
+
+     label8:
+        l7 = $r8;
+        goto label12;
+
+     label9:
+        throw l7;
+
+     label10:
+        $r9 = virtualinvoke bos.<java.io.ByteArrayOutputStream: byte[] toByteArray()>();
+        return $r9;
+
+     label11:
+        virtualinvoke decompressor.<java.util.zip.Inflater: void end()>();
+        goto label6;
+
+     label12:
+        virtualinvoke decompressor.<java.util.zip.Inflater: void end()>();
+        goto label9;
+
+        catch java.util.zip.DataFormatException from label2 to label3 with label4;
+        catch java.lang.Throwable from label0 to label6 with label7;
+        catch java.lang.Throwable from label8 to label9 with label7;
+    }
+
+    static java.lang.Class class$(java.lang.String)
+    {
+        java.lang.String x0;
+        java.lang.ClassNotFoundException x1, $r1;
+        java.lang.Class $r0;
+        java.lang.NoClassDefFoundError $r2;
+        java.lang.Throwable $r3;
+
+        x0 := @parameter0: java.lang.String;
+
+     label0:
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(x0);
+
+     label1:
+        return $r0;
+
+     label2:
+        $r1 := @caughtexception;
+        x1 = $r1;
+        $r2 = new java.lang.NoClassDefFoundError;
+        specialinvoke $r2.<java.lang.NoClassDefFoundError: void <init>()>();
+        $r3 = virtualinvoke $r2.<java.lang.NoClassDefFoundError: java.lang.Throwable initCause(java.lang.Throwable)>(x1);
+        throw $r3;
+
+        catch java.lang.ClassNotFoundException from label0 to label1 with label2;
+    }
+
+    static org.apache.lucene.util.CloseableThreadLocal access$000(org.apache.lucene.index.FieldsReader)
+    {
+        org.apache.lucene.index.FieldsReader x0;
+        org.apache.lucene.util.CloseableThreadLocal $r0;
+
+        x0 := @parameter0: org.apache.lucene.index.FieldsReader;
+        $r0 = x0.<org.apache.lucene.index.FieldsReader: org.apache.lucene.util.CloseableThreadLocal fieldsStreamTL>;
+        return $r0;
+    }
+
+    static org.apache.lucene.store.IndexInput access$100(org.apache.lucene.index.FieldsReader)
+    {
+        org.apache.lucene.index.FieldsReader x0;
+        org.apache.lucene.store.IndexInput $r0;
+
+        x0 := @parameter0: org.apache.lucene.index.FieldsReader;
+        $r0 = x0.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput cloneableFieldsStream>;
+        return $r0;
+    }
+
+    static byte[] access$200(org.apache.lucene.index.FieldsReader, byte[]) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.FieldsReader x0;
+        byte[] x1, $r0;
+
+        x0 := @parameter0: org.apache.lucene.index.FieldsReader;
+        x1 := @parameter1: byte[];
+        $r0 = specialinvoke x0.<org.apache.lucene.index.FieldsReader: byte[] uncompress(byte[])>(x1);
+        return $r0;
+    }
+
+    static int access$300(org.apache.lucene.index.FieldsReader)
+    {
+        org.apache.lucene.index.FieldsReader x0;
+        int $i0;
+
+        x0 := @parameter0: org.apache.lucene.index.FieldsReader;
+        $i0 = x0.<org.apache.lucene.index.FieldsReader: int format>;
+        return $i0;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        boolean $z0;
+
+        $r0 = <org.apache.lucene.index.FieldsReader: java.lang.Class class$org$apache$lucene$index$FieldsReader>;
+        if $r0 != null goto label0;
+
+        $r0 = staticinvoke <org.apache.lucene.index.FieldsReader: java.lang.Class class$(java.lang.String)>("org.apache.lucene.index.FieldsReader");
+        <org.apache.lucene.index.FieldsReader: java.lang.Class class$org$apache$lucene$index$FieldsReader> = $r0;
+        goto label1;
+
+     label0:
+        $r0 = <org.apache.lucene.index.FieldsReader: java.lang.Class class$org$apache$lucene$index$FieldsReader>;
+
+     label1:
+        $z0 = virtualinvoke $r0.<java.lang.Class: boolean desiredAssertionStatus()>();
+        if $z0 != 0 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        <org.apache.lucene.index.FieldsReader: boolean $assertionsDisabled> = $z0;
+        return;
+    }
+}

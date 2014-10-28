@@ -1,0 +1,72 @@
+class avrora.sim.mcu.RegisterSet$SubFieldWriter extends avrora.sim.mcu.RegisterSet$SubRegWriter
+{
+    final avrora.sim.mcu.RegisterSet$FieldWriter fieldWriter;
+    final avrora.sim.mcu.RegisterLayout$SubField subField;
+
+    void <init>(avrora.sim.mcu.RegisterLayout$SubField, avrora.sim.mcu.RegisterSet$FieldWriter)
+    {
+        avrora.sim.mcu.RegisterSet$SubFieldWriter this;
+        avrora.sim.mcu.RegisterLayout$SubField sf;
+        avrora.sim.mcu.RegisterSet$FieldWriter fw;
+
+        this := @this: avrora.sim.mcu.RegisterSet$SubFieldWriter;
+        sf := @parameter0: avrora.sim.mcu.RegisterLayout$SubField;
+        fw := @parameter1: avrora.sim.mcu.RegisterSet$FieldWriter;
+        specialinvoke this.<avrora.sim.mcu.RegisterSet$SubRegWriter: void <init>(avrora.sim.mcu.RegisterLayout$SubField)>(sf);
+        this.<avrora.sim.mcu.RegisterSet$SubFieldWriter: avrora.sim.mcu.RegisterLayout$SubField subField> = sf;
+        this.<avrora.sim.mcu.RegisterSet$SubFieldWriter: avrora.sim.mcu.RegisterSet$FieldWriter fieldWriter> = fw;
+        return;
+    }
+
+    void write(byte)
+    {
+        avrora.sim.mcu.RegisterSet$SubFieldWriter this;
+        byte val, $b1;
+        int wval, $i0, $i2, $i3;
+        avrora.sim.mcu.RegisterSet$FieldWriter $r0;
+        avrora.sim.mcu.RegisterLayout$SubField $r1, $r2;
+        boolean $z0;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.mcu.RegisterSet$SubFieldWriter;
+        val := @parameter0: byte;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        $i0 = this.<avrora.sim.mcu.RegisterSet$SubFieldWriter: int ior_low_bit>;
+        $b1 = val >> $i0;
+        $i0 = this.<avrora.sim.mcu.RegisterSet$SubFieldWriter: int mask>;
+        wval = $b1 & $i0;
+        $r0 = this.<avrora.sim.mcu.RegisterSet$SubFieldWriter: avrora.sim.mcu.RegisterSet$FieldWriter fieldWriter>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r0, 186, tid_write, "avrora.sim.mcu.RegisterSet$SubFieldWriter", 128, $i0);
+        $i0 = $r0.<avrora.sim.mcu.RegisterSet$FieldWriter: int value>;
+        $r1 = this.<avrora.sim.mcu.RegisterSet$SubFieldWriter: avrora.sim.mcu.RegisterLayout$SubField subField>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 26, tid_write, "avrora.sim.mcu.RegisterSet$SubFieldWriter", 128, $i2);
+        $i2 = $r1.<avrora.sim.mcu.RegisterLayout$SubField: int field_low_bit>;
+        $i3 = wval << $i2;
+        $i0 = $i0 | $i3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r0, 186, tid_write, "avrora.sim.mcu.RegisterSet$SubFieldWriter", 128, $i0);
+        $r0.<avrora.sim.mcu.RegisterSet$FieldWriter: int value> = $i0;
+        $r0 = this.<avrora.sim.mcu.RegisterSet$SubFieldWriter: avrora.sim.mcu.RegisterSet$FieldWriter fieldWriter>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r0, 187, tid_write, "avrora.sim.mcu.RegisterSet$SubFieldWriter", 129, $i0);
+        $i0 = $r0.<avrora.sim.mcu.RegisterSet$FieldWriter: int writtenMask>;
+        $i3 = this.<avrora.sim.mcu.RegisterSet$SubFieldWriter: int mask>;
+        $r1 = this.<avrora.sim.mcu.RegisterSet$SubFieldWriter: avrora.sim.mcu.RegisterLayout$SubField subField>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 26, tid_write, "avrora.sim.mcu.RegisterSet$SubFieldWriter", 129, $i2);
+        $i2 = $r1.<avrora.sim.mcu.RegisterLayout$SubField: int field_low_bit>;
+        $i3 = $i3 << $i2;
+        $i0 = $i0 | $i3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r0, 187, tid_write, "avrora.sim.mcu.RegisterSet$SubFieldWriter", 129, $i0);
+        $r0.<avrora.sim.mcu.RegisterSet$FieldWriter: int writtenMask> = $i0;
+        $r2 = this.<avrora.sim.mcu.RegisterSet$SubFieldWriter: avrora.sim.mcu.RegisterLayout$SubField subField>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r2, 24, tid_write, "avrora.sim.mcu.RegisterSet$SubFieldWriter", 130, $z0);
+        $z0 = $r2.<avrora.sim.mcu.RegisterLayout$SubField: boolean commit>;
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<avrora.sim.mcu.RegisterSet$SubFieldWriter: avrora.sim.mcu.RegisterSet$FieldWriter fieldWriter>;
+        virtualinvoke $r0.<avrora.sim.mcu.RegisterSet$FieldWriter: void commit()>();
+
+     label0:
+        return;
+    }
+}

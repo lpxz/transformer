@@ -1,0 +1,1543 @@
+public class org.apache.lucene.store.FSDirectory extends org.apache.lucene.store.Directory
+{
+    private static final java.util.Map DIRECTORIES;
+    private static boolean disableLocks;
+    public static final java.lang.String LOCK_DIR;
+    private static java.lang.Class IMPL;
+    private static java.security.MessageDigest DIGESTER;
+    private byte[] buffer;
+    private java.io.File directory;
+    private int refCount;
+    private static final char[] HEX_DIGITS;
+    static java.lang.Class class$org$apache$lucene$store$FSDirectory;
+
+    public static void setDisableLocks(boolean)
+    {
+        boolean doDisableLocks;
+        long tid_setDisableLocks;
+        java.lang.Thread thread_setDisableLocks;
+
+        doDisableLocks := @parameter0: boolean;
+        thread_setDisableLocks = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setDisableLocks = virtualinvoke thread_setDisableLocks.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,boolean)>(46, tid_setDisableLocks, "org.apache.lucene.storeorg.apache.lucene.store.FSDirectory", 74, doDisableLocks);
+        <org.apache.lucene.store.FSDirectory: boolean disableLocks> = doDisableLocks;
+        return;
+    }
+
+    public static boolean getDisableLocks()
+    {
+        boolean $z0;
+        long tid_getDisableLocks;
+        java.lang.Thread thread_getDisableLocks;
+
+        thread_getDisableLocks = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getDisableLocks = virtualinvoke thread_getDisableLocks.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(46, tid_getDisableLocks, "org.apache.lucene.storeorg.apache.lucene.store.FSDirectory", 82, $z0);
+        $z0 = <org.apache.lucene.store.FSDirectory: boolean disableLocks>;
+        return $z0;
+    }
+
+    public static org.apache.lucene.store.FSDirectory getDirectory(java.lang.String) throws java.io.IOException
+    {
+        java.lang.String path;
+        java.io.File $r0;
+        org.apache.lucene.store.FSDirectory $r1;
+
+        path := @parameter0: java.lang.String;
+        $r0 = new java.io.File;
+        specialinvoke $r0.<java.io.File: void <init>(java.lang.String)>(path);
+        $r1 = staticinvoke <org.apache.lucene.store.FSDirectory: org.apache.lucene.store.FSDirectory getDirectory(java.io.File,org.apache.lucene.store.LockFactory)>($r0, null);
+        return $r1;
+    }
+
+    public static org.apache.lucene.store.FSDirectory getDirectory(java.lang.String, org.apache.lucene.store.LockFactory) throws java.io.IOException
+    {
+        java.lang.String path;
+        org.apache.lucene.store.LockFactory lockFactory;
+        java.io.File $r0;
+        org.apache.lucene.store.FSDirectory $r1;
+
+        path := @parameter0: java.lang.String;
+        lockFactory := @parameter1: org.apache.lucene.store.LockFactory;
+        $r0 = new java.io.File;
+        specialinvoke $r0.<java.io.File: void <init>(java.lang.String)>(path);
+        $r1 = staticinvoke <org.apache.lucene.store.FSDirectory: org.apache.lucene.store.FSDirectory getDirectory(java.io.File,org.apache.lucene.store.LockFactory)>($r0, lockFactory);
+        return $r1;
+    }
+
+    public static org.apache.lucene.store.FSDirectory getDirectory(java.io.File) throws java.io.IOException
+    {
+        java.io.File file;
+        org.apache.lucene.store.FSDirectory $r0;
+
+        file := @parameter0: java.io.File;
+        $r0 = staticinvoke <org.apache.lucene.store.FSDirectory: org.apache.lucene.store.FSDirectory getDirectory(java.io.File,org.apache.lucene.store.LockFactory)>(file, null);
+        return $r0;
+    }
+
+    public static org.apache.lucene.store.FSDirectory getDirectory(java.io.File, org.apache.lucene.store.LockFactory) throws java.io.IOException
+    {
+        java.io.File file, $r0, file;
+        org.apache.lucene.store.LockFactory lockFactory, $r10;
+        java.util.Map l3, $r4;
+        org.apache.lucene.store.FSDirectory dir, l3;
+        java.lang.Exception e, $r7;
+        java.lang.Throwable l5, l6, $r11, $r13;
+        java.lang.String $r1, $r9;
+        boolean $z0;
+        java.io.IOException $r2;
+        java.lang.StringBuffer $r3;
+        java.lang.Object $r5;
+        java.lang.Class $r6;
+        java.lang.RuntimeException $r8;
+        int $i0;
+        long tid_getDirectory;
+        java.lang.Thread thread_getDirectory;
+
+        file := @parameter0: java.io.File;
+        lockFactory := @parameter1: org.apache.lucene.store.LockFactory;
+        thread_getDirectory = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getDirectory = virtualinvoke thread_getDirectory.<java.lang.Thread: long getId()>();
+        $r0 = new java.io.File;
+        $r1 = virtualinvoke file.<java.io.File: java.lang.String getCanonicalPath()>();
+        specialinvoke $r0.<java.io.File: void <init>(java.lang.String)>($r1);
+        file = $r0;
+        $z0 = virtualinvoke file.<java.io.File: boolean exists()>();
+        if $z0 == 0 goto label0;
+
+        $z0 = virtualinvoke file.<java.io.File: boolean isDirectory()>();
+        if $z0 != 0 goto label0;
+
+        $r2 = new java.io.IOException;
+        $r3 = new java.lang.StringBuffer;
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(file);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" not a directory");
+        $r1 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r1);
+        throw $r2;
+
+     label0:
+        $z0 = virtualinvoke file.<java.io.File: boolean exists()>();
+        if $z0 != 0 goto label1;
+
+        $z0 = virtualinvoke file.<java.io.File: boolean mkdirs()>();
+        if $z0 != 0 goto label1;
+
+        $r2 = new java.io.IOException;
+        $r3 = new java.lang.StringBuffer;
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Cannot create directory: ");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(file);
+        $r1 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r1);
+        throw $r2;
+
+     label1:
+        $r4 = <org.apache.lucene.store.FSDirectory: java.util.Map DIRECTORIES>;
+        l3 = $r4;
+        entermonitor $r4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r4, 2, tid_getDirectory);
+
+     label2:
+        $r4 = <org.apache.lucene.store.FSDirectory: java.util.Map DIRECTORIES>;
+        $r5 = interfaceinvoke $r4.<java.util.Map: java.lang.Object get(java.lang.Object)>(file);
+        dir = (org.apache.lucene.store.FSDirectory) $r5;
+        if dir != null goto label7;
+
+     label3:
+        $r6 = <org.apache.lucene.store.FSDirectory: java.lang.Class IMPL>;
+        $r5 = virtualinvoke $r6.<java.lang.Class: java.lang.Object newInstance()>();
+        dir = (org.apache.lucene.store.FSDirectory) $r5;
+
+     label4:
+        goto label6;
+
+     label5:
+        $r7 := @caughtexception;
+        e = $r7;
+        $r8 = new java.lang.RuntimeException;
+        $r3 = new java.lang.StringBuffer;
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cannot load FSDirectory class: ");
+        $r9 = virtualinvoke e.<java.lang.Exception: java.lang.String toString()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r9);
+        $r1 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r8.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r1, e);
+        throw $r8;
+
+     label6:
+        specialinvoke dir.<org.apache.lucene.store.FSDirectory: void init(java.io.File,org.apache.lucene.store.LockFactory)>(file, lockFactory);
+        $r4 = <org.apache.lucene.store.FSDirectory: java.util.Map DIRECTORIES>;
+        interfaceinvoke $r4.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(file, dir);
+        goto label8;
+
+     label7:
+        if lockFactory == null goto label8;
+
+        $r10 = virtualinvoke dir.<org.apache.lucene.store.FSDirectory: org.apache.lucene.store.LockFactory getLockFactory()>();
+        if lockFactory == $r10 goto label8;
+
+        $r2 = new java.io.IOException;
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Directory was previously created with a different LockFactory instance; please pass null as the lockFactory instance and use setLockFactory to change it");
+        throw $r2;
+
+     label8:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 2, tid_getDirectory);
+        exitmonitor l3;
+
+     label9:
+        goto label13;
+
+     label10:
+        $r11 := @caughtexception;
+
+     label11:
+        l5 = $r11;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 2, tid_getDirectory);
+        exitmonitor l3;
+
+     label12:
+        throw l5;
+
+     label13:
+        l3 = dir;
+        entermonitor dir;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(dir, 3, tid_getDirectory);
+
+     label14:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(dir, 47, tid_getDirectory, "org.apache.lucene.store.FSDirectory", 197, $i0);
+        $i0 = dir.<org.apache.lucene.store.FSDirectory: int refCount>;
+        $i0 = $i0 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(dir, 47, tid_getDirectory, "org.apache.lucene.store.FSDirectory", 197, $i0);
+        dir.<org.apache.lucene.store.FSDirectory: int refCount> = $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 3, tid_getDirectory);
+        exitmonitor l3;
+
+     label15:
+        goto label19;
+
+     label16:
+        $r13 := @caughtexception;
+
+     label17:
+        l6 = $r13;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 3, tid_getDirectory);
+        exitmonitor l3;
+
+     label18:
+        throw l6;
+
+     label19:
+        return dir;
+
+        catch java.lang.Exception from label3 to label4 with label5;
+        catch java.lang.Throwable from label2 to label9 with label10;
+        catch java.lang.Throwable from label11 to label12 with label10;
+        catch java.lang.Throwable from label14 to label15 with label16;
+        catch java.lang.Throwable from label17 to label18 with label16;
+    }
+
+    public static org.apache.lucene.store.FSDirectory getDirectory(java.lang.String, boolean) throws java.io.IOException
+    {
+        java.lang.String path;
+        boolean create;
+        java.io.File $r0;
+        org.apache.lucene.store.FSDirectory $r1;
+
+        path := @parameter0: java.lang.String;
+        create := @parameter1: boolean;
+        $r0 = new java.io.File;
+        specialinvoke $r0.<java.io.File: void <init>(java.lang.String)>(path);
+        $r1 = staticinvoke <org.apache.lucene.store.FSDirectory: org.apache.lucene.store.FSDirectory getDirectory(java.io.File,boolean)>($r0, create);
+        return $r1;
+    }
+
+    public static org.apache.lucene.store.FSDirectory getDirectory(java.io.File, boolean) throws java.io.IOException
+    {
+        java.io.File file;
+        boolean create;
+        org.apache.lucene.store.FSDirectory dir;
+
+        file := @parameter0: java.io.File;
+        create := @parameter1: boolean;
+        dir = staticinvoke <org.apache.lucene.store.FSDirectory: org.apache.lucene.store.FSDirectory getDirectory(java.io.File,org.apache.lucene.store.LockFactory)>(file, null);
+        if create == 0 goto label0;
+
+        specialinvoke dir.<org.apache.lucene.store.FSDirectory: void create()>();
+
+     label0:
+        return dir;
+    }
+
+    private void create() throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory this;
+        org.apache.lucene.index.IndexFileNameFilter $r0;
+        java.lang.String[] files;
+        java.lang.StringBuffer $r1;
+        int i, $i0;
+        java.io.File file, $r2, $r4, $r7;
+        boolean $z0;
+        java.io.IOException $r3;
+        java.lang.String $r5, $r6;
+        org.apache.lucene.store.LockFactory $r8;
+        long tid_create;
+        java.lang.Thread thread_create;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        thread_create = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_create = virtualinvoke thread_create.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_create, "org.apache.lucene.store.FSDirectory", 239, $r2);
+        $r2 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        $z0 = virtualinvoke $r2.<java.io.File: boolean exists()>();
+        if $z0 == 0 goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_create, "org.apache.lucene.store.FSDirectory", 240, $r2);
+        $r2 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        $r0 = staticinvoke <org.apache.lucene.index.IndexFileNameFilter: org.apache.lucene.index.IndexFileNameFilter getFilter()>();
+        files = virtualinvoke $r2.<java.io.File: java.lang.String[] list(java.io.FilenameFilter)>($r0);
+        if files != null goto label0;
+
+        $r3 = new java.io.IOException;
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cannot read directory ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_create, "org.apache.lucene.store.FSDirectory", 242, $r4);
+        $r4 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        $r5 = virtualinvoke $r4.<java.io.File: java.lang.String getAbsolutePath()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r5);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(": list() returned null");
+        $r6 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r6);
+        throw $r3;
+
+     label0:
+        i = 0;
+
+     label1:
+        $i0 = lengthof files;
+        if i >= $i0 goto label3;
+
+        $r2 = new java.io.File;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_create, "org.apache.lucene.store.FSDirectory", 244, $r7);
+        $r7 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(files, 10, tid_create, "org.apache.lucene.store.FSDirectory", 244, i, $r5);
+        $r5 = files[i];
+        specialinvoke $r2.<java.io.File: void <init>(java.io.File,java.lang.String)>($r7, $r5);
+        file = $r2;
+        $z0 = virtualinvoke file.<java.io.File: boolean delete()>();
+        if $z0 != 0 goto label2;
+
+        $r3 = new java.io.IOException;
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Cannot delete ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(file);
+        $r6 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r6);
+        throw $r3;
+
+     label2:
+        i = i + 1;
+        goto label1;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 35, tid_create, "org.apache.lucene.store.FSDirectory", 249, $r8);
+        $r8 = this.<org.apache.lucene.store.FSDirectory: org.apache.lucene.store.LockFactory lockFactory>;
+        virtualinvoke $r8.<org.apache.lucene.store.LockFactory: void clearLock(java.lang.String)>("write.lock");
+        return;
+    }
+
+    protected void <init>()
+    {
+        org.apache.lucene.store.FSDirectory this;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        specialinvoke this.<org.apache.lucene.store.Directory: void <init>()>();
+        this.<org.apache.lucene.store.FSDirectory: byte[] buffer> = null;
+        this.<org.apache.lucene.store.FSDirectory: java.io.File directory> = null;
+        return;
+    }
+
+    private void init(java.io.File, org.apache.lucene.store.LockFactory) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.io.File path;
+        org.apache.lucene.store.LockFactory lockFactory;
+        boolean doClearLockID, $z0;
+        java.lang.String lockClassName, $r3;
+        java.lang.Class c;
+        java.lang.ClassNotFoundException e, $r1;
+        java.lang.StringBuffer $r0;
+        java.io.IOException $r2;
+        java.lang.Object $r4;
+        java.lang.IllegalAccessException $r5, e;
+        java.lang.InstantiationException $r6, e;
+        java.lang.ClassCastException $r7, e;
+        org.apache.lucene.store.NativeFSLockFactory $r8;
+        org.apache.lucene.store.SimpleFSLockFactory $r9;
+        long tid_init;
+        java.lang.Thread thread_init;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        path := @parameter0: java.io.File;
+        lockFactory := @parameter1: org.apache.lucene.store.LockFactory;
+        thread_init = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_init = virtualinvoke thread_init.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_init, "org.apache.lucene.store.FSDirectory", 264, path);
+        this.<org.apache.lucene.store.FSDirectory: java.io.File directory> = path;
+        doClearLockID = 0;
+        if lockFactory != null goto label13;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(46, tid_init, "org.apache.lucene.storeorg.apache.lucene.store.FSDirectory", 270, $z0);
+        $z0 = <org.apache.lucene.store.FSDirectory: boolean disableLocks>;
+        if $z0 == 0 goto label0;
+
+        lockFactory = staticinvoke <org.apache.lucene.store.NoLockFactory: org.apache.lucene.store.NoLockFactory getNoLockFactory()>();
+        goto label13;
+
+     label0:
+        lockClassName = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("org.apache.lucene.store.FSDirectoryLockFactoryClass");
+        if lockClassName == null goto label12;
+
+        $z0 = virtualinvoke lockClassName.<java.lang.String: boolean equals(java.lang.Object)>("");
+        if $z0 != 0 goto label12;
+
+     label1:
+        c = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(lockClassName);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r1 := @caughtexception;
+        e = $r1;
+        $r2 = new java.io.IOException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("unable to find LockClass ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(lockClassName);
+        $r3 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r3);
+        throw $r2;
+
+     label4:
+        $r4 = virtualinvoke c.<java.lang.Class: java.lang.Object newInstance()>();
+        lockFactory = (org.apache.lucene.store.LockFactory) $r4;
+
+     label5:
+        goto label9;
+
+     label6:
+        $r5 := @caughtexception;
+        e = $r5;
+        $r2 = new java.io.IOException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("IllegalAccessException when instantiating LockClass ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(lockClassName);
+        $r3 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r3);
+        throw $r2;
+
+     label7:
+        $r6 := @caughtexception;
+        e = $r6;
+        $r2 = new java.io.IOException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("InstantiationException when instantiating LockClass ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(lockClassName);
+        $r3 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r3);
+        throw $r2;
+
+     label8:
+        $r7 := @caughtexception;
+        e = $r7;
+        $r2 = new java.io.IOException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("unable to cast LockClass ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(lockClassName);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" instance to a LockFactory");
+        $r3 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r3);
+        throw $r2;
+
+     label9:
+        $z0 = lockFactory instanceof org.apache.lucene.store.NativeFSLockFactory;
+        if $z0 == 0 goto label10;
+
+        $r8 = (org.apache.lucene.store.NativeFSLockFactory) lockFactory;
+        virtualinvoke $r8.<org.apache.lucene.store.NativeFSLockFactory: void setLockDir(java.io.File)>(path);
+        goto label11;
+
+     label10:
+        $z0 = lockFactory instanceof org.apache.lucene.store.SimpleFSLockFactory;
+        if $z0 == 0 goto label11;
+
+        $r9 = (org.apache.lucene.store.SimpleFSLockFactory) lockFactory;
+        virtualinvoke $r9.<org.apache.lucene.store.SimpleFSLockFactory: void setLockDir(java.io.File)>(path);
+
+     label11:
+        goto label13;
+
+     label12:
+        $r9 = new org.apache.lucene.store.SimpleFSLockFactory;
+        specialinvoke $r9.<org.apache.lucene.store.SimpleFSLockFactory: void <init>(java.io.File)>(path);
+        lockFactory = $r9;
+        doClearLockID = 1;
+
+     label13:
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory: void setLockFactory(org.apache.lucene.store.LockFactory)>(lockFactory);
+        if doClearLockID == 0 goto label14;
+
+        virtualinvoke lockFactory.<org.apache.lucene.store.LockFactory: void setLockPrefix(java.lang.String)>(null);
+
+     label14:
+        return;
+
+        catch java.lang.ClassNotFoundException from label1 to label2 with label3;
+        catch java.lang.IllegalAccessException from label4 to label5 with label6;
+        catch java.lang.InstantiationException from label4 to label5 with label7;
+        catch java.lang.ClassCastException from label4 to label5 with label8;
+    }
+
+    public java.lang.String[] list()
+    {
+        org.apache.lucene.store.FSDirectory this;
+        org.apache.lucene.index.IndexFileNameFilter $r0;
+        java.io.File $r1;
+        java.lang.String[] $r2;
+        long tid_list;
+        java.lang.Thread thread_list;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        thread_list = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_list = virtualinvoke thread_list.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory: void ensureOpen()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_list, "org.apache.lucene.store.FSDirectory", 321, $r1);
+        $r1 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        $r0 = staticinvoke <org.apache.lucene.index.IndexFileNameFilter: org.apache.lucene.index.IndexFileNameFilter getFilter()>();
+        $r2 = virtualinvoke $r1.<java.io.File: java.lang.String[] list(java.io.FilenameFilter)>($r0);
+        return $r2;
+    }
+
+    public boolean fileExists(java.lang.String)
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.lang.String name;
+        java.io.File file, $r0, $r1;
+        boolean $z0;
+        long tid_fileExists;
+        java.lang.Thread thread_fileExists;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        name := @parameter0: java.lang.String;
+        thread_fileExists = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_fileExists = virtualinvoke thread_fileExists.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory: void ensureOpen()>();
+        $r0 = new java.io.File;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_fileExists, "org.apache.lucene.store.FSDirectory", 327, $r1);
+        $r1 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        specialinvoke $r0.<java.io.File: void <init>(java.io.File,java.lang.String)>($r1, name);
+        file = $r0;
+        $z0 = virtualinvoke file.<java.io.File: boolean exists()>();
+        return $z0;
+    }
+
+    public long fileModified(java.lang.String)
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.lang.String name;
+        java.io.File file, $r0, $r1;
+        long $l0, tid_fileModified;
+        java.lang.Thread thread_fileModified;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        name := @parameter0: java.lang.String;
+        thread_fileModified = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_fileModified = virtualinvoke thread_fileModified.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory: void ensureOpen()>();
+        $r0 = new java.io.File;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_fileModified, "org.apache.lucene.store.FSDirectory", 334, $r1);
+        $r1 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        specialinvoke $r0.<java.io.File: void <init>(java.io.File,java.lang.String)>($r1, name);
+        file = $r0;
+        $l0 = virtualinvoke file.<java.io.File: long lastModified()>();
+        return $l0;
+    }
+
+    public static long fileModified(java.io.File, java.lang.String)
+    {
+        java.io.File directory, $r0, file;
+        java.lang.String name;
+        long $l0;
+
+        directory := @parameter0: java.io.File;
+        name := @parameter1: java.lang.String;
+        $r0 = new java.io.File;
+        specialinvoke $r0.<java.io.File: void <init>(java.io.File,java.lang.String)>(directory, name);
+        file = $r0;
+        $l0 = virtualinvoke file.<java.io.File: long lastModified()>();
+        return $l0;
+    }
+
+    public void touchFile(java.lang.String)
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.lang.String name;
+        java.io.File file, $r0, $r1;
+        long $l0, tid_touchFile;
+        java.lang.Thread thread_touchFile;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        name := @parameter0: java.lang.String;
+        thread_touchFile = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_touchFile = virtualinvoke thread_touchFile.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory: void ensureOpen()>();
+        $r0 = new java.io.File;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_touchFile, "org.apache.lucene.store.FSDirectory", 347, $r1);
+        $r1 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        specialinvoke $r0.<java.io.File: void <init>(java.io.File,java.lang.String)>($r1, name);
+        file = $r0;
+        $l0 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+        virtualinvoke file.<java.io.File: boolean setLastModified(long)>($l0);
+        return;
+    }
+
+    public long fileLength(java.lang.String)
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.lang.String name;
+        java.io.File file, $r0, $r1;
+        long $l0, tid_fileLength;
+        java.lang.Thread thread_fileLength;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        name := @parameter0: java.lang.String;
+        thread_fileLength = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_fileLength = virtualinvoke thread_fileLength.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory: void ensureOpen()>();
+        $r0 = new java.io.File;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_fileLength, "org.apache.lucene.store.FSDirectory", 354, $r1);
+        $r1 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        specialinvoke $r0.<java.io.File: void <init>(java.io.File,java.lang.String)>($r1, name);
+        file = $r0;
+        $l0 = virtualinvoke file.<java.io.File: long length()>();
+        return $l0;
+    }
+
+    public void deleteFile(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.lang.String name, $r4;
+        java.io.File file, $r0, $r1;
+        boolean $z0;
+        java.io.IOException $r2;
+        java.lang.StringBuffer $r3;
+        long tid_deleteFile;
+        java.lang.Thread thread_deleteFile;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        name := @parameter0: java.lang.String;
+        thread_deleteFile = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_deleteFile = virtualinvoke thread_deleteFile.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory: void ensureOpen()>();
+        $r0 = new java.io.File;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_deleteFile, "org.apache.lucene.store.FSDirectory", 361, $r1);
+        $r1 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        specialinvoke $r0.<java.io.File: void <init>(java.io.File,java.lang.String)>($r1, name);
+        file = $r0;
+        $z0 = virtualinvoke file.<java.io.File: boolean delete()>();
+        if $z0 != 0 goto label0;
+
+        $r2 = new java.io.IOException;
+        $r3 = new java.lang.StringBuffer;
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Cannot delete ");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(file);
+        $r4 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r4);
+        throw $r2;
+
+     label0:
+        return;
+    }
+
+    public void renameFile(java.lang.String, java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.lang.String 'from', 'to', $r4, $r14;
+        java.io.File old, nu, $r1, tmp$543146643, tmp$543146706;
+        java.io.FileInputStream in, tmp$543147583;
+        java.io.FileOutputStream out, tmp$543147646;
+        int len, $i0;
+        java.io.IOException ioe, newExc, $r9, tmp$543147520, tmp$543147772, tmp;
+        java.lang.Throwable l9, e, l12, $r11, $r12, $r15, $r16, $r17, $r18, $r19, $r20, throwableLocal47;
+        boolean $z0;
+        java.lang.StringBuffer $r3, tmp$543147457, tmp$543147709, tmp$543147835, tmp$543147961, tmp$543148087;
+        byte[] $r7, $r8;
+        java.lang.RuntimeException tmp$543147898, tmp$543148024, tmp$543148150;
+        java.lang.Object localthislockrenameFile;
+        long tid_renameFile;
+        java.lang.Thread thread_renameFile;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        'from' := @parameter0: java.lang.String;
+        'to' := @parameter1: java.lang.String;
+        thread_renameFile = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_renameFile = virtualinvoke thread_renameFile.<java.lang.Thread: long getId()>();
+        localthislockrenameFile = this;
+
+     label0:
+        entermonitor localthislockrenameFile;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockrenameFile, 0, tid_renameFile);
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory: void ensureOpen()>();
+        tmp$543146643 = new java.io.File;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_renameFile, "org.apache.lucene.store.FSDirectory", 373, $r1);
+        $r1 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        specialinvoke tmp$543146643.<java.io.File: void <init>(java.io.File,java.lang.String)>($r1, 'from');
+        old = tmp$543146643;
+        tmp$543146706 = new java.io.File;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_renameFile, "org.apache.lucene.store.FSDirectory", 374, $r1);
+        $r1 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        specialinvoke tmp$543146706.<java.io.File: void <init>(java.io.File,java.lang.String)>($r1, 'to');
+        nu = tmp$543146706;
+        $z0 = virtualinvoke nu.<java.io.File: boolean exists()>();
+        if $z0 == 0 goto label1;
+
+        $z0 = virtualinvoke nu.<java.io.File: boolean delete()>();
+        if $z0 != 0 goto label1;
+
+        tmp$543147520 = new java.io.IOException;
+        tmp$543147457 = new java.lang.StringBuffer;
+        specialinvoke tmp$543147457.<java.lang.StringBuffer: void <init>()>();
+        $r3 = virtualinvoke tmp$543147457.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Cannot delete ");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(nu);
+        $r4 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke tmp$543147520.<java.io.IOException: void <init>(java.lang.String)>($r4);
+        throw tmp$543147520;
+
+     label1:
+        $z0 = virtualinvoke old.<java.io.File: boolean renameTo(java.io.File)>(nu);
+        if $z0 != 0 goto label12;
+
+        in = null;
+        out = null;
+
+     label2:
+        tmp$543147583 = new java.io.FileInputStream;
+        specialinvoke tmp$543147583.<java.io.FileInputStream: void <init>(java.io.File)>(old);
+        in = tmp$543147583;
+        tmp$543147646 = new java.io.FileOutputStream;
+        specialinvoke tmp$543147646.<java.io.FileOutputStream: void <init>(java.io.File)>(nu);
+        out = tmp$543147646;
+        $r7 = this.<org.apache.lucene.store.FSDirectory: byte[] buffer>;
+        if $r7 != null goto label3;
+
+        $r8 = newarray (byte)[1024];
+        this.<org.apache.lucene.store.FSDirectory: byte[] buffer> = $r8;
+
+     label3:
+        $r8 = this.<org.apache.lucene.store.FSDirectory: byte[] buffer>;
+        $i0 = virtualinvoke in.<java.io.InputStream: int read(byte[])>($r8);
+        len = $i0;
+        if $i0 < 0 goto label4;
+
+        $r8 = this.<org.apache.lucene.store.FSDirectory: byte[] buffer>;
+        virtualinvoke out.<java.io.OutputStream: void write(byte[],int,int)>($r8, 0, len);
+        goto label3;
+
+     label4:
+        virtualinvoke old.<java.io.File: boolean delete()>();
+
+     label5:
+        goto label14;
+
+     label6:
+        goto label12;
+
+     label7:
+        $r9 := @caughtexception;
+
+     label8:
+        ioe = $r9;
+        tmp$543147772 = new java.io.IOException;
+        tmp$543147709 = new java.lang.StringBuffer;
+        specialinvoke tmp$543147709.<java.lang.StringBuffer: void <init>()>();
+        $r3 = virtualinvoke tmp$543147709.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Cannot rename ");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(old);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" to ");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(nu);
+        $r4 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke tmp$543147772.<java.io.IOException: void <init>(java.lang.String)>($r4);
+        newExc = tmp$543147772;
+        virtualinvoke newExc.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>(ioe);
+        throw newExc;
+
+     label9:
+        $r11 := @caughtexception;
+        l9 = $r11;
+        goto label24;
+
+     label10:
+        throw l9;
+
+     label11:
+        $r12 := @caughtexception;
+        e = $r12;
+        tmp$543147898 = new java.lang.RuntimeException;
+        tmp$543147835 = new java.lang.StringBuffer;
+        specialinvoke tmp$543147835.<java.lang.StringBuffer: void <init>()>();
+        $r3 = virtualinvoke tmp$543147835.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Cannot close output stream: ");
+        tmp = (java.io.IOException) e;
+        $r14 = virtualinvoke tmp.<java.io.IOException: java.lang.String toString()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r14);
+        $r4 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke tmp$543147898.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r4, e);
+        throw tmp$543147898;
+
+     label12:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockrenameFile, 0, tid_renameFile);
+        exitmonitor localthislockrenameFile;
+        goto label13;
+
+     label13:
+        return;
+
+     label14:
+        if in == null goto label18;
+
+     label15:
+        virtualinvoke in.<java.io.InputStream: void close()>();
+
+     label16:
+        goto label18;
+
+     label17:
+        $r15 := @caughtexception;
+        e = $r15;
+        tmp$543148024 = new java.lang.RuntimeException;
+        tmp$543147961 = new java.lang.StringBuffer;
+        specialinvoke tmp$543147961.<java.lang.StringBuffer: void <init>()>();
+        $r3 = virtualinvoke tmp$543147961.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Cannot close input stream: ");
+        tmp = (java.io.IOException) e;
+        $r14 = virtualinvoke tmp.<java.io.IOException: java.lang.String toString()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r14);
+        $r4 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke tmp$543148024.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r4, e);
+        throw tmp$543148024;
+
+     label18:
+        goto label38;
+
+     label19:
+        goto label23;
+
+     label20:
+        $r16 := @caughtexception;
+
+     label21:
+        l12 = $r16;
+        goto label40;
+
+     label22:
+        throw l12;
+
+     label23:
+        goto label6;
+
+     label24:
+        if in == null goto label28;
+
+     label25:
+        virtualinvoke in.<java.io.InputStream: void close()>();
+
+     label26:
+        goto label28;
+
+     label27:
+        $r18 := @caughtexception;
+        e = $r18;
+        tmp$543148150 = new java.lang.RuntimeException;
+        tmp$543148087 = new java.lang.StringBuffer;
+        specialinvoke tmp$543148087.<java.lang.StringBuffer: void <init>()>();
+        $r3 = virtualinvoke tmp$543148087.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Cannot close input stream: ");
+        tmp = (java.io.IOException) e;
+        $r14 = virtualinvoke tmp.<java.io.IOException: java.lang.String toString()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r14);
+        $r4 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke tmp$543148150.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r4, e);
+        throw tmp$543148150;
+
+     label28:
+        goto label34;
+
+     label29:
+        goto label33;
+
+     label30:
+        $r19 := @caughtexception;
+
+     label31:
+        l12 = $r19;
+        goto label36;
+
+     label32:
+        throw l12;
+
+     label33:
+        goto label10;
+
+     label34:
+        if out == null goto label35;
+
+        virtualinvoke out.<java.io.OutputStream: void close()>();
+        goto label35;
+
+     label35:
+        goto label29;
+
+     label36:
+        if out == null goto label37;
+
+        virtualinvoke out.<java.io.OutputStream: void close()>();
+        goto label37;
+
+     label37:
+        goto label32;
+
+     label38:
+        if out == null goto label39;
+
+        virtualinvoke out.<java.io.OutputStream: void close()>();
+        goto label39;
+
+     label39:
+        goto label19;
+
+     label40:
+        if out == null goto label41;
+
+        virtualinvoke out.<java.io.OutputStream: void close()>();
+        goto label41;
+
+     label41:
+        goto label22;
+
+     label42:
+        throwableLocal47 := @caughtexception;
+
+     label43:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockrenameFile, 0, tid_renameFile);
+        exitmonitor localthislockrenameFile;
+
+     label44:
+        throw throwableLocal47;
+
+        catch java.lang.Throwable from label0 to label41 with label42;
+        catch java.lang.Throwable from label43 to label44 with label42;
+        catch java.io.IOException from label2 to label5 with label7;
+        catch java.lang.Throwable from label2 to label6 with label9;
+        catch java.lang.Throwable from label8 to label10 with label9;
+        catch java.lang.Throwable from label15 to label16 with label17;
+        catch java.lang.Throwable from label14 to label19 with label20;
+        catch java.lang.Throwable from label21 to label22 with label20;
+        catch java.lang.Throwable from label25 to label26 with label27;
+        catch java.lang.Throwable from label24 to label29 with label30;
+        catch java.lang.Throwable from label31 to label32 with label30;
+        catch java.lang.Throwable from label11 to label36 with label11;
+        catch java.lang.Throwable from label11 to label38 with label11;
+        catch java.lang.Throwable from label11 to label40 with label11;
+        catch java.lang.Throwable from label11 to label41 with label11;
+    }
+
+    public org.apache.lucene.store.IndexOutput createOutput(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.lang.String name, $r4;
+        java.io.File file, $r0, $r1;
+        boolean $z0;
+        java.io.IOException $r2;
+        java.lang.StringBuffer $r3;
+        org.apache.lucene.store.FSDirectory$FSIndexOutput $r5;
+        long tid_createOutput;
+        java.lang.Thread thread_createOutput;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        name := @parameter0: java.lang.String;
+        thread_createOutput = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_createOutput = virtualinvoke thread_createOutput.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory: void ensureOpen()>();
+        $r0 = new java.io.File;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_createOutput, "org.apache.lucene.store.FSDirectory", 438, $r1);
+        $r1 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        specialinvoke $r0.<java.io.File: void <init>(java.io.File,java.lang.String)>($r1, name);
+        file = $r0;
+        $z0 = virtualinvoke file.<java.io.File: boolean exists()>();
+        if $z0 == 0 goto label0;
+
+        $z0 = virtualinvoke file.<java.io.File: boolean delete()>();
+        if $z0 != 0 goto label0;
+
+        $r2 = new java.io.IOException;
+        $r3 = new java.lang.StringBuffer;
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Cannot overwrite: ");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(file);
+        $r4 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r4);
+        throw $r2;
+
+     label0:
+        $r5 = new org.apache.lucene.store.FSDirectory$FSIndexOutput;
+        specialinvoke $r5.<org.apache.lucene.store.FSDirectory$FSIndexOutput: void <init>(java.io.File)>(file);
+        return $r5;
+    }
+
+    public void sync(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.lang.String name;
+        java.io.File fullFile, $r0, $r1;
+        boolean success;
+        int retryCount;
+        java.lang.Throwable exc, l7, ioe, $r4, $r5;
+        java.io.RandomAccessFile file, $r2;
+        java.lang.InterruptedException ie, $r6;
+        java.io.FileDescriptor $r3;
+        java.lang.Thread $r7, thread_sync;
+        long tid_sync;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        name := @parameter0: java.lang.String;
+        thread_sync = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_sync = virtualinvoke thread_sync.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory: void ensureOpen()>();
+        $r0 = new java.io.File;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_sync, "org.apache.lucene.store.FSDirectory", 447, $r1);
+        $r1 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        specialinvoke $r0.<java.io.File: void <init>(java.io.File,java.lang.String)>($r1, name);
+        fullFile = $r0;
+        success = 0;
+        retryCount = 0;
+        exc = null;
+
+     label0:
+        if success != 0 goto label12;
+
+        if retryCount >= 5 goto label12;
+
+        retryCount = retryCount + 1;
+        file = null;
+
+     label1:
+        $r2 = new java.io.RandomAccessFile;
+        specialinvoke $r2.<java.io.RandomAccessFile: void <init>(java.io.File,java.lang.String)>(fullFile, "rw");
+        file = $r2;
+        $r3 = virtualinvoke file.<java.io.RandomAccessFile: java.io.FileDescriptor getFD()>();
+        virtualinvoke $r3.<java.io.FileDescriptor: void sync()>();
+        success = 1;
+        goto label14;
+
+     label2:
+        goto label6;
+
+     label3:
+        $r4 := @caughtexception;
+
+     label4:
+        l7 = $r4;
+        goto label16;
+
+     label5:
+        throw l7;
+
+     label6:
+        goto label11;
+
+     label7:
+        $r5 := @caughtexception;
+        ioe = $r5;
+        if exc != null goto label8;
+
+        exc = ioe;
+
+     label8:
+        staticinvoke <java.lang.Thread: void sleep(long)>(5L);
+
+     label9:
+        goto label11;
+
+     label10:
+        $r6 := @caughtexception;
+        ie = $r6;
+        $r7 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        virtualinvoke $r7.<java.lang.Thread: void interrupt()>();
+
+     label11:
+        goto label0;
+
+     label12:
+        if success != 0 goto label13;
+
+        throw exc;
+
+     label13:
+        return;
+
+     label14:
+        if file == null goto label15;
+
+        virtualinvoke file.<java.io.RandomAccessFile: void close()>();
+
+     label15:
+        goto label2;
+
+     label16:
+        if file == null goto label17;
+
+        virtualinvoke file.<java.io.RandomAccessFile: void close()>();
+
+     label17:
+        goto label5;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+        catch java.io.IOException from label1 to label6 with label7;
+        catch java.lang.InterruptedException from label8 to label9 with label10;
+        catch java.lang.Throwable from label14 to label16 with label7;
+        catch java.lang.Throwable from label16 to label17 with label7;
+    }
+
+    public org.apache.lucene.store.IndexInput openInput(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.lang.String name;
+        org.apache.lucene.store.IndexInput $r0;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        name := @parameter0: java.lang.String;
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory: void ensureOpen()>();
+        $r0 = virtualinvoke this.<org.apache.lucene.store.FSDirectory: org.apache.lucene.store.IndexInput openInput(java.lang.String,int)>(name, 1024);
+        return $r0;
+    }
+
+    public org.apache.lucene.store.IndexInput openInput(java.lang.String, int) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.lang.String name;
+        int bufferSize;
+        java.io.File $r0, $r2;
+        org.apache.lucene.store.FSDirectory$FSIndexInput $r1;
+        long tid_openInput;
+        java.lang.Thread thread_openInput;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        name := @parameter0: java.lang.String;
+        bufferSize := @parameter1: int;
+        thread_openInput = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_openInput = virtualinvoke thread_openInput.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory: void ensureOpen()>();
+        $r1 = new org.apache.lucene.store.FSDirectory$FSIndexInput;
+        $r0 = new java.io.File;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_openInput, "org.apache.lucene.store.FSDirectory", 488, $r2);
+        $r2 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        specialinvoke $r0.<java.io.File: void <init>(java.io.File,java.lang.String)>($r2, name);
+        specialinvoke $r1.<org.apache.lucene.store.FSDirectory$FSIndexInput: void <init>(java.io.File,int)>($r0, bufferSize);
+        return $r1;
+    }
+
+    public java.lang.String getLockID()
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.lang.String dirName, $r3, $r9;
+        java.io.IOException e, $r1;
+        java.security.MessageDigest l3, $r4;
+        byte[] digest, $r5;
+        java.lang.Throwable l4, $r6;
+        java.lang.StringBuffer buf, $r7;
+        int i, $i0;
+        byte b, $b1;
+        java.io.File $r0;
+        java.lang.RuntimeException $r2;
+        char[] $r8;
+        char $c2;
+        long tid_getLockID;
+        java.lang.Thread thread_getLockID;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        thread_getLockID = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getLockID = virtualinvoke thread_getLockID.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory: void ensureOpen()>();
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_getLockID, "org.apache.lucene.store.FSDirectory", 502, $r0);
+        $r0 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        dirName = virtualinvoke $r0.<java.io.File: java.lang.String getCanonicalPath()>();
+
+     label1:
+        goto label3;
+
+     label2:
+        $r1 := @caughtexception;
+        e = $r1;
+        $r2 = new java.lang.RuntimeException;
+        $r3 = virtualinvoke e.<java.io.IOException: java.lang.String toString()>();
+        specialinvoke $r2.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r3, e);
+        throw $r2;
+
+     label3:
+        $r4 = <org.apache.lucene.store.FSDirectory: java.security.MessageDigest DIGESTER>;
+        l3 = $r4;
+        entermonitor $r4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r4, 4, tid_getLockID);
+
+     label4:
+        $r4 = <org.apache.lucene.store.FSDirectory: java.security.MessageDigest DIGESTER>;
+        $r5 = virtualinvoke dirName.<java.lang.String: byte[] getBytes()>();
+        digest = virtualinvoke $r4.<java.security.MessageDigest: byte[] digest(byte[])>($r5);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 4, tid_getLockID);
+        exitmonitor l3;
+
+     label5:
+        goto label9;
+
+     label6:
+        $r6 := @caughtexception;
+
+     label7:
+        l4 = $r6;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 4, tid_getLockID);
+        exitmonitor l3;
+
+     label8:
+        throw l4;
+
+     label9:
+        $r7 = new java.lang.StringBuffer;
+        specialinvoke $r7.<java.lang.StringBuffer: void <init>()>();
+        buf = $r7;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("lucene-");
+        i = 0;
+
+     label10:
+        $i0 = lengthof digest;
+        if i >= $i0 goto label11;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(digest, 4, tid_getLockID, "org.apache.lucene.store.FSDirectory", 514, i, b);
+        b = digest[i];
+        $r8 = <org.apache.lucene.store.FSDirectory: char[] HEX_DIGITS>;
+        $b1 = b >> 4;
+        $b1 = $b1 & 15;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>($r8, 25, tid_getLockID, "org.apache.lucene.store.FSDirectory", 515, $b1, $c2);
+        $c2 = $r8[$b1];
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c2);
+        $r8 = <org.apache.lucene.store.FSDirectory: char[] HEX_DIGITS>;
+        $b1 = b & 15;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>($r8, 25, tid_getLockID, "org.apache.lucene.store.FSDirectory", 516, $b1, $c2);
+        $c2 = $r8[$b1];
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c2);
+        i = i + 1;
+        goto label10;
+
+     label11:
+        $r9 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r9;
+
+        catch java.io.IOException from label0 to label1 with label2;
+        catch java.lang.Throwable from label4 to label5 with label6;
+        catch java.lang.Throwable from label7 to label8 with label6;
+    }
+
+    public void close()
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.util.Map l1, $r1;
+        java.lang.Throwable l2, $r4, throwableLocal48;
+        boolean $z0;
+        int $i0, $i1;
+        java.io.File $r2;
+        java.lang.Object localthislockclose;
+        long tid_close;
+        java.lang.Thread thread_close;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        thread_close = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_close = virtualinvoke thread_close.<java.lang.Thread: long getId()>();
+        localthislockclose = this;
+
+     label0:
+        entermonitor localthislockclose;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockclose, 0, tid_close);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 36, tid_close, "org.apache.lucene.store.FSDirectory", 524, $z0);
+        $z0 = this.<org.apache.lucene.store.FSDirectory: boolean isOpen>;
+        if $z0 == 0 goto label6;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 47, tid_close, "org.apache.lucene.store.FSDirectory", 524, $i0);
+        $i0 = this.<org.apache.lucene.store.FSDirectory: int refCount>;
+        $i1 = $i0 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 47, tid_close, "org.apache.lucene.store.FSDirectory", 524, $i1);
+        this.<org.apache.lucene.store.FSDirectory: int refCount> = $i1;
+        if $i1 > 0 goto label6;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 36, tid_close, "org.apache.lucene.store.FSDirectory", 525, 0);
+        this.<org.apache.lucene.store.FSDirectory: boolean isOpen> = 0;
+        $r1 = <org.apache.lucene.store.FSDirectory: java.util.Map DIRECTORIES>;
+        l1 = $r1;
+        entermonitor $r1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r1, 2, tid_close);
+
+     label1:
+        $r1 = <org.apache.lucene.store.FSDirectory: java.util.Map DIRECTORIES>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_close, "org.apache.lucene.store.FSDirectory", 527, $r2);
+        $r2 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        interfaceinvoke $r1.<java.util.Map: java.lang.Object remove(java.lang.Object)>($r2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l1, 2, tid_close);
+        exitmonitor l1;
+
+     label2:
+        goto label6;
+
+     label3:
+        $r4 := @caughtexception;
+
+     label4:
+        l2 = $r4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l1, 2, tid_close);
+        exitmonitor l1;
+
+     label5:
+        throw l2;
+
+     label6:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockclose, 0, tid_close);
+        exitmonitor localthislockclose;
+        goto label7;
+
+     label7:
+        return;
+
+     label8:
+        throwableLocal48 := @caughtexception;
+
+     label9:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockclose, 0, tid_close);
+        exitmonitor localthislockclose;
+
+     label10:
+        throw throwableLocal48;
+
+        catch java.lang.Throwable from label0 to label7 with label8;
+        catch java.lang.Throwable from label9 to label10 with label8;
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    public java.io.File getFile()
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.io.File $r0;
+        long tid_getFile;
+        java.lang.Thread thread_getFile;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        thread_getFile = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getFile = virtualinvoke thread_getFile.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory: void ensureOpen()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_getFile, "org.apache.lucene.store.FSDirectory", 534, $r0);
+        $r0 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        return $r0;
+    }
+
+    public java.lang.String toString()
+    {
+        org.apache.lucene.store.FSDirectory this;
+        java.lang.StringBuffer $r0;
+        java.lang.Class $r1;
+        java.lang.String $r2, $r4;
+        java.io.File $r3;
+        long tid_toString;
+        java.lang.Thread thread_toString;
+
+        this := @this: org.apache.lucene.store.FSDirectory;
+        thread_toString = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_toString = virtualinvoke thread_toString.<java.lang.Thread: long getId()>();
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r1 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+        $r2 = virtualinvoke $r1.<java.lang.Class: java.lang.String getName()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("@");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 48, tid_toString, "org.apache.lucene.store.FSDirectory", 539, $r3);
+        $r3 = this.<org.apache.lucene.store.FSDirectory: java.io.File directory>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r3);
+        $r4 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r4;
+    }
+
+    static java.lang.Class class$(java.lang.String)
+    {
+        java.lang.String x0;
+        java.lang.ClassNotFoundException x1, $r1;
+        java.lang.Class $r0;
+        java.lang.NoClassDefFoundError $r2;
+        java.lang.Throwable $r3;
+
+        x0 := @parameter0: java.lang.String;
+
+     label0:
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(x0);
+
+     label1:
+        return $r0;
+
+     label2:
+        $r1 := @caughtexception;
+        x1 = $r1;
+        $r2 = new java.lang.NoClassDefFoundError;
+        specialinvoke $r2.<java.lang.NoClassDefFoundError: void <init>()>();
+        $r3 = virtualinvoke $r2.<java.lang.NoClassDefFoundError: java.lang.Throwable initCause(java.lang.Throwable)>(x1);
+        throw $r3;
+
+        catch java.lang.ClassNotFoundException from label0 to label1 with label2;
+    }
+
+    static void <clinit>()
+    {
+        java.util.HashMap $r0;
+        java.lang.String name, $r1, $r2, $r8, $r9;
+        java.lang.ClassNotFoundException e, $r5, $r11;
+        java.lang.SecurityException se, $r10;
+        java.lang.Class $r3, $r4;
+        java.lang.RuntimeException $r6;
+        java.lang.StringBuffer $r7;
+        java.security.MessageDigest $r12;
+        java.security.NoSuchAlgorithmException $r13, e;
+        char[] $r14;
+
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        <org.apache.lucene.store.FSDirectory: java.util.Map DIRECTORIES> = $r0;
+        <org.apache.lucene.store.FSDirectory: boolean disableLocks> = 0;
+        $r1 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("java.io.tmpdir");
+        $r2 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String,java.lang.String)>("org.apache.lucene.lockDir", $r1);
+        <org.apache.lucene.store.FSDirectory: java.lang.String LOCK_DIR> = $r2;
+
+     label0:
+        $r2 = "org.apache.lucene.FSDirectory.class";
+        $r3 = <org.apache.lucene.store.FSDirectory: java.lang.Class class$org$apache$lucene$store$FSDirectory>;
+        if $r3 != null goto label1;
+
+        $r3 = staticinvoke <org.apache.lucene.store.FSDirectory: java.lang.Class class$(java.lang.String)>("org.apache.lucene.store.FSDirectory");
+        <org.apache.lucene.store.FSDirectory: java.lang.Class class$org$apache$lucene$store$FSDirectory> = $r3;
+        goto label2;
+
+     label1:
+        $r3 = <org.apache.lucene.store.FSDirectory: java.lang.Class class$org$apache$lucene$store$FSDirectory>;
+
+     label2:
+        $r1 = virtualinvoke $r3.<java.lang.Class: java.lang.String getName()>();
+        name = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String,java.lang.String)>($r2, $r1);
+        $r4 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(name);
+        <org.apache.lucene.store.FSDirectory: java.lang.Class IMPL> = $r4;
+
+     label3:
+        goto label11;
+
+     label4:
+        $r5 := @caughtexception;
+        e = $r5;
+        $r6 = new java.lang.RuntimeException;
+        $r7 = new java.lang.StringBuffer;
+        specialinvoke $r7.<java.lang.StringBuffer: void <init>()>();
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cannot load FSDirectory class: ");
+        $r8 = virtualinvoke e.<java.lang.ClassNotFoundException: java.lang.String toString()>();
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r8);
+        $r9 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r6.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r9, e);
+        throw $r6;
+
+     label5:
+        $r10 := @caughtexception;
+        se = $r10;
+
+     label6:
+        $r4 = <org.apache.lucene.store.FSDirectory: java.lang.Class class$org$apache$lucene$store$FSDirectory>;
+        if $r4 != null goto label7;
+
+        $r4 = staticinvoke <org.apache.lucene.store.FSDirectory: java.lang.Class class$(java.lang.String)>("org.apache.lucene.store.FSDirectory");
+        <org.apache.lucene.store.FSDirectory: java.lang.Class class$org$apache$lucene$store$FSDirectory> = $r4;
+        goto label8;
+
+     label7:
+        $r4 = <org.apache.lucene.store.FSDirectory: java.lang.Class class$org$apache$lucene$store$FSDirectory>;
+
+     label8:
+        $r2 = virtualinvoke $r4.<java.lang.Class: java.lang.String getName()>();
+        $r4 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>($r2);
+        <org.apache.lucene.store.FSDirectory: java.lang.Class IMPL> = $r4;
+
+     label9:
+        goto label11;
+
+     label10:
+        $r11 := @caughtexception;
+        e = $r11;
+        $r6 = new java.lang.RuntimeException;
+        $r7 = new java.lang.StringBuffer;
+        specialinvoke $r7.<java.lang.StringBuffer: void <init>()>();
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cannot load default FSDirectory class: ");
+        $r8 = virtualinvoke e.<java.lang.ClassNotFoundException: java.lang.String toString()>();
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r8);
+        $r9 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r6.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r9, e);
+        throw $r6;
+
+     label11:
+        $r12 = staticinvoke <java.security.MessageDigest: java.security.MessageDigest getInstance(java.lang.String)>("MD5");
+        <org.apache.lucene.store.FSDirectory: java.security.MessageDigest DIGESTER> = $r12;
+
+     label12:
+        goto label14;
+
+     label13:
+        $r13 := @caughtexception;
+        e = $r13;
+        $r6 = new java.lang.RuntimeException;
+        $r9 = virtualinvoke e.<java.security.NoSuchAlgorithmException: java.lang.String toString()>();
+        specialinvoke $r6.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>($r9, e);
+        throw $r6;
+
+     label14:
+        $r14 = newarray (char)[16];
+        $r14[0] = 48;
+        $r14[1] = 49;
+        $r14[2] = 50;
+        $r14[3] = 51;
+        $r14[4] = 52;
+        $r14[5] = 53;
+        $r14[6] = 54;
+        $r14[7] = 55;
+        $r14[8] = 56;
+        $r14[9] = 57;
+        $r14[10] = 97;
+        $r14[11] = 98;
+        $r14[12] = 99;
+        $r14[13] = 100;
+        $r14[14] = 101;
+        $r14[15] = 102;
+        <org.apache.lucene.store.FSDirectory: char[] HEX_DIGITS> = $r14;
+        return;
+
+        catch java.lang.ClassNotFoundException from label0 to label3 with label4;
+        catch java.lang.SecurityException from label0 to label3 with label5;
+        catch java.lang.ClassNotFoundException from label6 to label9 with label10;
+        catch java.security.NoSuchAlgorithmException from label11 to label12 with label13;
+    }
+}

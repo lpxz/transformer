@@ -1,0 +1,33 @@
+class cck.util.Option$1 extends java.lang.Object implements java.util.Comparator
+{
+
+    void <init>()
+    {
+        cck.util.Option$1 this;
+
+        this := @this: cck.util.Option$1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public int compare(java.lang.Object, java.lang.Object)
+    {
+        cck.util.Option$1 this;
+        java.lang.Object o1, o2;
+        cck.util.Option opt1, opt2;
+        java.util.Comparator $r0;
+        java.lang.String $r1, $r2;
+        int $i0;
+
+        this := @this: cck.util.Option$1;
+        o1 := @parameter0: java.lang.Object;
+        o2 := @parameter1: java.lang.Object;
+        opt1 = (cck.util.Option) o1;
+        opt2 = (cck.util.Option) o2;
+        $r0 = <java.lang.String: java.util.Comparator CASE_INSENSITIVE_ORDER>;
+        $r1 = virtualinvoke opt1.<cck.util.Option: java.lang.String getName()>();
+        $r2 = virtualinvoke opt2.<cck.util.Option: java.lang.String getName()>();
+        $i0 = interfaceinvoke $r0.<java.util.Comparator: int compare(java.lang.Object,java.lang.Object)>($r1, $r2);
+        return $i0;
+    }
+}

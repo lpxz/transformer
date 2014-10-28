@@ -1,0 +1,237 @@
+public abstract class org.apache.lucene.store.BufferedIndexOutput extends org.apache.lucene.store.IndexOutput
+{
+    static final int BUFFER_SIZE;
+    private final byte[] buffer;
+    private long bufferStart;
+    private int bufferPosition;
+
+    public void <init>()
+    {
+        org.apache.lucene.store.BufferedIndexOutput this;
+        byte[] $r0;
+
+        this := @this: org.apache.lucene.store.BufferedIndexOutput;
+        specialinvoke this.<org.apache.lucene.store.IndexOutput: void <init>()>();
+        $r0 = newarray (byte)[16384];
+        this.<org.apache.lucene.store.BufferedIndexOutput: byte[] buffer> = $r0;
+        this.<org.apache.lucene.store.BufferedIndexOutput: long bufferStart> = 0L;
+        this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition> = 0;
+        return;
+    }
+
+    public void writeByte(byte) throws java.io.IOException
+    {
+        org.apache.lucene.store.BufferedIndexOutput this;
+        byte b;
+        int $i0, $i1, $i2;
+        byte[] $r0;
+        long tid_writeByte;
+        java.lang.Thread thread_writeByte;
+
+        this := @this: org.apache.lucene.store.BufferedIndexOutput;
+        b := @parameter0: byte;
+        thread_writeByte = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_writeByte = virtualinvoke thread_writeByte.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_writeByte, "org.apache.lucene.store.BufferedIndexOutput", 34, $i1);
+        $i1 = this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition>;
+        if $i1 < 16384 goto label0;
+
+        virtualinvoke this.<org.apache.lucene.store.BufferedIndexOutput: void flush()>();
+
+     label0:
+        $r0 = this.<org.apache.lucene.store.BufferedIndexOutput: byte[] buffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_writeByte, "org.apache.lucene.store.BufferedIndexOutput", 36, $i0);
+        $i0 = this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition>;
+        $i2 = $i0 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_writeByte, "org.apache.lucene.store.BufferedIndexOutput", 36, $i2);
+        this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition> = $i2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 4, tid_writeByte, "org.apache.lucene.store.BufferedIndexOutput", 36, $i0, b);
+        $r0[$i0] = b;
+        return;
+    }
+
+    public void writeBytes(byte[], int, int) throws java.io.IOException
+    {
+        org.apache.lucene.store.BufferedIndexOutput this;
+        byte[] b, $r0;
+        int offset, length, bytesLeft, pos, pieceLength, $i0, $i1, $i2;
+        long $l3, $l4, tid_writeBytes;
+        java.lang.Thread thread_writeBytes;
+
+        this := @this: org.apache.lucene.store.BufferedIndexOutput;
+        b := @parameter0: byte[];
+        offset := @parameter1: int;
+        length := @parameter2: int;
+        thread_writeBytes = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_writeBytes = virtualinvoke thread_writeBytes.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_writeBytes, "org.apache.lucene.store.BufferedIndexOutput", 45, $i0);
+        $i0 = this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition>;
+        bytesLeft = 16384 - $i0;
+        if bytesLeft < length goto label0;
+
+        $r0 = this.<org.apache.lucene.store.BufferedIndexOutput: byte[] buffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_writeBytes, "org.apache.lucene.store.BufferedIndexOutput", 49, $i1);
+        $i1 = this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition>;
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>(b, offset, $r0, $i1, length);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_writeBytes, "org.apache.lucene.store.BufferedIndexOutput", 50, $i0);
+        $i0 = this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition>;
+        $i0 = $i0 + length;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_writeBytes, "org.apache.lucene.store.BufferedIndexOutput", 50, $i0);
+        this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition> = $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_writeBytes, "org.apache.lucene.store.BufferedIndexOutput", 52, $i0);
+        $i0 = this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition>;
+        $i2 = 16384 - $i0;
+        if $i2 != 0 goto label6;
+
+        virtualinvoke this.<org.apache.lucene.store.BufferedIndexOutput: void flush()>();
+        goto label6;
+
+     label0:
+        if length <= 16384 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_writeBytes, "org.apache.lucene.store.BufferedIndexOutput", 58, $i2);
+        $i2 = this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition>;
+        if $i2 <= 0 goto label1;
+
+        virtualinvoke this.<org.apache.lucene.store.BufferedIndexOutput: void flush()>();
+
+     label1:
+        virtualinvoke this.<org.apache.lucene.store.BufferedIndexOutput: void flushBuffer(byte[],int,int)>(b, offset, length);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 72, tid_writeBytes, "org.apache.lucene.store.BufferedIndexOutput", 62, $l3);
+        $l3 = this.<org.apache.lucene.store.BufferedIndexOutput: long bufferStart>;
+        $l4 = (long) length;
+        $l3 = $l3 + $l4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 72, tid_writeBytes, "org.apache.lucene.store.BufferedIndexOutput", 62, $l3);
+        this.<org.apache.lucene.store.BufferedIndexOutput: long bufferStart> = $l3;
+        goto label6;
+
+     label2:
+        pos = 0;
+
+     label3:
+        if pos >= length goto label6;
+
+        $i2 = length - pos;
+        if $i2 >= bytesLeft goto label4;
+
+        $i2 = length - pos;
+        goto label5;
+
+     label4:
+        $i2 = bytesLeft;
+
+     label5:
+        pieceLength = $i2;
+        $i0 = pos + offset;
+        $r0 = this.<org.apache.lucene.store.BufferedIndexOutput: byte[] buffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_writeBytes, "org.apache.lucene.store.BufferedIndexOutput", 69, $i1);
+        $i1 = this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition>;
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>(b, $i0, $r0, $i1, pieceLength);
+        pos = pos + pieceLength;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_writeBytes, "org.apache.lucene.store.BufferedIndexOutput", 71, $i0);
+        $i0 = this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition>;
+        $i0 = $i0 + pieceLength;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_writeBytes, "org.apache.lucene.store.BufferedIndexOutput", 71, $i0);
+        this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition> = $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_writeBytes, "org.apache.lucene.store.BufferedIndexOutput", 73, $i0);
+        $i0 = this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition>;
+        bytesLeft = 16384 - $i0;
+        if bytesLeft != 0 goto label3;
+
+        virtualinvoke this.<org.apache.lucene.store.BufferedIndexOutput: void flush()>();
+        bytesLeft = 16384;
+        goto label3;
+
+     label6:
+        return;
+    }
+
+    public void flush() throws java.io.IOException
+    {
+        org.apache.lucene.store.BufferedIndexOutput this;
+        byte[] $r0;
+        int $i0, $i2;
+        long $l1, $l3, tid_flush;
+        java.lang.Thread thread_flush;
+
+        this := @this: org.apache.lucene.store.BufferedIndexOutput;
+        thread_flush = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_flush = virtualinvoke thread_flush.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.store.BufferedIndexOutput: byte[] buffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_flush, "org.apache.lucene.store.BufferedIndexOutput", 85, $i0);
+        $i0 = this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition>;
+        specialinvoke this.<org.apache.lucene.store.BufferedIndexOutput: void flushBuffer(byte[],int)>($r0, $i0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 72, tid_flush, "org.apache.lucene.store.BufferedIndexOutput", 86, $l1);
+        $l1 = this.<org.apache.lucene.store.BufferedIndexOutput: long bufferStart>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_flush, "org.apache.lucene.store.BufferedIndexOutput", 86, $i2);
+        $i2 = this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition>;
+        $l3 = (long) $i2;
+        $l1 = $l1 + $l3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 72, tid_flush, "org.apache.lucene.store.BufferedIndexOutput", 86, $l1);
+        this.<org.apache.lucene.store.BufferedIndexOutput: long bufferStart> = $l1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_flush, "org.apache.lucene.store.BufferedIndexOutput", 87, 0);
+        this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition> = 0;
+        return;
+    }
+
+    private void flushBuffer(byte[], int) throws java.io.IOException
+    {
+        org.apache.lucene.store.BufferedIndexOutput this;
+        byte[] b;
+        int len;
+
+        this := @this: org.apache.lucene.store.BufferedIndexOutput;
+        b := @parameter0: byte[];
+        len := @parameter1: int;
+        virtualinvoke this.<org.apache.lucene.store.BufferedIndexOutput: void flushBuffer(byte[],int,int)>(b, 0, len);
+        return;
+    }
+
+    protected abstract void flushBuffer(byte[], int, int) throws java.io.IOException;
+
+    public void close() throws java.io.IOException
+    {
+        org.apache.lucene.store.BufferedIndexOutput this;
+
+        this := @this: org.apache.lucene.store.BufferedIndexOutput;
+        virtualinvoke this.<org.apache.lucene.store.BufferedIndexOutput: void flush()>();
+        return;
+    }
+
+    public long getFilePointer()
+    {
+        org.apache.lucene.store.BufferedIndexOutput this;
+        long $l0, $l2, tid_getFilePointer;
+        int $i1;
+        java.lang.Thread thread_getFilePointer;
+
+        this := @this: org.apache.lucene.store.BufferedIndexOutput;
+        thread_getFilePointer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getFilePointer = virtualinvoke thread_getFilePointer.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 72, tid_getFilePointer, "org.apache.lucene.store.BufferedIndexOutput", 117, $l0);
+        $l0 = this.<org.apache.lucene.store.BufferedIndexOutput: long bufferStart>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 71, tid_getFilePointer, "org.apache.lucene.store.BufferedIndexOutput", 117, $i1);
+        $i1 = this.<org.apache.lucene.store.BufferedIndexOutput: int bufferPosition>;
+        $l2 = (long) $i1;
+        $l0 = $l0 + $l2;
+        return $l0;
+    }
+
+    public void seek(long) throws java.io.IOException
+    {
+        org.apache.lucene.store.BufferedIndexOutput this;
+        long pos, tid_seek;
+        java.lang.Thread thread_seek;
+
+        this := @this: org.apache.lucene.store.BufferedIndexOutput;
+        pos := @parameter0: long;
+        thread_seek = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_seek = virtualinvoke thread_seek.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<org.apache.lucene.store.BufferedIndexOutput: void flush()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 72, tid_seek, "org.apache.lucene.store.BufferedIndexOutput", 125, pos);
+        this.<org.apache.lucene.store.BufferedIndexOutput: long bufferStart> = pos;
+        return;
+    }
+
+    public abstract long length() throws java.io.IOException;
+}

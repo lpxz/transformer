@@ -1,0 +1,226 @@
+public class avrora.sim.types.WiredSimulation extends avrora.sim.Simulation
+{
+    public static java.lang.String HELP;
+    public final cck.util.Option$List NODECOUNT;
+    public final cck.util.Option$Interval RANDOM_START;
+    public final cck.util.Option$Long STAGGER_START;
+    long stagger;
+    avrora.sim.platform.PinConnect pinConnect;
+
+    public void <init>()
+    {
+        avrora.sim.types.WiredSimulation this;
+        java.lang.String $r0;
+        cck.util.Option$List $r1;
+        cck.util.Option$Interval $r2;
+        cck.util.Option$Long $r3;
+        avrora.sim.platform.PinConnect $r4;
+        avrora.sim.clock.Synchronizer $r5;
+        cck.util.Options $r6;
+        cck.util.Option$Str $r7;
+
+        this := @this: avrora.sim.types.WiredSimulation;
+        $r0 = <avrora.sim.types.WiredSimulation: java.lang.String HELP>;
+        specialinvoke this.<avrora.sim.Simulation: void <init>(java.lang.String,java.lang.String,avrora.sim.clock.Synchronizer)>("wired", $r0, null);
+        $r1 = virtualinvoke this.<avrora.sim.types.WiredSimulation: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("nodecount", "1", "This option is used to specify the number of nodes to be instantiated. The format is a list of integers, where each integer specifies the number of nodes to instantiate with each program supplied on the command line. For example, when set to \"1,2\" one node will be created with the first program loaded onto it, and two nodes created with the second program loaded onto them.");
+        this.<avrora.sim.types.WiredSimulation: cck.util.Option$List NODECOUNT> = $r1;
+        $r2 = virtualinvoke this.<avrora.sim.types.WiredSimulation: cck.util.Option$Interval newOption(java.lang.String,long,long,java.lang.String)>("random-start", 0L, 0L, "This option inserts a random delay before starting each node in order to prevent artificial cycle-level synchronization. The starting delay is pseudo-randomly chosen with uniform distribution over the specified interval, which is measured in clock cycles. If the \"random-seed\" option is set to a non-zero value, then its value is used as the seed to the pseudo-random number generator.");
+        this.<avrora.sim.types.WiredSimulation: cck.util.Option$Interval RANDOM_START> = $r2;
+        $r3 = virtualinvoke this.<avrora.sim.types.WiredSimulation: cck.util.Option$Long newOption(java.lang.String,long,java.lang.String)>("stagger-start", 0L, "This option causes the simulator to insert a progressively longer delay before starting each node in order to avoid artificial cycle-level synchronization between nodes. The starting times are staggered by the specified number of clock cycles. For example, if this option is given the value X, then node 0 will start at time 0, node 1 at time 1*X, node 2 at time 2*X, etc.");
+        this.<avrora.sim.types.WiredSimulation: cck.util.Option$Long STAGGER_START> = $r3;
+        $r4 = <avrora.sim.platform.PinConnect: avrora.sim.platform.PinConnect pinConnect>;
+        this.<avrora.sim.types.WiredSimulation: avrora.sim.platform.PinConnect pinConnect> = $r4;
+        $r4 = this.<avrora.sim.types.WiredSimulation: avrora.sim.platform.PinConnect pinConnect>;
+        $r5 = $r4.<avrora.sim.platform.PinConnect: avrora.sim.clock.Synchronizer synchronizer>;
+        this.<avrora.sim.types.WiredSimulation: avrora.sim.clock.Synchronizer synchronizer> = $r5;
+        $r0 = this.<avrora.sim.types.WiredSimulation: java.lang.String help>;
+        virtualinvoke this.<avrora.sim.types.WiredSimulation: void addSection(java.lang.String,java.lang.String)>("WIRED SIMULATION OVERVIEW", $r0);
+        $r6 = this.<avrora.sim.types.WiredSimulation: cck.util.Options options>;
+        virtualinvoke this.<avrora.sim.types.WiredSimulation: void addOptionSection(java.lang.String,cck.util.Options)>("This simulation type supports simulating multiple nodes that communicate with each other over wires. There are options to specify how many of each type of node to instantiate, as well as the program to be loaded onto each node.", $r6);
+        $r7 = this.<avrora.sim.types.WiredSimulation: cck.util.Option$Str PLATFORM>;
+        virtualinvoke $r7.<cck.util.Option$Str: void setNewDefault(java.lang.String)>("seres");
+        return;
+    }
+
+    public avrora.sim.Simulation$Node newNode(int, avrora.sim.platform.PlatformFactory, avrora.core.LoadableProgram)
+    {
+        avrora.sim.types.WiredSimulation this;
+        int id;
+        avrora.sim.platform.PlatformFactory pf;
+        avrora.core.LoadableProgram p;
+        avrora.sim.types.WiredSimulation$WiredNode tmp$554638984;
+        avrora.sim.Simulation$Node tmp;
+
+        this := @this: avrora.sim.types.WiredSimulation;
+        id := @parameter0: int;
+        pf := @parameter1: avrora.sim.platform.PlatformFactory;
+        p := @parameter2: avrora.core.LoadableProgram;
+        tmp$554638984 = new avrora.sim.types.WiredSimulation$WiredNode;
+        specialinvoke tmp$554638984.<avrora.sim.types.WiredSimulation$WiredNode: void <init>(avrora.sim.types.WiredSimulation,int,avrora.sim.platform.PlatformFactory,avrora.core.LoadableProgram)>(this, id, pf, p);
+        tmp = (avrora.sim.Simulation$Node) tmp$554638984;
+        return tmp;
+    }
+
+    public void process(cck.util.Options, java.lang.String[]) throws java.lang.Exception
+    {
+        avrora.sim.types.WiredSimulation this;
+        cck.util.Options o, $r0;
+        java.lang.String[] args;
+        avrora.sim.platform.PlatformFactory pf;
+        int $i0;
+
+        this := @this: avrora.sim.types.WiredSimulation;
+        o := @parameter0: cck.util.Options;
+        args := @parameter1: java.lang.String[];
+        $r0 = this.<avrora.sim.types.WiredSimulation: cck.util.Options options>;
+        virtualinvoke $r0.<cck.util.Options: void process(cck.util.Options)>(o);
+        virtualinvoke this.<avrora.sim.types.WiredSimulation: void processMonitorList()>();
+        $i0 = lengthof args;
+        if $i0 != 0 goto label0;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String,java.lang.String)>("Simulation error", "No program specified");
+
+     label0:
+        staticinvoke <avrora.Main: void checkFilesExist(java.lang.String[])>(args);
+        pf = virtualinvoke this.<avrora.sim.types.WiredSimulation: avrora.sim.platform.PlatformFactory getPlatform()>();
+        specialinvoke this.<avrora.sim.types.WiredSimulation: void createNodes(java.lang.String[],avrora.sim.platform.PlatformFactory)>(args, pf);
+        return;
+    }
+
+    protected void instantiateNodes()
+    {
+        avrora.sim.types.WiredSimulation this;
+        avrora.sim.platform.PinConnect $r0;
+
+        this := @this: avrora.sim.types.WiredSimulation;
+        specialinvoke this.<avrora.sim.Simulation: void instantiateNodes()>();
+        $r0 = this.<avrora.sim.types.WiredSimulation: avrora.sim.platform.PinConnect pinConnect>;
+        virtualinvoke $r0.<avrora.sim.platform.PinConnect: void initializeConnections()>();
+        return;
+    }
+
+    private void createNodes(java.lang.String[], avrora.sim.platform.PlatformFactory) throws java.lang.Exception
+    {
+        avrora.sim.types.WiredSimulation this;
+        java.lang.String[] args;
+        avrora.sim.platform.PlatformFactory pf;
+        int cntr, max, node, $i0, $i1;
+        java.util.Iterator i;
+        java.lang.String pname, $r4;
+        avrora.core.LoadableProgram lp, $r2;
+        avrora.sim.types.WiredSimulation$WiredNode n;
+        long r, s, $l2, tid_createNodes;
+        cck.util.Option$List $r0;
+        java.util.List $r1;
+        boolean $z0;
+        java.lang.Object $r3;
+        avrora.sim.Simulation$Node $r5;
+        java.lang.Thread thread_createNodes;
+
+        this := @this: avrora.sim.types.WiredSimulation;
+        args := @parameter0: java.lang.String[];
+        pf := @parameter1: avrora.sim.platform.PlatformFactory;
+        thread_createNodes = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_createNodes = virtualinvoke thread_createNodes.<java.lang.Thread: long getId()>();
+        cntr = 0;
+        $r0 = this.<avrora.sim.types.WiredSimulation: cck.util.Option$List NODECOUNT>;
+        $r1 = virtualinvoke $r0.<cck.util.Option$List: java.util.List get()>();
+        i = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label4;
+
+        $i0 = lengthof args;
+        if $i0 > cntr goto label1;
+
+        goto label4;
+
+     label1:
+        $i1 = cntr;
+        cntr = cntr + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 18, tid_createNodes, "avrora.sim.types.WiredSimulation", 185, $i1, pname);
+        pname = args[$i1];
+        $r2 = new avrora.core.LoadableProgram;
+        specialinvoke $r2.<avrora.core.LoadableProgram: void <init>(java.lang.String)>(pname);
+        lp = $r2;
+        virtualinvoke lp.<avrora.core.LoadableProgram: void load()>();
+        $r3 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        $r4 = (java.lang.String) $r3;
+        max = staticinvoke <cck.text.StringUtil: int evaluateIntegerLiteral(java.lang.String)>($r4);
+        node = 0;
+
+     label2:
+        if node >= max goto label3;
+
+        $r5 = virtualinvoke this.<avrora.sim.types.WiredSimulation: avrora.sim.Simulation$Node createNode(avrora.sim.platform.PlatformFactory,avrora.core.LoadableProgram)>(pf, lp);
+        n = (avrora.sim.types.WiredSimulation$WiredNode) $r5;
+        r = virtualinvoke this.<avrora.sim.types.WiredSimulation: long processRandom()>();
+        s = virtualinvoke this.<avrora.sim.types.WiredSimulation: long processStagger()>();
+        $l2 = r + s;
+        n.<avrora.sim.types.WiredSimulation$WiredNode: long startup> = $l2;
+        node = node + 1;
+        goto label2;
+
+     label3:
+        goto label0;
+
+     label4:
+        return;
+    }
+
+    long processRandom()
+    {
+        avrora.sim.types.WiredSimulation this;
+        long low, size, delay, $l0;
+        java.util.Random r;
+        cck.util.Option$Interval $r0;
+        byte $b1;
+
+        this := @this: avrora.sim.types.WiredSimulation;
+        $r0 = this.<avrora.sim.types.WiredSimulation: cck.util.Option$Interval RANDOM_START>;
+        low = virtualinvoke $r0.<cck.util.Option$Interval: long getLow()>();
+        $r0 = this.<avrora.sim.types.WiredSimulation: cck.util.Option$Interval RANDOM_START>;
+        $l0 = virtualinvoke $r0.<cck.util.Option$Interval: long getHigh()>();
+        size = $l0 - low;
+        delay = 0L;
+        $b1 = size cmp 0L;
+        if $b1 <= 0 goto label1;
+
+        r = virtualinvoke this.<avrora.sim.types.WiredSimulation: java.util.Random getRandom()>();
+        delay = virtualinvoke r.<java.util.Random: long nextLong()>();
+        $b1 = delay cmp 0L;
+        if $b1 >= 0 goto label0;
+
+        delay = neg delay;
+
+     label0:
+        delay = delay % size;
+
+     label1:
+        $l0 = low + delay;
+        return $l0;
+    }
+
+    long processStagger()
+    {
+        avrora.sim.types.WiredSimulation this;
+        long st, $l0, $l1;
+        cck.util.Option$Long $r1;
+
+        this := @this: avrora.sim.types.WiredSimulation;
+        st = this.<avrora.sim.types.WiredSimulation: long stagger>;
+        $l0 = this.<avrora.sim.types.WiredSimulation: long stagger>;
+        $r1 = this.<avrora.sim.types.WiredSimulation: cck.util.Option$Long STAGGER_START>;
+        $l1 = virtualinvoke $r1.<cck.util.Option$Long: long get()>();
+        $l0 = $l0 + $l1;
+        this.<avrora.sim.types.WiredSimulation: long stagger> = $l0;
+        return st;
+    }
+
+    static void <clinit>()
+    {
+        <avrora.sim.types.WiredSimulation: java.lang.String HELP> = "The wired network simulation is used for simulating multiple nodes simultaneously. These nodes can communicate with each other over wires.";
+        return;
+    }
+}

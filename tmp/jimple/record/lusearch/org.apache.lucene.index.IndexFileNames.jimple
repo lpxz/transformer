@@ -1,0 +1,183 @@
+final class org.apache.lucene.index.IndexFileNames extends java.lang.Object
+{
+    static final java.lang.String SEGMENTS;
+    static final java.lang.String SEGMENTS_GEN;
+    static final java.lang.String DELETABLE;
+    static final java.lang.String NORMS_EXTENSION;
+    static final java.lang.String FREQ_EXTENSION;
+    static final java.lang.String PROX_EXTENSION;
+    static final java.lang.String TERMS_EXTENSION;
+    static final java.lang.String TERMS_INDEX_EXTENSION;
+    static final java.lang.String FIELDS_INDEX_EXTENSION;
+    static final java.lang.String FIELDS_EXTENSION;
+    static final java.lang.String VECTORS_FIELDS_EXTENSION;
+    static final java.lang.String VECTORS_DOCUMENTS_EXTENSION;
+    static final java.lang.String VECTORS_INDEX_EXTENSION;
+    static final java.lang.String COMPOUND_FILE_EXTENSION;
+    static final java.lang.String COMPOUND_FILE_STORE_EXTENSION;
+    static final java.lang.String DELETES_EXTENSION;
+    static final java.lang.String FIELD_INFOS_EXTENSION;
+    static final java.lang.String PLAIN_NORMS_EXTENSION;
+    static final java.lang.String SEPARATE_NORMS_EXTENSION;
+    static final java.lang.String GEN_EXTENSION;
+    static final java.lang.String[] INDEX_EXTENSIONS;
+    static final java.lang.String[] INDEX_EXTENSIONS_IN_COMPOUND_FILE;
+    static final java.lang.String[] STORE_INDEX_EXTENSIONS;
+    static final java.lang.String[] NON_STORE_INDEX_EXTENSIONS;
+    static final java.lang.String[] COMPOUND_EXTENSIONS;
+    static final java.lang.String[] VECTOR_EXTENSIONS;
+
+    void <init>()
+    {
+        org.apache.lucene.index.IndexFileNames this;
+
+        this := @this: org.apache.lucene.index.IndexFileNames;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    static final java.lang.String fileNameFromGeneration(java.lang.String, java.lang.String, long)
+    {
+        java.lang.String base, extension, $r1, $r2;
+        long gen;
+        byte $b0;
+        java.lang.StringBuffer $r0;
+
+        base := @parameter0: java.lang.String;
+        extension := @parameter1: java.lang.String;
+        gen := @parameter2: long;
+        $b0 = gen cmp -1L;
+        if $b0 != 0 goto label0;
+
+        return null;
+
+     label0:
+        $b0 = gen cmp 0L;
+        if $b0 != 0 goto label1;
+
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(base);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(extension);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+
+     label1:
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(base);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("_");
+        $r2 = staticinvoke <java.lang.Long: java.lang.String toString(long,int)>(gen, 36);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(extension);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    static final boolean isDocStoreFile(java.lang.String)
+    {
+        java.lang.String fileName, $r1;
+        int i, $i0;
+        boolean $z0;
+        java.lang.String[] $r0;
+        long tid_isDocStoreFile;
+        java.lang.Thread thread_isDocStoreFile;
+
+        fileName := @parameter0: java.lang.String;
+        thread_isDocStoreFile = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_isDocStoreFile = virtualinvoke thread_isDocStoreFile.<java.lang.Thread: long getId()>();
+        $z0 = virtualinvoke fileName.<java.lang.String: boolean endsWith(java.lang.String)>("cfx");
+        if $z0 == 0 goto label0;
+
+        return 1;
+
+     label0:
+        i = 0;
+
+     label1:
+        $r0 = <org.apache.lucene.index.IndexFileNames: java.lang.String[] STORE_INDEX_EXTENSIONS>;
+        $i0 = lengthof $r0;
+        if i >= $i0 goto label3;
+
+        $r0 = <org.apache.lucene.index.IndexFileNames: java.lang.String[] STORE_INDEX_EXTENSIONS>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 10, tid_isDocStoreFile, "org.apache.lucene.index.IndexFileNames", 194, i, $r1);
+        $r1 = $r0[i];
+        $z0 = virtualinvoke fileName.<java.lang.String: boolean endsWith(java.lang.String)>($r1);
+        if $z0 == 0 goto label2;
+
+        return 1;
+
+     label2:
+        i = i + 1;
+        goto label1;
+
+     label3:
+        return 0;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String[] $r0;
+
+        $r0 = newarray (java.lang.String)[15];
+        $r0[0] = "cfs";
+        $r0[1] = "fnm";
+        $r0[2] = "fdx";
+        $r0[3] = "fdt";
+        $r0[4] = "tii";
+        $r0[5] = "tis";
+        $r0[6] = "frq";
+        $r0[7] = "prx";
+        $r0[8] = "del";
+        $r0[9] = "tvx";
+        $r0[10] = "tvd";
+        $r0[11] = "tvf";
+        $r0[12] = "gen";
+        $r0[13] = "nrm";
+        $r0[14] = "cfx";
+        <org.apache.lucene.index.IndexFileNames: java.lang.String[] INDEX_EXTENSIONS> = $r0;
+        $r0 = newarray (java.lang.String)[11];
+        $r0[0] = "fnm";
+        $r0[1] = "fdx";
+        $r0[2] = "fdt";
+        $r0[3] = "tii";
+        $r0[4] = "tis";
+        $r0[5] = "frq";
+        $r0[6] = "prx";
+        $r0[7] = "tvx";
+        $r0[8] = "tvd";
+        $r0[9] = "tvf";
+        $r0[10] = "nrm";
+        <org.apache.lucene.index.IndexFileNames: java.lang.String[] INDEX_EXTENSIONS_IN_COMPOUND_FILE> = $r0;
+        $r0 = newarray (java.lang.String)[5];
+        $r0[0] = "tvx";
+        $r0[1] = "tvf";
+        $r0[2] = "tvd";
+        $r0[3] = "fdx";
+        $r0[4] = "fdt";
+        <org.apache.lucene.index.IndexFileNames: java.lang.String[] STORE_INDEX_EXTENSIONS> = $r0;
+        $r0 = newarray (java.lang.String)[6];
+        $r0[0] = "fnm";
+        $r0[1] = "frq";
+        $r0[2] = "prx";
+        $r0[3] = "tis";
+        $r0[4] = "tii";
+        $r0[5] = "nrm";
+        <org.apache.lucene.index.IndexFileNames: java.lang.String[] NON_STORE_INDEX_EXTENSIONS> = $r0;
+        $r0 = newarray (java.lang.String)[7];
+        $r0[0] = "fnm";
+        $r0[1] = "frq";
+        $r0[2] = "prx";
+        $r0[3] = "fdx";
+        $r0[4] = "fdt";
+        $r0[5] = "tii";
+        $r0[6] = "tis";
+        <org.apache.lucene.index.IndexFileNames: java.lang.String[] COMPOUND_EXTENSIONS> = $r0;
+        $r0 = newarray (java.lang.String)[3];
+        $r0[0] = "tvx";
+        $r0[1] = "tvd";
+        $r0[2] = "tvf";
+        <org.apache.lucene.index.IndexFileNames: java.lang.String[] VECTOR_EXTENSIONS> = $r0;
+        return;
+    }
+}

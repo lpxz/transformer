@@ -1,0 +1,243 @@
+class org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache extends org.apache.lucene.util.cache.SimpleMapCache
+{
+    java.lang.Object mutex;
+    org.apache.lucene.util.cache.SimpleMapCache cache;
+
+    void <init>(org.apache.lucene.util.cache.SimpleMapCache)
+    {
+        org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache this;
+        org.apache.lucene.util.cache.SimpleMapCache cache;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache;
+        cache := @parameter0: org.apache.lucene.util.cache.SimpleMapCache;
+        specialinvoke this.<org.apache.lucene.util.cache.SimpleMapCache: void <init>()>();
+        this.<org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache: org.apache.lucene.util.cache.SimpleMapCache cache> = cache;
+        this.<org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache: java.lang.Object mutex> = this;
+        return;
+    }
+
+    public void put(java.lang.Object, java.lang.Object)
+    {
+        org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache this;
+        java.lang.Object key, value, l3, $r0;
+        java.lang.Throwable l4, $r2;
+        org.apache.lucene.util.cache.SimpleMapCache $r1;
+        long tid_put;
+        java.lang.Thread thread_put;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache;
+        key := @parameter0: java.lang.Object;
+        value := @parameter1: java.lang.Object;
+        thread_put = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_put = virtualinvoke thread_put.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache: java.lang.Object mutex>;
+        l3 = $r0;
+        entermonitor $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r0, 0, tid_put);
+
+     label0:
+        $r1 = this.<org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache: org.apache.lucene.util.cache.SimpleMapCache cache>;
+        virtualinvoke $r1.<org.apache.lucene.util.cache.SimpleMapCache: void put(java.lang.Object,java.lang.Object)>(key, value);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 0, tid_put);
+        exitmonitor l3;
+
+     label1:
+        goto label5;
+
+     label2:
+        $r2 := @caughtexception;
+
+     label3:
+        l4 = $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 0, tid_put);
+        exitmonitor l3;
+
+     label4:
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public java.lang.Object get(java.lang.Object)
+    {
+        org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache this;
+        java.lang.Object key, l2, $r0;
+        java.lang.Throwable l3, $r2;
+        org.apache.lucene.util.cache.SimpleMapCache $r1;
+        long tid_get;
+        java.lang.Thread thread_get;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache;
+        key := @parameter0: java.lang.Object;
+        thread_get = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_get = virtualinvoke thread_get.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache: java.lang.Object mutex>;
+        l2 = $r0;
+        entermonitor $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r0, 0, tid_get);
+
+     label0:
+        $r1 = this.<org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache: org.apache.lucene.util.cache.SimpleMapCache cache>;
+        $r0 = virtualinvoke $r1.<org.apache.lucene.util.cache.SimpleMapCache: java.lang.Object get(java.lang.Object)>(key);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l2, 0, tid_get);
+        exitmonitor l2;
+
+     label1:
+        return $r0;
+
+     label2:
+        $r2 := @caughtexception;
+
+     label3:
+        l3 = $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l2, 0, tid_get);
+        exitmonitor l2;
+
+     label4:
+        throw l3;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public boolean containsKey(java.lang.Object)
+    {
+        org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache this;
+        java.lang.Object key, l2, $r0;
+        java.lang.Throwable l3, $r2;
+        org.apache.lucene.util.cache.SimpleMapCache $r1;
+        boolean $z0;
+        long tid_containsKey;
+        java.lang.Thread thread_containsKey;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache;
+        key := @parameter0: java.lang.Object;
+        thread_containsKey = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_containsKey = virtualinvoke thread_containsKey.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache: java.lang.Object mutex>;
+        l2 = $r0;
+        entermonitor $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r0, 0, tid_containsKey);
+
+     label0:
+        $r1 = this.<org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache: org.apache.lucene.util.cache.SimpleMapCache cache>;
+        $z0 = virtualinvoke $r1.<org.apache.lucene.util.cache.SimpleMapCache: boolean containsKey(java.lang.Object)>(key);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l2, 0, tid_containsKey);
+        exitmonitor l2;
+
+     label1:
+        return $z0;
+
+     label2:
+        $r2 := @caughtexception;
+
+     label3:
+        l3 = $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l2, 0, tid_containsKey);
+        exitmonitor l2;
+
+     label4:
+        throw l3;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public void close()
+    {
+        org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache this;
+        java.lang.Object l1, $r0;
+        java.lang.Throwable l2, $r2;
+        org.apache.lucene.util.cache.SimpleMapCache $r1;
+        long tid_close;
+        java.lang.Thread thread_close;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache;
+        thread_close = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_close = virtualinvoke thread_close.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache: java.lang.Object mutex>;
+        l1 = $r0;
+        entermonitor $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r0, 0, tid_close);
+
+     label0:
+        $r1 = this.<org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache: org.apache.lucene.util.cache.SimpleMapCache cache>;
+        virtualinvoke $r1.<org.apache.lucene.util.cache.SimpleMapCache: void close()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l1, 0, tid_close);
+        exitmonitor l1;
+
+     label1:
+        goto label5;
+
+     label2:
+        $r2 := @caughtexception;
+
+     label3:
+        l2 = $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l1, 0, tid_close);
+        exitmonitor l1;
+
+     label4:
+        throw l2;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public java.util.Set keySet()
+    {
+        org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache this;
+        java.lang.Object l1, $r0;
+        java.lang.Throwable l2, $r3;
+        org.apache.lucene.util.cache.SimpleMapCache $r1;
+        java.util.Set $r2;
+        long tid_keySet;
+        java.lang.Thread thread_keySet;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache;
+        thread_keySet = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_keySet = virtualinvoke thread_keySet.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache: java.lang.Object mutex>;
+        l1 = $r0;
+        entermonitor $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r0, 0, tid_keySet);
+
+     label0:
+        $r1 = this.<org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache: org.apache.lucene.util.cache.SimpleMapCache cache>;
+        $r2 = virtualinvoke $r1.<org.apache.lucene.util.cache.SimpleMapCache: java.util.Set keySet()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l1, 0, tid_keySet);
+        exitmonitor l1;
+
+     label1:
+        return $r2;
+
+     label2:
+        $r3 := @caughtexception;
+
+     label3:
+        l2 = $r3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l1, 0, tid_keySet);
+        exitmonitor l1;
+
+     label4:
+        throw l2;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    org.apache.lucene.util.cache.Cache getSynchronizedCache()
+    {
+        org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache this;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache;
+        return this;
+    }
+}

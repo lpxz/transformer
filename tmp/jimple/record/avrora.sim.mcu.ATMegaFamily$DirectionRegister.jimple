@@ -1,0 +1,49 @@
+public class avrora.sim.mcu.ATMegaFamily$DirectionRegister extends avrora.sim.RWRegister
+{
+    protected avrora.sim.mcu.DefaultMCU$Pin[] pins;
+
+    protected void <init>(avrora.sim.mcu.DefaultMCU$Pin[])
+    {
+        avrora.sim.mcu.ATMegaFamily$DirectionRegister this;
+        avrora.sim.mcu.DefaultMCU$Pin[] p;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$DirectionRegister;
+        p := @parameter0: avrora.sim.mcu.DefaultMCU$Pin[];
+        specialinvoke this.<avrora.sim.RWRegister: void <init>()>();
+        this.<avrora.sim.mcu.ATMegaFamily$DirectionRegister: avrora.sim.mcu.DefaultMCU$Pin[] pins> = p;
+        return;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.mcu.ATMegaFamily$DirectionRegister this;
+        byte val;
+        int cntr;
+        avrora.sim.mcu.DefaultMCU$Pin[] $r0;
+        avrora.sim.mcu.DefaultMCU$Pin $r1;
+        boolean $z0;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$DirectionRegister;
+        val := @parameter0: byte;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        cntr = 0;
+
+     label0:
+        if cntr >= 8 goto label1;
+
+        $r0 = this.<avrora.sim.mcu.ATMegaFamily$DirectionRegister: avrora.sim.mcu.DefaultMCU$Pin[] pins>;
+        $r1 = $r0[cntr];
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, cntr);
+        virtualinvoke $r1.<avrora.sim.mcu.DefaultMCU$Pin: void setOutputDir(boolean)>($z0);
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.mcu.ATMegaFamily$DirectionRegister", 192, val);
+        this.<avrora.sim.mcu.ATMegaFamily$DirectionRegister: byte value> = val;
+        return;
+    }
+}

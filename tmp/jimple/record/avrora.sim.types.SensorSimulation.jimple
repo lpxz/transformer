@@ -1,0 +1,414 @@
+public class avrora.sim.types.SensorSimulation extends avrora.sim.Simulation
+{
+    public static java.lang.String HELP;
+    public final cck.util.Option$List NODECOUNT;
+    public final cck.util.Option$Str TOPOLOGY;
+    public final cck.util.Option$Bool LOSSY_MODEL;
+    public final cck.util.Option$Str NOISE;
+    public final cck.util.Option$Double RANGE;
+    public final cck.util.Option$Interval RANDOM_START;
+    public final cck.util.Option$Long STAGGER_START;
+    public final cck.util.Option$List SENSOR_DATA;
+    public final cck.util.Option$Bool UPDATE_NODE_ID;
+    avrora.sim.radio.Topology topology;
+    avrora.sim.radio.noise noise;
+    avrora.sim.radio.LossyModel lossyModel;
+    avrora.sim.radio.RadiusModel radiusModel;
+    avrora.sim.radio.Medium cc2420_medium;
+    avrora.sim.radio.Medium cc1000_medium;
+    long stagger;
+
+    public void <init>()
+    {
+        avrora.sim.types.SensorSimulation this;
+        java.lang.String $r0;
+        cck.util.Option$List $r1, $r9;
+        cck.util.Option$Str $r2, $r8;
+        cck.util.Option$Bool $r3;
+        cck.util.Option$Double $r4;
+        cck.util.Option$Interval $r5;
+        cck.util.Option$Long $r6;
+        cck.util.Options $r7;
+
+        this := @this: avrora.sim.types.SensorSimulation;
+        $r0 = <avrora.sim.types.SensorSimulation: java.lang.String HELP>;
+        specialinvoke this.<avrora.sim.Simulation: void <init>(java.lang.String,java.lang.String,avrora.sim.clock.Synchronizer)>("sensor-network", $r0, null);
+        $r1 = virtualinvoke this.<avrora.sim.types.SensorSimulation: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("nodecount", "1", "This option is used to specify the number of nodes to be instantiated. The format is a list of integers, where each integer specifies the number of nodes to instantiate with each program supplied on the command line. For example, when set to \"1,2\" one node will be created with the first program loaded onto it, and two nodes created with the second program loaded onto them.");
+        this.<avrora.sim.types.SensorSimulation: cck.util.Option$List NODECOUNT> = $r1;
+        $r2 = virtualinvoke this.<avrora.sim.types.SensorSimulation: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("topology", "", "This option can be used to specify the name of a file that contains information about the topology of the network. When this option is specified. the free space radio model will be used to model radio propagation.");
+        this.<avrora.sim.types.SensorSimulation: cck.util.Option$Str TOPOLOGY> = $r2;
+        $r3 = virtualinvoke this.<avrora.sim.types.SensorSimulation: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("lossy-model", 0, "When this option is set, the radio model takes into account Noise and fadings thusimplementing in micaz platform the correlation, cca and rssi functions.");
+        this.<avrora.sim.types.SensorSimulation: cck.util.Option$Bool LOSSY_MODEL> = $r3;
+        $r2 = virtualinvoke this.<avrora.sim.types.SensorSimulation: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("Noise", "", "This option can be used to specify the name of a file that contains a Noise time trace. When this option is specifiedthe indoor radio model will be used to model radio propagation.");
+        this.<avrora.sim.types.SensorSimulation: cck.util.Option$Str NOISE> = $r2;
+        $r4 = virtualinvoke this.<avrora.sim.types.SensorSimulation: cck.util.Option$Double newOption(java.lang.String,double,java.lang.String)>("radio-range", 15.0, "This option, when used in conjunction with the -topology option, specifies the maximum range for radio communication between nodes. This simple idealized radius model will drop all communications between nodes whose distance is greater than this threshold value.");
+        this.<avrora.sim.types.SensorSimulation: cck.util.Option$Double RANGE> = $r4;
+        $r5 = virtualinvoke this.<avrora.sim.types.SensorSimulation: cck.util.Option$Interval newOption(java.lang.String,long,long,java.lang.String)>("random-start", 0L, 0L, "This option inserts a random delay before starting each node in order to prevent artificial cycle-level synchronization. The starting delay is pseudo-randomly chosen with uniform distribution over the specified interval, which is measured in clock cycles. If the \"random-seed\" option is set to a non-zero value, then its value is used as the seed to the pseudo-random number generator.");
+        this.<avrora.sim.types.SensorSimulation: cck.util.Option$Interval RANDOM_START> = $r5;
+        $r6 = virtualinvoke this.<avrora.sim.types.SensorSimulation: cck.util.Option$Long newOption(java.lang.String,long,java.lang.String)>("stagger-start", 0L, "This option causes the simulator to insert a progressively longer delay before starting each node in order to avoid artificial cycle-level synchronization between nodes. The starting times are staggered by the specified number of clock cycles. For example, if this option is given the value X, then node 0 will start at time 0, node 1 at time 1*X, node 2 at time 2*X, etc.");
+        this.<avrora.sim.types.SensorSimulation: cck.util.Option$Long STAGGER_START> = $r6;
+        $r1 = virtualinvoke this.<avrora.sim.types.SensorSimulation: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("sensor-data", "", "This option accepts a list describing the input data for each sensor node. The format for each entry in this list is $sensor:$id:$data, where $sensor is the name of the sensor device such as \"light\", $id is the integer ID of the node, and $data is the name of a file or the special \'.\' character, indicating random data. A sensor data input file consists of an initial sensor reading which is interpreted as a 10-bit ADC result, then a list of time value pairs separated by whitespace; the sensor will continue returning the current value until the next (relative) time in seconds, and then the sensor will change to the new value. ");
+        this.<avrora.sim.types.SensorSimulation: cck.util.Option$List SENSOR_DATA> = $r1;
+        $r3 = virtualinvoke this.<avrora.sim.types.SensorSimulation: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("update-node-id", 1, "When this option is set, the sensor network simulator will attempt to update the node identifiers stored in the flash memory of the program. For TinyOS programs, this identifier is labelled \"TOS_LOCAL_ADDRESS\". For SOS programs, this identifier is called \"node_address\". When loading a program onto a node, the simulator will search for these labels, and if found, will update the word in flash with the node\'s ID number.");
+        this.<avrora.sim.types.SensorSimulation: cck.util.Option$Bool UPDATE_NODE_ID> = $r3;
+        $r0 = this.<avrora.sim.types.SensorSimulation: java.lang.String help>;
+        virtualinvoke this.<avrora.sim.types.SensorSimulation: void addSection(java.lang.String,java.lang.String)>("SENSOR NETWORK SIMULATION OVERVIEW", $r0);
+        $r7 = this.<avrora.sim.types.SensorSimulation: cck.util.Options options>;
+        virtualinvoke this.<avrora.sim.types.SensorSimulation: void addOptionSection(java.lang.String,cck.util.Options)>("This simulation type supports simulating multiple sensor network nodes that communicate with each other over radios. There are options to specify how many of each type of sensor node to instantiate, as well as the program to be loaded onto each node, and an optional topology file that describes the physical layout of the sensor network. Also, each node\'s sensors can be supplied with random or replay sensor data through the \"sensor-data\" option.", $r7);
+        $r8 = this.<avrora.sim.types.SensorSimulation: cck.util.Option$Str PLATFORM>;
+        virtualinvoke $r8.<cck.util.Option$Str: void setNewDefault(java.lang.String)>("micaz");
+        $r9 = this.<avrora.sim.types.SensorSimulation: cck.util.Option$List MONITORS>;
+        virtualinvoke $r9.<cck.util.Option$List: void setNewDefault(java.lang.String)>("leds,packet");
+        return;
+    }
+
+    public avrora.sim.Simulation$Node newNode(int, avrora.sim.platform.PlatformFactory, avrora.core.LoadableProgram)
+    {
+        avrora.sim.types.SensorSimulation this;
+        int id;
+        avrora.sim.platform.PlatformFactory pf;
+        avrora.core.LoadableProgram p;
+        avrora.sim.types.SensorSimulation$SensorNode $r0;
+
+        this := @this: avrora.sim.types.SensorSimulation;
+        id := @parameter0: int;
+        pf := @parameter1: avrora.sim.platform.PlatformFactory;
+        p := @parameter2: avrora.core.LoadableProgram;
+        $r0 = new avrora.sim.types.SensorSimulation$SensorNode;
+        specialinvoke $r0.<avrora.sim.types.SensorSimulation$SensorNode: void <init>(avrora.sim.types.SensorSimulation,int,avrora.sim.platform.PlatformFactory,avrora.core.LoadableProgram)>(this, id, pf, p);
+        return $r0;
+    }
+
+    public void process(cck.util.Options, java.lang.String[]) throws java.lang.Exception
+    {
+        avrora.sim.types.SensorSimulation this;
+        cck.util.Options o, $r0;
+        java.lang.String[] args;
+        avrora.sim.platform.PlatformFactory pf;
+        int $i0;
+        avrora.sim.clock.RippleSynchronizer $r1;
+
+        this := @this: avrora.sim.types.SensorSimulation;
+        o := @parameter0: cck.util.Options;
+        args := @parameter1: java.lang.String[];
+        $r0 = this.<avrora.sim.types.SensorSimulation: cck.util.Options options>;
+        virtualinvoke $r0.<cck.util.Options: void process(cck.util.Options)>(o);
+        virtualinvoke this.<avrora.sim.types.SensorSimulation: void processMonitorList()>();
+        $i0 = lengthof args;
+        if $i0 != 0 goto label0;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String,java.lang.String)>("Simulation error", "No program specified");
+
+     label0:
+        staticinvoke <avrora.Main: void checkFilesExist(java.lang.String[])>(args);
+        pf = virtualinvoke this.<avrora.sim.types.SensorSimulation: avrora.sim.platform.PlatformFactory getPlatform()>();
+        $r1 = new avrora.sim.clock.RippleSynchronizer;
+        specialinvoke $r1.<avrora.sim.clock.RippleSynchronizer: void <init>(long,avrora.sim.Simulator$Event)>(100000L, null);
+        this.<avrora.sim.types.SensorSimulation: avrora.sim.clock.Synchronizer synchronizer> = $r1;
+        specialinvoke this.<avrora.sim.types.SensorSimulation: void createNodes(java.lang.String[],avrora.sim.platform.PlatformFactory)>(args, pf);
+        specialinvoke this.<avrora.sim.types.SensorSimulation: void processSensorInput()>();
+        specialinvoke this.<avrora.sim.types.SensorSimulation: void createNoise()>();
+        return;
+    }
+
+    private void createNodes(java.lang.String[], avrora.sim.platform.PlatformFactory) throws java.lang.Exception
+    {
+        avrora.sim.types.SensorSimulation this;
+        java.lang.String[] args;
+        avrora.sim.platform.PlatformFactory pf;
+        java.util.Iterator i;
+        int arg, count, node, $i0, $i1;
+        avrora.core.LoadableProgram lp, $r4;
+        avrora.sim.types.SensorSimulation$SensorNode n;
+        long r, s, $l2, tid_createNodes;
+        cck.util.Option$List $r0;
+        java.util.List $r1;
+        boolean $z0;
+        java.lang.Object $r2;
+        java.lang.String $r3, $r5;
+        avrora.sim.Simulation$Node $r6;
+        java.lang.Thread thread_createNodes;
+
+        this := @this: avrora.sim.types.SensorSimulation;
+        args := @parameter0: java.lang.String[];
+        pf := @parameter1: avrora.sim.platform.PlatformFactory;
+        thread_createNodes = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_createNodes = virtualinvoke thread_createNodes.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.types.SensorSimulation: cck.util.Option$List NODECOUNT>;
+        $r1 = virtualinvoke $r0.<cck.util.Option$List: java.util.List get()>();
+        i = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+        arg = 0;
+
+     label0:
+        $i0 = lengthof args;
+        if arg >= $i0 goto label5;
+
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r2 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        $r3 = (java.lang.String) $r2;
+        $i1 = staticinvoke <cck.text.StringUtil: int evaluateIntegerLiteral(java.lang.String)>($r3);
+        goto label2;
+
+     label1:
+        $i1 = 1;
+
+     label2:
+        count = $i1;
+        $r4 = new avrora.core.LoadableProgram;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 18, tid_createNodes, "avrora.sim.types.SensorSimulation", 350, arg, $r5);
+        $r5 = args[arg];
+        specialinvoke $r4.<avrora.core.LoadableProgram: void <init>(java.lang.String)>($r5);
+        lp = $r4;
+        virtualinvoke lp.<avrora.core.LoadableProgram: void load()>();
+        node = 0;
+
+     label3:
+        if node >= count goto label4;
+
+        $r6 = virtualinvoke this.<avrora.sim.types.SensorSimulation: avrora.sim.Simulation$Node createNode(avrora.sim.platform.PlatformFactory,avrora.core.LoadableProgram)>(pf, lp);
+        n = (avrora.sim.types.SensorSimulation$SensorNode) $r6;
+        r = virtualinvoke this.<avrora.sim.types.SensorSimulation: long processRandom()>();
+        s = virtualinvoke this.<avrora.sim.types.SensorSimulation: long processStagger()>();
+        $l2 = r + s;
+        n.<avrora.sim.types.SensorSimulation$SensorNode: long startup> = $l2;
+        node = node + 1;
+        goto label3;
+
+     label4:
+        arg = arg + 1;
+        goto label0;
+
+     label5:
+        return;
+    }
+
+    private void createNoise() throws java.lang.Exception
+    {
+        avrora.sim.types.SensorSimulation this;
+        avrora.sim.radio.noise $r0, $r1;
+        cck.util.Option$Str $r2, $r3;
+        boolean $z0;
+        java.lang.String $r4;
+
+        this := @this: avrora.sim.types.SensorSimulation;
+        $r1 = this.<avrora.sim.types.SensorSimulation: avrora.sim.radio.noise noise>;
+        if $r1 != null goto label0;
+
+        $r2 = this.<avrora.sim.types.SensorSimulation: cck.util.Option$Str NOISE>;
+        $z0 = virtualinvoke $r2.<cck.util.Option$Str: boolean isBlank()>();
+        if $z0 != 0 goto label0;
+
+        $r0 = new avrora.sim.radio.noise;
+        $r3 = this.<avrora.sim.types.SensorSimulation: cck.util.Option$Str NOISE>;
+        $r4 = virtualinvoke $r3.<cck.util.Option$Str: java.lang.String get()>();
+        specialinvoke $r0.<avrora.sim.radio.noise: void <init>(java.lang.String)>($r4);
+        this.<avrora.sim.types.SensorSimulation: avrora.sim.radio.noise noise> = $r0;
+        goto label1;
+
+     label0:
+        $r1 = this.<avrora.sim.types.SensorSimulation: avrora.sim.radio.noise noise>;
+        if $r1 != null goto label1;
+
+        $r2 = this.<avrora.sim.types.SensorSimulation: cck.util.Option$Str NOISE>;
+        $z0 = virtualinvoke $r2.<cck.util.Option$Str: boolean isBlank()>();
+        if $z0 == 0 goto label1;
+
+        $r0 = new avrora.sim.radio.noise;
+        specialinvoke $r0.<avrora.sim.radio.noise: void <init>()>();
+        this.<avrora.sim.types.SensorSimulation: avrora.sim.radio.noise noise> = $r0;
+
+     label1:
+        return;
+    }
+
+    private void processSensorInput()
+    {
+        avrora.sim.types.SensorSimulation this;
+        java.util.Iterator i;
+        java.lang.String str, sensor, rest, id, file;
+        int ind, ind2, $i0;
+        cck.util.Option$List $r0;
+        java.util.List $r1;
+        boolean $z0;
+        java.lang.Object $r2;
+
+        this := @this: avrora.sim.types.SensorSimulation;
+        $r0 = this.<avrora.sim.types.SensorSimulation: cck.util.Option$List SENSOR_DATA>;
+        $r1 = virtualinvoke $r0.<cck.util.Option$List: java.util.List get()>();
+        i = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label3;
+
+        $r2 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        str = (java.lang.String) $r2;
+        ind = virtualinvoke str.<java.lang.String: int indexOf(int)>(58);
+        if ind > 0 goto label1;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String,java.lang.String)>("Sensor data format error", str);
+
+     label1:
+        sensor = virtualinvoke str.<java.lang.String: java.lang.String substring(int,int)>(0, ind);
+        $i0 = ind + 1;
+        rest = virtualinvoke str.<java.lang.String: java.lang.String substring(int)>($i0);
+        ind2 = virtualinvoke rest.<java.lang.String: int indexOf(int)>(58);
+        if ind2 > 0 goto label2;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String,java.lang.String)>("Sensor data format error", str);
+
+     label2:
+        id = virtualinvoke rest.<java.lang.String: java.lang.String substring(int,int)>(0, ind2);
+        $i0 = ind2 + 1;
+        file = virtualinvoke rest.<java.lang.String: java.lang.String substring(int)>($i0);
+        specialinvoke this.<avrora.sim.types.SensorSimulation: void addSensorData(java.lang.String,java.lang.String,java.lang.String)>(id, file, sensor);
+        goto label0;
+
+     label3:
+        return;
+    }
+
+    private void addSensorData(java.lang.String, java.lang.String, java.lang.String)
+    {
+        avrora.sim.types.SensorSimulation this;
+        java.lang.String id, file, sensor, $r3;
+        int num;
+        avrora.sim.types.SensorSimulation$SensorNode node;
+        avrora.sim.types.SensorSimulation$SensorDataInput sdi, $r1;
+        avrora.sim.Simulation$Node $r0;
+        java.util.List $r2;
+        boolean $z0;
+
+        this := @this: avrora.sim.types.SensorSimulation;
+        id := @parameter0: java.lang.String;
+        file := @parameter1: java.lang.String;
+        sensor := @parameter2: java.lang.String;
+        num = staticinvoke <cck.text.StringUtil: int evaluateIntegerLiteral(java.lang.String)>(id);
+        $r0 = virtualinvoke this.<avrora.sim.types.SensorSimulation: avrora.sim.Simulation$Node getNode(int)>(num);
+        node = (avrora.sim.types.SensorSimulation$SensorNode) $r0;
+        if node == null goto label0;
+
+        $r1 = new avrora.sim.types.SensorSimulation$SensorDataInput;
+        specialinvoke $r1.<avrora.sim.types.SensorSimulation$SensorDataInput: void <init>(avrora.sim.types.SensorSimulation)>(this);
+        sdi = $r1;
+        sdi.<avrora.sim.types.SensorSimulation$SensorDataInput: java.lang.String fname> = file;
+        sdi.<avrora.sim.types.SensorSimulation$SensorDataInput: java.lang.String sensor> = sensor;
+        $r2 = node.<avrora.sim.types.SensorSimulation$SensorNode: java.util.List sensorInput>;
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>(sdi);
+        $r3 = ".";
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>(file);
+        if $z0 != 0 goto label0;
+
+        staticinvoke <avrora.Main: void checkFileExists(java.lang.String)>(file);
+
+     label0:
+        return;
+    }
+
+    long processRandom()
+    {
+        avrora.sim.types.SensorSimulation this;
+        long low, size, delay, $l0;
+        java.util.Random r;
+        cck.util.Option$Interval $r0;
+        byte $b1;
+
+        this := @this: avrora.sim.types.SensorSimulation;
+        $r0 = this.<avrora.sim.types.SensorSimulation: cck.util.Option$Interval RANDOM_START>;
+        low = virtualinvoke $r0.<cck.util.Option$Interval: long getLow()>();
+        $r0 = this.<avrora.sim.types.SensorSimulation: cck.util.Option$Interval RANDOM_START>;
+        $l0 = virtualinvoke $r0.<cck.util.Option$Interval: long getHigh()>();
+        size = $l0 - low;
+        delay = 0L;
+        $b1 = size cmp 0L;
+        if $b1 <= 0 goto label1;
+
+        r = virtualinvoke this.<avrora.sim.types.SensorSimulation: java.util.Random getRandom()>();
+        delay = virtualinvoke r.<java.util.Random: long nextLong()>();
+        $b1 = delay cmp 0L;
+        if $b1 >= 0 goto label0;
+
+        delay = neg delay;
+
+     label0:
+        delay = delay % size;
+
+     label1:
+        $l0 = low + delay;
+        return $l0;
+    }
+
+    long processStagger()
+    {
+        avrora.sim.types.SensorSimulation this;
+        long st, $l0, $l1;
+        cck.util.Option$Long $r1;
+
+        this := @this: avrora.sim.types.SensorSimulation;
+        st = this.<avrora.sim.types.SensorSimulation: long stagger>;
+        $l0 = this.<avrora.sim.types.SensorSimulation: long stagger>;
+        $r1 = this.<avrora.sim.types.SensorSimulation: cck.util.Option$Long STAGGER_START>;
+        $l1 = virtualinvoke $r1.<cck.util.Option$Long: long get()>();
+        $l0 = $l0 + $l1;
+        this.<avrora.sim.types.SensorSimulation: long stagger> = $l0;
+        return st;
+    }
+
+    static avrora.sim.clock.Synchronizer access$000(avrora.sim.types.SensorSimulation)
+    {
+        avrora.sim.types.SensorSimulation x0;
+        avrora.sim.clock.Synchronizer $r0;
+
+        x0 := @parameter0: avrora.sim.types.SensorSimulation;
+        $r0 = x0.<avrora.sim.types.SensorSimulation: avrora.sim.clock.Synchronizer synchronizer>;
+        return $r0;
+    }
+
+    static avrora.sim.clock.Synchronizer access$100(avrora.sim.types.SensorSimulation)
+    {
+        avrora.sim.types.SensorSimulation x0;
+        avrora.sim.clock.Synchronizer $r0;
+
+        x0 := @parameter0: avrora.sim.types.SensorSimulation;
+        $r0 = x0.<avrora.sim.types.SensorSimulation: avrora.sim.clock.Synchronizer synchronizer>;
+        return $r0;
+    }
+
+    static avrora.sim.clock.Synchronizer access$200(avrora.sim.types.SensorSimulation)
+    {
+        avrora.sim.types.SensorSimulation x0;
+        avrora.sim.clock.Synchronizer $r0;
+
+        x0 := @parameter0: avrora.sim.types.SensorSimulation;
+        $r0 = x0.<avrora.sim.types.SensorSimulation: avrora.sim.clock.Synchronizer synchronizer>;
+        return $r0;
+    }
+
+    static avrora.sim.clock.Synchronizer access$300(avrora.sim.types.SensorSimulation)
+    {
+        avrora.sim.types.SensorSimulation x0;
+        avrora.sim.clock.Synchronizer $r0;
+
+        x0 := @parameter0: avrora.sim.types.SensorSimulation;
+        $r0 = x0.<avrora.sim.types.SensorSimulation: avrora.sim.clock.Synchronizer synchronizer>;
+        return $r0;
+    }
+
+    static avrora.sim.clock.Synchronizer access$400(avrora.sim.types.SensorSimulation)
+    {
+        avrora.sim.types.SensorSimulation x0;
+        avrora.sim.clock.Synchronizer $r0;
+
+        x0 := @parameter0: avrora.sim.types.SensorSimulation;
+        $r0 = x0.<avrora.sim.types.SensorSimulation: avrora.sim.clock.Synchronizer synchronizer>;
+        return $r0;
+    }
+
+    static void <clinit>()
+    {
+        <avrora.sim.types.SensorSimulation: java.lang.String HELP> = "The sensor network simulation is used for simulating multiple sensor nodes simultaneously. These nodes can communicate with each other wirelessly to exchange packets that include sensor data and routing information for a multi-hop network. Currently, only the \"mica2\" platform sensor nodes are supported.";
+        return;
+    }
+}

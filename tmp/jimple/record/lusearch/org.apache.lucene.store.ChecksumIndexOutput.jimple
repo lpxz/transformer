@@ -1,0 +1,160 @@
+public class org.apache.lucene.store.ChecksumIndexOutput extends org.apache.lucene.store.IndexOutput
+{
+    org.apache.lucene.store.IndexOutput main;
+    java.util.zip.Checksum digest;
+
+    public void <init>(org.apache.lucene.store.IndexOutput)
+    {
+        org.apache.lucene.store.ChecksumIndexOutput this;
+        org.apache.lucene.store.IndexOutput main;
+        java.util.zip.CRC32 $r0;
+
+        this := @this: org.apache.lucene.store.ChecksumIndexOutput;
+        main := @parameter0: org.apache.lucene.store.IndexOutput;
+        specialinvoke this.<org.apache.lucene.store.IndexOutput: void <init>()>();
+        this.<org.apache.lucene.store.ChecksumIndexOutput: org.apache.lucene.store.IndexOutput main> = main;
+        $r0 = new java.util.zip.CRC32;
+        specialinvoke $r0.<java.util.zip.CRC32: void <init>()>();
+        this.<org.apache.lucene.store.ChecksumIndexOutput: java.util.zip.Checksum digest> = $r0;
+        return;
+    }
+
+    public void writeByte(byte) throws java.io.IOException
+    {
+        org.apache.lucene.store.ChecksumIndexOutput this;
+        byte b;
+        java.util.zip.Checksum $r0;
+        org.apache.lucene.store.IndexOutput $r1;
+
+        this := @this: org.apache.lucene.store.ChecksumIndexOutput;
+        b := @parameter0: byte;
+        $r0 = this.<org.apache.lucene.store.ChecksumIndexOutput: java.util.zip.Checksum digest>;
+        interfaceinvoke $r0.<java.util.zip.Checksum: void update(int)>(b);
+        $r1 = this.<org.apache.lucene.store.ChecksumIndexOutput: org.apache.lucene.store.IndexOutput main>;
+        virtualinvoke $r1.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>(b);
+        return;
+    }
+
+    public void writeBytes(byte[], int, int) throws java.io.IOException
+    {
+        org.apache.lucene.store.ChecksumIndexOutput this;
+        byte[] b;
+        int offset, length;
+        java.util.zip.Checksum $r0;
+        org.apache.lucene.store.IndexOutput $r1;
+
+        this := @this: org.apache.lucene.store.ChecksumIndexOutput;
+        b := @parameter0: byte[];
+        offset := @parameter1: int;
+        length := @parameter2: int;
+        $r0 = this.<org.apache.lucene.store.ChecksumIndexOutput: java.util.zip.Checksum digest>;
+        interfaceinvoke $r0.<java.util.zip.Checksum: void update(byte[],int,int)>(b, offset, length);
+        $r1 = this.<org.apache.lucene.store.ChecksumIndexOutput: org.apache.lucene.store.IndexOutput main>;
+        virtualinvoke $r1.<org.apache.lucene.store.IndexOutput: void writeBytes(byte[],int,int)>(b, offset, length);
+        return;
+    }
+
+    public long getChecksum()
+    {
+        org.apache.lucene.store.ChecksumIndexOutput this;
+        java.util.zip.Checksum $r0;
+        long $l0;
+
+        this := @this: org.apache.lucene.store.ChecksumIndexOutput;
+        $r0 = this.<org.apache.lucene.store.ChecksumIndexOutput: java.util.zip.Checksum digest>;
+        $l0 = interfaceinvoke $r0.<java.util.zip.Checksum: long getValue()>();
+        return $l0;
+    }
+
+    public void flush() throws java.io.IOException
+    {
+        org.apache.lucene.store.ChecksumIndexOutput this;
+        org.apache.lucene.store.IndexOutput $r0;
+
+        this := @this: org.apache.lucene.store.ChecksumIndexOutput;
+        $r0 = this.<org.apache.lucene.store.ChecksumIndexOutput: org.apache.lucene.store.IndexOutput main>;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexOutput: void flush()>();
+        return;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        org.apache.lucene.store.ChecksumIndexOutput this;
+        org.apache.lucene.store.IndexOutput $r0;
+
+        this := @this: org.apache.lucene.store.ChecksumIndexOutput;
+        $r0 = this.<org.apache.lucene.store.ChecksumIndexOutput: org.apache.lucene.store.IndexOutput main>;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexOutput: void close()>();
+        return;
+    }
+
+    public long getFilePointer()
+    {
+        org.apache.lucene.store.ChecksumIndexOutput this;
+        org.apache.lucene.store.IndexOutput $r0;
+        long $l0;
+
+        this := @this: org.apache.lucene.store.ChecksumIndexOutput;
+        $r0 = this.<org.apache.lucene.store.ChecksumIndexOutput: org.apache.lucene.store.IndexOutput main>;
+        $l0 = virtualinvoke $r0.<org.apache.lucene.store.IndexOutput: long getFilePointer()>();
+        return $l0;
+    }
+
+    public void seek(long)
+    {
+        org.apache.lucene.store.ChecksumIndexOutput this;
+        long pos;
+        java.lang.RuntimeException $r0;
+
+        this := @this: org.apache.lucene.store.ChecksumIndexOutput;
+        pos := @parameter0: long;
+        $r0 = new java.lang.RuntimeException;
+        specialinvoke $r0.<java.lang.RuntimeException: void <init>(java.lang.String)>("not allowed");
+        throw $r0;
+    }
+
+    public void prepareCommit() throws java.io.IOException
+    {
+        org.apache.lucene.store.ChecksumIndexOutput this;
+        long checksum, pos, $l0;
+        org.apache.lucene.store.IndexOutput $r0;
+
+        this := @this: org.apache.lucene.store.ChecksumIndexOutput;
+        checksum = virtualinvoke this.<org.apache.lucene.store.ChecksumIndexOutput: long getChecksum()>();
+        $r0 = this.<org.apache.lucene.store.ChecksumIndexOutput: org.apache.lucene.store.IndexOutput main>;
+        pos = virtualinvoke $r0.<org.apache.lucene.store.IndexOutput: long getFilePointer()>();
+        $r0 = this.<org.apache.lucene.store.ChecksumIndexOutput: org.apache.lucene.store.IndexOutput main>;
+        $l0 = checksum - 1L;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexOutput: void writeLong(long)>($l0);
+        $r0 = this.<org.apache.lucene.store.ChecksumIndexOutput: org.apache.lucene.store.IndexOutput main>;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexOutput: void flush()>();
+        $r0 = this.<org.apache.lucene.store.ChecksumIndexOutput: org.apache.lucene.store.IndexOutput main>;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexOutput: void seek(long)>(pos);
+        return;
+    }
+
+    public void finishCommit() throws java.io.IOException
+    {
+        org.apache.lucene.store.ChecksumIndexOutput this;
+        org.apache.lucene.store.IndexOutput $r0;
+        long $l0;
+
+        this := @this: org.apache.lucene.store.ChecksumIndexOutput;
+        $r0 = this.<org.apache.lucene.store.ChecksumIndexOutput: org.apache.lucene.store.IndexOutput main>;
+        $l0 = virtualinvoke this.<org.apache.lucene.store.ChecksumIndexOutput: long getChecksum()>();
+        virtualinvoke $r0.<org.apache.lucene.store.IndexOutput: void writeLong(long)>($l0);
+        return;
+    }
+
+    public long length() throws java.io.IOException
+    {
+        org.apache.lucene.store.ChecksumIndexOutput this;
+        org.apache.lucene.store.IndexOutput $r0;
+        long $l0;
+
+        this := @this: org.apache.lucene.store.ChecksumIndexOutput;
+        $r0 = this.<org.apache.lucene.store.ChecksumIndexOutput: org.apache.lucene.store.IndexOutput main>;
+        $l0 = virtualinvoke $r0.<org.apache.lucene.store.IndexOutput: long length()>();
+        return $l0;
+    }
+}

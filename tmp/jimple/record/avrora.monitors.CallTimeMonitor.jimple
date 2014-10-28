@@ -1,0 +1,35 @@
+public class avrora.monitors.CallTimeMonitor extends avrora.monitors.MonitorFactory
+{
+    final cck.util.Option$Str METHOD;
+    final cck.util.Option$Bool IGNR_INTRS;
+
+    public void <init>()
+    {
+        avrora.monitors.CallTimeMonitor this;
+        cck.util.Option$Str $r0;
+        cck.util.Option$Bool $r1;
+
+        this := @this: avrora.monitors.CallTimeMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"MethodTimeMonitor\" monitor records profiling information about the method that consists of the time it takes (on average) to execute a call.");
+        $r0 = virtualinvoke this.<avrora.monitors.CallTimeMonitor: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("method", "", "This option specifies the name of the method to profile.");
+        this.<avrora.monitors.CallTimeMonitor: cck.util.Option$Str METHOD> = $r0;
+        $r1 = virtualinvoke this.<avrora.monitors.CallTimeMonitor: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("ignore-interrupts", 0, "This option selects whether this monitor will consider time spent in nested interrupts to be part of a method\'s execution time.");
+        this.<avrora.monitors.CallTimeMonitor: cck.util.Option$Bool IGNR_INTRS> = $r1;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.CallTimeMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.CallTimeMonitor$CallTimeMon tmp$547440112;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.CallTimeMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$547440112 = new avrora.monitors.CallTimeMonitor$CallTimeMon;
+        specialinvoke tmp$547440112.<avrora.monitors.CallTimeMonitor$CallTimeMon: void <init>(avrora.monitors.CallTimeMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$547440112;
+        return tmp;
+    }
+}

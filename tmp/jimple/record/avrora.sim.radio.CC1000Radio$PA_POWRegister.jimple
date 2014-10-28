@@ -1,0 +1,134 @@
+public class avrora.sim.radio.CC1000Radio$PA_POWRegister extends avrora.sim.radio.CC1000Radio$RadioRegister
+{
+    int paHighPower;
+    int paLowPower;
+    final avrora.sim.radio.CC1000Radio this$0;
+
+    void <init>(avrora.sim.radio.CC1000Radio)
+    {
+        avrora.sim.radio.CC1000Radio$PA_POWRegister this;
+        avrora.sim.radio.CC1000Radio l1;
+
+        this := @this: avrora.sim.radio.CC1000Radio$PA_POWRegister;
+        l1 := @parameter0: avrora.sim.radio.CC1000Radio;
+        this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: avrora.sim.radio.CC1000Radio this$0> = l1;
+        specialinvoke this.<avrora.sim.radio.CC1000Radio$RadioRegister: void <init>(avrora.sim.radio.CC1000Radio,java.lang.String,byte)>(l1, "PA_POW", 15);
+        return;
+    }
+
+    protected void decode(byte)
+    {
+        avrora.sim.radio.CC1000Radio$PA_POWRegister this;
+        byte val, $b0;
+        short $s1;
+        avrora.sim.radio.CC1000Radio $r0;
+        avrora.sim.radio.CC1000Radio$MainRegister $r1;
+        boolean $z0;
+        avrora.sim.FiniteStateMachine $r2;
+        int $i2;
+        long tid_decode;
+        java.lang.Thread thread_decode;
+
+        this := @this: avrora.sim.radio.CC1000Radio$PA_POWRegister;
+        val := @parameter0: byte;
+        thread_decode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_decode = virtualinvoke thread_decode.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 64, tid_decode, "avrora.sim.radio.CC1000Radio$PA_POWRegister", 521, $b0);
+        $b0 = this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: byte value>;
+        $s1 = $b0 & 240;
+        $s1 = $s1 >> 4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 131, tid_decode, "avrora.sim.radio.CC1000Radio$PA_POWRegister", 521, $s1);
+        this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: int paHighPower> = $s1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 64, tid_decode, "avrora.sim.radio.CC1000Radio$PA_POWRegister", 522, $b0);
+        $b0 = this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: byte value>;
+        $b0 = $b0 & 15;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 132, tid_decode, "avrora.sim.radio.CC1000Radio$PA_POWRegister", 522, $b0);
+        this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: int paLowPower> = $b0;
+        $r0 = this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r1 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$MainRegister MAIN_reg>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r1, 118, tid_decode, "avrora.sim.radio.CC1000Radio$PA_POWRegister", 528, $z0);
+        $z0 = $r1.<avrora.sim.radio.CC1000Radio$MainRegister: boolean corePd>;
+        if $z0 != 0 goto label0;
+
+        $r0 = this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r1 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$MainRegister MAIN_reg>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r1, 119, tid_decode, "avrora.sim.radio.CC1000Radio$PA_POWRegister", 528, $z0);
+        $z0 = $r1.<avrora.sim.radio.CC1000Radio$MainRegister: boolean biasPd>;
+        if $z0 != 0 goto label0;
+
+        $r0 = this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r1 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$MainRegister MAIN_reg>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r1, 117, tid_decode, "avrora.sim.radio.CC1000Radio$PA_POWRegister", 528, $z0);
+        $z0 = $r1.<avrora.sim.radio.CC1000Radio$MainRegister: boolean fsPd>;
+        if $z0 != 0 goto label0;
+
+        $r0 = this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r1 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$MainRegister MAIN_reg>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r1, 114, tid_decode, "avrora.sim.radio.CC1000Radio$PA_POWRegister", 528, $z0);
+        $z0 = $r1.<avrora.sim.radio.CC1000Radio$MainRegister: boolean rxtx>;
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r1 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$MainRegister MAIN_reg>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r1, 116, tid_decode, "avrora.sim.radio.CC1000Radio$PA_POWRegister", 528, $z0);
+        $z0 = $r1.<avrora.sim.radio.CC1000Radio$MainRegister: boolean txPd>;
+        if $z0 != 0 goto label0;
+
+        $r0 = this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r2 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.FiniteStateMachine stateMachine>;
+        $i2 = virtualinvoke this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: int getPower()>();
+        $i2 = $i2 + 6;
+        virtualinvoke $r2.<avrora.sim.FiniteStateMachine: void transition(int)>($i2);
+
+     label0:
+        return;
+    }
+
+    protected int getPower()
+    {
+        avrora.sim.radio.CC1000Radio$PA_POWRegister this;
+        byte $b0;
+        short $s1;
+        long tid_getPower;
+        java.lang.Thread thread_getPower;
+
+        this := @this: avrora.sim.radio.CC1000Radio$PA_POWRegister;
+        thread_getPower = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getPower = virtualinvoke thread_getPower.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 64, tid_getPower, "avrora.sim.radio.CC1000Radio$PA_POWRegister", 533, $b0);
+        $b0 = this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: byte value>;
+        $s1 = $b0 & 255;
+        return $s1;
+    }
+
+    protected void printStatus()
+    {
+        avrora.sim.radio.CC1000Radio$PA_POWRegister this;
+        java.lang.StringBuilder $r0;
+        avrora.sim.radio.CC1000Radio $r1;
+        avrora.sim.output.SimPrinter $r2;
+        int $i0;
+        java.lang.String $r3;
+        long tid_printStatus;
+        java.lang.Thread thread_printStatus;
+
+        this := @this: avrora.sim.radio.CC1000Radio$PA_POWRegister;
+        thread_printStatus = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_printStatus = virtualinvoke thread_printStatus.<java.lang.Thread: long getId()>();
+        $r1 = this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r2 = $r1.<avrora.sim.radio.CC1000Radio: avrora.sim.output.SimPrinter radioPrinter>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("CC1000[PA_POW]: PA high power: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 131, tid_printStatus, "avrora.sim.radio.CC1000Radio$PA_POWRegister", 537, $i0);
+        $i0 = this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: int paHighPower>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", PA low power: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 132, tid_printStatus, "avrora.sim.radio.CC1000Radio$PA_POWRegister", 537, $i0);
+        $i0 = this.<avrora.sim.radio.CC1000Radio$PA_POWRegister: int paLowPower>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r3 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r3);
+        return;
+    }
+}

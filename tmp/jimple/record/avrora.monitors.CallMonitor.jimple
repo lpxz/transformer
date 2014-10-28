@@ -1,0 +1,37 @@
+public class avrora.monitors.CallMonitor extends avrora.monitors.MonitorFactory
+{
+    protected final cck.util.Option$Bool SITE;
+    protected final cck.util.Option$Bool SHOW;
+    protected final cck.util.Option$Bool EDGE;
+
+    public void <init>()
+    {
+        avrora.monitors.CallMonitor this;
+        cck.util.Option$Bool $r0;
+
+        this := @this: avrora.monitors.CallMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"calls\" monitor tracks the call/return behavior of the program as it executes, displaying the stacking up of function calls and interrupt handlers.");
+        $r0 = virtualinvoke this.<avrora.monitors.CallMonitor: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("call-sites", 1, "When this option is specified, the call monitor will report the address of the instruction in the caller when a call or an interrupt occurs.");
+        this.<avrora.monitors.CallMonitor: cck.util.Option$Bool SITE> = $r0;
+        $r0 = virtualinvoke this.<avrora.monitors.CallMonitor: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("show-stack", 1, "When this option is specified, the call monitor trace will print the call stack with each call, interrupt or return. When this option is set to false, this monitor will only indent calls and returns, without printing the entire call stack.");
+        this.<avrora.monitors.CallMonitor: cck.util.Option$Bool SHOW> = $r0;
+        $r0 = virtualinvoke this.<avrora.monitors.CallMonitor: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("edge-types", 1, "When this option is specified, the call monitor trace will print the type of each call or return. For example, if an interrupt occurs, then the interrupt number and name will be reported.");
+        this.<avrora.monitors.CallMonitor: cck.util.Option$Bool EDGE> = $r0;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.CallMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.CallMonitor$Mon tmp$549826055;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.CallMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$549826055 = new avrora.monitors.CallMonitor$Mon;
+        specialinvoke tmp$549826055.<avrora.monitors.CallMonitor$Mon: void <init>(avrora.monitors.CallMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$549826055;
+        return tmp;
+    }
+}

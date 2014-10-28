@@ -1,0 +1,121 @@
+public class org.apache.lucene.search.SimilarityDelegator extends org.apache.lucene.search.Similarity
+{
+    private org.apache.lucene.search.Similarity delegee;
+
+    public void <init>(org.apache.lucene.search.Similarity)
+    {
+        org.apache.lucene.search.SimilarityDelegator this;
+        org.apache.lucene.search.Similarity delegee;
+
+        this := @this: org.apache.lucene.search.SimilarityDelegator;
+        delegee := @parameter0: org.apache.lucene.search.Similarity;
+        specialinvoke this.<org.apache.lucene.search.Similarity: void <init>()>();
+        this.<org.apache.lucene.search.SimilarityDelegator: org.apache.lucene.search.Similarity delegee> = delegee;
+        return;
+    }
+
+    public float lengthNorm(java.lang.String, int)
+    {
+        org.apache.lucene.search.SimilarityDelegator this;
+        java.lang.String fieldName;
+        int numTerms;
+        org.apache.lucene.search.Similarity $r0;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.SimilarityDelegator;
+        fieldName := @parameter0: java.lang.String;
+        numTerms := @parameter1: int;
+        $r0 = this.<org.apache.lucene.search.SimilarityDelegator: org.apache.lucene.search.Similarity delegee>;
+        $f0 = virtualinvoke $r0.<org.apache.lucene.search.Similarity: float lengthNorm(java.lang.String,int)>(fieldName, numTerms);
+        return $f0;
+    }
+
+    public float queryNorm(float)
+    {
+        org.apache.lucene.search.SimilarityDelegator this;
+        float sumOfSquaredWeights, $f0;
+        org.apache.lucene.search.Similarity $r0;
+
+        this := @this: org.apache.lucene.search.SimilarityDelegator;
+        sumOfSquaredWeights := @parameter0: float;
+        $r0 = this.<org.apache.lucene.search.SimilarityDelegator: org.apache.lucene.search.Similarity delegee>;
+        $f0 = virtualinvoke $r0.<org.apache.lucene.search.Similarity: float queryNorm(float)>(sumOfSquaredWeights);
+        return $f0;
+    }
+
+    public float tf(float)
+    {
+        org.apache.lucene.search.SimilarityDelegator this;
+        float freq, $f0;
+        org.apache.lucene.search.Similarity $r0;
+
+        this := @this: org.apache.lucene.search.SimilarityDelegator;
+        freq := @parameter0: float;
+        $r0 = this.<org.apache.lucene.search.SimilarityDelegator: org.apache.lucene.search.Similarity delegee>;
+        $f0 = virtualinvoke $r0.<org.apache.lucene.search.Similarity: float tf(float)>(freq);
+        return $f0;
+    }
+
+    public float sloppyFreq(int)
+    {
+        org.apache.lucene.search.SimilarityDelegator this;
+        int distance;
+        org.apache.lucene.search.Similarity $r0;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.SimilarityDelegator;
+        distance := @parameter0: int;
+        $r0 = this.<org.apache.lucene.search.SimilarityDelegator: org.apache.lucene.search.Similarity delegee>;
+        $f0 = virtualinvoke $r0.<org.apache.lucene.search.Similarity: float sloppyFreq(int)>(distance);
+        return $f0;
+    }
+
+    public float idf(int, int)
+    {
+        org.apache.lucene.search.SimilarityDelegator this;
+        int docFreq, numDocs;
+        org.apache.lucene.search.Similarity $r0;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.SimilarityDelegator;
+        docFreq := @parameter0: int;
+        numDocs := @parameter1: int;
+        $r0 = this.<org.apache.lucene.search.SimilarityDelegator: org.apache.lucene.search.Similarity delegee>;
+        $f0 = virtualinvoke $r0.<org.apache.lucene.search.Similarity: float idf(int,int)>(docFreq, numDocs);
+        return $f0;
+    }
+
+    public float coord(int, int)
+    {
+        org.apache.lucene.search.SimilarityDelegator this;
+        int overlap, maxOverlap;
+        org.apache.lucene.search.Similarity $r0;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.SimilarityDelegator;
+        overlap := @parameter0: int;
+        maxOverlap := @parameter1: int;
+        $r0 = this.<org.apache.lucene.search.SimilarityDelegator: org.apache.lucene.search.Similarity delegee>;
+        $f0 = virtualinvoke $r0.<org.apache.lucene.search.Similarity: float coord(int,int)>(overlap, maxOverlap);
+        return $f0;
+    }
+
+    public float scorePayload(java.lang.String, byte[], int, int)
+    {
+        org.apache.lucene.search.SimilarityDelegator this;
+        java.lang.String fieldName;
+        byte[] payload;
+        int offset, length;
+        org.apache.lucene.search.Similarity $r0;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.SimilarityDelegator;
+        fieldName := @parameter0: java.lang.String;
+        payload := @parameter1: byte[];
+        offset := @parameter2: int;
+        length := @parameter3: int;
+        $r0 = this.<org.apache.lucene.search.SimilarityDelegator: org.apache.lucene.search.Similarity delegee>;
+        $f0 = virtualinvoke $r0.<org.apache.lucene.search.Similarity: float scorePayload(java.lang.String,byte[],int,int)>(fieldName, payload, offset, length);
+        return $f0;
+    }
+}

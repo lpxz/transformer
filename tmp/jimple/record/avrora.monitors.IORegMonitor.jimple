@@ -1,0 +1,31 @@
+public class avrora.monitors.IORegMonitor extends avrora.monitors.MonitorFactory
+{
+    final cck.util.Option$List IOREGS;
+
+    public void <init>()
+    {
+        avrora.monitors.IORegMonitor this;
+        cck.util.Option$List $r0;
+
+        this := @this: avrora.monitors.IORegMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("This \"ioregs\" monitor tracks the updates to IO registers on the microcontroller, including IO registers corresponding to devices such as the timer, UART, SPI, etc.");
+        $r0 = virtualinvoke this.<avrora.monitors.IORegMonitor: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("ioregs", "all", "This option accepts a list of IO register names which will be monitored during the simulation. For example, specifying \"PORTA,DDR\" as this option\'s value will enable monitoring of reads and writes to the PORTA and DDRA IO registers. If the string \"all\" is specified as one of the items of the list, then all IO registers will be monitored.");
+        this.<avrora.monitors.IORegMonitor: cck.util.Option$List IOREGS> = $r0;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.IORegMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.IORegMonitor$Monitor tmp$548652001;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.IORegMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$548652001 = new avrora.monitors.IORegMonitor$Monitor;
+        specialinvoke tmp$548652001.<avrora.monitors.IORegMonitor$Monitor: void <init>(avrora.monitors.IORegMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$548652001;
+        return tmp;
+    }
+}

@@ -1,0 +1,83 @@
+class org.apache.lucene.index.DirectoryIndexReader$1 extends org.apache.lucene.index.SegmentInfos$FindSegmentsFile
+{
+    private final boolean val$readOnly;
+    private final org.apache.lucene.index.IndexDeletionPolicy val$deletionPolicy;
+    private final boolean val$closeDirectory;
+
+    void <init>(org.apache.lucene.store.Directory, boolean, org.apache.lucene.index.IndexDeletionPolicy, boolean)
+    {
+        org.apache.lucene.index.DirectoryIndexReader$1 this;
+        org.apache.lucene.store.Directory x0;
+        boolean l2, l4;
+        org.apache.lucene.index.IndexDeletionPolicy l3;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader$1;
+        x0 := @parameter0: org.apache.lucene.store.Directory;
+        l2 := @parameter1: boolean;
+        l3 := @parameter2: org.apache.lucene.index.IndexDeletionPolicy;
+        l4 := @parameter3: boolean;
+        this.<org.apache.lucene.index.DirectoryIndexReader$1: boolean val$readOnly> = l2;
+        this.<org.apache.lucene.index.DirectoryIndexReader$1: org.apache.lucene.index.IndexDeletionPolicy val$deletionPolicy> = l3;
+        this.<org.apache.lucene.index.DirectoryIndexReader$1: boolean val$closeDirectory> = l4;
+        specialinvoke this.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: void <init>(org.apache.lucene.store.Directory)>(x0);
+        return;
+    }
+
+    protected java.lang.Object doBody(java.lang.String) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.DirectoryIndexReader$1 this;
+        java.lang.String segmentFileName;
+        org.apache.lucene.index.SegmentInfos $r0, infos;
+        org.apache.lucene.index.DirectoryIndexReader reader;
+        org.apache.lucene.store.Directory $r1, $r4;
+        int $i0;
+        boolean $z0, $z1;
+        org.apache.lucene.index.SegmentInfo $r2;
+        org.apache.lucene.index.ReadOnlyMultiSegmentReader $r3;
+        org.apache.lucene.index.MultiSegmentReader $r5;
+        org.apache.lucene.index.IndexDeletionPolicy $r6;
+        long tid_doBody;
+        java.lang.Thread thread_doBody;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader$1;
+        segmentFileName := @parameter0: java.lang.String;
+        thread_doBody = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_doBody = virtualinvoke thread_doBody.<java.lang.Thread: long getId()>();
+        $r0 = new org.apache.lucene.index.SegmentInfos;
+        specialinvoke $r0.<org.apache.lucene.index.SegmentInfos: void <init>()>();
+        infos = $r0;
+        $r1 = this.<org.apache.lucene.index.DirectoryIndexReader$1: org.apache.lucene.store.Directory directory>;
+        virtualinvoke infos.<org.apache.lucene.index.SegmentInfos: void read(org.apache.lucene.store.Directory,java.lang.String)>($r1, segmentFileName);
+        $i0 = virtualinvoke infos.<org.apache.lucene.index.SegmentInfos: int size()>();
+        if $i0 != 1 goto label0;
+
+        $z0 = this.<org.apache.lucene.index.DirectoryIndexReader$1: boolean val$readOnly>;
+        $r2 = virtualinvoke infos.<org.apache.lucene.index.SegmentInfos: org.apache.lucene.index.SegmentInfo info(int)>(0);
+        reader = staticinvoke <org.apache.lucene.index.SegmentReader: org.apache.lucene.index.SegmentReader get(boolean,org.apache.lucene.index.SegmentInfos,org.apache.lucene.index.SegmentInfo,boolean)>($z0, infos, $r2, 0);
+        goto label2;
+
+     label0:
+        $z0 = this.<org.apache.lucene.index.DirectoryIndexReader$1: boolean val$readOnly>;
+        if $z0 == 0 goto label1;
+
+        $r3 = new org.apache.lucene.index.ReadOnlyMultiSegmentReader;
+        $r4 = this.<org.apache.lucene.index.DirectoryIndexReader$1: org.apache.lucene.store.Directory directory>;
+        specialinvoke $r3.<org.apache.lucene.index.ReadOnlyMultiSegmentReader: void <init>(org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfos,boolean)>($r4, infos, 0);
+        reader = $r3;
+        goto label2;
+
+     label1:
+        $r5 = new org.apache.lucene.index.MultiSegmentReader;
+        $r4 = this.<org.apache.lucene.index.DirectoryIndexReader$1: org.apache.lucene.store.Directory directory>;
+        specialinvoke $r5.<org.apache.lucene.index.MultiSegmentReader: void <init>(org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfos,boolean,boolean)>($r4, infos, 0, 0);
+        reader = $r5;
+
+     label2:
+        $r6 = this.<org.apache.lucene.index.DirectoryIndexReader$1: org.apache.lucene.index.IndexDeletionPolicy val$deletionPolicy>;
+        virtualinvoke reader.<org.apache.lucene.index.DirectoryIndexReader: void setDeletionPolicy(org.apache.lucene.index.IndexDeletionPolicy)>($r6);
+        $z1 = this.<org.apache.lucene.index.DirectoryIndexReader$1: boolean val$closeDirectory>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(reader, 3, tid_doBody, "org.apache.lucene.index.DirectoryIndexReader$1", 107, $z1);
+        reader.<org.apache.lucene.index.DirectoryIndexReader: boolean closeDirectory> = $z1;
+        return reader;
+    }
+}

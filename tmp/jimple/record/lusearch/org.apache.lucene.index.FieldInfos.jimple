@@ -1,0 +1,1053 @@
+final class org.apache.lucene.index.FieldInfos extends java.lang.Object
+{
+    static final byte IS_INDEXED;
+    static final byte STORE_TERMVECTOR;
+    static final byte STORE_POSITIONS_WITH_TERMVECTOR;
+    static final byte STORE_OFFSET_WITH_TERMVECTOR;
+    static final byte OMIT_NORMS;
+    static final byte STORE_PAYLOADS;
+    static final byte OMIT_TF;
+    private java.util.ArrayList byNumber;
+    private java.util.HashMap byName;
+
+    void <init>()
+    {
+        org.apache.lucene.index.FieldInfos this;
+        java.util.ArrayList $r0;
+        java.util.HashMap $r1;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+        this.<org.apache.lucene.index.FieldInfos: java.util.ArrayList byNumber> = $r0;
+        $r1 = new java.util.HashMap;
+        specialinvoke $r1.<java.util.HashMap: void <init>()>();
+        this.<org.apache.lucene.index.FieldInfos: java.util.HashMap byName> = $r1;
+        return;
+    }
+
+    void <init>(org.apache.lucene.store.Directory, java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldInfos this;
+        org.apache.lucene.store.Directory d;
+        java.lang.String name;
+        java.util.ArrayList $r0;
+        org.apache.lucene.store.IndexInput input;
+        java.lang.Throwable l4, $r2;
+        java.util.HashMap $r1;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        d := @parameter0: org.apache.lucene.store.Directory;
+        name := @parameter1: java.lang.String;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+        this.<org.apache.lucene.index.FieldInfos: java.util.ArrayList byNumber> = $r0;
+        $r1 = new java.util.HashMap;
+        specialinvoke $r1.<java.util.HashMap: void <init>()>();
+        this.<org.apache.lucene.index.FieldInfos: java.util.HashMap byName> = $r1;
+        input = virtualinvoke d.<org.apache.lucene.store.Directory: org.apache.lucene.store.IndexInput openInput(java.lang.String)>(name);
+
+     label0:
+        specialinvoke this.<org.apache.lucene.index.FieldInfos: void read(org.apache.lucene.store.IndexInput)>(input);
+        goto label6;
+
+     label1:
+        goto label5;
+
+     label2:
+        $r2 := @caughtexception;
+
+     label3:
+        l4 = $r2;
+        goto label7;
+
+     label4:
+        throw l4;
+
+     label5:
+        return;
+
+     label6:
+        virtualinvoke input.<org.apache.lucene.store.IndexInput: void close()>();
+        goto label1;
+
+     label7:
+        virtualinvoke input.<org.apache.lucene.store.IndexInput: void close()>();
+        goto label4;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public java.lang.Object clone()
+    {
+        org.apache.lucene.index.FieldInfos this, $r0, fis;
+        int numField, i;
+        org.apache.lucene.index.FieldInfo fi, $r3;
+        java.util.ArrayList $r1;
+        java.lang.Object $r2, localthislockclone;
+        java.util.HashMap $r4;
+        java.lang.String $r5;
+        java.lang.Throwable throwableLocal13;
+        long tid_clone;
+        java.lang.Thread thread_clone;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        thread_clone = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clone = virtualinvoke thread_clone.<java.lang.Thread: long getId()>();
+        localthislockclone = this;
+
+     label0:
+        entermonitor localthislockclone;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockclone, 0, tid_clone);
+        $r0 = new org.apache.lucene.index.FieldInfos;
+        specialinvoke $r0.<org.apache.lucene.index.FieldInfos: void <init>()>();
+        fis = $r0;
+        $r1 = this.<org.apache.lucene.index.FieldInfos: java.util.ArrayList byNumber>;
+        numField = virtualinvoke $r1.<java.util.ArrayList: int size()>();
+        i = 0;
+
+     label1:
+        if i >= numField goto label2;
+
+        $r1 = this.<org.apache.lucene.index.FieldInfos: java.util.ArrayList byNumber>;
+        $r2 = virtualinvoke $r1.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        $r3 = (org.apache.lucene.index.FieldInfo) $r2;
+        $r2 = virtualinvoke $r3.<org.apache.lucene.index.FieldInfo: java.lang.Object clone()>();
+        fi = (org.apache.lucene.index.FieldInfo) $r2;
+        $r1 = fis.<org.apache.lucene.index.FieldInfos: java.util.ArrayList byNumber>;
+        virtualinvoke $r1.<java.util.ArrayList: boolean add(java.lang.Object)>(fi);
+        $r4 = fis.<org.apache.lucene.index.FieldInfos: java.util.HashMap byName>;
+        $r5 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeDSElem(java.lang.Object,int,long,java.lang.String,int,java.lang.Object,java.lang.Object)>($r4, 21, tid_clone, "org.apache.lucene.index.FieldInfos", 75, $r5, fi);
+        virtualinvoke $r4.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r5, fi);
+        i = i + 1;
+        goto label1;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockclone, 0, tid_clone);
+        exitmonitor localthislockclone;
+        goto label3;
+
+     label3:
+        return fis;
+
+     label4:
+        throwableLocal13 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockclone, 0, tid_clone);
+        exitmonitor localthislockclone;
+
+     label6:
+        throw throwableLocal13;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void add(org.apache.lucene.document.Document)
+    {
+        org.apache.lucene.index.FieldInfos this;
+        org.apache.lucene.document.Document doc;
+        java.util.List fields;
+        java.util.Iterator fieldIterator;
+        org.apache.lucene.document.Fieldable field;
+        boolean $z0, $z1, $z2, $z3, $z4, $z5;
+        java.lang.Object $r0, localthislockadd;
+        java.lang.String $r1;
+        java.lang.Throwable throwableLocal14;
+        long tid_add;
+        java.lang.Thread thread_add;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        doc := @parameter0: org.apache.lucene.document.Document;
+        thread_add = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_add = virtualinvoke thread_add.<java.lang.Thread: long getId()>();
+        localthislockadd = this;
+
+     label0:
+        entermonitor localthislockadd;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        fields = virtualinvoke doc.<org.apache.lucene.document.Document: java.util.List getFields()>();
+        fieldIterator = interfaceinvoke fields.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke fieldIterator.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r0 = interfaceinvoke fieldIterator.<java.util.Iterator: java.lang.Object next()>();
+        field = (org.apache.lucene.document.Fieldable) $r0;
+        $r1 = interfaceinvoke field.<org.apache.lucene.document.Fieldable: java.lang.String name()>();
+        $z1 = interfaceinvoke field.<org.apache.lucene.document.Fieldable: boolean isIndexed()>();
+        $z2 = interfaceinvoke field.<org.apache.lucene.document.Fieldable: boolean isTermVectorStored()>();
+        $z3 = interfaceinvoke field.<org.apache.lucene.document.Fieldable: boolean isStorePositionWithTermVector()>();
+        $z4 = interfaceinvoke field.<org.apache.lucene.document.Fieldable: boolean isStoreOffsetWithTermVector()>();
+        $z5 = interfaceinvoke field.<org.apache.lucene.document.Fieldable: boolean getOmitNorms()>();
+        virtualinvoke this.<org.apache.lucene.index.FieldInfos: void add(java.lang.String,boolean,boolean,boolean,boolean,boolean)>($r1, $z1, $z2, $z3, $z4, $z5);
+        goto label1;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+        goto label3;
+
+     label3:
+        return;
+
+     label4:
+        throwableLocal14 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+
+     label6:
+        throw throwableLocal14;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    boolean hasProx()
+    {
+        org.apache.lucene.index.FieldInfos this;
+        int numFields, i;
+        java.util.ArrayList $r0;
+        org.apache.lucene.index.FieldInfo $r1;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        $r0 = this.<org.apache.lucene.index.FieldInfos: java.util.ArrayList byNumber>;
+        numFields = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        i = 0;
+
+     label0:
+        if i >= numFields goto label2;
+
+        $r1 = virtualinvoke this.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(int)>(i);
+        $z0 = $r1.<org.apache.lucene.index.FieldInfo: boolean omitTf>;
+        if $z0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        i = i + 1;
+        goto label0;
+
+     label2:
+        return 0;
+    }
+
+    public void addIndexed(java.util.Collection, boolean, boolean, boolean)
+    {
+        org.apache.lucene.index.FieldInfos this;
+        java.util.Collection names;
+        boolean storeTermVectors, storePositionWithTermVector, storeOffsetWithTermVector, $z0;
+        java.util.Iterator i;
+        java.lang.Object $r0, localthislockaddIndexed;
+        java.lang.String $r1;
+        java.lang.Throwable throwableLocal15;
+        long tid_addIndexed;
+        java.lang.Thread thread_addIndexed;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        names := @parameter0: java.util.Collection;
+        storeTermVectors := @parameter1: boolean;
+        storePositionWithTermVector := @parameter2: boolean;
+        storeOffsetWithTermVector := @parameter3: boolean;
+        thread_addIndexed = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addIndexed = virtualinvoke thread_addIndexed.<java.lang.Thread: long getId()>();
+        localthislockaddIndexed = this;
+
+     label0:
+        entermonitor localthislockaddIndexed;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockaddIndexed, 0, tid_addIndexed);
+        i = interfaceinvoke names.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r0 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        $r1 = (java.lang.String) $r0;
+        virtualinvoke this.<org.apache.lucene.index.FieldInfos: void add(java.lang.String,boolean,boolean,boolean,boolean)>($r1, 1, storeTermVectors, storePositionWithTermVector, storeOffsetWithTermVector);
+        goto label1;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockaddIndexed, 0, tid_addIndexed);
+        exitmonitor localthislockaddIndexed;
+        goto label3;
+
+     label3:
+        return;
+
+     label4:
+        throwableLocal15 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockaddIndexed, 0, tid_addIndexed);
+        exitmonitor localthislockaddIndexed;
+
+     label6:
+        throw throwableLocal15;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void add(java.util.Collection, boolean)
+    {
+        org.apache.lucene.index.FieldInfos this;
+        java.util.Collection names;
+        boolean isIndexed, $z0;
+        java.util.Iterator i;
+        java.lang.Object $r0, localthislockadd;
+        java.lang.String $r1;
+        java.lang.Throwable throwableLocal16;
+        long tid_add;
+        java.lang.Thread thread_add;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        names := @parameter0: java.util.Collection;
+        isIndexed := @parameter1: boolean;
+        thread_add = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_add = virtualinvoke thread_add.<java.lang.Thread: long getId()>();
+        localthislockadd = this;
+
+     label0:
+        entermonitor localthislockadd;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        i = interfaceinvoke names.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r0 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        $r1 = (java.lang.String) $r0;
+        virtualinvoke this.<org.apache.lucene.index.FieldInfos: void add(java.lang.String,boolean)>($r1, isIndexed);
+        goto label1;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+        goto label3;
+
+     label3:
+        return;
+
+     label4:
+        throwableLocal16 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+
+     label6:
+        throw throwableLocal16;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void add(java.lang.String, boolean)
+    {
+        org.apache.lucene.index.FieldInfos this;
+        java.lang.String name;
+        boolean isIndexed;
+        java.lang.Object localthislockadd;
+        java.lang.Throwable throwableLocal17;
+        long tid_add;
+        java.lang.Thread thread_add;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        name := @parameter0: java.lang.String;
+        isIndexed := @parameter1: boolean;
+        thread_add = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_add = virtualinvoke thread_add.<java.lang.Thread: long getId()>();
+        localthislockadd = this;
+
+     label0:
+        entermonitor localthislockadd;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        virtualinvoke this.<org.apache.lucene.index.FieldInfos: void add(java.lang.String,boolean,boolean,boolean,boolean,boolean)>(name, isIndexed, 0, 0, 0, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        throwableLocal17 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+
+     label4:
+        throw throwableLocal17;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public void add(java.lang.String, boolean, boolean)
+    {
+        org.apache.lucene.index.FieldInfos this;
+        java.lang.String name;
+        boolean isIndexed, storeTermVector;
+        java.lang.Object localthislockadd;
+        java.lang.Throwable throwableLocal18;
+        long tid_add;
+        java.lang.Thread thread_add;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        name := @parameter0: java.lang.String;
+        isIndexed := @parameter1: boolean;
+        storeTermVector := @parameter2: boolean;
+        thread_add = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_add = virtualinvoke thread_add.<java.lang.Thread: long getId()>();
+        localthislockadd = this;
+
+     label0:
+        entermonitor localthislockadd;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        virtualinvoke this.<org.apache.lucene.index.FieldInfos: void add(java.lang.String,boolean,boolean,boolean,boolean,boolean)>(name, isIndexed, storeTermVector, 0, 0, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        throwableLocal18 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+
+     label4:
+        throw throwableLocal18;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public void add(java.lang.String, boolean, boolean, boolean, boolean)
+    {
+        org.apache.lucene.index.FieldInfos this;
+        java.lang.String name;
+        boolean isIndexed, storeTermVector, storePositionWithTermVector, storeOffsetWithTermVector;
+        java.lang.Object localthislockadd;
+        java.lang.Throwable throwableLocal19;
+        long tid_add;
+        java.lang.Thread thread_add;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        name := @parameter0: java.lang.String;
+        isIndexed := @parameter1: boolean;
+        storeTermVector := @parameter2: boolean;
+        storePositionWithTermVector := @parameter3: boolean;
+        storeOffsetWithTermVector := @parameter4: boolean;
+        thread_add = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_add = virtualinvoke thread_add.<java.lang.Thread: long getId()>();
+        localthislockadd = this;
+
+     label0:
+        entermonitor localthislockadd;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        virtualinvoke this.<org.apache.lucene.index.FieldInfos: void add(java.lang.String,boolean,boolean,boolean,boolean,boolean)>(name, isIndexed, storeTermVector, storePositionWithTermVector, storeOffsetWithTermVector, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        throwableLocal19 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+
+     label4:
+        throw throwableLocal19;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public void add(java.lang.String, boolean, boolean, boolean, boolean, boolean)
+    {
+        org.apache.lucene.index.FieldInfos this;
+        java.lang.String name;
+        boolean isIndexed, storeTermVector, storePositionWithTermVector, storeOffsetWithTermVector, omitNorms;
+        java.lang.Object localthislockadd;
+        java.lang.Throwable throwableLocal20;
+        long tid_add;
+        java.lang.Thread thread_add;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        name := @parameter0: java.lang.String;
+        isIndexed := @parameter1: boolean;
+        storeTermVector := @parameter2: boolean;
+        storePositionWithTermVector := @parameter3: boolean;
+        storeOffsetWithTermVector := @parameter4: boolean;
+        omitNorms := @parameter5: boolean;
+        thread_add = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_add = virtualinvoke thread_add.<java.lang.Thread: long getId()>();
+        localthislockadd = this;
+
+     label0:
+        entermonitor localthislockadd;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        virtualinvoke this.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo add(java.lang.String,boolean,boolean,boolean,boolean,boolean,boolean,boolean)>(name, isIndexed, storeTermVector, storePositionWithTermVector, storeOffsetWithTermVector, omitNorms, 0, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        throwableLocal20 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+
+     label4:
+        throw throwableLocal20;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public org.apache.lucene.index.FieldInfo add(java.lang.String, boolean, boolean, boolean, boolean, boolean, boolean, boolean)
+    {
+        org.apache.lucene.index.FieldInfos this;
+        java.lang.String name;
+        boolean isIndexed, storeTermVector, storePositionWithTermVector, storeOffsetWithTermVector, omitNorms, storePayloads, omitTf;
+        org.apache.lucene.index.FieldInfo fi, $r0;
+        java.lang.Object localthislockadd;
+        java.lang.Throwable throwableLocal21;
+        long tid_add;
+        java.lang.Thread thread_add;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        name := @parameter0: java.lang.String;
+        isIndexed := @parameter1: boolean;
+        storeTermVector := @parameter2: boolean;
+        storePositionWithTermVector := @parameter3: boolean;
+        storeOffsetWithTermVector := @parameter4: boolean;
+        omitNorms := @parameter5: boolean;
+        storePayloads := @parameter6: boolean;
+        omitTf := @parameter7: boolean;
+        thread_add = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_add = virtualinvoke thread_add.<java.lang.Thread: long getId()>();
+        localthislockadd = this;
+
+     label0:
+        entermonitor localthislockadd;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        fi = virtualinvoke this.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(java.lang.String)>(name);
+        if fi != null goto label2;
+
+        $r0 = specialinvoke this.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo addInternal(java.lang.String,boolean,boolean,boolean,boolean,boolean,boolean,boolean)>(name, isIndexed, storeTermVector, storePositionWithTermVector, storeOffsetWithTermVector, omitNorms, storePayloads, omitTf);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+        goto label1;
+
+     label1:
+        return $r0;
+
+     label2:
+        virtualinvoke fi.<org.apache.lucene.index.FieldInfo: void update(boolean,boolean,boolean,boolean,boolean,boolean,boolean)>(isIndexed, storeTermVector, storePositionWithTermVector, storeOffsetWithTermVector, omitNorms, storePayloads, omitTf);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+        goto label3;
+
+     label3:
+        return fi;
+
+     label4:
+        throwableLocal21 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+
+     label6:
+        throw throwableLocal21;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public org.apache.lucene.index.FieldInfo add(org.apache.lucene.index.FieldInfo)
+    {
+        org.apache.lucene.index.FieldInfos this;
+        org.apache.lucene.index.FieldInfo fieldInfo, fi, $r1;
+        java.lang.String $r0;
+        boolean $z0, $z1, $z2, $z3, $z4, $z5, $z6;
+        java.lang.Object localthislockadd;
+        java.lang.Throwable throwableLocal22;
+        long tid_add;
+        java.lang.Thread thread_add;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        fieldInfo := @parameter0: org.apache.lucene.index.FieldInfo;
+        thread_add = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_add = virtualinvoke thread_add.<java.lang.Thread: long getId()>();
+        localthislockadd = this;
+
+     label0:
+        entermonitor localthislockadd;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        $r0 = fieldInfo.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        fi = virtualinvoke this.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(java.lang.String)>($r0);
+        if fi != null goto label2;
+
+        $r0 = fieldInfo.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $z0 = fieldInfo.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        $z1 = fieldInfo.<org.apache.lucene.index.FieldInfo: boolean storeTermVector>;
+        $z2 = fieldInfo.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector>;
+        $z3 = fieldInfo.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector>;
+        $z4 = fieldInfo.<org.apache.lucene.index.FieldInfo: boolean omitNorms>;
+        $z5 = fieldInfo.<org.apache.lucene.index.FieldInfo: boolean storePayloads>;
+        $z6 = fieldInfo.<org.apache.lucene.index.FieldInfo: boolean omitTf>;
+        $r1 = specialinvoke this.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo addInternal(java.lang.String,boolean,boolean,boolean,boolean,boolean,boolean,boolean)>($r0, $z0, $z1, $z2, $z3, $z4, $z5, $z6);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+        goto label1;
+
+     label1:
+        return $r1;
+
+     label2:
+        virtualinvoke fi.<org.apache.lucene.index.FieldInfo: void update(org.apache.lucene.index.FieldInfo)>(fieldInfo);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+        goto label3;
+
+     label3:
+        return fi;
+
+     label4:
+        throwableLocal22 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockadd, 0, tid_add);
+        exitmonitor localthislockadd;
+
+     label6:
+        throw throwableLocal22;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    private org.apache.lucene.index.FieldInfo addInternal(java.lang.String, boolean, boolean, boolean, boolean, boolean, boolean, boolean)
+    {
+        org.apache.lucene.index.FieldInfos this;
+        java.lang.String name;
+        boolean isIndexed, storeTermVector, storePositionWithTermVector, storeOffsetWithTermVector, omitNorms, storePayloads, omitTf;
+        org.apache.lucene.index.FieldInfo $r0, fi;
+        java.util.ArrayList $r1, $r2;
+        int $i0;
+        java.util.HashMap $r3;
+        long tid_addInternal;
+        java.lang.Thread thread_addInternal;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        name := @parameter0: java.lang.String;
+        isIndexed := @parameter1: boolean;
+        storeTermVector := @parameter2: boolean;
+        storePositionWithTermVector := @parameter3: boolean;
+        storeOffsetWithTermVector := @parameter4: boolean;
+        omitNorms := @parameter5: boolean;
+        storePayloads := @parameter6: boolean;
+        omitTf := @parameter7: boolean;
+        thread_addInternal = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addInternal = virtualinvoke thread_addInternal.<java.lang.Thread: long getId()>();
+        $r0 = new org.apache.lucene.index.FieldInfo;
+        $r1 = this.<org.apache.lucene.index.FieldInfos: java.util.ArrayList byNumber>;
+        $i0 = virtualinvoke $r1.<java.util.ArrayList: int size()>();
+        specialinvoke $r0.<org.apache.lucene.index.FieldInfo: void <init>(java.lang.String,boolean,int,boolean,boolean,boolean,boolean,boolean,boolean)>(name, isIndexed, $i0, storeTermVector, storePositionWithTermVector, storeOffsetWithTermVector, omitNorms, storePayloads, omitTf);
+        fi = $r0;
+        $r2 = this.<org.apache.lucene.index.FieldInfos: java.util.ArrayList byNumber>;
+        virtualinvoke $r2.<java.util.ArrayList: boolean add(java.lang.Object)>(fi);
+        $r3 = this.<org.apache.lucene.index.FieldInfos: java.util.HashMap byName>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeDSElem(java.lang.Object,int,long,java.lang.String,int,java.lang.Object,java.lang.Object)>($r3, 21, tid_addInternal, "org.apache.lucene.index.FieldInfos", 233, name, fi);
+        virtualinvoke $r3.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(name, fi);
+        return fi;
+    }
+
+    public int fieldNumber(java.lang.String)
+    {
+        org.apache.lucene.index.FieldInfos this;
+        java.lang.String fieldName;
+        org.apache.lucene.index.FieldInfo fi;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        fieldName := @parameter0: java.lang.String;
+        fi = virtualinvoke this.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(java.lang.String)>(fieldName);
+        if fi == null goto label0;
+
+        $i0 = fi.<org.apache.lucene.index.FieldInfo: int number>;
+        goto label1;
+
+     label0:
+        $i0 = -1;
+
+     label1:
+        return $i0;
+    }
+
+    public org.apache.lucene.index.FieldInfo fieldInfo(java.lang.String)
+    {
+        org.apache.lucene.index.FieldInfos this;
+        java.lang.String fieldName;
+        java.util.HashMap $r0;
+        java.lang.Object $r1;
+        org.apache.lucene.index.FieldInfo $r2;
+        long tid_fieldInfo;
+        java.lang.Thread thread_fieldInfo;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        fieldName := @parameter0: java.lang.String;
+        thread_fieldInfo = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_fieldInfo = virtualinvoke thread_fieldInfo.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.index.FieldInfos: java.util.HashMap byName>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeDSElem(java.lang.Object,int,long,java.lang.String,int,java.lang.Object,java.lang.Object)>($r0, 21, tid_fieldInfo, "org.apache.lucene.index.FieldInfos", 243, fieldName, $r1);
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(fieldName);
+        $r2 = (org.apache.lucene.index.FieldInfo) $r1;
+        return $r2;
+    }
+
+    public java.lang.String fieldName(int)
+    {
+        org.apache.lucene.index.FieldInfos this;
+        int fieldNumber;
+        org.apache.lucene.index.FieldInfo fi;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        fieldNumber := @parameter0: int;
+        fi = virtualinvoke this.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(int)>(fieldNumber);
+        if fi == null goto label0;
+
+        $r0 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        goto label1;
+
+     label0:
+        $r0 = "";
+
+     label1:
+        return $r0;
+    }
+
+    public org.apache.lucene.index.FieldInfo fieldInfo(int)
+    {
+        org.apache.lucene.index.FieldInfos this;
+        int fieldNumber;
+        java.util.ArrayList $r0;
+        java.lang.Object $r1;
+        org.apache.lucene.index.FieldInfo $r2;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        fieldNumber := @parameter0: int;
+        if fieldNumber < 0 goto label0;
+
+        $r0 = this.<org.apache.lucene.index.FieldInfos: java.util.ArrayList byNumber>;
+        $r1 = virtualinvoke $r0.<java.util.ArrayList: java.lang.Object get(int)>(fieldNumber);
+        $r2 = (org.apache.lucene.index.FieldInfo) $r1;
+        goto label1;
+
+     label0:
+        $r2 = null;
+
+     label1:
+        return $r2;
+    }
+
+    public int size()
+    {
+        org.apache.lucene.index.FieldInfos this;
+        java.util.ArrayList $r0;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        $r0 = this.<org.apache.lucene.index.FieldInfos: java.util.ArrayList byNumber>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        return $i0;
+    }
+
+    public boolean hasVectors()
+    {
+        org.apache.lucene.index.FieldInfos this;
+        boolean hasVectors, $z0;
+        int i, $i0;
+        org.apache.lucene.index.FieldInfo $r0;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        hasVectors = 0;
+        i = 0;
+
+     label0:
+        $i0 = virtualinvoke this.<org.apache.lucene.index.FieldInfos: int size()>();
+        if i >= $i0 goto label2;
+
+        $r0 = virtualinvoke this.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(int)>(i);
+        $z0 = $r0.<org.apache.lucene.index.FieldInfo: boolean storeTermVector>;
+        if $z0 == 0 goto label1;
+
+        hasVectors = 1;
+        goto label2;
+
+     label1:
+        i = i + 1;
+        goto label0;
+
+     label2:
+        return hasVectors;
+    }
+
+    public void write(org.apache.lucene.store.Directory, java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldInfos this;
+        org.apache.lucene.store.Directory d;
+        java.lang.String name;
+        org.apache.lucene.store.IndexOutput output;
+        java.lang.Throwable l4, $r0;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        d := @parameter0: org.apache.lucene.store.Directory;
+        name := @parameter1: java.lang.String;
+        output = virtualinvoke d.<org.apache.lucene.store.Directory: org.apache.lucene.store.IndexOutput createOutput(java.lang.String)>(name);
+
+     label0:
+        virtualinvoke this.<org.apache.lucene.index.FieldInfos: void write(org.apache.lucene.store.IndexOutput)>(output);
+        goto label6;
+
+     label1:
+        goto label5;
+
+     label2:
+        $r0 := @caughtexception;
+
+     label3:
+        l4 = $r0;
+        goto label7;
+
+     label4:
+        throw l4;
+
+     label5:
+        return;
+
+     label6:
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void close()>();
+        goto label1;
+
+     label7:
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void close()>();
+        goto label4;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public void write(org.apache.lucene.store.IndexOutput) throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldInfos this;
+        org.apache.lucene.store.IndexOutput output;
+        int i, $i0;
+        org.apache.lucene.index.FieldInfo fi;
+        byte bits, $b1;
+        boolean $z0;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        output := @parameter0: org.apache.lucene.store.IndexOutput;
+        $i0 = virtualinvoke this.<org.apache.lucene.index.FieldInfos: int size()>();
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeVInt(int)>($i0);
+        i = 0;
+
+     label0:
+        $i0 = virtualinvoke this.<org.apache.lucene.index.FieldInfos: int size()>();
+        if i >= $i0 goto label8;
+
+        fi = virtualinvoke this.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(int)>(i);
+        bits = 0;
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        if $z0 == 0 goto label1;
+
+        $b1 = bits | 1;
+        bits = (byte) $b1;
+
+     label1:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storeTermVector>;
+        if $z0 == 0 goto label2;
+
+        $b1 = bits | 2;
+        bits = (byte) $b1;
+
+     label2:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector>;
+        if $z0 == 0 goto label3;
+
+        $b1 = bits | 4;
+        bits = (byte) $b1;
+
+     label3:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector>;
+        if $z0 == 0 goto label4;
+
+        $b1 = bits | 8;
+        bits = (byte) $b1;
+
+     label4:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean omitNorms>;
+        if $z0 == 0 goto label5;
+
+        $b1 = bits | 16;
+        bits = (byte) $b1;
+
+     label5:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean storePayloads>;
+        if $z0 == 0 goto label6;
+
+        $b1 = bits | 32;
+        bits = (byte) $b1;
+
+     label6:
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean omitTf>;
+        if $z0 == 0 goto label7;
+
+        $b1 = bits | 64;
+        bits = (byte) $b1;
+
+     label7:
+        $r0 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeString(java.lang.String)>($r0);
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>(bits);
+        i = i + 1;
+        goto label0;
+
+     label8:
+        return;
+    }
+
+    private void read(org.apache.lucene.store.IndexInput) throws java.io.IOException
+    {
+        org.apache.lucene.index.FieldInfos this;
+        org.apache.lucene.store.IndexInput input;
+        int size, i;
+        java.lang.String name, $r0;
+        byte bits, $b0;
+        boolean isIndexed, storeTermVector, storePositionsWithTermVector, storeOffsetWithTermVector, omitNorms, storePayloads, omitTf, $z0;
+
+        this := @this: org.apache.lucene.index.FieldInfos;
+        input := @parameter0: org.apache.lucene.store.IndexInput;
+        size = virtualinvoke input.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        i = 0;
+
+     label0:
+        if i >= size goto label15;
+
+        $r0 = virtualinvoke input.<org.apache.lucene.store.IndexInput: java.lang.String readString()>();
+        name = virtualinvoke $r0.<java.lang.String: java.lang.String intern()>();
+        bits = virtualinvoke input.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        $b0 = bits & 1;
+        if $b0 == 0 goto label1;
+
+        $z0 = 1;
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        isIndexed = $z0;
+        $b0 = bits & 2;
+        if $b0 == 0 goto label3;
+
+        $z0 = 1;
+        goto label4;
+
+     label3:
+        $z0 = 0;
+
+     label4:
+        storeTermVector = $z0;
+        $b0 = bits & 4;
+        if $b0 == 0 goto label5;
+
+        $z0 = 1;
+        goto label6;
+
+     label5:
+        $z0 = 0;
+
+     label6:
+        storePositionsWithTermVector = $z0;
+        $b0 = bits & 8;
+        if $b0 == 0 goto label7;
+
+        $z0 = 1;
+        goto label8;
+
+     label7:
+        $z0 = 0;
+
+     label8:
+        storeOffsetWithTermVector = $z0;
+        $b0 = bits & 16;
+        if $b0 == 0 goto label9;
+
+        $z0 = 1;
+        goto label10;
+
+     label9:
+        $z0 = 0;
+
+     label10:
+        omitNorms = $z0;
+        $b0 = bits & 32;
+        if $b0 == 0 goto label11;
+
+        $z0 = 1;
+        goto label12;
+
+     label11:
+        $z0 = 0;
+
+     label12:
+        storePayloads = $z0;
+        $b0 = bits & 64;
+        if $b0 == 0 goto label13;
+
+        $z0 = 1;
+        goto label14;
+
+     label13:
+        $z0 = 0;
+
+     label14:
+        omitTf = $z0;
+        specialinvoke this.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo addInternal(java.lang.String,boolean,boolean,boolean,boolean,boolean,boolean,boolean)>(name, isIndexed, storeTermVector, storePositionsWithTermVector, storeOffsetWithTermVector, omitNorms, storePayloads, omitTf);
+        i = i + 1;
+        goto label0;
+
+     label15:
+        return;
+    }
+}

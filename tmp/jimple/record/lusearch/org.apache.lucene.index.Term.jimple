@@ -1,0 +1,229 @@
+public final class org.apache.lucene.index.Term extends java.lang.Object implements java.lang.Comparable, java.io.Serializable
+{
+    java.lang.String field;
+    java.lang.String text;
+
+    public void <init>(java.lang.String, java.lang.String)
+    {
+        org.apache.lucene.index.Term this;
+        java.lang.String fld, txt;
+
+        this := @this: org.apache.lucene.index.Term;
+        fld := @parameter0: java.lang.String;
+        txt := @parameter1: java.lang.String;
+        specialinvoke this.<org.apache.lucene.index.Term: void <init>(java.lang.String,java.lang.String,boolean)>(fld, txt, 1);
+        return;
+    }
+
+    public void <init>(java.lang.String)
+    {
+        org.apache.lucene.index.Term this;
+        java.lang.String fld;
+
+        this := @this: org.apache.lucene.index.Term;
+        fld := @parameter0: java.lang.String;
+        specialinvoke this.<org.apache.lucene.index.Term: void <init>(java.lang.String,java.lang.String,boolean)>(fld, "", 1);
+        return;
+    }
+
+    void <init>(java.lang.String, java.lang.String, boolean)
+    {
+        org.apache.lucene.index.Term this;
+        java.lang.String fld, txt, $r1;
+        boolean intern;
+
+        this := @this: org.apache.lucene.index.Term;
+        fld := @parameter0: java.lang.String;
+        txt := @parameter1: java.lang.String;
+        intern := @parameter2: boolean;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        if intern == 0 goto label0;
+
+        $r1 = virtualinvoke fld.<java.lang.String: java.lang.String intern()>();
+        goto label1;
+
+     label0:
+        $r1 = fld;
+
+     label1:
+        this.<org.apache.lucene.index.Term: java.lang.String field> = $r1;
+        this.<org.apache.lucene.index.Term: java.lang.String text> = txt;
+        return;
+    }
+
+    public final java.lang.String field()
+    {
+        org.apache.lucene.index.Term this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.index.Term;
+        $r0 = this.<org.apache.lucene.index.Term: java.lang.String field>;
+        return $r0;
+    }
+
+    public final java.lang.String text()
+    {
+        org.apache.lucene.index.Term this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.index.Term;
+        $r0 = this.<org.apache.lucene.index.Term: java.lang.String text>;
+        return $r0;
+    }
+
+    public org.apache.lucene.index.Term createTerm(java.lang.String)
+    {
+        org.apache.lucene.index.Term this, $r0;
+        java.lang.String text, $r1;
+
+        this := @this: org.apache.lucene.index.Term;
+        text := @parameter0: java.lang.String;
+        $r0 = new org.apache.lucene.index.Term;
+        $r1 = this.<org.apache.lucene.index.Term: java.lang.String field>;
+        specialinvoke $r0.<org.apache.lucene.index.Term: void <init>(java.lang.String,java.lang.String,boolean)>($r1, text, 0);
+        return $r0;
+    }
+
+    public final boolean equals(java.lang.Object)
+    {
+        org.apache.lucene.index.Term this, other;
+        java.lang.Object o;
+        boolean $z0;
+        java.lang.String $r0, $r1;
+
+        this := @this: org.apache.lucene.index.Term;
+        o := @parameter0: java.lang.Object;
+        if o != this goto label0;
+
+        return 1;
+
+     label0:
+        if o != null goto label1;
+
+        return 0;
+
+     label1:
+        $z0 = o instanceof org.apache.lucene.index.Term;
+        if $z0 != 0 goto label2;
+
+        return 0;
+
+     label2:
+        other = (org.apache.lucene.index.Term) o;
+        $r0 = this.<org.apache.lucene.index.Term: java.lang.String field>;
+        $r1 = other.<org.apache.lucene.index.Term: java.lang.String field>;
+        if $r0 != $r1 goto label3;
+
+        $r0 = this.<org.apache.lucene.index.Term: java.lang.String text>;
+        $r1 = other.<org.apache.lucene.index.Term: java.lang.String text>;
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+        if $z0 == 0 goto label3;
+
+        $z0 = 1;
+        goto label4;
+
+     label3:
+        $z0 = 0;
+
+     label4:
+        return $z0;
+    }
+
+    public final int hashCode()
+    {
+        org.apache.lucene.index.Term this;
+        java.lang.String $r0, $r1;
+        int $i0, $i1;
+
+        this := @this: org.apache.lucene.index.Term;
+        $r0 = this.<org.apache.lucene.index.Term: java.lang.String field>;
+        $i0 = virtualinvoke $r0.<java.lang.String: int hashCode()>();
+        $r1 = this.<org.apache.lucene.index.Term: java.lang.String text>;
+        $i1 = virtualinvoke $r1.<java.lang.String: int hashCode()>();
+        $i0 = $i0 + $i1;
+        return $i0;
+    }
+
+    public int compareTo(java.lang.Object)
+    {
+        org.apache.lucene.index.Term this, $r0;
+        java.lang.Object other;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.Term;
+        other := @parameter0: java.lang.Object;
+        $r0 = (org.apache.lucene.index.Term) other;
+        $i0 = virtualinvoke this.<org.apache.lucene.index.Term: int compareTo(org.apache.lucene.index.Term)>($r0);
+        return $i0;
+    }
+
+    public final int compareTo(org.apache.lucene.index.Term)
+    {
+        org.apache.lucene.index.Term this, other;
+        java.lang.String $r0, $r1;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.Term;
+        other := @parameter0: org.apache.lucene.index.Term;
+        $r0 = this.<org.apache.lucene.index.Term: java.lang.String field>;
+        $r1 = other.<org.apache.lucene.index.Term: java.lang.String field>;
+        if $r0 != $r1 goto label0;
+
+        $r0 = this.<org.apache.lucene.index.Term: java.lang.String text>;
+        $r1 = other.<org.apache.lucene.index.Term: java.lang.String text>;
+        $i0 = virtualinvoke $r0.<java.lang.String: int compareTo(java.lang.String)>($r1);
+        return $i0;
+
+     label0:
+        $r0 = this.<org.apache.lucene.index.Term: java.lang.String field>;
+        $r1 = other.<org.apache.lucene.index.Term: java.lang.String field>;
+        $i0 = virtualinvoke $r0.<java.lang.String: int compareTo(java.lang.String)>($r1);
+        return $i0;
+    }
+
+    final void set(java.lang.String, java.lang.String)
+    {
+        org.apache.lucene.index.Term this;
+        java.lang.String fld, txt;
+
+        this := @this: org.apache.lucene.index.Term;
+        fld := @parameter0: java.lang.String;
+        txt := @parameter1: java.lang.String;
+        this.<org.apache.lucene.index.Term: java.lang.String field> = fld;
+        this.<org.apache.lucene.index.Term: java.lang.String text> = txt;
+        return;
+    }
+
+    public final java.lang.String toString()
+    {
+        org.apache.lucene.index.Term this;
+        java.lang.StringBuffer $r0;
+        java.lang.String $r1, $r2;
+
+        this := @this: org.apache.lucene.index.Term;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r1 = this.<org.apache.lucene.index.Term: java.lang.String field>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(":");
+        $r1 = this.<org.apache.lucene.index.Term: java.lang.String text>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r2;
+    }
+
+    private void readObject(java.io.ObjectInputStream) throws java.io.IOException, java.lang.ClassNotFoundException
+    {
+        org.apache.lucene.index.Term this;
+        java.io.ObjectInputStream in;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.index.Term;
+        in := @parameter0: java.io.ObjectInputStream;
+        virtualinvoke in.<java.io.ObjectInputStream: void defaultReadObject()>();
+        $r0 = this.<org.apache.lucene.index.Term: java.lang.String field>;
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String intern()>();
+        this.<org.apache.lucene.index.Term: java.lang.String field> = $r0;
+        return;
+    }
+}

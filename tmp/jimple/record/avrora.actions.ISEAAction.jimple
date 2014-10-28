@@ -1,0 +1,67 @@
+public class avrora.actions.ISEAAction extends avrora.actions.Action
+{
+    protected final cck.util.Option$Str START;
+
+    public void <init>()
+    {
+        avrora.actions.ISEAAction this;
+        cck.util.Option$Str $r0;
+
+        this := @this: avrora.actions.ISEAAction;
+        specialinvoke this.<avrora.actions.Action: void <init>(java.lang.String)>("This action invokes the inter-procedural side-effect analysis tool.");
+        $r0 = virtualinvoke this.<avrora.actions.ISEAAction: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("procedure", "0x0000", "When this option is specified, the ISE analyzer will analyze only the specified procedure, rather than the entire program.");
+        this.<avrora.actions.ISEAAction: cck.util.Option$Str START> = $r0;
+        return;
+    }
+
+    public void run(java.lang.String[]) throws java.lang.Exception
+    {
+        avrora.actions.ISEAAction this;
+        java.lang.String[] args;
+        avrora.core.Program p;
+        avrora.stack.isea.ISEAnalyzer a, $r0;
+        avrora.core.SourceMapping$Location location;
+        cck.util.Option$Str $r1, $r3;
+        boolean $z0;
+        avrora.core.SourceMapping $r2;
+        java.lang.String $r4, $r6;
+        java.lang.StringBuilder $r5;
+        int $i0;
+
+        this := @this: avrora.actions.ISEAAction;
+        args := @parameter0: java.lang.String[];
+        p = staticinvoke <avrora.Main: avrora.core.Program loadProgram(java.lang.String[])>(args);
+        $r0 = new avrora.stack.isea.ISEAnalyzer;
+        specialinvoke $r0.<avrora.stack.isea.ISEAnalyzer: void <init>(avrora.core.Program)>(p);
+        a = $r0;
+        $r1 = this.<avrora.actions.ISEAAction: cck.util.Option$Str START>;
+        $z0 = virtualinvoke $r1.<cck.util.Option$Str: boolean isBlank()>();
+        if $z0 != 0 goto label1;
+
+        $r2 = virtualinvoke p.<avrora.core.Program: avrora.core.SourceMapping getSourceMapping()>();
+        $r3 = this.<avrora.actions.ISEAAction: cck.util.Option$Str START>;
+        $r4 = virtualinvoke $r3.<cck.util.Option$Str: java.lang.String get()>();
+        location = virtualinvoke $r2.<avrora.core.SourceMapping: avrora.core.SourceMapping$Location getLocation(java.lang.String)>($r4);
+        if location != null goto label0;
+
+        $r5 = new java.lang.StringBuilder;
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot find program location ");
+        $r3 = this.<avrora.actions.ISEAAction: cck.util.Option$Str START>;
+        $r4 = virtualinvoke $r3.<cck.util.Option$Str: java.lang.String get()>();
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.util.Util: void userError(java.lang.String)>($r6);
+
+     label0:
+        $i0 = location.<avrora.core.SourceMapping$Location: int lma_addr>;
+        virtualinvoke a.<avrora.stack.isea.ISEAnalyzer: void analyze(int)>($i0);
+        goto label2;
+
+     label1:
+        virtualinvoke a.<avrora.stack.isea.ISEAnalyzer: void analyze()>();
+
+     label2:
+        return;
+    }
+}

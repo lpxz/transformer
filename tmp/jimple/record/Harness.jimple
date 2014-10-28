@@ -1,0 +1,28 @@
+public class Harness extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        Harness this;
+
+        this := @this: Harness;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public static void main(java.lang.String[])
+    {
+        java.lang.String[] args;
+        long tid_main;
+        java.lang.Thread thread_main;
+
+        args := @parameter0: java.lang.String[];
+        thread_main = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_main = virtualinvoke thread_main.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStartRun(long,java.lang.String,java.lang.String[])>(tid_main, "Harness.main", args);
+        staticinvoke <org.dacapo.harness.TestHarness: void main(java.lang.String[])>(args);
+        staticinvoke <java.lang.System: void exit(int)>(0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "Harness.main", args);
+        return;
+    }
+}

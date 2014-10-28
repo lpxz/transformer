@@ -1,0 +1,182 @@
+public class org.apache.lucene.util.SmallFloat extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        org.apache.lucene.util.SmallFloat this;
+
+        this := @this: org.apache.lucene.util.SmallFloat;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public static byte floatToByte(float, int, int)
+    {
+        float f;
+        int numMantissaBits, zeroExp, fzero, bits, smallfloat, $i0, $i1;
+        byte $b2;
+
+        f := @parameter0: float;
+        numMantissaBits := @parameter1: int;
+        zeroExp := @parameter2: int;
+        $i0 = 63 - zeroExp;
+        fzero = $i0 << numMantissaBits;
+        bits = staticinvoke <java.lang.Float: int floatToRawIntBits(float)>(f);
+        $i1 = 24 - numMantissaBits;
+        smallfloat = bits >> $i1;
+        if smallfloat >= fzero goto label2;
+
+        if bits > 0 goto label0;
+
+        $b2 = 0;
+        goto label1;
+
+     label0:
+        $b2 = 1;
+
+     label1:
+        return $b2;
+
+     label2:
+        $i1 = fzero + 256;
+        if smallfloat < $i1 goto label3;
+
+        return -1;
+
+     label3:
+        $i0 = smallfloat - fzero;
+        $b2 = (byte) $i0;
+        return $b2;
+    }
+
+    public static float byteToFloat(byte, int, int)
+    {
+        byte b;
+        int numMantissaBits, zeroExp, bits, $i1;
+        short $s0;
+        float $f0;
+
+        b := @parameter0: byte;
+        numMantissaBits := @parameter1: int;
+        zeroExp := @parameter2: int;
+        if b != 0 goto label0;
+
+        return 0.0F;
+
+     label0:
+        $s0 = b & 255;
+        $i1 = 24 - numMantissaBits;
+        bits = $s0 << $i1;
+        $i1 = 63 - zeroExp;
+        $i1 = $i1 << 24;
+        bits = bits + $i1;
+        $f0 = staticinvoke <java.lang.Float: float intBitsToFloat(int)>(bits);
+        return $f0;
+    }
+
+    public static byte floatToByte315(float)
+    {
+        float f;
+        int bits, smallfloat, $i1;
+        byte $b0;
+
+        f := @parameter0: float;
+        bits = staticinvoke <java.lang.Float: int floatToRawIntBits(float)>(f);
+        smallfloat = bits >> 21;
+        if smallfloat >= 384 goto label2;
+
+        if bits > 0 goto label0;
+
+        $b0 = 0;
+        goto label1;
+
+     label0:
+        $b0 = 1;
+
+     label1:
+        return $b0;
+
+     label2:
+        if smallfloat < 640 goto label3;
+
+        return -1;
+
+     label3:
+        $i1 = smallfloat - 384;
+        $b0 = (byte) $i1;
+        return $b0;
+    }
+
+    public static float byte315ToFloat(byte)
+    {
+        byte b;
+        int bits;
+        short $s0;
+        float $f0;
+
+        b := @parameter0: byte;
+        if b != 0 goto label0;
+
+        return 0.0F;
+
+     label0:
+        $s0 = b & 255;
+        bits = $s0 << 21;
+        bits = bits + 805306368;
+        $f0 = staticinvoke <java.lang.Float: float intBitsToFloat(int)>(bits);
+        return $f0;
+    }
+
+    public static byte floatToByte52(float)
+    {
+        float f;
+        int bits, smallfloat, $i1;
+        byte $b0;
+
+        f := @parameter0: float;
+        bits = staticinvoke <java.lang.Float: int floatToRawIntBits(float)>(f);
+        smallfloat = bits >> 19;
+        if smallfloat >= 1952 goto label2;
+
+        if bits > 0 goto label0;
+
+        $b0 = 0;
+        goto label1;
+
+     label0:
+        $b0 = 1;
+
+     label1:
+        return $b0;
+
+     label2:
+        if smallfloat < 2208 goto label3;
+
+        return -1;
+
+     label3:
+        $i1 = smallfloat - 1952;
+        $b0 = (byte) $i1;
+        return $b0;
+    }
+
+    public static float byte52ToFloat(byte)
+    {
+        byte b;
+        int bits;
+        short $s0;
+        float $f0;
+
+        b := @parameter0: byte;
+        if b != 0 goto label0;
+
+        return 0.0F;
+
+     label0:
+        $s0 = b & 255;
+        bits = $s0 << 19;
+        bits = bits + 1023410176;
+        $f0 = staticinvoke <java.lang.Float: float intBitsToFloat(int)>(bits);
+        return $f0;
+    }
+}

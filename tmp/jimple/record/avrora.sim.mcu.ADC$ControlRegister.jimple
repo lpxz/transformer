@@ -1,0 +1,424 @@
+public class avrora.sim.mcu.ADC$ControlRegister extends avrora.sim.RWRegister implements avrora.sim.InterruptTable$Notification
+{
+    final avrora.sim.mcu.ADC$ControlRegister$ConversionEvent conversion;
+    final avrora.sim.state.BooleanView _aden;
+    final avrora.sim.state.BooleanView _adsc;
+    final avrora.sim.state.BooleanView _adfr;
+    final avrora.sim.state.BooleanView _adif;
+    final avrora.sim.state.BooleanView _adie;
+    final avrora.sim.state.RegisterView _prescaler;
+    int cycles;
+    boolean converting;
+    final avrora.sim.mcu.ADC this$0;
+
+    protected void <init>(avrora.sim.mcu.ADC)
+    {
+        avrora.sim.mcu.ADC$ControlRegister this;
+        avrora.sim.mcu.ADC l1;
+        avrora.sim.mcu.ADC$ControlRegister$ConversionEvent $r0;
+        avrora.sim.state.BooleanView $r1;
+        avrora.sim.state.RegisterView $r2;
+
+        this := @this: avrora.sim.mcu.ADC$ControlRegister;
+        l1 := @parameter0: avrora.sim.mcu.ADC;
+        this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0> = l1;
+        specialinvoke this.<avrora.sim.RWRegister: void <init>()>();
+        $r0 = new avrora.sim.mcu.ADC$ControlRegister$ConversionEvent;
+        specialinvoke $r0.<avrora.sim.mcu.ADC$ControlRegister$ConversionEvent: void <init>(avrora.sim.mcu.ADC$ControlRegister,avrora.sim.mcu.ADC$1)>(this, null);
+        this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC$ControlRegister$ConversionEvent conversion> = $r0;
+        $r1 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.BooleanView booleanView(avrora.sim.state.RegisterView,int)>(this, 7);
+        this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.state.BooleanView _aden> = $r1;
+        $r1 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.BooleanView booleanView(avrora.sim.state.RegisterView,int)>(this, 6);
+        this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.state.BooleanView _adsc> = $r1;
+        $r1 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.BooleanView booleanView(avrora.sim.state.RegisterView,int)>(this, 5);
+        this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.state.BooleanView _adfr> = $r1;
+        $r1 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.BooleanView booleanView(avrora.sim.state.RegisterView,int)>(this, 4);
+        this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.state.BooleanView _adif> = $r1;
+        $r1 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.BooleanView booleanView(avrora.sim.state.RegisterView,int)>(this, 3);
+        this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.state.BooleanView _adie> = $r1;
+        $r2 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.RegisterView bitRangeView(avrora.sim.state.RegisterView,int,int)>(this, 0, 2);
+        this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.state.RegisterView _prescaler> = $r2;
+        this.<avrora.sim.mcu.ADC$ControlRegister: int cycles> = 25;
+        return;
+    }
+
+    private void unpostADCInterrupt()
+    {
+        avrora.sim.mcu.ADC$ControlRegister this;
+        avrora.sim.state.BooleanView $r0;
+        avrora.sim.mcu.ADC $r1, $r3;
+        avrora.sim.AtmelInterpreter $r2;
+        int $i0;
+
+        this := @this: avrora.sim.mcu.ADC$ControlRegister;
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.state.BooleanView _adif>;
+        interfaceinvoke $r0.<avrora.sim.state.BooleanView: void setValue(boolean)>(0);
+        $r1 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r2 = $r1.<avrora.sim.mcu.ADC: avrora.sim.AtmelInterpreter interpreter>;
+        $r3 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $i0 = $r3.<avrora.sim.mcu.ADC: int interruptNum>;
+        virtualinvoke $r2.<avrora.sim.AtmelInterpreter: void setPosted(int,boolean)>($i0, 0);
+        return;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.mcu.ADC$ControlRegister this;
+        byte nval;
+        avrora.sim.state.BooleanView $r0, $r4;
+        boolean $z0, $z1;
+        avrora.sim.mcu.ADC $r1, $r3;
+        avrora.sim.AtmelInterpreter $r2;
+        int $i0;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.mcu.ADC$ControlRegister;
+        nval := @parameter0: byte;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.mcu.ADC$ControlRegister", 222, nval);
+        this.<avrora.sim.mcu.ADC$ControlRegister: byte value> = nval;
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.state.BooleanView _aden>;
+        $z0 = interfaceinvoke $r0.<avrora.sim.state.BooleanView: boolean getValue()>();
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.state.BooleanView _adsc>;
+        $z0 = interfaceinvoke $r0.<avrora.sim.state.BooleanView: boolean getValue()>();
+        if $z0 == 0 goto label1;
+
+        specialinvoke this.<avrora.sim.mcu.ADC$ControlRegister: void startConversion()>();
+        goto label1;
+
+     label0:
+        specialinvoke this.<avrora.sim.mcu.ADC$ControlRegister: void stopConversion()>();
+
+     label1:
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.state.BooleanView _adif>;
+        $z0 = interfaceinvoke $r0.<avrora.sim.state.BooleanView: boolean getValue()>();
+        if $z0 == 0 goto label2;
+
+        specialinvoke this.<avrora.sim.mcu.ADC$ControlRegister: void unpostADCInterrupt()>();
+
+     label2:
+        $r1 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r2 = $r1.<avrora.sim.mcu.ADC: avrora.sim.AtmelInterpreter interpreter>;
+        $r3 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $i0 = $r3.<avrora.sim.mcu.ADC: int interruptNum>;
+        $r4 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.state.BooleanView _adie>;
+        $z1 = interfaceinvoke $r4.<avrora.sim.state.BooleanView: boolean getValue()>();
+        virtualinvoke $r2.<avrora.sim.AtmelInterpreter: void setEnabled(int,boolean)>($i0, $z1);
+        return;
+    }
+
+    private void startConversion()
+    {
+        avrora.sim.mcu.ADC$ControlRegister this;
+        boolean $z0;
+        long tid_startConversion;
+        java.lang.Thread thread_startConversion;
+
+        this := @this: avrora.sim.mcu.ADC$ControlRegister;
+        thread_startConversion = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_startConversion = virtualinvoke thread_startConversion.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 83, tid_startConversion, "avrora.sim.mcu.ADC$ControlRegister", 240, $z0);
+        $z0 = this.<avrora.sim.mcu.ADC$ControlRegister: boolean converting>;
+        if $z0 != 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 83, tid_startConversion, "avrora.sim.mcu.ADC$ControlRegister", 242, 1);
+        this.<avrora.sim.mcu.ADC$ControlRegister: boolean converting> = 1;
+        specialinvoke this.<avrora.sim.mcu.ADC$ControlRegister: void insertConversion()>();
+
+     label0:
+        return;
+    }
+
+    private void insertConversion()
+    {
+        avrora.sim.mcu.ADC$ControlRegister this;
+        avrora.sim.mcu.ADC $r0, $r6;
+        avrora.sim.clock.Clock $r1;
+        avrora.sim.mcu.ADC$ControlRegister$ConversionEvent $r2;
+        int $i0, $i1;
+        long $l2, tid_insertConversion;
+        avrora.sim.mcu.ADC$MUXRegister $r3, $r7;
+        boolean $z0;
+        avrora.sim.output.SimPrinter $r4;
+        java.lang.StringBuilder $r5;
+        java.lang.String $r8;
+        java.lang.Thread thread_insertConversion;
+
+        this := @this: avrora.sim.mcu.ADC$ControlRegister;
+        thread_insertConversion = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_insertConversion = virtualinvoke thread_insertConversion.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r1 = $r0.<avrora.sim.mcu.ADC: avrora.sim.clock.Clock mainClock>;
+        $r2 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC$ControlRegister$ConversionEvent conversion>;
+        $i0 = specialinvoke this.<avrora.sim.mcu.ADC$ControlRegister: int getPrescaler()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 84, tid_insertConversion, "avrora.sim.mcu.ADC$ControlRegister", 248, $i1);
+        $i1 = this.<avrora.sim.mcu.ADC$ControlRegister: int cycles>;
+        $i0 = $i0 * $i1;
+        $l2 = (long) $i0;
+        virtualinvoke $r1.<avrora.sim.clock.Clock: void insertEvent(avrora.sim.Simulator$Event,long)>($r2, $l2);
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r3 = $r0.<avrora.sim.mcu.ADC: avrora.sim.mcu.ADC$MUXRegister ADMUX_reg>;
+        $z0 = virtualinvoke $r3.<avrora.sim.mcu.ADC$MUXRegister: boolean isSingleEnded()>();
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r4 = $r0.<avrora.sim.mcu.ADC: avrora.sim.output.SimPrinter devicePrinter>;
+        if $r4 == null goto label1;
+
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r4 = $r0.<avrora.sim.mcu.ADC: avrora.sim.output.SimPrinter devicePrinter>;
+        $r5 = new java.lang.StringBuilder;
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ADC: beginning sample of channel ");
+        $r6 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r7 = $r6.<avrora.sim.mcu.ADC: avrora.sim.mcu.ADC$MUXRegister ADMUX_reg>;
+        $i0 = virtualinvoke $r7.<avrora.sim.mcu.ADC$MUXRegister: int getSingleIndex()>();
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r8 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r8);
+        goto label1;
+
+     label0:
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r4 = $r0.<avrora.sim.mcu.ADC: avrora.sim.output.SimPrinter devicePrinter>;
+        if $r4 == null goto label1;
+
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r4 = $r0.<avrora.sim.mcu.ADC: avrora.sim.output.SimPrinter devicePrinter>;
+        $r5 = new java.lang.StringBuilder;
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ADC: beginning sample of channels ");
+        $r6 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r7 = $r6.<avrora.sim.mcu.ADC: avrora.sim.mcu.ADC$MUXRegister ADMUX_reg>;
+        $i0 = virtualinvoke $r7.<avrora.sim.mcu.ADC$MUXRegister: int getPosIndex()>();
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" - ");
+        $r6 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r7 = $r6.<avrora.sim.mcu.ADC: avrora.sim.mcu.ADC$MUXRegister ADMUX_reg>;
+        $i0 = virtualinvoke $r7.<avrora.sim.mcu.ADC$MUXRegister: int getNegIndex()>();
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r8 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r8);
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 84, tid_insertConversion, "avrora.sim.mcu.ADC$ControlRegister", 258, 13);
+        this.<avrora.sim.mcu.ADC$ControlRegister: int cycles> = 13;
+        return;
+    }
+
+    private void stopConversion()
+    {
+        avrora.sim.mcu.ADC$ControlRegister this;
+        avrora.sim.state.BooleanView $r0;
+        boolean $z0;
+        avrora.sim.mcu.ADC $r1;
+        avrora.sim.clock.Clock $r2;
+        avrora.sim.mcu.ADC$ControlRegister$ConversionEvent $r3;
+        long tid_stopConversion;
+        java.lang.Thread thread_stopConversion;
+
+        this := @this: avrora.sim.mcu.ADC$ControlRegister;
+        thread_stopConversion = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_stopConversion = virtualinvoke thread_stopConversion.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.state.BooleanView _adsc>;
+        interfaceinvoke $r0.<avrora.sim.state.BooleanView: void setValue(boolean)>(0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 83, tid_stopConversion, "avrora.sim.mcu.ADC$ControlRegister", 263, $z0);
+        $z0 = this.<avrora.sim.mcu.ADC$ControlRegister: boolean converting>;
+        if $z0 == 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 83, tid_stopConversion, "avrora.sim.mcu.ADC$ControlRegister", 264, 0);
+        this.<avrora.sim.mcu.ADC$ControlRegister: boolean converting> = 0;
+        $r1 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r2 = $r1.<avrora.sim.mcu.ADC: avrora.sim.clock.Clock mainClock>;
+        $r3 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC$ControlRegister$ConversionEvent conversion>;
+        virtualinvoke $r2.<avrora.sim.clock.Clock: void removeEvent(avrora.sim.Simulator$Event)>($r3);
+
+     label0:
+        return;
+    }
+
+    private int getPrescaler()
+    {
+        avrora.sim.mcu.ADC$ControlRegister this;
+        short[] $r0;
+        avrora.sim.state.RegisterView $r1;
+        int $i0;
+        short $s1;
+        long tid_getPrescaler;
+        java.lang.Thread thread_getPrescaler;
+
+        this := @this: avrora.sim.mcu.ADC$ControlRegister;
+        thread_getPrescaler = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getPrescaler = virtualinvoke thread_getPrescaler.<java.lang.Thread: long getId()>();
+        $r0 = <avrora.sim.mcu.ADC: short[] PRESCALER>;
+        $r1 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.state.RegisterView _prescaler>;
+        $i0 = interfaceinvoke $r1.<avrora.sim.state.RegisterView: int getValue()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,short)>($r0, 39, tid_getPrescaler, "avrora.sim.mcu.ADC$ControlRegister", 270, $i0, $s1);
+        $s1 = $r0[$i0];
+        return $s1;
+    }
+
+    private int convertVoltage()
+    {
+        avrora.sim.mcu.ADC$ControlRegister this;
+        avrora.sim.mcu.ADC$ADCInput dev, pos, 'neg';
+        float vin, vref, vpos, vneg, val, $f0, $f1;
+        avrora.sim.mcu.ADC $r0, $r3;
+        avrora.sim.mcu.ADC$MUXRegister $r1, $r4;
+        boolean $z0;
+        avrora.sim.mcu.ADC$ADCInput[] $r2;
+        int $i0, $i2;
+        byte $b1;
+
+        this := @this: avrora.sim.mcu.ADC$ControlRegister;
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r1 = $r0.<avrora.sim.mcu.ADC: avrora.sim.mcu.ADC$MUXRegister ADMUX_reg>;
+        $z0 = virtualinvoke $r1.<avrora.sim.mcu.ADC$MUXRegister: boolean isSingleEnded()>();
+        if $z0 == 0 goto label3;
+
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r2 = $r0.<avrora.sim.mcu.ADC: avrora.sim.mcu.ADC$ADCInput[] connectedDevices>;
+        $r3 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r4 = $r3.<avrora.sim.mcu.ADC: avrora.sim.mcu.ADC$MUXRegister ADMUX_reg>;
+        $i0 = virtualinvoke $r4.<avrora.sim.mcu.ADC$MUXRegister: int getSingleIndex()>();
+        dev = $r2[$i0];
+        if dev == null goto label0;
+
+        $f0 = interfaceinvoke dev.<avrora.sim.mcu.ADC$ADCInput: float getVoltage()>();
+        goto label1;
+
+     label0:
+        $f0 = 0.0F;
+
+     label1:
+        vin = $f0;
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        vref = $r0.<avrora.sim.mcu.ADC: float voltageRef>;
+        $b1 = vin cmpl vref;
+        if $b1 < 0 goto label2;
+
+        return 1023;
+
+     label2:
+        $f1 = vin * 1024.0F;
+        $f1 = $f1 / vref;
+        $i0 = (int) $f1;
+        $i2 = 1023 & $i0;
+        return $i2;
+
+     label3:
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r2 = $r0.<avrora.sim.mcu.ADC: avrora.sim.mcu.ADC$ADCInput[] connectedDevices>;
+        $r3 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r4 = $r3.<avrora.sim.mcu.ADC: avrora.sim.mcu.ADC$MUXRegister ADMUX_reg>;
+        $i0 = virtualinvoke $r4.<avrora.sim.mcu.ADC$MUXRegister: int getPosIndex()>();
+        pos = $r2[$i0];
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r2 = $r0.<avrora.sim.mcu.ADC: avrora.sim.mcu.ADC$ADCInput[] connectedDevices>;
+        $r3 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r4 = $r3.<avrora.sim.mcu.ADC: avrora.sim.mcu.ADC$MUXRegister ADMUX_reg>;
+        $i0 = virtualinvoke $r4.<avrora.sim.mcu.ADC$MUXRegister: int getNegIndex()>();
+        'neg' = $r2[$i0];
+        if pos == null goto label4;
+
+        $f0 = interfaceinvoke pos.<avrora.sim.mcu.ADC$ADCInput: float getVoltage()>();
+        goto label5;
+
+     label4:
+        $f0 = 0.0F;
+
+     label5:
+        vpos = $f0;
+        if 'neg' == null goto label6;
+
+        $f0 = interfaceinvoke 'neg'.<avrora.sim.mcu.ADC$ADCInput: float getVoltage()>();
+        goto label7;
+
+     label6:
+        $f0 = 0.0F;
+
+     label7:
+        vneg = $f0;
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        vref = $r0.<avrora.sim.mcu.ADC: float voltageRef>;
+        $f0 = vpos - vneg;
+        $r3 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.mcu.ADC this$0>;
+        $r4 = $r3.<avrora.sim.mcu.ADC: avrora.sim.mcu.ADC$MUXRegister ADMUX_reg>;
+        $i0 = virtualinvoke $r4.<avrora.sim.mcu.ADC$MUXRegister: int getGain()>();
+        $f1 = (float) $i0;
+        $f0 = $f0 * $f1;
+        $f0 = $f0 * 512.0F;
+        val = $f0 / vref;
+        $b1 = val cmpg -512.0F;
+        if $b1 >= 0 goto label8;
+
+        return 1023;
+
+     label8:
+        $b1 = val cmpl 511.0F;
+        if $b1 <= 0 goto label9;
+
+        return 511;
+
+     label9:
+        $i0 = (int) val;
+        $i2 = 1023 & $i0;
+        return $i2;
+    }
+
+    public void force(int)
+    {
+        avrora.sim.mcu.ADC$ControlRegister this;
+        int inum;
+        avrora.sim.state.BooleanView $r0;
+
+        this := @this: avrora.sim.mcu.ADC$ControlRegister;
+        inum := @parameter0: int;
+        $r0 = this.<avrora.sim.mcu.ADC$ControlRegister: avrora.sim.state.BooleanView _adif>;
+        interfaceinvoke $r0.<avrora.sim.state.BooleanView: void setValue(boolean)>(1);
+        return;
+    }
+
+    public void invoke(int)
+    {
+        avrora.sim.mcu.ADC$ControlRegister this;
+        int inum;
+
+        this := @this: avrora.sim.mcu.ADC$ControlRegister;
+        inum := @parameter0: int;
+        specialinvoke this.<avrora.sim.mcu.ADC$ControlRegister: void unpostADCInterrupt()>();
+        return;
+    }
+
+    static int access$100(avrora.sim.mcu.ADC$ControlRegister)
+    {
+        avrora.sim.mcu.ADC$ControlRegister x0;
+        int $i0;
+
+        x0 := @parameter0: avrora.sim.mcu.ADC$ControlRegister;
+        $i0 = specialinvoke x0.<avrora.sim.mcu.ADC$ControlRegister: int convertVoltage()>();
+        return $i0;
+    }
+
+    static void access$200(avrora.sim.mcu.ADC$ControlRegister)
+    {
+        avrora.sim.mcu.ADC$ControlRegister x0;
+
+        x0 := @parameter0: avrora.sim.mcu.ADC$ControlRegister;
+        specialinvoke x0.<avrora.sim.mcu.ADC$ControlRegister: void insertConversion()>();
+        return;
+    }
+
+    static void access$300(avrora.sim.mcu.ADC$ControlRegister)
+    {
+        avrora.sim.mcu.ADC$ControlRegister x0;
+
+        x0 := @parameter0: avrora.sim.mcu.ADC$ControlRegister;
+        specialinvoke x0.<avrora.sim.mcu.ADC$ControlRegister: void stopConversion()>();
+        return;
+    }
+}

@@ -1,0 +1,367 @@
+class org.apache.lucene.search.ConjunctionScorer extends org.apache.lucene.search.Scorer
+{
+    private final org.apache.lucene.search.Scorer[] scorers;
+    private boolean firstTime;
+    private boolean more;
+    private final float coord;
+    private int lastDoc;
+
+    public void <init>(org.apache.lucene.search.Similarity, java.util.Collection) throws java.io.IOException
+    {
+        org.apache.lucene.search.ConjunctionScorer this;
+        org.apache.lucene.search.Similarity similarity;
+        java.util.Collection scorers;
+        int $i0;
+        org.apache.lucene.search.Scorer[] $r0, $r2;
+        java.lang.Object[] $r1;
+
+        this := @this: org.apache.lucene.search.ConjunctionScorer;
+        similarity := @parameter0: org.apache.lucene.search.Similarity;
+        scorers := @parameter1: java.util.Collection;
+        $i0 = interfaceinvoke scorers.<java.util.Collection: int size()>();
+        $r0 = newarray (org.apache.lucene.search.Scorer)[$i0];
+        $r1 = interfaceinvoke scorers.<java.util.Collection: java.lang.Object[] toArray(java.lang.Object[])>($r0);
+        $r2 = (org.apache.lucene.search.Scorer[]) $r1;
+        $r2 = (org.apache.lucene.search.Scorer[]) $r2;
+        specialinvoke this.<org.apache.lucene.search.ConjunctionScorer: void <init>(org.apache.lucene.search.Similarity,org.apache.lucene.search.Scorer[])>(similarity, $r2);
+        return;
+    }
+
+    public void <init>(org.apache.lucene.search.Similarity, org.apache.lucene.search.Scorer[]) throws java.io.IOException
+    {
+        org.apache.lucene.search.ConjunctionScorer this;
+        org.apache.lucene.search.Similarity similarity, $r0;
+        org.apache.lucene.search.Scorer[] scorers, $r1, $r2;
+        int $i0, $i1;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.ConjunctionScorer;
+        similarity := @parameter0: org.apache.lucene.search.Similarity;
+        scorers := @parameter1: org.apache.lucene.search.Scorer[];
+        specialinvoke this.<org.apache.lucene.search.Scorer: void <init>(org.apache.lucene.search.Similarity)>(similarity);
+        this.<org.apache.lucene.search.ConjunctionScorer: boolean firstTime> = 1;
+        this.<org.apache.lucene.search.ConjunctionScorer: int lastDoc> = -1;
+        this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers> = scorers;
+        $r0 = virtualinvoke this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Similarity getSimilarity()>();
+        $r1 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $i0 = lengthof $r1;
+        $r2 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $i1 = lengthof $r2;
+        $f0 = virtualinvoke $r0.<org.apache.lucene.search.Similarity: float coord(int,int)>($i0, $i1);
+        this.<org.apache.lucene.search.ConjunctionScorer: float coord> = $f0;
+        return;
+    }
+
+    public int doc()
+    {
+        org.apache.lucene.search.ConjunctionScorer this;
+        int $i0;
+        long tid_doc;
+        java.lang.Thread thread_doc;
+
+        this := @this: org.apache.lucene.search.ConjunctionScorer;
+        thread_doc = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_doc = virtualinvoke thread_doc.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 87, tid_doc, "org.apache.lucene.search.ConjunctionScorer", 44, $i0);
+        $i0 = this.<org.apache.lucene.search.ConjunctionScorer: int lastDoc>;
+        return $i0;
+    }
+
+    public boolean next() throws java.io.IOException
+    {
+        org.apache.lucene.search.ConjunctionScorer this;
+        boolean $z0, $z1;
+        org.apache.lucene.search.Scorer[] $r0, $r1;
+        int $i0;
+        org.apache.lucene.search.Scorer $r2;
+        long tid_next;
+        java.lang.Thread thread_next;
+
+        this := @this: org.apache.lucene.search.ConjunctionScorer;
+        thread_next = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_next = virtualinvoke thread_next.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 88, tid_next, "org.apache.lucene.search.ConjunctionScorer", 47, $z0);
+        $z0 = this.<org.apache.lucene.search.ConjunctionScorer: boolean firstTime>;
+        if $z0 == 0 goto label0;
+
+        $z0 = specialinvoke this.<org.apache.lucene.search.ConjunctionScorer: boolean init(int)>(0);
+        return $z0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 89, tid_next, "org.apache.lucene.search.ConjunctionScorer", 49, $z0);
+        $z0 = this.<org.apache.lucene.search.ConjunctionScorer: boolean more>;
+        if $z0 == 0 goto label1;
+
+        $r0 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $r1 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $i0 = lengthof $r1;
+        $i0 = $i0 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 83, tid_next, "org.apache.lucene.search.ConjunctionScorer", 50, $i0, $r2);
+        $r2 = $r0[$i0];
+        $z1 = virtualinvoke $r2.<org.apache.lucene.search.Scorer: boolean next()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 89, tid_next, "org.apache.lucene.search.ConjunctionScorer", 50, $z1);
+        this.<org.apache.lucene.search.ConjunctionScorer: boolean more> = $z1;
+
+     label1:
+        $z0 = specialinvoke this.<org.apache.lucene.search.ConjunctionScorer: boolean doNext()>();
+        return $z0;
+    }
+
+    private boolean doNext() throws java.io.IOException
+    {
+        org.apache.lucene.search.ConjunctionScorer this;
+        int first, $i0, $i1, $i2, $i3;
+        org.apache.lucene.search.Scorer lastScorer, firstScorer, $r2;
+        org.apache.lucene.search.Scorer[] $r0, $r1;
+        boolean $z0, $z1;
+        long tid_doNext;
+        java.lang.Thread thread_doNext;
+
+        this := @this: org.apache.lucene.search.ConjunctionScorer;
+        thread_doNext = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_doNext = virtualinvoke thread_doNext.<java.lang.Thread: long getId()>();
+        first = 0;
+        $r0 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $r1 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $i1 = lengthof $r1;
+        $i1 = $i1 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 83, tid_doNext, "org.apache.lucene.search.ConjunctionScorer", 56, $i1, lastScorer);
+        lastScorer = $r0[$i1];
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 89, tid_doNext, "org.apache.lucene.search.ConjunctionScorer", 58, $z0);
+        $z0 = this.<org.apache.lucene.search.ConjunctionScorer: boolean more>;
+        if $z0 == 0 goto label3;
+
+        $r0 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 83, tid_doNext, "org.apache.lucene.search.ConjunctionScorer", 58, first, $r2);
+        $r2 = $r0[first];
+        firstScorer = $r2;
+        $i2 = virtualinvoke $r2.<org.apache.lucene.search.Scorer: int doc()>();
+        $i0 = virtualinvoke lastScorer.<org.apache.lucene.search.Scorer: int doc()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 87, tid_doNext, "org.apache.lucene.search.ConjunctionScorer", 58, $i0);
+        this.<org.apache.lucene.search.ConjunctionScorer: int lastDoc> = $i0;
+        if $i2 >= $i0 goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 87, tid_doNext, "org.apache.lucene.search.ConjunctionScorer", 59, $i3);
+        $i3 = this.<org.apache.lucene.search.ConjunctionScorer: int lastDoc>;
+        $z1 = virtualinvoke firstScorer.<org.apache.lucene.search.Scorer: boolean skipTo(int)>($i3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 89, tid_doNext, "org.apache.lucene.search.ConjunctionScorer", 59, $z1);
+        this.<org.apache.lucene.search.ConjunctionScorer: boolean more> = $z1;
+        lastScorer = firstScorer;
+        $r1 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $i1 = lengthof $r1;
+        $i1 = $i1 - 1;
+        if first != $i1 goto label1;
+
+        $i2 = 0;
+        goto label2;
+
+     label1:
+        $i2 = first + 1;
+
+     label2:
+        first = $i2;
+        goto label0;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 89, tid_doNext, "org.apache.lucene.search.ConjunctionScorer", 63, $z0);
+        $z0 = this.<org.apache.lucene.search.ConjunctionScorer: boolean more>;
+        return $z0;
+    }
+
+    public boolean skipTo(int) throws java.io.IOException
+    {
+        org.apache.lucene.search.ConjunctionScorer this;
+        int target, $i0;
+        boolean $z0, $z1;
+        org.apache.lucene.search.Scorer[] $r0, $r1;
+        org.apache.lucene.search.Scorer $r2;
+        long tid_skipTo;
+        java.lang.Thread thread_skipTo;
+
+        this := @this: org.apache.lucene.search.ConjunctionScorer;
+        target := @parameter0: int;
+        thread_skipTo = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_skipTo = virtualinvoke thread_skipTo.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 88, tid_skipTo, "org.apache.lucene.search.ConjunctionScorer", 67, $z0);
+        $z0 = this.<org.apache.lucene.search.ConjunctionScorer: boolean firstTime>;
+        if $z0 == 0 goto label0;
+
+        $z0 = specialinvoke this.<org.apache.lucene.search.ConjunctionScorer: boolean init(int)>(target);
+        return $z0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 89, tid_skipTo, "org.apache.lucene.search.ConjunctionScorer", 69, $z0);
+        $z0 = this.<org.apache.lucene.search.ConjunctionScorer: boolean more>;
+        if $z0 == 0 goto label1;
+
+        $r0 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $r1 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $i0 = lengthof $r1;
+        $i0 = $i0 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 83, tid_skipTo, "org.apache.lucene.search.ConjunctionScorer", 70, $i0, $r2);
+        $r2 = $r0[$i0];
+        $z1 = virtualinvoke $r2.<org.apache.lucene.search.Scorer: boolean skipTo(int)>(target);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 89, tid_skipTo, "org.apache.lucene.search.ConjunctionScorer", 70, $z1);
+        this.<org.apache.lucene.search.ConjunctionScorer: boolean more> = $z1;
+
+     label1:
+        $z0 = specialinvoke this.<org.apache.lucene.search.ConjunctionScorer: boolean doNext()>();
+        return $z0;
+    }
+
+    private boolean init(int) throws java.io.IOException
+    {
+        org.apache.lucene.search.ConjunctionScorer this;
+        int target, i, end, $i0, $i1, $i2;
+        org.apache.lucene.search.Scorer tmp, $r2, $r6;
+        org.apache.lucene.search.Scorer[] $r1, $r3, $r5;
+        boolean $z0, $z1;
+        org.apache.lucene.search.ConjunctionScorer$1 tmp$549517308;
+        java.util.Comparator tmp;
+        long tid_init;
+        java.lang.Thread thread_init;
+
+        this := @this: org.apache.lucene.search.ConjunctionScorer;
+        target := @parameter0: int;
+        thread_init = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_init = virtualinvoke thread_init.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 88, tid_init, "org.apache.lucene.search.ConjunctionScorer", 77, 0);
+        this.<org.apache.lucene.search.ConjunctionScorer: boolean firstTime> = 0;
+        $r1 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $i0 = lengthof $r1;
+        if $i0 <= 1 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 89, tid_init, "org.apache.lucene.search.ConjunctionScorer", 78, $z0);
+        this.<org.apache.lucene.search.ConjunctionScorer: boolean more> = $z0;
+        i = 0;
+
+     label2:
+        $r1 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $i0 = lengthof $r1;
+        if i >= $i0 goto label6;
+
+        if target != 0 goto label3;
+
+        $r1 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 83, tid_init, "org.apache.lucene.search.ConjunctionScorer", 80, i, $r2);
+        $r2 = $r1[i];
+        $z0 = virtualinvoke $r2.<org.apache.lucene.search.Scorer: boolean next()>();
+        goto label4;
+
+     label3:
+        $r1 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 83, tid_init, "org.apache.lucene.search.ConjunctionScorer", 80, i, $r2);
+        $r2 = $r1[i];
+        $z0 = virtualinvoke $r2.<org.apache.lucene.search.Scorer: boolean skipTo(int)>(target);
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 89, tid_init, "org.apache.lucene.search.ConjunctionScorer", 80, $z0);
+        this.<org.apache.lucene.search.ConjunctionScorer: boolean more> = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 89, tid_init, "org.apache.lucene.search.ConjunctionScorer", 81, $z1);
+        $z1 = this.<org.apache.lucene.search.ConjunctionScorer: boolean more>;
+        if $z1 != 0 goto label5;
+
+        return 0;
+
+     label5:
+        i = i + 1;
+        goto label2;
+
+     label6:
+        $r3 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        tmp$549517308 = new org.apache.lucene.search.ConjunctionScorer$1;
+        specialinvoke tmp$549517308.<org.apache.lucene.search.ConjunctionScorer$1: void <init>(org.apache.lucene.search.ConjunctionScorer)>(this);
+        tmp = (java.util.Comparator) tmp$549517308;
+        staticinvoke <java.util.Arrays: void sort(java.lang.Object[],java.util.Comparator)>($r3, tmp);
+        specialinvoke this.<org.apache.lucene.search.ConjunctionScorer: boolean doNext()>();
+        $r3 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $i1 = lengthof $r3;
+        end = $i1 - 1;
+        i = 0;
+
+     label7:
+        $i0 = end >> 1;
+        if i >= $i0 goto label8;
+
+        $r3 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r3, 83, tid_init, "org.apache.lucene.search.ConjunctionScorer", 106, i, tmp);
+        tmp = $r3[i];
+        $r3 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $r5 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $i2 = end - i;
+        $i2 = $i2 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r5, 83, tid_init, "org.apache.lucene.search.ConjunctionScorer", 107, $i2, $r6);
+        $r6 = $r5[$i2];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r3, 83, tid_init, "org.apache.lucene.search.ConjunctionScorer", 107, i, $r6);
+        $r3[i] = $r6;
+        $r3 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $i0 = end - i;
+        $i0 = $i0 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r3, 83, tid_init, "org.apache.lucene.search.ConjunctionScorer", 108, $i0, tmp);
+        $r3[$i0] = tmp;
+        i = i + 1;
+        goto label7;
+
+     label8:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 89, tid_init, "org.apache.lucene.search.ConjunctionScorer", 111, $z1);
+        $z1 = this.<org.apache.lucene.search.ConjunctionScorer: boolean more>;
+        return $z1;
+    }
+
+    public float score() throws java.io.IOException
+    {
+        org.apache.lucene.search.ConjunctionScorer this;
+        float sum, $f0, $f1;
+        int i, $i0;
+        org.apache.lucene.search.Scorer[] $r0;
+        org.apache.lucene.search.Scorer $r1;
+        long tid_score;
+        java.lang.Thread thread_score;
+
+        this := @this: org.apache.lucene.search.ConjunctionScorer;
+        thread_score = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_score = virtualinvoke thread_score.<java.lang.Thread: long getId()>();
+        sum = 0.0F;
+        i = 0;
+
+     label0:
+        $r0 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        $i0 = lengthof $r0;
+        if i >= $i0 goto label1;
+
+        $r0 = this.<org.apache.lucene.search.ConjunctionScorer: org.apache.lucene.search.Scorer[] scorers>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r0, 83, tid_score, "org.apache.lucene.search.ConjunctionScorer", 117, i, $r1);
+        $r1 = $r0[i];
+        $f0 = virtualinvoke $r1.<org.apache.lucene.search.Scorer: float score()>();
+        sum = sum + $f0;
+        i = i + 1;
+        goto label0;
+
+     label1:
+        $f0 = this.<org.apache.lucene.search.ConjunctionScorer: float coord>;
+        $f1 = sum * $f0;
+        return $f1;
+    }
+
+    public org.apache.lucene.search.Explanation explain(int)
+    {
+        org.apache.lucene.search.ConjunctionScorer this;
+        int doc;
+        java.lang.UnsupportedOperationException $r0;
+
+        this := @this: org.apache.lucene.search.ConjunctionScorer;
+        doc := @parameter0: int;
+        $r0 = new java.lang.UnsupportedOperationException;
+        specialinvoke $r0.<java.lang.UnsupportedOperationException: void <init>()>();
+        throw $r0;
+    }
+}

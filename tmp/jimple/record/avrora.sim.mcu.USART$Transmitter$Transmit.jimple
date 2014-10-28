@@ -1,0 +1,90 @@
+public class avrora.sim.mcu.USART$Transmitter$Transmit extends java.lang.Object implements avrora.sim.Simulator$Event
+{
+    avrora.sim.mcu.USART$Frame frame;
+    final avrora.sim.mcu.USART$Transmitter this$1;
+
+    protected void <init>(avrora.sim.mcu.USART$Transmitter)
+    {
+        avrora.sim.mcu.USART$Transmitter$Transmit this;
+        avrora.sim.mcu.USART$Transmitter l1;
+
+        this := @this: avrora.sim.mcu.USART$Transmitter$Transmit;
+        l1 := @parameter0: avrora.sim.mcu.USART$Transmitter;
+        this.<avrora.sim.mcu.USART$Transmitter$Transmit: avrora.sim.mcu.USART$Transmitter this$1> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public void fire()
+    {
+        avrora.sim.mcu.USART$Transmitter$Transmit this;
+        avrora.sim.mcu.USART$Transmitter $r0, $r6;
+        avrora.sim.mcu.USART $r1, $r7;
+        avrora.sim.mcu.USART$USARTDevice $r2;
+        avrora.sim.mcu.USART$Frame $r3, $r10;
+        avrora.sim.output.SimPrinter $r4;
+        java.lang.StringBuilder $r5;
+        avrora.sim.mcu.USART$USARTProperties $r8;
+        java.lang.String $r9, $r11;
+        avrora.sim.mcu.USART$ControlRegisterA $r12;
+        avrora.sim.mcu.ATMegaFamily$InterruptFlag $r13;
+        boolean $z0;
+        long tid_fire;
+        java.lang.Thread thread_fire;
+
+        this := @this: avrora.sim.mcu.USART$Transmitter$Transmit;
+        thread_fire = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_fire = virtualinvoke thread_fire.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.USART$Transmitter$Transmit: avrora.sim.mcu.USART$Transmitter this$1>;
+        $r1 = $r0.<avrora.sim.mcu.USART$Transmitter: avrora.sim.mcu.USART this$0>;
+        $r2 = $r1.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTDevice connectedDevice>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 99, tid_fire, "avrora.sim.mcu.USART$Transmitter$Transmit", 256, $r3);
+        $r3 = this.<avrora.sim.mcu.USART$Transmitter$Transmit: avrora.sim.mcu.USART$Frame frame>;
+        interfaceinvoke $r2.<avrora.sim.mcu.USART$USARTDevice: void receiveFrame(avrora.sim.mcu.USART$Frame)>($r3);
+        $r0 = this.<avrora.sim.mcu.USART$Transmitter$Transmit: avrora.sim.mcu.USART$Transmitter this$1>;
+        $r1 = $r0.<avrora.sim.mcu.USART$Transmitter: avrora.sim.mcu.USART this$0>;
+        $r4 = $r1.<avrora.sim.mcu.USART: avrora.sim.output.SimPrinter devicePrinter>;
+        if $r4 == null goto label0;
+
+        $r0 = this.<avrora.sim.mcu.USART$Transmitter$Transmit: avrora.sim.mcu.USART$Transmitter this$1>;
+        $r1 = $r0.<avrora.sim.mcu.USART$Transmitter: avrora.sim.mcu.USART this$0>;
+        $r4 = $r1.<avrora.sim.mcu.USART: avrora.sim.output.SimPrinter devicePrinter>;
+        $r5 = new java.lang.StringBuilder;
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+        $r6 = this.<avrora.sim.mcu.USART$Transmitter$Transmit: avrora.sim.mcu.USART$Transmitter this$1>;
+        $r7 = $r6.<avrora.sim.mcu.USART$Transmitter: avrora.sim.mcu.USART this$0>;
+        $r8 = $r7.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTProperties properties>;
+        $r9 = $r8.<avrora.sim.mcu.USART$USARTProperties: java.lang.String USART_name>;
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Transmitted frame ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 99, tid_fire, "avrora.sim.mcu.USART$Transmitter$Transmit", 259, $r10);
+        $r10 = this.<avrora.sim.mcu.USART$Transmitter$Transmit: avrora.sim.mcu.USART$Frame frame>;
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r10);
+        $r11 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r11);
+
+     label0:
+        $r0 = this.<avrora.sim.mcu.USART$Transmitter$Transmit: avrora.sim.mcu.USART$Transmitter this$1>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r0, 98, tid_fire, "avrora.sim.mcu.USART$Transmitter$Transmit", 260, 0);
+        $r0.<avrora.sim.mcu.USART$Transmitter: boolean transmitting> = 0;
+        $r0 = this.<avrora.sim.mcu.USART$Transmitter$Transmit: avrora.sim.mcu.USART$Transmitter this$1>;
+        $r1 = $r0.<avrora.sim.mcu.USART$Transmitter: avrora.sim.mcu.USART this$0>;
+        $r12 = $r1.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$ControlRegisterA UCSRnA_reg>;
+        $r13 = $r12.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.ATMegaFamily$InterruptFlag TXC_flag>;
+        virtualinvoke $r13.<avrora.sim.mcu.ATMegaFamily$InterruptFlag: void flag(boolean)>(1);
+        $r0 = this.<avrora.sim.mcu.USART$Transmitter$Transmit: avrora.sim.mcu.USART$Transmitter this$1>;
+        $r1 = $r0.<avrora.sim.mcu.USART$Transmitter: avrora.sim.mcu.USART this$0>;
+        $r12 = $r1.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$ControlRegisterA UCSRnA_reg>;
+        $r13 = $r12.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.ATMegaFamily$InterruptFlag UDRE_flag>;
+        $z0 = virtualinvoke $r13.<avrora.sim.mcu.ATMegaFamily$InterruptFlag: boolean get()>();
+        if $z0 != 0 goto label1;
+
+        $r0 = this.<avrora.sim.mcu.USART$Transmitter$Transmit: avrora.sim.mcu.USART$Transmitter this$1>;
+        $r1 = $r0.<avrora.sim.mcu.USART$Transmitter: avrora.sim.mcu.USART this$0>;
+        $r0 = $r1.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$Transmitter transmitter>;
+        virtualinvoke $r0.<avrora.sim.mcu.USART$Transmitter: void enableTransmit()>();
+
+     label1:
+        return;
+    }
+}

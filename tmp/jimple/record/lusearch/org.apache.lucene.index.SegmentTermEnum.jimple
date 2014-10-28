@@ -1,0 +1,518 @@
+final class org.apache.lucene.index.SegmentTermEnum extends org.apache.lucene.index.TermEnum implements java.lang.Cloneable
+{
+    private org.apache.lucene.store.IndexInput input;
+    org.apache.lucene.index.FieldInfos fieldInfos;
+    long size;
+    long position;
+    private org.apache.lucene.index.TermBuffer termBuffer;
+    private org.apache.lucene.index.TermBuffer prevBuffer;
+    private org.apache.lucene.index.TermBuffer scanBuffer;
+    private org.apache.lucene.index.TermInfo termInfo;
+    private int format;
+    private boolean isIndex;
+    long indexPointer;
+    int indexInterval;
+    int skipInterval;
+    int maxSkipLevels;
+    private int formatM1SkipInterval;
+
+    void <init>(org.apache.lucene.store.IndexInput, org.apache.lucene.index.FieldInfos, boolean) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentTermEnum this;
+        org.apache.lucene.store.IndexInput i, $r2, $r6;
+        org.apache.lucene.index.FieldInfos fis;
+        boolean isi, $z0;
+        int firstInt, $i1, $i2, $i3;
+        org.apache.lucene.index.TermBuffer $r0, $r7;
+        org.apache.lucene.index.TermInfo $r1;
+        long $l0;
+        org.apache.lucene.index.CorruptIndexException $r3;
+        java.lang.StringBuffer $r4;
+        java.lang.String $r5;
+
+        this := @this: org.apache.lucene.index.SegmentTermEnum;
+        i := @parameter0: org.apache.lucene.store.IndexInput;
+        fis := @parameter1: org.apache.lucene.index.FieldInfos;
+        isi := @parameter2: boolean;
+        specialinvoke this.<org.apache.lucene.index.TermEnum: void <init>()>();
+        this.<org.apache.lucene.index.SegmentTermEnum: long position> = -1L;
+        $r0 = new org.apache.lucene.index.TermBuffer;
+        specialinvoke $r0.<org.apache.lucene.index.TermBuffer: void <init>()>();
+        this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer termBuffer> = $r0;
+        $r0 = new org.apache.lucene.index.TermBuffer;
+        specialinvoke $r0.<org.apache.lucene.index.TermBuffer: void <init>()>();
+        this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer prevBuffer> = $r0;
+        $r0 = new org.apache.lucene.index.TermBuffer;
+        specialinvoke $r0.<org.apache.lucene.index.TermBuffer: void <init>()>();
+        this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer scanBuffer> = $r0;
+        $r1 = new org.apache.lucene.index.TermInfo;
+        specialinvoke $r1.<org.apache.lucene.index.TermInfo: void <init>()>();
+        this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo> = $r1;
+        this.<org.apache.lucene.index.SegmentTermEnum: boolean isIndex> = 0;
+        this.<org.apache.lucene.index.SegmentTermEnum: long indexPointer> = 0L;
+        this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input> = i;
+        this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.FieldInfos fieldInfos> = fis;
+        this.<org.apache.lucene.index.SegmentTermEnum: boolean isIndex> = isi;
+        this.<org.apache.lucene.index.SegmentTermEnum: int maxSkipLevels> = 1;
+        $r2 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        firstInt = virtualinvoke $r2.<org.apache.lucene.store.IndexInput: int readInt()>();
+        if firstInt < 0 goto label0;
+
+        this.<org.apache.lucene.index.SegmentTermEnum: int format> = 0;
+        $l0 = (long) firstInt;
+        this.<org.apache.lucene.index.SegmentTermEnum: long size> = $l0;
+        this.<org.apache.lucene.index.SegmentTermEnum: int indexInterval> = 128;
+        this.<org.apache.lucene.index.SegmentTermEnum: int skipInterval> = 2147483647;
+        goto label4;
+
+     label0:
+        this.<org.apache.lucene.index.SegmentTermEnum: int format> = firstInt;
+        $i1 = this.<org.apache.lucene.index.SegmentTermEnum: int format>;
+        if $i1 >= -4 goto label1;
+
+        $r3 = new org.apache.lucene.index.CorruptIndexException;
+        $r4 = new java.lang.StringBuffer;
+        specialinvoke $r4.<java.lang.StringBuffer: void <init>()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Unknown format version:");
+        $i2 = this.<org.apache.lucene.index.SegmentTermEnum: int format>;
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i2);
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" expected ");
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(-4);
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" or higher");
+        $r5 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r3.<org.apache.lucene.index.CorruptIndexException: void <init>(java.lang.String)>($r5);
+        throw $r3;
+
+     label1:
+        $r6 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        $l0 = virtualinvoke $r6.<org.apache.lucene.store.IndexInput: long readLong()>();
+        this.<org.apache.lucene.index.SegmentTermEnum: long size> = $l0;
+        $i1 = this.<org.apache.lucene.index.SegmentTermEnum: int format>;
+        if $i1 != -1 goto label3;
+
+        $z0 = this.<org.apache.lucene.index.SegmentTermEnum: boolean isIndex>;
+        if $z0 != 0 goto label2;
+
+        $r6 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        $i3 = virtualinvoke $r6.<org.apache.lucene.store.IndexInput: int readInt()>();
+        this.<org.apache.lucene.index.SegmentTermEnum: int indexInterval> = $i3;
+        $r6 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        $i3 = virtualinvoke $r6.<org.apache.lucene.store.IndexInput: int readInt()>();
+        this.<org.apache.lucene.index.SegmentTermEnum: int formatM1SkipInterval> = $i3;
+
+     label2:
+        this.<org.apache.lucene.index.SegmentTermEnum: int skipInterval> = 2147483647;
+        goto label4;
+
+     label3:
+        $r6 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        $i3 = virtualinvoke $r6.<org.apache.lucene.store.IndexInput: int readInt()>();
+        this.<org.apache.lucene.index.SegmentTermEnum: int indexInterval> = $i3;
+        $r6 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        $i3 = virtualinvoke $r6.<org.apache.lucene.store.IndexInput: int readInt()>();
+        this.<org.apache.lucene.index.SegmentTermEnum: int skipInterval> = $i3;
+        $i1 = this.<org.apache.lucene.index.SegmentTermEnum: int format>;
+        if $i1 > -3 goto label4;
+
+        $r6 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        $i3 = virtualinvoke $r6.<org.apache.lucene.store.IndexInput: int readInt()>();
+        this.<org.apache.lucene.index.SegmentTermEnum: int maxSkipLevels> = $i3;
+
+     label4:
+        $i1 = this.<org.apache.lucene.index.SegmentTermEnum: int format>;
+        if $i1 <= -4 goto label5;
+
+        $r7 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer termBuffer>;
+        virtualinvoke $r7.<org.apache.lucene.index.TermBuffer: void setPreUTF8Strings()>();
+        $r7 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer scanBuffer>;
+        virtualinvoke $r7.<org.apache.lucene.index.TermBuffer: void setPreUTF8Strings()>();
+        $r7 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer prevBuffer>;
+        virtualinvoke $r7.<org.apache.lucene.index.TermBuffer: void setPreUTF8Strings()>();
+
+     label5:
+        return;
+    }
+
+    protected java.lang.Object clone()
+    {
+        org.apache.lucene.index.SegmentTermEnum this, clone;
+        java.lang.CloneNotSupportedException e, $r1;
+        java.lang.Object $r0, $r3;
+        org.apache.lucene.store.IndexInput $r2;
+        org.apache.lucene.index.TermInfo $r4, $r5;
+        org.apache.lucene.index.TermBuffer $r6;
+        long tid_clone;
+        java.lang.Thread thread_clone;
+
+        this := @this: org.apache.lucene.index.SegmentTermEnum;
+        thread_clone = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clone = virtualinvoke thread_clone.<java.lang.Thread: long getId()>();
+        clone = null;
+
+     label0:
+        $r0 = specialinvoke this.<java.lang.Object: java.lang.Object clone()>();
+        clone = (org.apache.lucene.index.SegmentTermEnum) $r0;
+
+     label1:
+        goto label3;
+
+     label2:
+        $r1 := @caughtexception;
+        e = $r1;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 41, tid_clone, "org.apache.lucene.index.SegmentTermEnum", 99, $r2);
+        $r2 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        $r3 = virtualinvoke $r2.<org.apache.lucene.store.IndexInput: java.lang.Object clone()>();
+        $r2 = (org.apache.lucene.store.IndexInput) $r3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(clone, 41, tid_clone, "org.apache.lucene.index.SegmentTermEnum", 99, $r2);
+        clone.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input> = $r2;
+        $r4 = new org.apache.lucene.index.TermInfo;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 42, tid_clone, "org.apache.lucene.index.SegmentTermEnum", 100, $r5);
+        $r5 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo>;
+        specialinvoke $r4.<org.apache.lucene.index.TermInfo: void <init>(org.apache.lucene.index.TermInfo)>($r5);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(clone, 42, tid_clone, "org.apache.lucene.index.SegmentTermEnum", 100, $r4);
+        clone.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo> = $r4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 43, tid_clone, "org.apache.lucene.index.SegmentTermEnum", 102, $r6);
+        $r6 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer termBuffer>;
+        $r3 = virtualinvoke $r6.<org.apache.lucene.index.TermBuffer: java.lang.Object clone()>();
+        $r6 = (org.apache.lucene.index.TermBuffer) $r3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(clone, 43, tid_clone, "org.apache.lucene.index.SegmentTermEnum", 102, $r6);
+        clone.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer termBuffer> = $r6;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 44, tid_clone, "org.apache.lucene.index.SegmentTermEnum", 103, $r6);
+        $r6 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer prevBuffer>;
+        $r3 = virtualinvoke $r6.<org.apache.lucene.index.TermBuffer: java.lang.Object clone()>();
+        $r6 = (org.apache.lucene.index.TermBuffer) $r3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(clone, 44, tid_clone, "org.apache.lucene.index.SegmentTermEnum", 103, $r6);
+        clone.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer prevBuffer> = $r6;
+        $r6 = new org.apache.lucene.index.TermBuffer;
+        specialinvoke $r6.<org.apache.lucene.index.TermBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(clone, 45, tid_clone, "org.apache.lucene.index.SegmentTermEnum", 104, $r6);
+        clone.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer scanBuffer> = $r6;
+        return clone;
+
+        catch java.lang.CloneNotSupportedException from label0 to label1 with label2;
+    }
+
+    final void seek(long, int, org.apache.lucene.index.Term, org.apache.lucene.index.TermInfo) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentTermEnum this;
+        long pointer, $l0, tid_seek;
+        int p;
+        org.apache.lucene.index.Term t;
+        org.apache.lucene.index.TermInfo ti, $r2;
+        org.apache.lucene.store.IndexInput $r0;
+        org.apache.lucene.index.TermBuffer $r1;
+        java.lang.Thread thread_seek;
+
+        this := @this: org.apache.lucene.index.SegmentTermEnum;
+        pointer := @parameter0: long;
+        p := @parameter1: int;
+        t := @parameter2: org.apache.lucene.index.Term;
+        ti := @parameter3: org.apache.lucene.index.TermInfo;
+        thread_seek = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_seek = virtualinvoke thread_seek.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 41, tid_seek, "org.apache.lucene.index.SegmentTermEnum", 111, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void seek(long)>(pointer);
+        $l0 = (long) p;
+        this.<org.apache.lucene.index.SegmentTermEnum: long position> = $l0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 43, tid_seek, "org.apache.lucene.index.SegmentTermEnum", 113, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer termBuffer>;
+        virtualinvoke $r1.<org.apache.lucene.index.TermBuffer: void set(org.apache.lucene.index.Term)>(t);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 44, tid_seek, "org.apache.lucene.index.SegmentTermEnum", 114, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer prevBuffer>;
+        virtualinvoke $r1.<org.apache.lucene.index.TermBuffer: void reset()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 42, tid_seek, "org.apache.lucene.index.SegmentTermEnum", 115, $r2);
+        $r2 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo>;
+        virtualinvoke $r2.<org.apache.lucene.index.TermInfo: void set(org.apache.lucene.index.TermInfo)>(ti);
+        return;
+    }
+
+    public final boolean next() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentTermEnum this;
+        long $l0, $l1, $l2, $l5, tid_next;
+        byte $b3;
+        org.apache.lucene.index.TermBuffer $r1, $r2;
+        org.apache.lucene.store.IndexInput $r3, $r6;
+        org.apache.lucene.index.FieldInfos $r4;
+        org.apache.lucene.index.TermInfo $r5;
+        int $i4, $i6;
+        boolean $z0;
+        java.lang.Thread thread_next;
+
+        this := @this: org.apache.lucene.index.SegmentTermEnum;
+        thread_next = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_next = virtualinvoke thread_next.<java.lang.Thread: long getId()>();
+        $l0 = this.<org.apache.lucene.index.SegmentTermEnum: long position>;
+        $l1 = $l0 + 1L;
+        this.<org.apache.lucene.index.SegmentTermEnum: long position> = $l1;
+        $l2 = this.<org.apache.lucene.index.SegmentTermEnum: long size>;
+        $l2 = $l2 - 1L;
+        $b3 = $l0 cmp $l2;
+        if $b3 < 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 44, tid_next, "org.apache.lucene.index.SegmentTermEnum", 121, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer prevBuffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 43, tid_next, "org.apache.lucene.index.SegmentTermEnum", 121, $r2);
+        $r2 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer termBuffer>;
+        virtualinvoke $r1.<org.apache.lucene.index.TermBuffer: void set(org.apache.lucene.index.TermBuffer)>($r2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 43, tid_next, "org.apache.lucene.index.SegmentTermEnum", 122, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer termBuffer>;
+        virtualinvoke $r1.<org.apache.lucene.index.TermBuffer: void reset()>();
+        return 0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 44, tid_next, "org.apache.lucene.index.SegmentTermEnum", 126, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer prevBuffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 43, tid_next, "org.apache.lucene.index.SegmentTermEnum", 126, $r2);
+        $r2 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer termBuffer>;
+        virtualinvoke $r1.<org.apache.lucene.index.TermBuffer: void set(org.apache.lucene.index.TermBuffer)>($r2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 43, tid_next, "org.apache.lucene.index.SegmentTermEnum", 127, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer termBuffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 41, tid_next, "org.apache.lucene.index.SegmentTermEnum", 127, $r3);
+        $r3 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        $r4 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.FieldInfos fieldInfos>;
+        virtualinvoke $r1.<org.apache.lucene.index.TermBuffer: void read(org.apache.lucene.store.IndexInput,org.apache.lucene.index.FieldInfos)>($r3, $r4);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 42, tid_next, "org.apache.lucene.index.SegmentTermEnum", 129, $r5);
+        $r5 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 41, tid_next, "org.apache.lucene.index.SegmentTermEnum", 129, $r3);
+        $r3 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        $i4 = virtualinvoke $r3.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        $r5.<org.apache.lucene.index.TermInfo: int docFreq> = $i4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 42, tid_next, "org.apache.lucene.index.SegmentTermEnum", 130, $r5);
+        $r5 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo>;
+        $l5 = $r5.<org.apache.lucene.index.TermInfo: long freqPointer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 41, tid_next, "org.apache.lucene.index.SegmentTermEnum", 130, $r6);
+        $r6 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        $l1 = virtualinvoke $r6.<org.apache.lucene.store.IndexInput: long readVLong()>();
+        $l5 = $l5 + $l1;
+        $r5.<org.apache.lucene.index.TermInfo: long freqPointer> = $l5;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 42, tid_next, "org.apache.lucene.index.SegmentTermEnum", 131, $r5);
+        $r5 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo>;
+        $l5 = $r5.<org.apache.lucene.index.TermInfo: long proxPointer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 41, tid_next, "org.apache.lucene.index.SegmentTermEnum", 131, $r6);
+        $r6 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        $l1 = virtualinvoke $r6.<org.apache.lucene.store.IndexInput: long readVLong()>();
+        $l5 = $l5 + $l1;
+        $r5.<org.apache.lucene.index.TermInfo: long proxPointer> = $l5;
+        $i6 = this.<org.apache.lucene.index.SegmentTermEnum: int format>;
+        if $i6 != -1 goto label1;
+
+        $z0 = this.<org.apache.lucene.index.SegmentTermEnum: boolean isIndex>;
+        if $z0 != 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 42, tid_next, "org.apache.lucene.index.SegmentTermEnum", 137, $r5);
+        $r5 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo>;
+        $i6 = $r5.<org.apache.lucene.index.TermInfo: int docFreq>;
+        $i4 = this.<org.apache.lucene.index.SegmentTermEnum: int formatM1SkipInterval>;
+        if $i6 <= $i4 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 42, tid_next, "org.apache.lucene.index.SegmentTermEnum", 138, $r5);
+        $r5 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 41, tid_next, "org.apache.lucene.index.SegmentTermEnum", 138, $r3);
+        $r3 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        $i4 = virtualinvoke $r3.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        $r5.<org.apache.lucene.index.TermInfo: int skipOffset> = $i4;
+        goto label2;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 42, tid_next, "org.apache.lucene.index.SegmentTermEnum", 143, $r5);
+        $r5 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo>;
+        $i6 = $r5.<org.apache.lucene.index.TermInfo: int docFreq>;
+        $i4 = this.<org.apache.lucene.index.SegmentTermEnum: int skipInterval>;
+        if $i6 < $i4 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 42, tid_next, "org.apache.lucene.index.SegmentTermEnum", 144, $r5);
+        $r5 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 41, tid_next, "org.apache.lucene.index.SegmentTermEnum", 144, $r3);
+        $r3 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        $i4 = virtualinvoke $r3.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        $r5.<org.apache.lucene.index.TermInfo: int skipOffset> = $i4;
+
+     label2:
+        $z0 = this.<org.apache.lucene.index.SegmentTermEnum: boolean isIndex>;
+        if $z0 == 0 goto label3;
+
+        $l5 = this.<org.apache.lucene.index.SegmentTermEnum: long indexPointer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 41, tid_next, "org.apache.lucene.index.SegmentTermEnum", 148, $r6);
+        $r6 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        $l1 = virtualinvoke $r6.<org.apache.lucene.store.IndexInput: long readVLong()>();
+        $l5 = $l5 + $l1;
+        this.<org.apache.lucene.index.SegmentTermEnum: long indexPointer> = $l5;
+
+     label3:
+        return 1;
+    }
+
+    final int scanTo(org.apache.lucene.index.Term) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentTermEnum this;
+        org.apache.lucene.index.Term term;
+        int count, $i0;
+        org.apache.lucene.index.TermBuffer $r0, $r1;
+        boolean $z0;
+        long tid_scanTo;
+        java.lang.Thread thread_scanTo;
+
+        this := @this: org.apache.lucene.index.SegmentTermEnum;
+        term := @parameter0: org.apache.lucene.index.Term;
+        thread_scanTo = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_scanTo = virtualinvoke thread_scanTo.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 45, tid_scanTo, "org.apache.lucene.index.SegmentTermEnum", 156, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer scanBuffer>;
+        virtualinvoke $r0.<org.apache.lucene.index.TermBuffer: void set(org.apache.lucene.index.Term)>(term);
+        count = 0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 45, tid_scanTo, "org.apache.lucene.index.SegmentTermEnum", 158, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer scanBuffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 43, tid_scanTo, "org.apache.lucene.index.SegmentTermEnum", 158, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer termBuffer>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.index.TermBuffer: int compareTo(org.apache.lucene.index.TermBuffer)>($r1);
+        if $i0 <= 0 goto label1;
+
+        $z0 = virtualinvoke this.<org.apache.lucene.index.SegmentTermEnum: boolean next()>();
+        if $z0 == 0 goto label1;
+
+        count = count + 1;
+        goto label0;
+
+     label1:
+        return count;
+    }
+
+    public final org.apache.lucene.index.Term term()
+    {
+        org.apache.lucene.index.SegmentTermEnum this;
+        org.apache.lucene.index.TermBuffer $r0;
+        org.apache.lucene.index.Term $r1;
+        long tid_term;
+        java.lang.Thread thread_term;
+
+        this := @this: org.apache.lucene.index.SegmentTermEnum;
+        thread_term = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_term = virtualinvoke thread_term.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 43, tid_term, "org.apache.lucene.index.SegmentTermEnum", 167, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer termBuffer>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.TermBuffer: org.apache.lucene.index.Term toTerm()>();
+        return $r1;
+    }
+
+    final org.apache.lucene.index.Term prev()
+    {
+        org.apache.lucene.index.SegmentTermEnum this;
+        org.apache.lucene.index.TermBuffer $r0;
+        org.apache.lucene.index.Term $r1;
+        long tid_prev;
+        java.lang.Thread thread_prev;
+
+        this := @this: org.apache.lucene.index.SegmentTermEnum;
+        thread_prev = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_prev = virtualinvoke thread_prev.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 44, tid_prev, "org.apache.lucene.index.SegmentTermEnum", 172, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermBuffer prevBuffer>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.TermBuffer: org.apache.lucene.index.Term toTerm()>();
+        return $r1;
+    }
+
+    final org.apache.lucene.index.TermInfo termInfo()
+    {
+        org.apache.lucene.index.SegmentTermEnum this;
+        org.apache.lucene.index.TermInfo $r0, $r1;
+        long tid_termInfo;
+        java.lang.Thread thread_termInfo;
+
+        this := @this: org.apache.lucene.index.SegmentTermEnum;
+        thread_termInfo = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_termInfo = virtualinvoke thread_termInfo.<java.lang.Thread: long getId()>();
+        $r0 = new org.apache.lucene.index.TermInfo;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 42, tid_termInfo, "org.apache.lucene.index.SegmentTermEnum", 178, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo>;
+        specialinvoke $r0.<org.apache.lucene.index.TermInfo: void <init>(org.apache.lucene.index.TermInfo)>($r1);
+        return $r0;
+    }
+
+    final void termInfo(org.apache.lucene.index.TermInfo)
+    {
+        org.apache.lucene.index.SegmentTermEnum this;
+        org.apache.lucene.index.TermInfo ti, $r0;
+        long tid_termInfo;
+        java.lang.Thread thread_termInfo;
+
+        this := @this: org.apache.lucene.index.SegmentTermEnum;
+        ti := @parameter0: org.apache.lucene.index.TermInfo;
+        thread_termInfo = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_termInfo = virtualinvoke thread_termInfo.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 42, tid_termInfo, "org.apache.lucene.index.SegmentTermEnum", 184, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo>;
+        virtualinvoke ti.<org.apache.lucene.index.TermInfo: void set(org.apache.lucene.index.TermInfo)>($r0);
+        return;
+    }
+
+    public final int docFreq()
+    {
+        org.apache.lucene.index.SegmentTermEnum this;
+        org.apache.lucene.index.TermInfo $r0;
+        int $i0;
+        long tid_docFreq;
+        java.lang.Thread thread_docFreq;
+
+        this := @this: org.apache.lucene.index.SegmentTermEnum;
+        thread_docFreq = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_docFreq = virtualinvoke thread_docFreq.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 42, tid_docFreq, "org.apache.lucene.index.SegmentTermEnum", 190, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo>;
+        $i0 = $r0.<org.apache.lucene.index.TermInfo: int docFreq>;
+        return $i0;
+    }
+
+    final long freqPointer()
+    {
+        org.apache.lucene.index.SegmentTermEnum this;
+        org.apache.lucene.index.TermInfo $r0;
+        long $l0, tid_freqPointer;
+        java.lang.Thread thread_freqPointer;
+
+        this := @this: org.apache.lucene.index.SegmentTermEnum;
+        thread_freqPointer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_freqPointer = virtualinvoke thread_freqPointer.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 42, tid_freqPointer, "org.apache.lucene.index.SegmentTermEnum", 196, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo>;
+        $l0 = $r0.<org.apache.lucene.index.TermInfo: long freqPointer>;
+        return $l0;
+    }
+
+    final long proxPointer()
+    {
+        org.apache.lucene.index.SegmentTermEnum this;
+        org.apache.lucene.index.TermInfo $r0;
+        long $l0, tid_proxPointer;
+        java.lang.Thread thread_proxPointer;
+
+        this := @this: org.apache.lucene.index.SegmentTermEnum;
+        thread_proxPointer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_proxPointer = virtualinvoke thread_proxPointer.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 42, tid_proxPointer, "org.apache.lucene.index.SegmentTermEnum", 202, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.index.TermInfo termInfo>;
+        $l0 = $r0.<org.apache.lucene.index.TermInfo: long proxPointer>;
+        return $l0;
+    }
+
+    public final void close() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentTermEnum this;
+        org.apache.lucene.store.IndexInput $r0;
+        long tid_close;
+        java.lang.Thread thread_close;
+
+        this := @this: org.apache.lucene.index.SegmentTermEnum;
+        thread_close = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_close = virtualinvoke thread_close.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 41, tid_close, "org.apache.lucene.index.SegmentTermEnum", 207, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentTermEnum: org.apache.lucene.store.IndexInput input>;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void close()>();
+        return;
+    }
+}

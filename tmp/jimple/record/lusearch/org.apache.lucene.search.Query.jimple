@@ -1,0 +1,337 @@
+public abstract class org.apache.lucene.search.Query extends java.lang.Object implements java.io.Serializable, java.lang.Cloneable
+{
+    private float boost;
+
+    public void <init>()
+    {
+        org.apache.lucene.search.Query this;
+
+        this := @this: org.apache.lucene.search.Query;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.search.Query: float boost> = 1.0F;
+        return;
+    }
+
+    public void setBoost(float)
+    {
+        org.apache.lucene.search.Query this;
+        float b;
+        long tid_setBoost;
+        java.lang.Thread thread_setBoost;
+
+        this := @this: org.apache.lucene.search.Query;
+        b := @parameter0: float;
+        thread_setBoost = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setBoost = virtualinvoke thread_setBoost.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 73, tid_setBoost, "org.apache.lucene.search.Query", 54, b);
+        this.<org.apache.lucene.search.Query: float boost> = b;
+        return;
+    }
+
+    public float getBoost()
+    {
+        org.apache.lucene.search.Query this;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.Query;
+        $f0 = this.<org.apache.lucene.search.Query: float boost>;
+        return $f0;
+    }
+
+    public abstract java.lang.String toString(java.lang.String);
+
+    public java.lang.String toString()
+    {
+        org.apache.lucene.search.Query this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.search.Query;
+        $r0 = virtualinvoke this.<org.apache.lucene.search.Query: java.lang.String toString(java.lang.String)>("");
+        return $r0;
+    }
+
+    protected org.apache.lucene.search.Weight createWeight(org.apache.lucene.search.Searcher) throws java.io.IOException
+    {
+        org.apache.lucene.search.Query this;
+        org.apache.lucene.search.Searcher searcher;
+        java.lang.UnsupportedOperationException $r0;
+
+        this := @this: org.apache.lucene.search.Query;
+        searcher := @parameter0: org.apache.lucene.search.Searcher;
+        $r0 = new java.lang.UnsupportedOperationException;
+        specialinvoke $r0.<java.lang.UnsupportedOperationException: void <init>()>();
+        throw $r0;
+    }
+
+    public org.apache.lucene.search.Weight weight(org.apache.lucene.search.Searcher) throws java.io.IOException
+    {
+        org.apache.lucene.search.Query this, query;
+        org.apache.lucene.search.Searcher searcher;
+        org.apache.lucene.search.Weight weight;
+        float sum, norm;
+        org.apache.lucene.search.Similarity $r0;
+
+        this := @this: org.apache.lucene.search.Query;
+        searcher := @parameter0: org.apache.lucene.search.Searcher;
+        query = virtualinvoke searcher.<org.apache.lucene.search.Searcher: org.apache.lucene.search.Query rewrite(org.apache.lucene.search.Query)>(this);
+        weight = virtualinvoke query.<org.apache.lucene.search.Query: org.apache.lucene.search.Weight createWeight(org.apache.lucene.search.Searcher)>(searcher);
+        sum = interfaceinvoke weight.<org.apache.lucene.search.Weight: float sumOfSquaredWeights()>();
+        $r0 = virtualinvoke this.<org.apache.lucene.search.Query: org.apache.lucene.search.Similarity getSimilarity(org.apache.lucene.search.Searcher)>(searcher);
+        norm = virtualinvoke $r0.<org.apache.lucene.search.Similarity: float queryNorm(float)>(sum);
+        interfaceinvoke weight.<org.apache.lucene.search.Weight: void normalize(float)>(norm);
+        return weight;
+    }
+
+    public org.apache.lucene.search.Query rewrite(org.apache.lucene.index.IndexReader) throws java.io.IOException
+    {
+        org.apache.lucene.search.Query this;
+        org.apache.lucene.index.IndexReader reader;
+
+        this := @this: org.apache.lucene.search.Query;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        return this;
+    }
+
+    public org.apache.lucene.search.Query combine(org.apache.lucene.search.Query[])
+    {
+        org.apache.lucene.search.Query this, query, $r5, $r8;
+        org.apache.lucene.search.Query[] queries;
+        java.util.HashSet $r0, uniques;
+        int i, j, $i0, $i1;
+        org.apache.lucene.search.BooleanClause[] clauses;
+        boolean splittable, $z0;
+        org.apache.lucene.search.BooleanQuery bq, result, $r9;
+        java.util.Iterator it, $r6;
+        org.apache.lucene.search.BooleanClause $r1, $r4;
+        org.apache.lucene.search.BooleanClause$Occur $r2, $r3, $r11;
+        java.lang.Object $r7, $r10;
+
+        this := @this: org.apache.lucene.search.Query;
+        queries := @parameter0: org.apache.lucene.search.Query[];
+        $r0 = new java.util.HashSet;
+        specialinvoke $r0.<java.util.HashSet: void <init>()>();
+        uniques = $r0;
+        i = 0;
+
+     label0:
+        $i0 = lengthof queries;
+        if i >= $i0 goto label9;
+
+        query = queries[i];
+        clauses = null;
+        splittable = query instanceof org.apache.lucene.search.BooleanQuery;
+        if splittable == 0 goto label4;
+
+        bq = (org.apache.lucene.search.BooleanQuery) query;
+        splittable = virtualinvoke bq.<org.apache.lucene.search.BooleanQuery: boolean isCoordDisabled()>();
+        clauses = virtualinvoke bq.<org.apache.lucene.search.BooleanQuery: org.apache.lucene.search.BooleanClause[] getClauses()>();
+        j = 0;
+
+     label1:
+        if splittable == 0 goto label4;
+
+        $i0 = lengthof clauses;
+        if j >= $i0 goto label4;
+
+        $r1 = clauses[j];
+        $r2 = virtualinvoke $r1.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.BooleanClause$Occur getOccur()>();
+        $r3 = <org.apache.lucene.search.BooleanClause$Occur: org.apache.lucene.search.BooleanClause$Occur SHOULD>;
+        if $r2 != $r3 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        splittable = $z0;
+        j = j + 1;
+        goto label1;
+
+     label4:
+        if splittable == 0 goto label7;
+
+        j = 0;
+
+     label5:
+        $i0 = lengthof clauses;
+        if j >= $i0 goto label6;
+
+        $r4 = clauses[j];
+        $r5 = virtualinvoke $r4.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query getQuery()>();
+        virtualinvoke uniques.<java.util.HashSet: boolean add(java.lang.Object)>($r5);
+        j = j + 1;
+        goto label5;
+
+     label6:
+        goto label8;
+
+     label7:
+        virtualinvoke uniques.<java.util.HashSet: boolean add(java.lang.Object)>(query);
+
+     label8:
+        i = i + 1;
+        goto label0;
+
+     label9:
+        $i1 = virtualinvoke uniques.<java.util.HashSet: int size()>();
+        if $i1 != 1 goto label10;
+
+        $r6 = virtualinvoke uniques.<java.util.HashSet: java.util.Iterator iterator()>();
+        $r7 = interfaceinvoke $r6.<java.util.Iterator: java.lang.Object next()>();
+        $r8 = (org.apache.lucene.search.Query) $r7;
+        return $r8;
+
+     label10:
+        it = virtualinvoke uniques.<java.util.HashSet: java.util.Iterator iterator()>();
+        $r9 = new org.apache.lucene.search.BooleanQuery;
+        specialinvoke $r9.<org.apache.lucene.search.BooleanQuery: void <init>(boolean)>(1);
+        result = $r9;
+
+     label11:
+        $z0 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label12;
+
+        $r10 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+        $r5 = (org.apache.lucene.search.Query) $r10;
+        $r11 = <org.apache.lucene.search.BooleanClause$Occur: org.apache.lucene.search.BooleanClause$Occur SHOULD>;
+        virtualinvoke result.<org.apache.lucene.search.BooleanQuery: void add(org.apache.lucene.search.Query,org.apache.lucene.search.BooleanClause$Occur)>($r5, $r11);
+        goto label11;
+
+     label12:
+        return result;
+    }
+
+    public void extractTerms(java.util.Set)
+    {
+        org.apache.lucene.search.Query this;
+        java.util.Set terms;
+        java.lang.UnsupportedOperationException $r0;
+
+        this := @this: org.apache.lucene.search.Query;
+        terms := @parameter0: java.util.Set;
+        $r0 = new java.lang.UnsupportedOperationException;
+        specialinvoke $r0.<java.lang.UnsupportedOperationException: void <init>()>();
+        throw $r0;
+    }
+
+    public static org.apache.lucene.search.Query mergeBooleanQueries(org.apache.lucene.search.Query[])
+    {
+        org.apache.lucene.search.Query[] queries;
+        java.util.HashSet $r0, allClauses;
+        int i, j, $i0, $i1;
+        org.apache.lucene.search.BooleanClause[] clauses;
+        boolean coordDisabled, $z0;
+        org.apache.lucene.search.BooleanQuery result, $r2;
+        org.apache.lucene.search.Query $r1;
+        org.apache.lucene.search.BooleanClause $r3;
+        java.util.Iterator i;
+        java.lang.Object $r4;
+
+        queries := @parameter0: org.apache.lucene.search.Query[];
+        $r0 = new java.util.HashSet;
+        specialinvoke $r0.<java.util.HashSet: void <init>()>();
+        allClauses = $r0;
+        i = 0;
+
+     label0:
+        $i0 = lengthof queries;
+        if i >= $i0 goto label3;
+
+        $r1 = queries[i];
+        $r2 = (org.apache.lucene.search.BooleanQuery) $r1;
+        clauses = virtualinvoke $r2.<org.apache.lucene.search.BooleanQuery: org.apache.lucene.search.BooleanClause[] getClauses()>();
+        j = 0;
+
+     label1:
+        $i0 = lengthof clauses;
+        if j >= $i0 goto label2;
+
+        $r3 = clauses[j];
+        virtualinvoke allClauses.<java.util.HashSet: boolean add(java.lang.Object)>($r3);
+        j = j + 1;
+        goto label1;
+
+     label2:
+        i = i + 1;
+        goto label0;
+
+     label3:
+        $i1 = lengthof queries;
+        if $i1 != 0 goto label4;
+
+        $z0 = 0;
+        goto label5;
+
+     label4:
+        $r1 = queries[0];
+        $r2 = (org.apache.lucene.search.BooleanQuery) $r1;
+        $z0 = virtualinvoke $r2.<org.apache.lucene.search.BooleanQuery: boolean isCoordDisabled()>();
+
+     label5:
+        coordDisabled = $z0;
+        $r2 = new org.apache.lucene.search.BooleanQuery;
+        specialinvoke $r2.<org.apache.lucene.search.BooleanQuery: void <init>(boolean)>(coordDisabled);
+        result = $r2;
+        i = virtualinvoke allClauses.<java.util.HashSet: java.util.Iterator iterator()>();
+
+     label6:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label7;
+
+        $r4 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        $r3 = (org.apache.lucene.search.BooleanClause) $r4;
+        virtualinvoke result.<org.apache.lucene.search.BooleanQuery: void add(org.apache.lucene.search.BooleanClause)>($r3);
+        goto label6;
+
+     label7:
+        return result;
+    }
+
+    public org.apache.lucene.search.Similarity getSimilarity(org.apache.lucene.search.Searcher)
+    {
+        org.apache.lucene.search.Query this;
+        org.apache.lucene.search.Searcher searcher;
+        org.apache.lucene.search.Similarity $r0;
+
+        this := @this: org.apache.lucene.search.Query;
+        searcher := @parameter0: org.apache.lucene.search.Searcher;
+        $r0 = virtualinvoke searcher.<org.apache.lucene.search.Searcher: org.apache.lucene.search.Similarity getSimilarity()>();
+        return $r0;
+    }
+
+    public java.lang.Object clone()
+    {
+        org.apache.lucene.search.Query this, $r2;
+        java.lang.CloneNotSupportedException e, $r3;
+        java.lang.StringBuffer $r0;
+        java.lang.Object $r1;
+        java.lang.RuntimeException $r4;
+        java.lang.String $r5, $r6;
+
+        this := @this: org.apache.lucene.search.Query;
+
+     label0:
+        $r1 = specialinvoke this.<java.lang.Object: java.lang.Object clone()>();
+        $r2 = (org.apache.lucene.search.Query) $r1;
+
+     label1:
+        return $r2;
+
+     label2:
+        $r3 := @caughtexception;
+        e = $r3;
+        $r4 = new java.lang.RuntimeException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Clone not supported: ");
+        $r5 = virtualinvoke e.<java.lang.CloneNotSupportedException: java.lang.String getMessage()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r5);
+        $r6 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r4.<java.lang.RuntimeException: void <init>(java.lang.String)>($r6);
+        throw $r4;
+
+        catch java.lang.CloneNotSupportedException from label0 to label1 with label2;
+    }
+}

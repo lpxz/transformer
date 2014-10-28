@@ -1,0 +1,33 @@
+public final class org.apache.lucene.document.Field$Store extends org.apache.lucene.util.Parameter implements java.io.Serializable
+{
+    public static final org.apache.lucene.document.Field$Store COMPRESS;
+    public static final org.apache.lucene.document.Field$Store YES;
+    public static final org.apache.lucene.document.Field$Store NO;
+
+    private void <init>(java.lang.String)
+    {
+        org.apache.lucene.document.Field$Store this;
+        java.lang.String name;
+
+        this := @this: org.apache.lucene.document.Field$Store;
+        name := @parameter0: java.lang.String;
+        specialinvoke this.<org.apache.lucene.util.Parameter: void <init>(java.lang.String)>(name);
+        return;
+    }
+
+    static void <clinit>()
+    {
+        org.apache.lucene.document.Field$Store $r0;
+
+        $r0 = new org.apache.lucene.document.Field$Store;
+        specialinvoke $r0.<org.apache.lucene.document.Field$Store: void <init>(java.lang.String)>("COMPRESS");
+        <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store COMPRESS> = $r0;
+        $r0 = new org.apache.lucene.document.Field$Store;
+        specialinvoke $r0.<org.apache.lucene.document.Field$Store: void <init>(java.lang.String)>("YES");
+        <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store YES> = $r0;
+        $r0 = new org.apache.lucene.document.Field$Store;
+        specialinvoke $r0.<org.apache.lucene.document.Field$Store: void <init>(java.lang.String)>("NO");
+        <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store NO> = $r0;
+        return;
+    }
+}

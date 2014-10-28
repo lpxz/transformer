@@ -1,0 +1,28 @@
+class avrora.sim.mcu.ADC$1 extends java.lang.Object implements avrora.sim.mcu.ADC$ADCInput
+{
+    final avrora.sim.mcu.ADC this$0;
+
+    void <init>(avrora.sim.mcu.ADC)
+    {
+        avrora.sim.mcu.ADC$1 this;
+        avrora.sim.mcu.ADC l1;
+
+        this := @this: avrora.sim.mcu.ADC$1;
+        l1 := @parameter0: avrora.sim.mcu.ADC;
+        this.<avrora.sim.mcu.ADC$1: avrora.sim.mcu.ADC this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public float getVoltage()
+    {
+        avrora.sim.mcu.ADC$1 this;
+        avrora.sim.mcu.ADC $r0;
+        float $f0;
+
+        this := @this: avrora.sim.mcu.ADC$1;
+        $r0 = this.<avrora.sim.mcu.ADC$1: avrora.sim.mcu.ADC this$0>;
+        $f0 = $r0.<avrora.sim.mcu.ADC: float voltageRef>;
+        return $f0;
+    }
+}

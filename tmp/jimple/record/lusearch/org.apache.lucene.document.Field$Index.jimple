@@ -1,0 +1,50 @@
+public final class org.apache.lucene.document.Field$Index extends org.apache.lucene.util.Parameter implements java.io.Serializable
+{
+    public static final org.apache.lucene.document.Field$Index NO;
+    public static final org.apache.lucene.document.Field$Index ANALYZED;
+    public static final org.apache.lucene.document.Field$Index TOKENIZED;
+    public static final org.apache.lucene.document.Field$Index NOT_ANALYZED;
+    public static final org.apache.lucene.document.Field$Index UN_TOKENIZED;
+    public static final org.apache.lucene.document.Field$Index NOT_ANALYZED_NO_NORMS;
+    public static final org.apache.lucene.document.Field$Index NO_NORMS;
+    public static final org.apache.lucene.document.Field$Index ANALYZED_NO_NORMS;
+
+    private void <init>(java.lang.String)
+    {
+        org.apache.lucene.document.Field$Index this;
+        java.lang.String name;
+
+        this := @this: org.apache.lucene.document.Field$Index;
+        name := @parameter0: java.lang.String;
+        specialinvoke this.<org.apache.lucene.util.Parameter: void <init>(java.lang.String)>(name);
+        return;
+    }
+
+    static void <clinit>()
+    {
+        org.apache.lucene.document.Field$Index $r0;
+
+        $r0 = new org.apache.lucene.document.Field$Index;
+        specialinvoke $r0.<org.apache.lucene.document.Field$Index: void <init>(java.lang.String)>("NO");
+        <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index NO> = $r0;
+        $r0 = new org.apache.lucene.document.Field$Index;
+        specialinvoke $r0.<org.apache.lucene.document.Field$Index: void <init>(java.lang.String)>("ANALYZED");
+        <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index ANALYZED> = $r0;
+        $r0 = <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index ANALYZED>;
+        <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index TOKENIZED> = $r0;
+        $r0 = new org.apache.lucene.document.Field$Index;
+        specialinvoke $r0.<org.apache.lucene.document.Field$Index: void <init>(java.lang.String)>("NOT_ANALYZED");
+        <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index NOT_ANALYZED> = $r0;
+        $r0 = <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index NOT_ANALYZED>;
+        <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index UN_TOKENIZED> = $r0;
+        $r0 = new org.apache.lucene.document.Field$Index;
+        specialinvoke $r0.<org.apache.lucene.document.Field$Index: void <init>(java.lang.String)>("NOT_ANALYZED_NO_NORMS");
+        <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index NOT_ANALYZED_NO_NORMS> = $r0;
+        $r0 = <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index NOT_ANALYZED_NO_NORMS>;
+        <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index NO_NORMS> = $r0;
+        $r0 = new org.apache.lucene.document.Field$Index;
+        specialinvoke $r0.<org.apache.lucene.document.Field$Index: void <init>(java.lang.String)>("ANALYZED_NO_NORMS");
+        <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index ANALYZED_NO_NORMS> = $r0;
+        return;
+    }
+}

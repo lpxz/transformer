@@ -1,0 +1,475 @@
+public abstract class org.apache.commons.cli.Parser extends java.lang.Object implements org.apache.commons.cli.CommandLineParser
+{
+    protected org.apache.commons.cli.CommandLine cmd;
+    private org.apache.commons.cli.Options options;
+    private java.util.List requiredOptions;
+
+    public void <init>()
+    {
+        org.apache.commons.cli.Parser this;
+
+        this := @this: org.apache.commons.cli.Parser;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    protected void setOptions(org.apache.commons.cli.Options)
+    {
+        org.apache.commons.cli.Parser this;
+        org.apache.commons.cli.Options options;
+        java.util.ArrayList $r0;
+        java.util.List $r1;
+
+        this := @this: org.apache.commons.cli.Parser;
+        options := @parameter0: org.apache.commons.cli.Options;
+        this.<org.apache.commons.cli.Parser: org.apache.commons.cli.Options options> = options;
+        $r0 = new java.util.ArrayList;
+        $r1 = virtualinvoke options.<org.apache.commons.cli.Options: java.util.List getRequiredOptions()>();
+        specialinvoke $r0.<java.util.ArrayList: void <init>(java.util.Collection)>($r1);
+        this.<org.apache.commons.cli.Parser: java.util.List requiredOptions> = $r0;
+        return;
+    }
+
+    protected org.apache.commons.cli.Options getOptions()
+    {
+        org.apache.commons.cli.Parser this;
+        org.apache.commons.cli.Options $r0;
+
+        this := @this: org.apache.commons.cli.Parser;
+        $r0 = this.<org.apache.commons.cli.Parser: org.apache.commons.cli.Options options>;
+        return $r0;
+    }
+
+    protected java.util.List getRequiredOptions()
+    {
+        org.apache.commons.cli.Parser this;
+        java.util.List $r0;
+
+        this := @this: org.apache.commons.cli.Parser;
+        $r0 = this.<org.apache.commons.cli.Parser: java.util.List requiredOptions>;
+        return $r0;
+    }
+
+    protected abstract java.lang.String[] flatten(org.apache.commons.cli.Options, java.lang.String[], boolean);
+
+    public org.apache.commons.cli.CommandLine parse(org.apache.commons.cli.Options, java.lang.String[]) throws org.apache.commons.cli.ParseException
+    {
+        org.apache.commons.cli.Parser this;
+        org.apache.commons.cli.Options options;
+        java.lang.String[] arguments;
+        org.apache.commons.cli.CommandLine $r0;
+
+        this := @this: org.apache.commons.cli.Parser;
+        options := @parameter0: org.apache.commons.cli.Options;
+        arguments := @parameter1: java.lang.String[];
+        $r0 = virtualinvoke this.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine parse(org.apache.commons.cli.Options,java.lang.String[],java.util.Properties,boolean)>(options, arguments, null, 0);
+        return $r0;
+    }
+
+    public org.apache.commons.cli.CommandLine parse(org.apache.commons.cli.Options, java.lang.String[], java.util.Properties) throws org.apache.commons.cli.ParseException
+    {
+        org.apache.commons.cli.Parser this;
+        org.apache.commons.cli.Options options;
+        java.lang.String[] arguments;
+        java.util.Properties properties;
+        org.apache.commons.cli.CommandLine $r0;
+
+        this := @this: org.apache.commons.cli.Parser;
+        options := @parameter0: org.apache.commons.cli.Options;
+        arguments := @parameter1: java.lang.String[];
+        properties := @parameter2: java.util.Properties;
+        $r0 = virtualinvoke this.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine parse(org.apache.commons.cli.Options,java.lang.String[],java.util.Properties,boolean)>(options, arguments, properties, 0);
+        return $r0;
+    }
+
+    public org.apache.commons.cli.CommandLine parse(org.apache.commons.cli.Options, java.lang.String[], boolean) throws org.apache.commons.cli.ParseException
+    {
+        org.apache.commons.cli.Parser this;
+        org.apache.commons.cli.Options options;
+        java.lang.String[] arguments;
+        boolean stopAtNonOption;
+        org.apache.commons.cli.CommandLine $r0;
+
+        this := @this: org.apache.commons.cli.Parser;
+        options := @parameter0: org.apache.commons.cli.Options;
+        arguments := @parameter1: java.lang.String[];
+        stopAtNonOption := @parameter2: boolean;
+        $r0 = virtualinvoke this.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine parse(org.apache.commons.cli.Options,java.lang.String[],java.util.Properties,boolean)>(options, arguments, null, stopAtNonOption);
+        return $r0;
+    }
+
+    public org.apache.commons.cli.CommandLine parse(org.apache.commons.cli.Options, java.lang.String[], java.util.Properties, boolean) throws org.apache.commons.cli.ParseException
+    {
+        org.apache.commons.cli.Parser this;
+        org.apache.commons.cli.Options options, $r3, $r7;
+        java.lang.String[] arguments, $r4;
+        java.util.Properties properties;
+        boolean stopAtNonOption, eatTheRest, $z0;
+        java.util.Iterator it;
+        org.apache.commons.cli.Option opt;
+        java.util.List tokenList, $r0;
+        java.util.ListIterator iterator;
+        java.lang.String t, str, $r5;
+        java.lang.Object $r1;
+        org.apache.commons.cli.CommandLine $r2, $r6;
+
+        this := @this: org.apache.commons.cli.Parser;
+        options := @parameter0: org.apache.commons.cli.Options;
+        arguments := @parameter1: java.lang.String[];
+        properties := @parameter2: java.util.Properties;
+        stopAtNonOption := @parameter3: boolean;
+        $r0 = virtualinvoke options.<org.apache.commons.cli.Options: java.util.List helpOptions()>();
+        it = interfaceinvoke $r0.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r1 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+        opt = (org.apache.commons.cli.Option) $r1;
+        virtualinvoke opt.<org.apache.commons.cli.Option: void clearValues()>();
+        goto label0;
+
+     label1:
+        virtualinvoke this.<org.apache.commons.cli.Parser: void setOptions(org.apache.commons.cli.Options)>(options);
+        $r2 = new org.apache.commons.cli.CommandLine;
+        specialinvoke $r2.<org.apache.commons.cli.CommandLine: void <init>()>();
+        this.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine cmd> = $r2;
+        eatTheRest = 0;
+        if arguments != null goto label2;
+
+        arguments = newarray (java.lang.String)[0];
+
+     label2:
+        $r3 = virtualinvoke this.<org.apache.commons.cli.Parser: org.apache.commons.cli.Options getOptions()>();
+        $r4 = virtualinvoke this.<org.apache.commons.cli.Parser: java.lang.String[] flatten(org.apache.commons.cli.Options,java.lang.String[],boolean)>($r3, arguments, stopAtNonOption);
+        tokenList = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($r4);
+        iterator = interfaceinvoke tokenList.<java.util.List: java.util.ListIterator listIterator()>();
+
+     label3:
+        $z0 = interfaceinvoke iterator.<java.util.ListIterator: boolean hasNext()>();
+        if $z0 == 0 goto label13;
+
+        $r1 = interfaceinvoke iterator.<java.util.ListIterator: java.lang.Object next()>();
+        t = (java.lang.String) $r1;
+        $r5 = "--";
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>(t);
+        if $z0 == 0 goto label4;
+
+        eatTheRest = 1;
+        goto label9;
+
+     label4:
+        $r5 = "-";
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>(t);
+        if $z0 == 0 goto label6;
+
+        if stopAtNonOption == 0 goto label5;
+
+        eatTheRest = 1;
+        goto label9;
+
+     label5:
+        $r6 = this.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine cmd>;
+        virtualinvoke $r6.<org.apache.commons.cli.CommandLine: void addArg(java.lang.String)>(t);
+        goto label9;
+
+     label6:
+        $z0 = virtualinvoke t.<java.lang.String: boolean startsWith(java.lang.String)>("-");
+        if $z0 == 0 goto label8;
+
+        if stopAtNonOption == 0 goto label7;
+
+        $r7 = virtualinvoke this.<org.apache.commons.cli.Parser: org.apache.commons.cli.Options getOptions()>();
+        $z0 = virtualinvoke $r7.<org.apache.commons.cli.Options: boolean hasOption(java.lang.String)>(t);
+        if $z0 != 0 goto label7;
+
+        eatTheRest = 1;
+        $r6 = this.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine cmd>;
+        virtualinvoke $r6.<org.apache.commons.cli.CommandLine: void addArg(java.lang.String)>(t);
+        goto label9;
+
+     label7:
+        virtualinvoke this.<org.apache.commons.cli.Parser: void processOption(java.lang.String,java.util.ListIterator)>(t, iterator);
+        goto label9;
+
+     label8:
+        $r6 = this.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine cmd>;
+        virtualinvoke $r6.<org.apache.commons.cli.CommandLine: void addArg(java.lang.String)>(t);
+        if stopAtNonOption == 0 goto label9;
+
+        eatTheRest = 1;
+
+     label9:
+        if eatTheRest == 0 goto label12;
+
+     label10:
+        $z0 = interfaceinvoke iterator.<java.util.ListIterator: boolean hasNext()>();
+        if $z0 == 0 goto label12;
+
+        $r1 = interfaceinvoke iterator.<java.util.ListIterator: java.lang.Object next()>();
+        str = (java.lang.String) $r1;
+        $r5 = "--";
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>(str);
+        if $z0 != 0 goto label11;
+
+        $r6 = this.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine cmd>;
+        virtualinvoke $r6.<org.apache.commons.cli.CommandLine: void addArg(java.lang.String)>(str);
+
+     label11:
+        goto label10;
+
+     label12:
+        goto label3;
+
+     label13:
+        virtualinvoke this.<org.apache.commons.cli.Parser: void processProperties(java.util.Properties)>(properties);
+        virtualinvoke this.<org.apache.commons.cli.Parser: void checkRequiredOptions()>();
+        $r6 = this.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine cmd>;
+        return $r6;
+    }
+
+    protected void processProperties(java.util.Properties)
+    {
+        org.apache.commons.cli.Parser this;
+        java.util.Properties properties;
+        java.util.Enumeration e;
+        java.lang.String option, value, $r5;
+        org.apache.commons.cli.Option opt;
+        java.lang.RuntimeException exp, $r4;
+        boolean $z0;
+        java.lang.Object $r0;
+        org.apache.commons.cli.CommandLine $r1;
+        org.apache.commons.cli.Options $r2;
+        java.lang.String[] $r3;
+        int $i0;
+
+        this := @this: org.apache.commons.cli.Parser;
+        properties := @parameter0: java.util.Properties;
+        if properties != null goto label0;
+
+        return;
+
+     label0:
+        e = virtualinvoke properties.<java.util.Properties: java.util.Enumeration propertyNames()>();
+
+     label1:
+        $z0 = interfaceinvoke e.<java.util.Enumeration: boolean hasMoreElements()>();
+        if $z0 == 0 goto label8;
+
+        $r0 = interfaceinvoke e.<java.util.Enumeration: java.lang.Object nextElement()>();
+        option = virtualinvoke $r0.<java.lang.Object: java.lang.String toString()>();
+        $r1 = this.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine cmd>;
+        $z0 = virtualinvoke $r1.<org.apache.commons.cli.CommandLine: boolean hasOption(java.lang.String)>(option);
+        if $z0 != 0 goto label7;
+
+        $r2 = virtualinvoke this.<org.apache.commons.cli.Parser: org.apache.commons.cli.Options getOptions()>();
+        opt = virtualinvoke $r2.<org.apache.commons.cli.Options: org.apache.commons.cli.Option getOption(java.lang.String)>(option);
+        value = virtualinvoke properties.<java.util.Properties: java.lang.String getProperty(java.lang.String)>(option);
+        $z0 = virtualinvoke opt.<org.apache.commons.cli.Option: boolean hasArg()>();
+        if $z0 == 0 goto label5;
+
+        $r3 = virtualinvoke opt.<org.apache.commons.cli.Option: java.lang.String[] getValues()>();
+        if $r3 == null goto label2;
+
+        $r3 = virtualinvoke opt.<org.apache.commons.cli.Option: java.lang.String[] getValues()>();
+        $i0 = lengthof $r3;
+        if $i0 != 0 goto label6;
+
+     label2:
+        virtualinvoke opt.<org.apache.commons.cli.Option: void addValueForProcessing(java.lang.String)>(value);
+
+     label3:
+        goto label6;
+
+     label4:
+        $r4 := @caughtexception;
+        exp = $r4;
+        goto label6;
+
+     label5:
+        $r5 = "yes";
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>(value);
+        if $z0 != 0 goto label6;
+
+        $r5 = "true";
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>(value);
+        if $z0 != 0 goto label6;
+
+        $r5 = "1";
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>(value);
+        if $z0 != 0 goto label6;
+
+        goto label8;
+
+     label6:
+        $r1 = this.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine cmd>;
+        virtualinvoke $r1.<org.apache.commons.cli.CommandLine: void addOption(org.apache.commons.cli.Option)>(opt);
+
+     label7:
+        goto label1;
+
+     label8:
+        return;
+
+        catch java.lang.RuntimeException from label2 to label3 with label4;
+    }
+
+    protected void checkRequiredOptions() throws org.apache.commons.cli.MissingOptionException
+    {
+        org.apache.commons.cli.Parser this;
+        java.util.List $r0, $r2;
+        boolean $z0;
+        org.apache.commons.cli.MissingOptionException $r1;
+
+        this := @this: org.apache.commons.cli.Parser;
+        $r0 = virtualinvoke this.<org.apache.commons.cli.Parser: java.util.List getRequiredOptions()>();
+        $z0 = interfaceinvoke $r0.<java.util.List: boolean isEmpty()>();
+        if $z0 != 0 goto label0;
+
+        $r1 = new org.apache.commons.cli.MissingOptionException;
+        $r2 = virtualinvoke this.<org.apache.commons.cli.Parser: java.util.List getRequiredOptions()>();
+        specialinvoke $r1.<org.apache.commons.cli.MissingOptionException: void <init>(java.util.List)>($r2);
+        throw $r1;
+
+     label0:
+        return;
+    }
+
+    public void processArgs(org.apache.commons.cli.Option, java.util.ListIterator) throws org.apache.commons.cli.ParseException
+    {
+        org.apache.commons.cli.Parser this;
+        org.apache.commons.cli.Option opt;
+        java.util.ListIterator iter;
+        java.lang.String str, $r2;
+        java.lang.RuntimeException exp, $r3;
+        boolean $z0;
+        java.lang.Object $r0;
+        org.apache.commons.cli.Options $r1;
+        java.lang.String[] $r4;
+        org.apache.commons.cli.MissingArgumentException $r5;
+
+        this := @this: org.apache.commons.cli.Parser;
+        opt := @parameter0: org.apache.commons.cli.Option;
+        iter := @parameter1: java.util.ListIterator;
+
+     label0:
+        $z0 = interfaceinvoke iter.<java.util.ListIterator: boolean hasNext()>();
+        if $z0 == 0 goto label5;
+
+        $r0 = interfaceinvoke iter.<java.util.ListIterator: java.lang.Object next()>();
+        str = (java.lang.String) $r0;
+        $r1 = virtualinvoke this.<org.apache.commons.cli.Parser: org.apache.commons.cli.Options getOptions()>();
+        $z0 = virtualinvoke $r1.<org.apache.commons.cli.Options: boolean hasOption(java.lang.String)>(str);
+        if $z0 == 0 goto label1;
+
+        $z0 = virtualinvoke str.<java.lang.String: boolean startsWith(java.lang.String)>("-");
+        if $z0 == 0 goto label1;
+
+        interfaceinvoke iter.<java.util.ListIterator: java.lang.Object previous()>();
+        goto label5;
+
+     label1:
+        $r2 = staticinvoke <org.apache.commons.cli.Util: java.lang.String stripLeadingAndTrailingQuotes(java.lang.String)>(str);
+        virtualinvoke opt.<org.apache.commons.cli.Option: void addValueForProcessing(java.lang.String)>($r2);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r3 := @caughtexception;
+        exp = $r3;
+        interfaceinvoke iter.<java.util.ListIterator: java.lang.Object previous()>();
+        goto label5;
+
+     label4:
+        goto label0;
+
+     label5:
+        $r4 = virtualinvoke opt.<org.apache.commons.cli.Option: java.lang.String[] getValues()>();
+        if $r4 != null goto label6;
+
+        $z0 = virtualinvoke opt.<org.apache.commons.cli.Option: boolean hasOptionalArg()>();
+        if $z0 != 0 goto label6;
+
+        $r5 = new org.apache.commons.cli.MissingArgumentException;
+        specialinvoke $r5.<org.apache.commons.cli.MissingArgumentException: void <init>(org.apache.commons.cli.Option)>(opt);
+        throw $r5;
+
+     label6:
+        return;
+
+        catch java.lang.RuntimeException from label1 to label2 with label3;
+    }
+
+    protected void processOption(java.lang.String, java.util.ListIterator) throws org.apache.commons.cli.ParseException
+    {
+        org.apache.commons.cli.Parser this;
+        java.lang.String arg, $r3, $r7;
+        java.util.ListIterator iter;
+        boolean hasOption, $z0;
+        java.lang.StringBuffer $r0;
+        org.apache.commons.cli.Option opt, $r4;
+        org.apache.commons.cli.OptionGroup group, $r8;
+        org.apache.commons.cli.Options $r1;
+        org.apache.commons.cli.UnrecognizedOptionException $r2;
+        java.lang.Object $r5;
+        java.util.List $r6;
+        org.apache.commons.cli.CommandLine $r9;
+
+        this := @this: org.apache.commons.cli.Parser;
+        arg := @parameter0: java.lang.String;
+        iter := @parameter1: java.util.ListIterator;
+        $r1 = virtualinvoke this.<org.apache.commons.cli.Parser: org.apache.commons.cli.Options getOptions()>();
+        hasOption = virtualinvoke $r1.<org.apache.commons.cli.Options: boolean hasOption(java.lang.String)>(arg);
+        if hasOption != 0 goto label0;
+
+        $r2 = new org.apache.commons.cli.UnrecognizedOptionException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Unrecognized option: ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(arg);
+        $r3 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r2.<org.apache.commons.cli.UnrecognizedOptionException: void <init>(java.lang.String,java.lang.String)>($r3, arg);
+        throw $r2;
+
+     label0:
+        $r1 = virtualinvoke this.<org.apache.commons.cli.Parser: org.apache.commons.cli.Options getOptions()>();
+        $r4 = virtualinvoke $r1.<org.apache.commons.cli.Options: org.apache.commons.cli.Option getOption(java.lang.String)>(arg);
+        $r5 = virtualinvoke $r4.<org.apache.commons.cli.Option: java.lang.Object clone()>();
+        opt = (org.apache.commons.cli.Option) $r5;
+        $z0 = virtualinvoke opt.<org.apache.commons.cli.Option: boolean isRequired()>();
+        if $z0 == 0 goto label1;
+
+        $r6 = virtualinvoke this.<org.apache.commons.cli.Parser: java.util.List getRequiredOptions()>();
+        $r7 = virtualinvoke opt.<org.apache.commons.cli.Option: java.lang.String getKey()>();
+        interfaceinvoke $r6.<java.util.List: boolean remove(java.lang.Object)>($r7);
+
+     label1:
+        $r1 = virtualinvoke this.<org.apache.commons.cli.Parser: org.apache.commons.cli.Options getOptions()>();
+        $r8 = virtualinvoke $r1.<org.apache.commons.cli.Options: org.apache.commons.cli.OptionGroup getOptionGroup(org.apache.commons.cli.Option)>(opt);
+        if $r8 == null goto label3;
+
+        $r1 = virtualinvoke this.<org.apache.commons.cli.Parser: org.apache.commons.cli.Options getOptions()>();
+        group = virtualinvoke $r1.<org.apache.commons.cli.Options: org.apache.commons.cli.OptionGroup getOptionGroup(org.apache.commons.cli.Option)>(opt);
+        $z0 = virtualinvoke group.<org.apache.commons.cli.OptionGroup: boolean isRequired()>();
+        if $z0 == 0 goto label2;
+
+        $r6 = virtualinvoke this.<org.apache.commons.cli.Parser: java.util.List getRequiredOptions()>();
+        interfaceinvoke $r6.<java.util.List: boolean remove(java.lang.Object)>(group);
+
+     label2:
+        virtualinvoke group.<org.apache.commons.cli.OptionGroup: void setSelected(org.apache.commons.cli.Option)>(opt);
+
+     label3:
+        $z0 = virtualinvoke opt.<org.apache.commons.cli.Option: boolean hasArg()>();
+        if $z0 == 0 goto label4;
+
+        virtualinvoke this.<org.apache.commons.cli.Parser: void processArgs(org.apache.commons.cli.Option,java.util.ListIterator)>(opt, iter);
+
+     label4:
+        $r9 = this.<org.apache.commons.cli.Parser: org.apache.commons.cli.CommandLine cmd>;
+        virtualinvoke $r9.<org.apache.commons.cli.CommandLine: void addOption(org.apache.commons.cli.Option)>(opt);
+        return;
+    }
+}

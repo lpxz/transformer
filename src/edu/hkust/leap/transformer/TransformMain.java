@@ -23,24 +23,34 @@ public class TransformMain {
 //				+ " -x edu -x checkers -x org.xmlpull -x org.apache.xml"
 //				+ " -x org.apache.xpath -x soot -x org.jgrapht";
 	
-	public static String dacapoBenchmarkName ;
+	public static String dacapoBenchmarkName=null ;
 	public static void main(String[] args) throws Exception{
 
 		// Visitor.setObserverClass("edu.hkust.leap.monitor.Monitor");
 		TransformMain processor = new TransformMain();
+		
 
-		if(!edu.hkust.leap.transformer.AnalysisOptions.dacapoBench)
+
+		System.out.println("loading the general arguments from leap.transformer.arg:");
+		String arglineFileName = Util.getTransformerArgFile();
+		String argline =Util.getArgLine(arglineFileName);
+		String[] argline_items = argline.split(" ");
+		
+		boolean withRefl= Boolean.parseBoolean(argline_items[0]);			
+		if(!withRefl)
 		{
-			System.out.println("loading the general arguments from leap.transformer.arg:");
-			String arglineFileName = Util.getTransformerArgFile();
-			String argline =Util.getArgLine(arglineFileName);
-			String[] argline_items = argline.split(" ");
-			outputFormat= argline_items[0];
-			cpath= argline_items[1];
-			mainClass = argline_items[2];	
+
+			outputFormat= argline_items[1];
+			cpath= argline_items[2];
+			mainClass = argline_items[3];	
+//			String projectname =  argline_items[3];	
+
 			Parameters.isRecord = true;
 			Parameters.isReplay = false;
 			path = Util.getTmpDirectory();// .replace("\\", "\\\\")
+//			path += projectname;
+			
+			
 
 			String argsOfmtrt = "-f "
 					+ outputFormat
@@ -53,18 +63,24 @@ public class TransformMain {
 					+ " -d "
 					+ path ;
 			
+			System.out.println(argsOfmtrt);
+			
 			System.out.println("output record version to: " + path);
 			processor.transformRecordVersion(argsOfmtrt); //
 
 		}else {
 			//-keep-line-number -app -w -p cg.spark enabled -f c -p cg reflection-log:/home/lpxz/work/dacapo/out/avrora-small/refl.log -cp /home/lpxz/pool/jdk1.6.0_26/jre/lib/resources.jar:/home/lpxz/pool/jdk1.6.0_26/jre/lib/rt.jar:/home/lpxz/pool/jdk1.6.0_26/jre/lib/sunrsasign.jar:/home/lpxz/pool/jdk1.6.0_26/jre/lib/jsse.jar:/home/lpxz/pool/jdk1.6.0_26/jre/lib/jce.jar:/home/lpxz/pool/jdk1.6.0_26/jre/lib/charsets.jar:/home/lpxz/pool/jdk1.6.0_26/jre/lib/modules/jdk.boot.jar:/home/lpxz/pool/jdk1.6.0_26/jre/classes:/home/lpxz/eclipse/workspacePA_icse/predict-inst/bin:/home/lpxz/eclipse/workspacePA_icse/predict-engine/bin:/home/lpxz/eclipse/workspacePA_icse/predict-engine/lib/commons-cli-1.2.jar:/home/lpxz/eclipse/workspacePA_icse/predict-engine/lib/ant.jar:/home/lpxz/eclipse/workspacePA_icse/predict-engine/lib/jigsaw-sexpr.jar:/home/lpxz/eclipse/workspacePA_icse/predict-engine/lib/h2-1.3.171.jar:/home/lpxz/eclipse/workspacePA_icse/predict-engine/lib/xercesImpl.jar:/home/lpxz/eclipse/workspacePA_icse/predict-engine/lib/ant-launcher.jar:/home/lpxz/eclipse/workspacePA_icse/predict-inst/lib/soot-jeff.jar:/home/lpxz/work/dacapo/out/avrora-small -main-class Harness Harness -i org.apache -i org.w3c
 
-			dacapoBenchmarkName = args[0];
+			outputFormat= argline_items[1];
+			cpath= argline_items[2]; //"/home/lpxz/work/dacapo/out/"+dacapoBenchmarkName+"-small";// TODO change folder directory.
+			mainClass = argline_items[3];	// "Harness";
 			
-			outputFormat= "c";
+			dacapoBenchmarkName = argline_items.length>=5?argline_items[4]:null;			
+			
 			path = Util.getTmpDirectory();// .replace("\\", "\\\\")
-			cpath="/home/lpxz/work/dacapo/out/"+dacapoBenchmarkName+"-small";// TODO change folder directory.
-			mainClass = "Harness";
+			
+//			path += dacapoBenchmarkName;
+			
 	    	String excludeOption = "";
 			String includeOption = " -i org.apache -i org.w3c";    		
 			String reflString = " -p cg reflection-log:"+cpath+"/refl.log";    		
@@ -172,54 +188,38 @@ public class TransformMain {
 																// loadNecessary..
 		Scene.v().loadNecessaryClasses();
 		
-		
-		
-        EntryPoints4Dacapo.setEntryPoints(dacapoBenchmarkName);
+		if(dacapoBenchmarkName!=null)
+           EntryPoints4Dacapo.setEntryPoints(dacapoBenchmarkName);
 		 
 		
 		
 		
 		Pack wjtp = PackManager.v().getPack("wjtp");
 		
-		if(AnalysisOptions.sharedPhase){
-		       wjtp.add(new Transform("wjtp.SharedWriteRec", new SharedWriteRecTransformer()));	       
-		}
+		wjtp.add(new Transform("wjtp.SharedWriteRec", new SharedWriteRecTransformer()));	     
 		
-		Pack jtp = PackManager.v().getPack("jtp");		
-		if(AnalysisOptions.injectPhase){
-			if(dacapoBenchmarkName!=null){
-				File file = new File("./shared/" + dacapoBenchmarkName);
-				if(!file.exists()&& !AnalysisOptions.sharedPhase)
-					throw new RuntimeException("should have the shared analysis phase or results of shared analysis");
-				
-				if(file.exists()){
-					List<String> result = ReadWriteFile.readLineByLine(file);// pre-runpack checking
-					SharedWriteRecVisitor.sharedVariableWriteAccessSet.addAll(result);
-					if(result.size()==0 && !AnalysisOptions.sharedPhase)
-					{
-						throw new RuntimeException("should have the shared analysis phase or results of shared analysis");
-					}
-				}
-				
-			}
+		Pack jtp = PackManager.v().getPack("jtp");	
+		
+//			if(dacapoBenchmarkName!=null){
+//				File file = new File("./shared/" + dacapoBenchmarkName);				
+//				if(file.exists()){
+//					List<String> result = ReadWriteFile.readLineByLine(file);// pre-runpack checking
+//					SharedWriteRecVisitor.sharedVariableWriteAccessSet.addAll(result);
+//				}			
+//			}
 			
 			
 			jtp.add(new Transform("jtp.desugarSyncMethod", 	new DesugarSyncMethodTransformer()));// sync Method cannot be monitored, change it to sync block.
 			jtp.add(new Transform("jtp.Recorder",
 							new AddInterestEventTransformer()));
-		}
 
 		PackManager.v().runPacks();// 1
 		PackManager.v().writeOutputExcept(excludeList);
 		
-		if(AnalysisOptions.sharedPhase)
-		{
-			System.out.println("dumping shared information");
-	       List<String> result = new ArrayList<String>();
-	       result.addAll(SharedWriteRecVisitor.sharedVariableWriteAccessSet);
-	       
-	       ReadWriteFile.write2File(result, "./shared/" + dacapoBenchmarkName);
-		}
+//			System.out.println("dumping shared information");
+//	       List<String> result = new ArrayList<String>();
+//	       result.addAll(SharedWriteRecVisitor.sharedVariableWriteAccessSet);	       
+//	       ReadWriteFile.write2File(result, "./shared/" + dacapoBenchmarkName);
 		
 		G.reset();
 
@@ -285,6 +285,8 @@ public class TransformMain {
 	    excludeList.add("org.h2.");
 	    excludeList.add("jdbm.");
 	    excludeList.add("aj.");
+	    excludeList.add("jrockit.");
+	    
 	    
 	  
 

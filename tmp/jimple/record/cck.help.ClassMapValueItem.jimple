@@ -1,0 +1,135 @@
+public class cck.help.ClassMapValueItem extends java.lang.Object implements cck.help.HelpItem
+{
+    public final int indent;
+    public final java.lang.String optname;
+    public final java.lang.String optvalue;
+    public final cck.util.ClassMap map;
+    boolean isHelpCategory;
+    protected java.lang.String help;
+
+    public void <init>(int, java.lang.String, java.lang.String, cck.util.ClassMap)
+    {
+        cck.help.ClassMapValueItem this;
+        int indent;
+        java.lang.String optname, optvalue;
+        cck.util.ClassMap map;
+
+        this := @this: cck.help.ClassMapValueItem;
+        indent := @parameter0: int;
+        optname := @parameter1: java.lang.String;
+        optvalue := @parameter2: java.lang.String;
+        map := @parameter3: cck.util.ClassMap;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<cck.help.ClassMapValueItem: java.lang.String optname> = optname;
+        this.<cck.help.ClassMapValueItem: java.lang.String optvalue> = optvalue;
+        this.<cck.help.ClassMapValueItem: cck.util.ClassMap map> = map;
+        this.<cck.help.ClassMapValueItem: int indent> = indent;
+        return;
+    }
+
+    public java.lang.String getHelp()
+    {
+        cck.help.ClassMapValueItem this;
+        java.lang.String $r0;
+
+        this := @this: cck.help.ClassMapValueItem;
+        $r0 = this.<cck.help.ClassMapValueItem: java.lang.String help>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<cck.help.ClassMapValueItem: java.lang.String help>;
+        return $r0;
+
+     label0:
+        $r0 = specialinvoke this.<cck.help.ClassMapValueItem: java.lang.String computeHelp()>();
+        return $r0;
+    }
+
+    public void printHelp()
+    {
+        cck.help.ClassMapValueItem this;
+        java.lang.String h, name, $r0, $r2, $r3;
+        int $i0, $i1;
+        boolean $z0;
+        java.lang.StringBuilder $r1;
+        long tid_printHelp;
+        java.lang.Thread thread_printHelp;
+
+        this := @this: cck.help.ClassMapValueItem;
+        thread_printHelp = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_printHelp = virtualinvoke thread_printHelp.<java.lang.Thread: long getId()>();
+        h = virtualinvoke this.<cck.help.ClassMapValueItem: java.lang.String getHelp()>();
+        $i0 = this.<cck.help.ClassMapValueItem: int indent>;
+        $r0 = staticinvoke <cck.text.StringUtil: java.lang.String space(int)>($i0);
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>($r0);
+        $z0 = this.<cck.help.ClassMapValueItem: boolean isHelpCategory>;
+        if $z0 == 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(183, tid_printHelp, "cck.helpcck.help.ClassMapValueItem", 95, $z0);
+        $z0 = <cck.text.Terminal: boolean htmlColors>;
+        if $z0 == 0 goto label0;
+
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("<a href=");
+        $r2 = this.<cck.help.ClassMapValueItem: java.lang.String optvalue>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".html>");
+        $r2 = this.<cck.help.ClassMapValueItem: java.lang.String optvalue>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("</a>");
+        name = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        goto label1;
+
+     label0:
+        name = this.<cck.help.ClassMapValueItem: java.lang.String optvalue>;
+
+     label1:
+        $r3 = this.<cck.help.ClassMapValueItem: java.lang.String optname>;
+        staticinvoke <cck.text.Terminal: void printPair(int,int,java.lang.String,java.lang.String,java.lang.String)>(2, 11, $r3, "=", name);
+        staticinvoke <cck.text.Terminal: void nextln()>();
+        $i1 = this.<cck.help.ClassMapValueItem: int indent>;
+        $i1 = $i1 + 4;
+        $r0 = staticinvoke <cck.text.StringUtil: java.lang.String formatParagraphs(java.lang.String,int,int,int)>(h, $i1, 0, 78);
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>($r0);
+        return;
+    }
+
+    private java.lang.String computeHelp()
+    {
+        cck.help.ClassMapValueItem this;
+        cck.help.HelpItem item;
+        java.lang.Throwable t, $r3;
+        cck.util.ClassMap $r0;
+        java.lang.String $r1, $r4;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        this := @this: cck.help.ClassMapValueItem;
+
+     label0:
+        $r0 = this.<cck.help.ClassMapValueItem: cck.util.ClassMap map>;
+        $r1 = this.<cck.help.ClassMapValueItem: java.lang.String optvalue>;
+        $r2 = virtualinvoke $r0.<cck.util.ClassMap: java.lang.Object getObjectOfClass(java.lang.String)>($r1);
+        item = (cck.help.HelpItem) $r2;
+        $r1 = interfaceinvoke item.<cck.help.HelpItem: java.lang.String getHelp()>();
+        this.<cck.help.ClassMapValueItem: java.lang.String help> = $r1;
+        $z0 = item instanceof cck.help.HelpCategory;
+        if $z0 == 0 goto label1;
+
+        this.<cck.help.ClassMapValueItem: boolean isHelpCategory> = 1;
+
+     label1:
+        goto label3;
+
+     label2:
+        $r3 := @caughtexception;
+        t = $r3;
+        return "(No help available for this item.)";
+
+     label3:
+        $r4 = this.<cck.help.ClassMapValueItem: java.lang.String help>;
+        return $r4;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+    }
+}

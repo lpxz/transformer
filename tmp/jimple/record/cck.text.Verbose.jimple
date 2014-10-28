@@ -1,0 +1,171 @@
+public class cck.text.Verbose extends java.lang.Object
+{
+    static boolean ALL;
+    static final java.util.HashMap printerMap;
+    static final cck.text.Verbose$Printer verbosePrinter;
+
+    public void <init>()
+    {
+        cck.text.Verbose this;
+
+        this := @this: cck.text.Verbose;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public static cck.text.Verbose$Printer getVerbosePrinter(java.lang.String)
+    {
+        java.lang.String category, $r2, $r3;
+        cck.text.Verbose$Printer p, $r1;
+        java.lang.StringBuilder $r0;
+        boolean $z0;
+
+        category := @parameter0: java.lang.String;
+        p = staticinvoke <cck.text.Verbose: cck.text.Verbose$Printer getPrinter(java.lang.String)>(category);
+        $r1 = <cck.text.Verbose: cck.text.Verbose$Printer verbosePrinter>;
+        if $r1 == null goto label0;
+
+        $r1 = <cck.text.Verbose: cck.text.Verbose$Printer verbosePrinter>;
+        $z0 = $r1.<cck.text.Verbose$Printer: boolean enabled>;
+        if $z0 == 0 goto label0;
+
+        $r1 = <cck.text.Verbose: cck.text.Verbose$Printer verbosePrinter>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("verbose: requested printer for ");
+        $r2 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>(category);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+        $r3 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r1.<cck.text.Verbose$Printer: void println(java.lang.String)>($r3);
+
+     label0:
+        return p;
+    }
+
+    public static boolean isVerbose(java.lang.String)
+    {
+        java.lang.String category;
+        java.util.HashMap $r0;
+        cck.text.Verbose$Printer printer;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        category := @parameter0: java.lang.String;
+        $r0 = <cck.text.Verbose: java.util.HashMap printerMap>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(category);
+        printer = (cck.text.Verbose$Printer) $r1;
+        if printer == null goto label0;
+
+        $z0 = printer.<cck.text.Verbose$Printer: boolean enabled>;
+        if $z0 == 0 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public static void setVerbose(java.lang.String, boolean)
+    {
+        java.lang.String category, $r0, $r6, $r7;
+        boolean on, $z0;
+        java.util.Iterator i;
+        cck.text.Verbose$Printer p, $r4;
+        java.util.HashMap $r1;
+        java.util.Collection $r2;
+        java.lang.Object $r3;
+        java.lang.StringBuilder $r5;
+        long tid_setVerbose;
+        java.lang.Thread thread_setVerbose;
+
+        category := @parameter0: java.lang.String;
+        on := @parameter1: boolean;
+        thread_setVerbose = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setVerbose = virtualinvoke thread_setVerbose.<java.lang.Thread: long getId()>();
+        $r0 = "all";
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>(category);
+        if $z0 == 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,boolean)>(77, tid_setVerbose, "cck.textcck.text.Verbose", 66, on);
+        <cck.text.Verbose: boolean ALL> = on;
+        $r1 = <cck.text.Verbose: java.util.HashMap printerMap>;
+        $r2 = virtualinvoke $r1.<java.util.HashMap: java.util.Collection values()>();
+        i = interfaceinvoke $r2.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r3 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        p = (cck.text.Verbose$Printer) $r3;
+        p.<cck.text.Verbose$Printer: boolean enabled> = on;
+        goto label0;
+
+     label1:
+        return;
+
+     label2:
+        p = staticinvoke <cck.text.Verbose: cck.text.Verbose$Printer getPrinter(java.lang.String)>(category);
+        $r4 = <cck.text.Verbose: cck.text.Verbose$Printer verbosePrinter>;
+        if $r4 == null goto label3;
+
+        $r4 = <cck.text.Verbose: cck.text.Verbose$Printer verbosePrinter>;
+        $z0 = $r4.<cck.text.Verbose$Printer: boolean enabled>;
+        if $z0 == 0 goto label3;
+
+        $r4 = <cck.text.Verbose: cck.text.Verbose$Printer verbosePrinter>;
+        $r5 = new java.lang.StringBuilder;
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("verbose: set printer ");
+        $r6 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>(category);
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to ");
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>(on);
+        $r7 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<cck.text.Verbose$Printer: void println(java.lang.String)>($r7);
+
+     label3:
+        p.<cck.text.Verbose$Printer: boolean enabled> = on;
+        return;
+    }
+
+    private static cck.text.Verbose$Printer getPrinter(java.lang.String)
+    {
+        java.lang.String category;
+        java.util.HashMap $r0;
+        cck.text.Verbose$Printer p, $r2;
+        java.lang.Object $r1;
+
+        category := @parameter0: java.lang.String;
+        $r0 = <cck.text.Verbose: java.util.HashMap printerMap>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(category);
+        p = (cck.text.Verbose$Printer) $r1;
+        if p != null goto label0;
+
+        $r2 = new cck.text.Verbose$Printer;
+        specialinvoke $r2.<cck.text.Verbose$Printer: void <init>()>();
+        p = $r2;
+        $r0 = <cck.text.Verbose: java.util.HashMap printerMap>;
+        virtualinvoke $r0.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(category, p);
+
+     label0:
+        return p;
+    }
+
+    static void <clinit>()
+    {
+        java.util.HashMap $r0;
+        cck.text.Verbose$Printer $r1;
+
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        <cck.text.Verbose: java.util.HashMap printerMap> = $r0;
+        $r1 = staticinvoke <cck.text.Verbose: cck.text.Verbose$Printer getVerbosePrinter(java.lang.String)>("verbose");
+        <cck.text.Verbose: cck.text.Verbose$Printer verbosePrinter> = $r1;
+        return;
+    }
+}

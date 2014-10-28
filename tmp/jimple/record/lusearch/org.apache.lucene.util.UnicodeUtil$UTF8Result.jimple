@@ -1,0 +1,53 @@
+public final class org.apache.lucene.util.UnicodeUtil$UTF8Result extends java.lang.Object
+{
+    public byte[] result;
+    public int length;
+
+    public void <init>()
+    {
+        org.apache.lucene.util.UnicodeUtil$UTF8Result this;
+        byte[] $r0;
+
+        this := @this: org.apache.lucene.util.UnicodeUtil$UTF8Result;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = newarray (byte)[10];
+        this.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result> = $r0;
+        return;
+    }
+
+    public void setLength(int)
+    {
+        org.apache.lucene.util.UnicodeUtil$UTF8Result this;
+        int newLength, $i0, $i1;
+        byte[] newArray, $r0;
+        double $d0, $d1;
+        long tid_setLength;
+        java.lang.Thread thread_setLength;
+
+        this := @this: org.apache.lucene.util.UnicodeUtil$UTF8Result;
+        newLength := @parameter0: int;
+        thread_setLength = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setLength = virtualinvoke thread_setLength.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 52, tid_setLength, "org.apache.lucene.util.UnicodeUtil$UTF8Result", 80, $r0);
+        $r0 = this.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result>;
+        $i0 = lengthof $r0;
+        if $i0 >= newLength goto label0;
+
+        $d0 = (double) newLength;
+        $d1 = 1.5 * $d0;
+        $i0 = (int) $d1;
+        newArray = newarray (byte)[$i0];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 52, tid_setLength, "org.apache.lucene.util.UnicodeUtil$UTF8Result", 82, $r0);
+        $r0 = this.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 51, tid_setLength, "org.apache.lucene.util.UnicodeUtil$UTF8Result", 82, $i1);
+        $i1 = this.<org.apache.lucene.util.UnicodeUtil$UTF8Result: int length>;
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r0, 0, newArray, 0, $i1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 52, tid_setLength, "org.apache.lucene.util.UnicodeUtil$UTF8Result", 83, newArray);
+        this.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result> = newArray;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 51, tid_setLength, "org.apache.lucene.util.UnicodeUtil$UTF8Result", 85, newLength);
+        this.<org.apache.lucene.util.UnicodeUtil$UTF8Result: int length> = newLength;
+        return;
+    }
+}

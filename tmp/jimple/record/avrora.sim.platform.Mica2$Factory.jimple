@@ -1,0 +1,37 @@
+public class avrora.sim.platform.Mica2$Factory extends java.lang.Object implements avrora.sim.platform.PlatformFactory
+{
+
+    public void <init>()
+    {
+        avrora.sim.platform.Mica2$Factory this;
+
+        this := @this: avrora.sim.platform.Mica2$Factory;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public avrora.sim.platform.Platform newPlatform(int, avrora.sim.Simulation, avrora.core.Program)
+    {
+        avrora.sim.platform.Mica2$Factory this;
+        int id;
+        avrora.sim.Simulation sim;
+        avrora.core.Program p;
+        avrora.sim.clock.ClockDomain $r0, cd;
+        avrora.sim.platform.Mica2 $r2;
+        avrora.sim.mcu.ATMega128 $r3;
+
+        this := @this: avrora.sim.platform.Mica2$Factory;
+        id := @parameter0: int;
+        sim := @parameter1: avrora.sim.Simulation;
+        p := @parameter2: avrora.core.Program;
+        $r0 = new avrora.sim.clock.ClockDomain;
+        specialinvoke $r0.<avrora.sim.clock.ClockDomain: void <init>(long)>(7372800L);
+        cd = $r0;
+        virtualinvoke cd.<avrora.sim.clock.ClockDomain: avrora.sim.clock.Clock newClock(java.lang.String,long)>("external", 32768L);
+        $r2 = new avrora.sim.platform.Mica2;
+        $r3 = new avrora.sim.mcu.ATMega128;
+        specialinvoke $r3.<avrora.sim.mcu.ATMega128: void <init>(int,avrora.sim.Simulation,avrora.sim.clock.ClockDomain,avrora.core.Program)>(id, sim, cd, p);
+        specialinvoke $r2.<avrora.sim.platform.Mica2: void <init>(avrora.sim.mcu.Microcontroller)>($r3);
+        return $r2;
+    }
+}

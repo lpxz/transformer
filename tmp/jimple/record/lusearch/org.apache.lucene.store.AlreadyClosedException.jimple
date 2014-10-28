@@ -1,0 +1,14 @@
+public class org.apache.lucene.store.AlreadyClosedException extends java.lang.IllegalStateException
+{
+
+    public void <init>(java.lang.String)
+    {
+        org.apache.lucene.store.AlreadyClosedException this;
+        java.lang.String message;
+
+        this := @this: org.apache.lucene.store.AlreadyClosedException;
+        message := @parameter0: java.lang.String;
+        specialinvoke this.<java.lang.IllegalStateException: void <init>(java.lang.String)>(message);
+        return;
+    }
+}

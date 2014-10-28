@@ -1,0 +1,304 @@
+public class org.apache.commons.cli.PosixParser extends org.apache.commons.cli.Parser
+{
+    private java.util.List tokens;
+    private boolean eatTheRest;
+    private org.apache.commons.cli.Option currentOption;
+    private org.apache.commons.cli.Options options;
+
+    public void <init>()
+    {
+        org.apache.commons.cli.PosixParser this;
+        java.util.ArrayList $r0;
+
+        this := @this: org.apache.commons.cli.PosixParser;
+        specialinvoke this.<org.apache.commons.cli.Parser: void <init>()>();
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+        this.<org.apache.commons.cli.PosixParser: java.util.List tokens> = $r0;
+        return;
+    }
+
+    private void init()
+    {
+        org.apache.commons.cli.PosixParser this;
+        java.util.List $r0;
+
+        this := @this: org.apache.commons.cli.PosixParser;
+        this.<org.apache.commons.cli.PosixParser: boolean eatTheRest> = 0;
+        $r0 = this.<org.apache.commons.cli.PosixParser: java.util.List tokens>;
+        interfaceinvoke $r0.<java.util.List: void clear()>();
+        return;
+    }
+
+    protected java.lang.String[] flatten(org.apache.commons.cli.Options, java.lang.String[], boolean)
+    {
+        org.apache.commons.cli.PosixParser this;
+        org.apache.commons.cli.Options options;
+        java.lang.String[] arguments, $r6, $r8;
+        boolean stopAtNonOption, $z0;
+        java.util.Iterator iter;
+        java.lang.String token, opt, $r2, $r4;
+        int pos, $i0, $i1, $i2;
+        java.util.List $r0, $r5;
+        java.lang.Object $r1;
+        org.apache.commons.cli.Option $r3;
+        java.lang.Object[] $r7;
+
+        this := @this: org.apache.commons.cli.PosixParser;
+        options := @parameter0: org.apache.commons.cli.Options;
+        arguments := @parameter1: java.lang.String[];
+        stopAtNonOption := @parameter2: boolean;
+        specialinvoke this.<org.apache.commons.cli.PosixParser: void init()>();
+        this.<org.apache.commons.cli.PosixParser: org.apache.commons.cli.Options options> = options;
+        $r0 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>(arguments);
+        iter = interfaceinvoke $r0.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke iter.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label11;
+
+        $r1 = interfaceinvoke iter.<java.util.Iterator: java.lang.Object next()>();
+        token = (java.lang.String) $r1;
+        $z0 = virtualinvoke token.<java.lang.String: boolean startsWith(java.lang.String)>("--");
+        if $z0 == 0 goto label5;
+
+        pos = virtualinvoke token.<java.lang.String: int indexOf(int)>(61);
+        if pos != -1 goto label1;
+
+        $r2 = token;
+        goto label2;
+
+     label1:
+        $r2 = virtualinvoke token.<java.lang.String: java.lang.String substring(int,int)>(0, pos);
+
+     label2:
+        opt = $r2;
+        $z0 = virtualinvoke options.<org.apache.commons.cli.Options: boolean hasOption(java.lang.String)>(opt);
+        if $z0 != 0 goto label3;
+
+        specialinvoke this.<org.apache.commons.cli.PosixParser: void processNonOptionToken(java.lang.String,boolean)>(token, stopAtNonOption);
+        goto label4;
+
+     label3:
+        $r3 = virtualinvoke options.<org.apache.commons.cli.Options: org.apache.commons.cli.Option getOption(java.lang.String)>(opt);
+        this.<org.apache.commons.cli.PosixParser: org.apache.commons.cli.Option currentOption> = $r3;
+        $r0 = this.<org.apache.commons.cli.PosixParser: java.util.List tokens>;
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>(opt);
+        if pos == -1 goto label4;
+
+        $r0 = this.<org.apache.commons.cli.PosixParser: java.util.List tokens>;
+        $i0 = pos + 1;
+        $r4 = virtualinvoke token.<java.lang.String: java.lang.String substring(int)>($i0);
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>($r4);
+
+     label4:
+        goto label10;
+
+     label5:
+        $r2 = "-";
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>(token);
+        if $z0 == 0 goto label6;
+
+        $r0 = this.<org.apache.commons.cli.PosixParser: java.util.List tokens>;
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>(token);
+        goto label10;
+
+     label6:
+        $z0 = virtualinvoke token.<java.lang.String: boolean startsWith(java.lang.String)>("-");
+        if $z0 == 0 goto label9;
+
+        $i1 = virtualinvoke token.<java.lang.String: int length()>();
+        if $i1 == 2 goto label7;
+
+        $z0 = virtualinvoke options.<org.apache.commons.cli.Options: boolean hasOption(java.lang.String)>(token);
+        if $z0 == 0 goto label8;
+
+     label7:
+        specialinvoke this.<org.apache.commons.cli.PosixParser: void processOptionToken(java.lang.String,boolean)>(token, stopAtNonOption);
+        goto label10;
+
+     label8:
+        virtualinvoke this.<org.apache.commons.cli.PosixParser: void burstToken(java.lang.String,boolean)>(token, stopAtNonOption);
+        goto label10;
+
+     label9:
+        specialinvoke this.<org.apache.commons.cli.PosixParser: void processNonOptionToken(java.lang.String,boolean)>(token, stopAtNonOption);
+
+     label10:
+        specialinvoke this.<org.apache.commons.cli.PosixParser: void gobble(java.util.Iterator)>(iter);
+        goto label0;
+
+     label11:
+        $r0 = this.<org.apache.commons.cli.PosixParser: java.util.List tokens>;
+        $r5 = this.<org.apache.commons.cli.PosixParser: java.util.List tokens>;
+        $i2 = interfaceinvoke $r5.<java.util.List: int size()>();
+        $r6 = newarray (java.lang.String)[$i2];
+        $r7 = interfaceinvoke $r0.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($r6);
+        $r8 = (java.lang.String[]) $r7;
+        $r8 = (java.lang.String[]) $r8;
+        return $r8;
+    }
+
+    private void gobble(java.util.Iterator)
+    {
+        org.apache.commons.cli.PosixParser this;
+        java.util.Iterator iter;
+        boolean $z0;
+        java.util.List $r0;
+        java.lang.Object $r1;
+
+        this := @this: org.apache.commons.cli.PosixParser;
+        iter := @parameter0: java.util.Iterator;
+        $z0 = this.<org.apache.commons.cli.PosixParser: boolean eatTheRest>;
+        if $z0 == 0 goto label1;
+
+     label0:
+        $z0 = interfaceinvoke iter.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r0 = this.<org.apache.commons.cli.PosixParser: java.util.List tokens>;
+        $r1 = interfaceinvoke iter.<java.util.Iterator: java.lang.Object next()>();
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>($r1);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    private void processNonOptionToken(java.lang.String, boolean)
+    {
+        org.apache.commons.cli.PosixParser this;
+        java.lang.String value;
+        boolean stopAtNonOption, $z0;
+        org.apache.commons.cli.Option $r0;
+        java.util.List $r1;
+
+        this := @this: org.apache.commons.cli.PosixParser;
+        value := @parameter0: java.lang.String;
+        stopAtNonOption := @parameter1: boolean;
+        if stopAtNonOption == 0 goto label1;
+
+        $r0 = this.<org.apache.commons.cli.PosixParser: org.apache.commons.cli.Option currentOption>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<org.apache.commons.cli.PosixParser: org.apache.commons.cli.Option currentOption>;
+        $z0 = virtualinvoke $r0.<org.apache.commons.cli.Option: boolean hasArg()>();
+        if $z0 != 0 goto label1;
+
+     label0:
+        this.<org.apache.commons.cli.PosixParser: boolean eatTheRest> = 1;
+        $r1 = this.<org.apache.commons.cli.PosixParser: java.util.List tokens>;
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>("--");
+
+     label1:
+        $r1 = this.<org.apache.commons.cli.PosixParser: java.util.List tokens>;
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>(value);
+        return;
+    }
+
+    private void processOptionToken(java.lang.String, boolean)
+    {
+        org.apache.commons.cli.PosixParser this;
+        java.lang.String token;
+        boolean stopAtNonOption, $z0;
+        org.apache.commons.cli.Options $r0, $r1;
+        org.apache.commons.cli.Option $r2;
+        java.util.List $r3;
+
+        this := @this: org.apache.commons.cli.PosixParser;
+        token := @parameter0: java.lang.String;
+        stopAtNonOption := @parameter1: boolean;
+        if stopAtNonOption == 0 goto label0;
+
+        $r0 = this.<org.apache.commons.cli.PosixParser: org.apache.commons.cli.Options options>;
+        $z0 = virtualinvoke $r0.<org.apache.commons.cli.Options: boolean hasOption(java.lang.String)>(token);
+        if $z0 != 0 goto label0;
+
+        this.<org.apache.commons.cli.PosixParser: boolean eatTheRest> = 1;
+
+     label0:
+        $r0 = this.<org.apache.commons.cli.PosixParser: org.apache.commons.cli.Options options>;
+        $z0 = virtualinvoke $r0.<org.apache.commons.cli.Options: boolean hasOption(java.lang.String)>(token);
+        if $z0 == 0 goto label1;
+
+        $r1 = this.<org.apache.commons.cli.PosixParser: org.apache.commons.cli.Options options>;
+        $r2 = virtualinvoke $r1.<org.apache.commons.cli.Options: org.apache.commons.cli.Option getOption(java.lang.String)>(token);
+        this.<org.apache.commons.cli.PosixParser: org.apache.commons.cli.Option currentOption> = $r2;
+
+     label1:
+        $r3 = this.<org.apache.commons.cli.PosixParser: java.util.List tokens>;
+        interfaceinvoke $r3.<java.util.List: boolean add(java.lang.Object)>(token);
+        return;
+    }
+
+    protected void burstToken(java.lang.String, boolean)
+    {
+        org.apache.commons.cli.PosixParser this;
+        java.lang.String token, ch, $r3;
+        boolean stopAtNonOption, $z0;
+        int i, $i0, $i2, $i3;
+        char $c1;
+        org.apache.commons.cli.Options $r0, $r4;
+        java.util.List $r1;
+        java.lang.StringBuffer $r2;
+        org.apache.commons.cli.Option $r5, $r6;
+
+        this := @this: org.apache.commons.cli.PosixParser;
+        token := @parameter0: java.lang.String;
+        stopAtNonOption := @parameter1: boolean;
+        i = 1;
+
+     label0:
+        $i0 = virtualinvoke token.<java.lang.String: int length()>();
+        if i >= $i0 goto label4;
+
+        $c1 = virtualinvoke token.<java.lang.String: char charAt(int)>(i);
+        ch = staticinvoke <java.lang.String: java.lang.String valueOf(char)>($c1);
+        $r0 = this.<org.apache.commons.cli.PosixParser: org.apache.commons.cli.Options options>;
+        $z0 = virtualinvoke $r0.<org.apache.commons.cli.Options: boolean hasOption(java.lang.String)>(ch);
+        if $z0 == 0 goto label1;
+
+        $r1 = this.<org.apache.commons.cli.PosixParser: java.util.List tokens>;
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("-");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(ch);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>($r3);
+        $r4 = this.<org.apache.commons.cli.PosixParser: org.apache.commons.cli.Options options>;
+        $r5 = virtualinvoke $r4.<org.apache.commons.cli.Options: org.apache.commons.cli.Option getOption(java.lang.String)>(ch);
+        this.<org.apache.commons.cli.PosixParser: org.apache.commons.cli.Option currentOption> = $r5;
+        $r6 = this.<org.apache.commons.cli.PosixParser: org.apache.commons.cli.Option currentOption>;
+        $z0 = virtualinvoke $r6.<org.apache.commons.cli.Option: boolean hasArg()>();
+        if $z0 == 0 goto label3;
+
+        $i2 = virtualinvoke token.<java.lang.String: int length()>();
+        $i0 = i + 1;
+        if $i2 == $i0 goto label3;
+
+        $r1 = this.<org.apache.commons.cli.PosixParser: java.util.List tokens>;
+        $i3 = i + 1;
+        $r3 = virtualinvoke token.<java.lang.String: java.lang.String substring(int)>($i3);
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>($r3);
+        goto label4;
+
+     label1:
+        if stopAtNonOption == 0 goto label2;
+
+        $r3 = virtualinvoke token.<java.lang.String: java.lang.String substring(int)>(i);
+        specialinvoke this.<org.apache.commons.cli.PosixParser: void processNonOptionToken(java.lang.String,boolean)>($r3, 1);
+        goto label4;
+
+     label2:
+        $r1 = this.<org.apache.commons.cli.PosixParser: java.util.List tokens>;
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>(token);
+        goto label4;
+
+     label3:
+        i = i + 1;
+        goto label0;
+
+     label4:
+        return;
+    }
+}

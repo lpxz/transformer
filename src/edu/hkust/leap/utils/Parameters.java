@@ -3,6 +3,7 @@ package edu.hkust.leap.utils;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 
 import edu.hkust.leap.transformer.Visitor;
 
@@ -69,51 +70,51 @@ public class Parameters
 	public static  String INTVALUE ="<java.lang.Integer: int intValue()>";
 	public static  String VALUEOF = "<java.lang.Integer: java.lang.Integer valueOf(int)>";
 	public static String arrayIndex = "ARRAYINDEX";
-	public static String fakedJDKDataStructureField= "JDKDataStructureField";
+	public static String dsIndex= "DSINDEX";
 	
-	public static HashMap<String, HashSet<String>> fakedRead = new HashMap<String, HashSet<String>>();
-	public static HashMap<String, HashSet<String>> fakedWrite = new HashMap<String, HashSet<String>>();
+	public static HashMap<String, HashSet<String>> dsReads = new HashMap<String, HashSet<String>>();
+	public static HashMap<String, HashSet<String>> dsWrites = new HashMap<String, HashSet<String>>();
 
 	static
 	{
 		//=======================please run the transformPreprocess to extract the collection used in the application.
-		insert2(fakedRead, "java.util.Vector", "get");
-		insert2(fakedRead, "java.util.HashMap", "get");
-		insert2(fakedRead, "java.util.HashMap", "size");
-		insert2(fakedRead, "java.util.HashSet", "size");
 		
-		//==================================================
-		insert2(fakedWrite, "java.util.Vector", "add");
-		insert2(fakedWrite, "java.util.Vector", "set");		
-		insert2(fakedWrite, "java.util.HashMap", "put");
-		insert2(fakedWrite, "java.util.HashSet", "add");
-		insert2(fakedWrite, "java.util.HashSet", "remove");
-		
-	
-		insert2(fakedRead,"java.util.ArrayList","get");
-		insert2(fakedWrite,"java.util.Vector","addElement");
-		insert2(fakedRead,"java.util.Vector","isEmpty");
-		insert2(fakedWrite,"java.util.ArrayList","remove");
-		insert2(fakedWrite,"java.util.Vector","remove");
-		insert2(fakedRead,"java.util.Vector","elementAt");
-		insert2(fakedWrite,"java.util.Vector","add");
-		insert2(fakedRead,"java.util.ArrayList","size");
-		insert2(fakedRead,"java.util.Collection","iterator");
-		insert2(fakedWrite,"java.util.ArrayList","add");
-		insert2(fakedRead,"java.util.AbstractList","iterator");
-		insert2(fakedRead,"java.util.Vector","size");
-		insert2(fakedWrite,"java.util.ArrayList","clear");
-		insert2(fakedRead,"java.util.Vector","firstElement");
-		insert2(fakedRead,"java.util.Vector","elements");
-		//Iterator hasNext next remove
-		insert2(fakedRead,"java.util.Iterator","hasNext");
-		insert2(fakedWrite,"java.util.Iterator","next");
-		insert2(fakedWrite,"java.util.Iterator","remove");
+		insert2(dsReads, "java.util.concurrent.ConcurrentHashMap", "get");
+		insert2(dsReads, "java.util.HashMap", "get");
+//		insert2(dsReads, "java.util.Vector", "get");
+//		insert2(dsReads, "java.util.HashMap", "size");
+//		insert2(dsReads, "java.util.HashSet", "size");
+//		
+//		//==================================================
+		insert2(dsWrites, "java.util.HashMap", "put");
+		insert2(dsWrites, "java.util.concurrent.ConcurrentHashMap", "put");
 		
 		
-		
-		
-		
+//		insert2(dsWrites, "java.util.Vector", "add");
+//		insert2(dsWrites, "java.util.Vector", "set");			
+//		insert2(dsWrites, "java.util.HashSet", "add");
+//		insert2(dsWrites, "java.util.HashSet", "remove");
+//		
+//	
+//		insert2(dsReads,"java.util.ArrayList","get");
+//		insert2(dsWrites,"java.util.Vector","addElement");
+//		insert2(dsReads,"java.util.Vector","isEmpty");
+//		insert2(dsWrites,"java.util.ArrayList","remove");
+//		insert2(dsWrites,"java.util.Vector","remove");
+//		insert2(dsReads,"java.util.Vector","elementAt");
+//		insert2(dsWrites,"java.util.Vector","add");
+//		insert2(dsReads,"java.util.ArrayList","size");
+//		insert2(dsReads,"java.util.Collection","iterator");
+//		insert2(dsWrites,"java.util.ArrayList","add");
+//		insert2(dsReads,"java.util.AbstractList","iterator");
+//		insert2(dsReads,"java.util.Vector","size");
+//		insert2(dsWrites,"java.util.ArrayList","clear");
+//		insert2(dsReads,"java.util.Vector","firstElement");
+//		insert2(dsReads,"java.util.Vector","elements");
+//		//Iterator hasNext next remove
+//		insert2(dsReads,"java.util.Iterator","hasNext");
+//		insert2(dsWrites,"java.util.Iterator","next");
+//		insert2(dsWrites,"java.util.Iterator","remove");		
 	}
 	public static void insert2(HashMap<String, HashSet<String>> fakedRead2,
 			String classname, String methodname) {
@@ -125,13 +126,13 @@ public class Parameters
 		}
 		hs.add(methodname);		
 	}
-	public static String JDKOpType(String classname,String methodname )
+	public static String readOrWrite(String classname,String methodname )
 	{
-		if(contains(fakedRead, classname, methodname))
+		if(contains(dsReads, classname, methodname))
 		{
 			return READ;
 		}
-		else if (contains(fakedWrite, classname, methodname)) {
+		else if (contains(dsWrites, classname, methodname)) {
 			return WRITE;
 		}
 		else {
@@ -159,7 +160,7 @@ public class Parameters
 	}
 	public static void main(String[] args)
 	{
-		String str = JDKOpType("java.util.Vector", "set");
+		String str = readOrWrite("java.util.Vector", "set");
 		System.out.println(str);
 		
 	}

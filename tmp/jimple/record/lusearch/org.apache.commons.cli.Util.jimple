@@ -1,0 +1,68 @@
+class org.apache.commons.cli.Util extends java.lang.Object
+{
+
+    void <init>()
+    {
+        org.apache.commons.cli.Util this;
+
+        this := @this: org.apache.commons.cli.Util;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    static java.lang.String stripLeadingHyphens(java.lang.String)
+    {
+        java.lang.String str, $r0;
+        boolean $z0;
+        int $i0;
+
+        str := @parameter0: java.lang.String;
+        if str != null goto label0;
+
+        return null;
+
+     label0:
+        $z0 = virtualinvoke str.<java.lang.String: boolean startsWith(java.lang.String)>("--");
+        if $z0 == 0 goto label1;
+
+        $i0 = virtualinvoke str.<java.lang.String: int length()>();
+        $r0 = virtualinvoke str.<java.lang.String: java.lang.String substring(int,int)>(2, $i0);
+        return $r0;
+
+     label1:
+        $z0 = virtualinvoke str.<java.lang.String: boolean startsWith(java.lang.String)>("-");
+        if $z0 == 0 goto label2;
+
+        $i0 = virtualinvoke str.<java.lang.String: int length()>();
+        $r0 = virtualinvoke str.<java.lang.String: java.lang.String substring(int,int)>(1, $i0);
+        return $r0;
+
+     label2:
+        return str;
+    }
+
+    static java.lang.String stripLeadingAndTrailingQuotes(java.lang.String)
+    {
+        java.lang.String str;
+        boolean $z0;
+        int $i0;
+
+        str := @parameter0: java.lang.String;
+        $z0 = virtualinvoke str.<java.lang.String: boolean startsWith(java.lang.String)>("\"");
+        if $z0 == 0 goto label0;
+
+        $i0 = virtualinvoke str.<java.lang.String: int length()>();
+        str = virtualinvoke str.<java.lang.String: java.lang.String substring(int,int)>(1, $i0);
+
+     label0:
+        $z0 = virtualinvoke str.<java.lang.String: boolean endsWith(java.lang.String)>("\"");
+        if $z0 == 0 goto label1;
+
+        $i0 = virtualinvoke str.<java.lang.String: int length()>();
+        $i0 = $i0 - 1;
+        str = virtualinvoke str.<java.lang.String: java.lang.String substring(int,int)>(0, $i0);
+
+     label1:
+        return str;
+    }
+}

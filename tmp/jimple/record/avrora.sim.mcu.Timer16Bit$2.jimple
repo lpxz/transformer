@@ -1,0 +1,38 @@
+class avrora.sim.mcu.Timer16Bit$2 extends avrora.sim.mcu.RegisterSet$Field
+{
+    final avrora.sim.mcu.Timer16Bit this$0;
+
+    void <init>(avrora.sim.mcu.Timer16Bit)
+    {
+        avrora.sim.mcu.Timer16Bit$2 this;
+        avrora.sim.mcu.Timer16Bit l1;
+
+        this := @this: avrora.sim.mcu.Timer16Bit$2;
+        l1 := @parameter0: avrora.sim.mcu.Timer16Bit;
+        this.<avrora.sim.mcu.Timer16Bit$2: avrora.sim.mcu.Timer16Bit this$0> = l1;
+        specialinvoke this.<avrora.sim.mcu.RegisterSet$Field: void <init>()>();
+        return;
+    }
+
+    public void update()
+    {
+        avrora.sim.mcu.Timer16Bit$2 this;
+        avrora.sim.mcu.Timer16Bit $r0, $r1;
+        int[] $r2;
+        int $i0, $i1;
+        long tid_update;
+        java.lang.Thread thread_update;
+
+        this := @this: avrora.sim.mcu.Timer16Bit$2;
+        thread_update = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_update = virtualinvoke thread_update.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.Timer16Bit$2: avrora.sim.mcu.Timer16Bit this$0>;
+        $r1 = this.<avrora.sim.mcu.Timer16Bit$2: avrora.sim.mcu.Timer16Bit this$0>;
+        $r2 = $r1.<avrora.sim.mcu.Timer16Bit: int[] periods>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 89, tid_update, "avrora.sim.mcu.Timer16Bit$2", 245, $i0);
+        $i0 = this.<avrora.sim.mcu.Timer16Bit$2: int value>;
+        $i1 = $r2[$i0];
+        staticinvoke <avrora.sim.mcu.Timer16Bit: void access$100(avrora.sim.mcu.Timer16Bit,int)>($r0, $i1);
+        return;
+    }
+}

@@ -1,0 +1,93 @@
+public class avrora.sim.mcu.USART$SerialPrinter extends java.lang.Object implements avrora.sim.mcu.USART$USARTDevice
+{
+    avrora.sim.output.SimPrinter serialPrinter;
+    char[] stream;
+    int count;
+    final avrora.sim.mcu.USART this$0;
+
+    protected void <init>(avrora.sim.mcu.USART)
+    {
+        avrora.sim.mcu.USART$SerialPrinter this;
+        avrora.sim.mcu.USART l1, $r0;
+        avrora.sim.Simulator $r1;
+        avrora.sim.output.SimPrinter $r2;
+        char[] $r3;
+
+        this := @this: avrora.sim.mcu.USART$SerialPrinter;
+        l1 := @parameter0: avrora.sim.mcu.USART;
+        this.<avrora.sim.mcu.USART$SerialPrinter: avrora.sim.mcu.USART this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = this.<avrora.sim.mcu.USART$SerialPrinter: avrora.sim.mcu.USART this$0>;
+        $r1 = $r0.<avrora.sim.mcu.USART: avrora.sim.Simulator simulator>;
+        $r2 = virtualinvoke $r1.<avrora.sim.Simulator: avrora.sim.output.SimPrinter getPrinter(java.lang.String)>("atmel.usart.printer");
+        this.<avrora.sim.mcu.USART$SerialPrinter: avrora.sim.output.SimPrinter serialPrinter> = $r2;
+        $r3 = newarray (char)[10];
+        $r3[0] = 104;
+        $r3[1] = 101;
+        $r3[2] = 108;
+        $r3[3] = 108;
+        $r3[4] = 111;
+        $r3[5] = 119;
+        $r3[6] = 111;
+        $r3[7] = 114;
+        $r3[8] = 108;
+        $r3[9] = 100;
+        this.<avrora.sim.mcu.USART$SerialPrinter: char[] stream> = $r3;
+        return;
+    }
+
+    public avrora.sim.mcu.USART$Frame transmitFrame()
+    {
+        avrora.sim.mcu.USART$SerialPrinter this;
+        avrora.sim.mcu.USART$Frame $r0;
+        int $i0, $i1, $i2, $i3;
+        char[] $r2, $r3;
+        char $c4;
+        byte $b5;
+        long tid_transmitFrame;
+        java.lang.Thread thread_transmitFrame;
+
+        this := @this: avrora.sim.mcu.USART$SerialPrinter;
+        thread_transmitFrame = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_transmitFrame = virtualinvoke thread_transmitFrame.<java.lang.Thread: long getId()>();
+        $r0 = new avrora.sim.mcu.USART$Frame;
+        $r2 = this.<avrora.sim.mcu.USART$SerialPrinter: char[] stream>;
+        $i0 = this.<avrora.sim.mcu.USART$SerialPrinter: int count>;
+        $i1 = $i0 + 1;
+        this.<avrora.sim.mcu.USART$SerialPrinter: int count> = $i1;
+        $r3 = this.<avrora.sim.mcu.USART$SerialPrinter: char[] stream>;
+        $i2 = lengthof $r3;
+        $i3 = $i0 % $i2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>($r2, 69, tid_transmitFrame, "avrora.sim.mcu.USART$SerialPrinter", 514, $i3, $c4);
+        $c4 = $r2[$i3];
+        $b5 = (byte) $c4;
+        specialinvoke $r0.<avrora.sim.mcu.USART$Frame: void <init>(byte,boolean,int)>($b5, 0, 8);
+        return $r0;
+    }
+
+    public void receiveFrame(avrora.sim.mcu.USART$Frame)
+    {
+        avrora.sim.mcu.USART$SerialPrinter this;
+        avrora.sim.mcu.USART$Frame frame;
+        java.lang.StringBuilder $r0;
+        avrora.sim.output.SimPrinter $r1;
+        java.lang.String $r2, $r3;
+
+        this := @this: avrora.sim.mcu.USART$SerialPrinter;
+        frame := @parameter0: avrora.sim.mcu.USART$Frame;
+        $r1 = this.<avrora.sim.mcu.USART$SerialPrinter: avrora.sim.output.SimPrinter serialPrinter>;
+        if $r1 == null goto label0;
+
+        $r1 = this.<avrora.sim.mcu.USART$SerialPrinter: avrora.sim.output.SimPrinter serialPrinter>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Serial Printer ");
+        $r2 = virtualinvoke frame.<avrora.sim.mcu.USART$Frame: java.lang.String toString()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+        $r3 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r1.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r3);
+
+     label0:
+        return;
+    }
+}

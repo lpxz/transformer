@@ -1,0 +1,280 @@
+public class org.dacapo.lusearch.Search extends java.lang.Object
+{
+    static final int MAX_DOCS_TO_COLLECT;
+    public int completed;
+
+    public void <init>()
+    {
+        org.dacapo.lusearch.Search this;
+
+        this := @this: org.dacapo.lusearch.Search;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.dacapo.lusearch.Search: int completed> = 0;
+        return;
+    }
+
+    public void main(java.lang.String[]) throws java.lang.Exception
+    {
+        org.dacapo.lusearch.Search this, l13;
+        java.lang.String[] args;
+        java.lang.String usage, index, field, queryBase, normsField, outBase, $r2, $r3, $r6;
+        boolean repeat, raw, $z0;
+        int hitsPerPage, threads, totalQueries, i, j, $i0, $i1;
+        java.lang.StringBuilder $r0, $r1;
+        java.lang.InterruptedException e, $r8;
+        java.lang.Throwable l15, $r9;
+        java.io.PrintStream $r4;
+        org.dacapo.lusearch.Search$QueryThread $r5;
+        long tid_main;
+        java.lang.Thread thread_main;
+
+        this := @this: org.dacapo.lusearch.Search;
+        args := @parameter0: java.lang.String[];
+        thread_main = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_main = virtualinvoke thread_main.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStartRun(long,java.lang.String,java.lang.String[])>(tid_main, "org.dacapo.lusearch.Search.main", this);
+        usage = "Usage:\tjava org.dacapo.lusearch.Search [-index dir] [-field f] [-repeat n] [-queries file] [-raw] [-norms field] [-paging hitsPerPage]";
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(usage);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n\tSpecify \'false\' for hitsPerPage to use streaming instead of paging search.");
+        usage = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $i0 = lengthof args;
+        if $i0 <= 0 goto label1;
+
+        $r2 = "-h";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 80, 0, $r3);
+        $r3 = args[0];
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 != 0 goto label0;
+
+        $r2 = "-help";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 80, 0, $r3);
+        $r3 = args[0];
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label1;
+
+     label0:
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>(usage);
+        staticinvoke <java.lang.System: void exit(int)>(0);
+
+     label1:
+        index = "index";
+        field = "contents";
+        queryBase = null;
+        repeat = 0;
+        raw = 0;
+        normsField = null;
+        hitsPerPage = 10;
+        outBase = null;
+        threads = 1;
+        totalQueries = 32;
+        i = 0;
+
+     label2:
+        $i1 = lengthof args;
+        if i >= $i1 goto label13;
+
+        $r2 = "-index";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 97, i, $r3);
+        $r3 = args[i];
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label3;
+
+        $i1 = i + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 98, $i1, index);
+        index = args[$i1];
+        i = i + 1;
+        goto label12;
+
+     label3:
+        $r2 = "-field";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 100, i, $r3);
+        $r3 = args[i];
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label4;
+
+        $i1 = i + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 101, $i1, field);
+        field = args[$i1];
+        i = i + 1;
+        goto label12;
+
+     label4:
+        $r2 = "-queries";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 103, i, $r3);
+        $r3 = args[i];
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label5;
+
+        $i1 = i + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 104, $i1, queryBase);
+        queryBase = args[$i1];
+        i = i + 1;
+        goto label12;
+
+     label5:
+        $r2 = "-repeat";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 106, i, $r3);
+        $r3 = args[i];
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label6;
+
+        $i1 = i + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 107, $i1, $r2);
+        $r2 = args[$i1];
+        staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r2);
+        i = i + 1;
+        goto label12;
+
+     label6:
+        $r2 = "-raw";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 109, i, $r3);
+        $r3 = args[i];
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label7;
+
+        raw = 1;
+        goto label12;
+
+     label7:
+        $r2 = "-norms";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 111, i, $r3);
+        $r3 = args[i];
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label8;
+
+        $i1 = i + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 112, $i1, normsField);
+        normsField = args[$i1];
+        i = i + 1;
+        goto label12;
+
+     label8:
+        $r2 = "-paging";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 114, i, $r3);
+        $r3 = args[i];
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label9;
+
+        $i1 = i + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 115, $i1, $r2);
+        $r2 = args[$i1];
+        hitsPerPage = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r2);
+        i = i + 1;
+        goto label12;
+
+     label9:
+        $r2 = "-output";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 117, i, $r3);
+        $r3 = args[i];
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label10;
+
+        $i1 = i + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 118, $i1, outBase);
+        outBase = args[$i1];
+        i = i + 1;
+        goto label12;
+
+     label10:
+        $r2 = "-threads";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 120, i, $r3);
+        $r3 = args[i];
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label11;
+
+        $i1 = i + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 121, $i1, $r2);
+        $r2 = args[$i1];
+        threads = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r2);
+        i = i + 1;
+        goto label12;
+
+     label11:
+        $r2 = "-totalqueries";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 123, i, $r3);
+        $r3 = args[i];
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label12;
+
+        $i1 = i + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 10, tid_main, "org.dacapo.lusearch.Search", 124, $i1, $r2);
+        $r2 = args[$i1];
+        totalQueries = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r2);
+        i = i + 1;
+
+     label12:
+        i = i + 1;
+        goto label2;
+
+     label13:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 111, tid_main, "org.dacapo.lusearch.Search", 128, 0);
+        this.<org.dacapo.lusearch.Search: int completed> = 0;
+        j = 0;
+
+     label14:
+        if j >= threads goto label15;
+
+        $r5 = new org.dacapo.lusearch.Search$QueryThread;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Query");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(j);
+        $r6 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke $r5.<org.dacapo.lusearch.Search$QueryThread: void <init>(org.dacapo.lusearch.Search,org.dacapo.lusearch.Search,java.lang.String,int,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,int)>(this, this, $r6, j, threads, totalQueries, index, outBase, queryBase, field, normsField, raw, hitsPerPage);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void startRunThreadBefore(java.lang.Thread,long)>($r5, tid_main);
+        virtualinvoke $r5.<org.dacapo.lusearch.Search$QueryThread: void start()>();
+        j = j + 1;
+        goto label14;
+
+     label15:
+        l13 = this;
+        entermonitor this;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(this, 6, tid_main);
+
+     label16:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 111, tid_main, "org.dacapo.lusearch.Search", 133, $i0);
+        $i0 = this.<org.dacapo.lusearch.Search: int completed>;
+        if $i0 == totalQueries goto label20;
+
+     label17:
+        virtualinvoke this.<java.lang.Object: void wait()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void waitAfter(java.lang.Object,int,long)>(this, 0, tid_main);
+
+     label18:
+        goto label16;
+
+     label19:
+        $r8 := @caughtexception;
+        e = $r8;
+        goto label16;
+
+     label20:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l13, 6, tid_main);
+        exitmonitor l13;
+
+     label21:
+        goto label25;
+
+     label22:
+        $r9 := @caughtexception;
+
+     label23:
+        l15 = $r9;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l13, 6, tid_main);
+        exitmonitor l13;
+
+     label24:
+        throw l15;
+
+     label25:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void mainThreadStopRun(long,java.lang.String,java.lang.String[])>(tid_main, "org.dacapo.lusearch.Search.main", this);
+        return;
+
+        catch java.lang.InterruptedException from label17 to label18 with label19;
+        catch java.lang.Throwable from label16 to label21 with label22;
+        catch java.lang.Throwable from label23 to label24 with label22;
+    }
+}

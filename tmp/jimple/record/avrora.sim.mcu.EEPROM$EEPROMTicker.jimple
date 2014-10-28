@@ -1,0 +1,211 @@
+public class avrora.sim.mcu.EEPROM$EEPROMTicker extends java.lang.Object implements avrora.sim.Simulator$Event
+{
+    final avrora.sim.mcu.EEPROM this$0;
+
+    protected void <init>(avrora.sim.mcu.EEPROM)
+    {
+        avrora.sim.mcu.EEPROM$EEPROMTicker this;
+        avrora.sim.mcu.EEPROM l1;
+
+        this := @this: avrora.sim.mcu.EEPROM$EEPROMTicker;
+        l1 := @parameter0: avrora.sim.mcu.EEPROM;
+        this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public void fire()
+    {
+        avrora.sim.mcu.EEPROM$EEPROMTicker this, $r18;
+        java.lang.StringBuilder $r0;
+        int address, $i0, $i1, $i5;
+        avrora.sim.mcu.EEPROM $r1, $r3, $r6;
+        avrora.sim.output.SimPrinter $r2;
+        java.lang.String $r4;
+        avrora.sim.mcu.EEPROM$EEARHReg $r5;
+        avrora.sim.RWRegister $r7, $r8, $r15;
+        boolean $z0;
+        byte $b2, $b4;
+        byte[] $r9, $r14, $r16;
+        avrora.sim.clock.Clock $r10, $r12;
+        avrora.sim.mcu.EEPROM$EEPROMWriteFinishedEvent $r11;
+        long $l3, tid_fire;
+        double $d0;
+        avrora.sim.Simulator $r13;
+        avrora.sim.mcu.EEPROM$EECRReg $r17;
+        java.lang.Thread thread_fire;
+
+        this := @this: avrora.sim.mcu.EEPROM$EEPROMTicker;
+        thread_fire = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_fire = virtualinvoke thread_fire.<java.lang.Thread: long getId()>();
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r2 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.output.SimPrinter devicePrinter>;
+        if $r2 == null goto label0;
+
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r2 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.output.SimPrinter devicePrinter>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Tick : ");
+        $r3 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r3, 97, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 201, $i0);
+        $i0 = $r3.<avrora.sim.mcu.EEPROM: int writeCount>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r4 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r4);
+
+     label0:
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r5 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.mcu.EEPROM$EEARHReg EEARH_reg>;
+        $r6 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r7 = $r6.<avrora.sim.mcu.EEPROM: avrora.sim.RWRegister EEARL_reg>;
+        address = staticinvoke <avrora.sim.mcu.AtmelInternalDevice: int read16(avrora.sim.RWRegister,avrora.sim.RWRegister)>($r5, $r7);
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 97, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 205, $i1);
+        $i1 = $r1.<avrora.sim.mcu.EEPROM: int writeCount>;
+        if $i1 <= 0 goto label2;
+
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r1, 95, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 211, $z0);
+        $z0 = $r1.<avrora.sim.mcu.EEPROM: boolean writeEnableWritten>;
+        if $z0 == 0 goto label2;
+
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r2 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.output.SimPrinter devicePrinter>;
+        if $r2 == null goto label1;
+
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r2 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.output.SimPrinter devicePrinter>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("EEPROM: ");
+        $r3 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r8 = $r3.<avrora.sim.mcu.EEPROM: avrora.sim.RWRegister EEDR_reg>;
+        $b2 = virtualinvoke $r8.<avrora.sim.RWRegister: byte read()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($b2);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" written to ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(address);
+        $r4 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r4);
+
+     label1:
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r9 = $r1.<avrora.sim.mcu.EEPROM: byte[] EEPROM_data>;
+        $r3 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r8 = $r3.<avrora.sim.mcu.EEPROM: avrora.sim.RWRegister EEDR_reg>;
+        $b2 = virtualinvoke $r8.<avrora.sim.RWRegister: byte read()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r9, 0, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 215, address, $b2);
+        $r9[address] = $b2;
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r10 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.clock.Clock mainClock>;
+        $r6 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r11 = $r6.<avrora.sim.mcu.EEPROM: avrora.sim.mcu.EEPROM$EEPROMWriteFinishedEvent writeFinishedEvent>;
+        $r3 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r12 = $r3.<avrora.sim.mcu.EEPROM: avrora.sim.clock.Clock mainClock>;
+        $l3 = virtualinvoke $r12.<avrora.sim.clock.Clock: long getHZ()>();
+        $d0 = (double) $l3;
+        $d0 = $d0 * 0.0085;
+        $l3 = (long) $d0;
+        virtualinvoke $r10.<avrora.sim.clock.Clock: void insertEvent(avrora.sim.Simulator$Event,long)>($r11, $l3);
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r13 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.Simulator simulator>;
+        virtualinvoke $r13.<avrora.sim.Simulator: void delay(long)>(2L);
+
+     label2:
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r1, 93, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 224, $z0);
+        $z0 = $r1.<avrora.sim.mcu.EEPROM: boolean readEnableWritten>;
+        if $z0 == 0 goto label4;
+
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r1, 94, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 224, $z0);
+        $z0 = $r1.<avrora.sim.mcu.EEPROM: boolean writeEnable>;
+        if $z0 != 0 goto label4;
+
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r2 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.output.SimPrinter devicePrinter>;
+        if $r2 == null goto label3;
+
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r2 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.output.SimPrinter devicePrinter>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("EEPROM: ");
+        $r3 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r14 = $r3.<avrora.sim.mcu.EEPROM: byte[] EEPROM_data>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r14, 0, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 227, address, $b2);
+        $b2 = $r14[address];
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($b2);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" read from ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(address);
+        $r4 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r4);
+
+     label3:
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r15 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.RWRegister EEDR_reg>;
+        $r6 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r16 = $r6.<avrora.sim.mcu.EEPROM: byte[] EEPROM_data>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r16, 0, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 228, address, $b4);
+        $b4 = $r16[address];
+        virtualinvoke $r15.<avrora.sim.RWRegister: void write(byte)>($b4);
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r17 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.mcu.EEPROM$EECRReg EECR_reg>;
+        virtualinvoke $r17.<avrora.sim.mcu.EEPROM$EECRReg: void resetEERE()>();
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r13 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.Simulator simulator>;
+        virtualinvoke $r13.<avrora.sim.Simulator: void delay(long)>(4L);
+
+     label4:
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 97, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 234, $i1);
+        $i1 = $r1.<avrora.sim.mcu.EEPROM: int writeCount>;
+        if $i1 <= 0 goto label5;
+
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 97, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 235, $i5);
+        $i5 = $r1.<avrora.sim.mcu.EEPROM: int writeCount>;
+        $i5 = $i5 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 97, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 235, $i5);
+        $r1.<avrora.sim.mcu.EEPROM: int writeCount> = $i5;
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r10 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.clock.Clock mainClock>;
+        $r6 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r18 = $r6.<avrora.sim.mcu.EEPROM: avrora.sim.mcu.EEPROM$EEPROMTicker ticker>;
+        virtualinvoke $r10.<avrora.sim.clock.Clock: void insertEvent(avrora.sim.Simulator$Event,long)>($r18, 1L);
+
+     label5:
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 97, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 239, $i1);
+        $i1 = $r1.<avrora.sim.mcu.EEPROM: int writeCount>;
+        if $i1 != 0 goto label7;
+
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r2 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.output.SimPrinter devicePrinter>;
+        if $r2 == null goto label6;
+
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r2 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.output.SimPrinter devicePrinter>;
+        virtualinvoke $r2.<avrora.sim.output.SimPrinter: void println(java.lang.String)>("EEPROM: write count hit 0, clearing EEMWE");
+
+     label6:
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 97, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 242, $i5);
+        $i5 = $r1.<avrora.sim.mcu.EEPROM: int writeCount>;
+        $i5 = $i5 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 97, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 242, $i5);
+        $r1.<avrora.sim.mcu.EEPROM: int writeCount> = $i5;
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        $r17 = $r1.<avrora.sim.mcu.EEPROM: avrora.sim.mcu.EEPROM$EECRReg EECR_reg>;
+        virtualinvoke $r17.<avrora.sim.mcu.EEPROM$EECRReg: void resetEEMWE()>();
+
+     label7:
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 95, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 245, 0);
+        $r1.<avrora.sim.mcu.EEPROM: boolean writeEnableWritten> = 0;
+        $r1 = this.<avrora.sim.mcu.EEPROM$EEPROMTicker: avrora.sim.mcu.EEPROM this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 93, tid_fire, "avrora.sim.mcu.EEPROM$EEPROMTicker", 246, 0);
+        $r1.<avrora.sim.mcu.EEPROM: boolean readEnableWritten> = 0;
+        return;
+    }
+}

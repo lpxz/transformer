@@ -1,0 +1,37 @@
+public class avrora.actions.SimAction$TimeoutException extends java.lang.RuntimeException
+{
+    public final int address;
+    public final avrora.sim.State state;
+    public final long timeout;
+
+    public void <init>(int, avrora.sim.State, long, java.lang.String)
+    {
+        avrora.actions.SimAction$TimeoutException this;
+        int a;
+        avrora.sim.State s;
+        long t;
+        java.lang.String l, $r1, $r2;
+        java.lang.StringBuilder $r0;
+
+        this := @this: avrora.actions.SimAction$TimeoutException;
+        a := @parameter0: int;
+        s := @parameter1: avrora.sim.State;
+        t := @parameter2: long;
+        l := @parameter3: java.lang.String;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("timeout @ ");
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String addrToString(int)>(a);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" reached after ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>(t);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(l);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke this.<java.lang.RuntimeException: void <init>(java.lang.String)>($r2);
+        this.<avrora.actions.SimAction$TimeoutException: int address> = a;
+        this.<avrora.actions.SimAction$TimeoutException: avrora.sim.State state> = s;
+        this.<avrora.actions.SimAction$TimeoutException: long timeout> = t;
+        return;
+    }
+}

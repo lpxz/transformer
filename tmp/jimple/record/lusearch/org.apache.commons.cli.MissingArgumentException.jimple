@@ -1,0 +1,45 @@
+public class org.apache.commons.cli.MissingArgumentException extends org.apache.commons.cli.ParseException
+{
+    private org.apache.commons.cli.Option option;
+
+    public void <init>(java.lang.String)
+    {
+        org.apache.commons.cli.MissingArgumentException this;
+        java.lang.String message;
+
+        this := @this: org.apache.commons.cli.MissingArgumentException;
+        message := @parameter0: java.lang.String;
+        specialinvoke this.<org.apache.commons.cli.ParseException: void <init>(java.lang.String)>(message);
+        return;
+    }
+
+    public void <init>(org.apache.commons.cli.Option)
+    {
+        org.apache.commons.cli.MissingArgumentException this;
+        org.apache.commons.cli.Option option;
+        java.lang.StringBuffer $r0;
+        java.lang.String $r1, $r2;
+
+        this := @this: org.apache.commons.cli.MissingArgumentException;
+        option := @parameter0: org.apache.commons.cli.Option;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Missing argument for option: ");
+        $r1 = virtualinvoke option.<org.apache.commons.cli.Option: java.lang.String getKey()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke this.<org.apache.commons.cli.MissingArgumentException: void <init>(java.lang.String)>($r2);
+        this.<org.apache.commons.cli.MissingArgumentException: org.apache.commons.cli.Option option> = option;
+        return;
+    }
+
+    public org.apache.commons.cli.Option getOption()
+    {
+        org.apache.commons.cli.MissingArgumentException this;
+        org.apache.commons.cli.Option $r0;
+
+        this := @this: org.apache.commons.cli.MissingArgumentException;
+        $r0 = this.<org.apache.commons.cli.MissingArgumentException: org.apache.commons.cli.Option option>;
+        return $r0;
+    }
+}

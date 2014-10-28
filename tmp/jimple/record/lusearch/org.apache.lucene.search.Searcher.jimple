@@ -1,0 +1,261 @@
+public abstract class org.apache.lucene.search.Searcher extends java.lang.Object implements org.apache.lucene.search.Searchable
+{
+    private org.apache.lucene.search.Similarity similarity;
+
+    public void <init>()
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.search.Similarity $r0;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = staticinvoke <org.apache.lucene.search.Similarity: org.apache.lucene.search.Similarity getDefault()>();
+        this.<org.apache.lucene.search.Searcher: org.apache.lucene.search.Similarity similarity> = $r0;
+        return;
+    }
+
+    public final org.apache.lucene.search.Hits search(org.apache.lucene.search.Query) throws java.io.IOException
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.search.Query query;
+        org.apache.lucene.search.Filter $r0;
+        org.apache.lucene.search.Hits $r1;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        query := @parameter0: org.apache.lucene.search.Query;
+        $r0 = (org.apache.lucene.search.Filter) null;
+        $r1 = virtualinvoke this.<org.apache.lucene.search.Searcher: org.apache.lucene.search.Hits search(org.apache.lucene.search.Query,org.apache.lucene.search.Filter)>(query, $r0);
+        return $r1;
+    }
+
+    public org.apache.lucene.search.Hits search(org.apache.lucene.search.Query, org.apache.lucene.search.Filter) throws java.io.IOException
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.search.Query query;
+        org.apache.lucene.search.Filter filter;
+        org.apache.lucene.search.Hits $r0;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        query := @parameter0: org.apache.lucene.search.Query;
+        filter := @parameter1: org.apache.lucene.search.Filter;
+        $r0 = new org.apache.lucene.search.Hits;
+        specialinvoke $r0.<org.apache.lucene.search.Hits: void <init>(org.apache.lucene.search.Searcher,org.apache.lucene.search.Query,org.apache.lucene.search.Filter)>(this, query, filter);
+        return $r0;
+    }
+
+    public org.apache.lucene.search.Hits search(org.apache.lucene.search.Query, org.apache.lucene.search.Sort) throws java.io.IOException
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.search.Query query;
+        org.apache.lucene.search.Sort sort;
+        org.apache.lucene.search.Hits $r0;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        query := @parameter0: org.apache.lucene.search.Query;
+        sort := @parameter1: org.apache.lucene.search.Sort;
+        $r0 = new org.apache.lucene.search.Hits;
+        specialinvoke $r0.<org.apache.lucene.search.Hits: void <init>(org.apache.lucene.search.Searcher,org.apache.lucene.search.Query,org.apache.lucene.search.Filter,org.apache.lucene.search.Sort)>(this, query, null, sort);
+        return $r0;
+    }
+
+    public org.apache.lucene.search.Hits search(org.apache.lucene.search.Query, org.apache.lucene.search.Filter, org.apache.lucene.search.Sort) throws java.io.IOException
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.search.Query query;
+        org.apache.lucene.search.Filter filter;
+        org.apache.lucene.search.Sort sort;
+        org.apache.lucene.search.Hits $r0;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        query := @parameter0: org.apache.lucene.search.Query;
+        filter := @parameter1: org.apache.lucene.search.Filter;
+        sort := @parameter2: org.apache.lucene.search.Sort;
+        $r0 = new org.apache.lucene.search.Hits;
+        specialinvoke $r0.<org.apache.lucene.search.Hits: void <init>(org.apache.lucene.search.Searcher,org.apache.lucene.search.Query,org.apache.lucene.search.Filter,org.apache.lucene.search.Sort)>(this, query, filter, sort);
+        return $r0;
+    }
+
+    public org.apache.lucene.search.TopFieldDocs search(org.apache.lucene.search.Query, org.apache.lucene.search.Filter, int, org.apache.lucene.search.Sort) throws java.io.IOException
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.search.Query query;
+        org.apache.lucene.search.Filter filter;
+        int n;
+        org.apache.lucene.search.Sort sort;
+        org.apache.lucene.search.Weight $r0;
+        org.apache.lucene.search.TopFieldDocs $r1;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        query := @parameter0: org.apache.lucene.search.Query;
+        filter := @parameter1: org.apache.lucene.search.Filter;
+        n := @parameter2: int;
+        sort := @parameter3: org.apache.lucene.search.Sort;
+        $r0 = virtualinvoke this.<org.apache.lucene.search.Searcher: org.apache.lucene.search.Weight createWeight(org.apache.lucene.search.Query)>(query);
+        $r1 = virtualinvoke this.<org.apache.lucene.search.Searcher: org.apache.lucene.search.TopFieldDocs search(org.apache.lucene.search.Weight,org.apache.lucene.search.Filter,int,org.apache.lucene.search.Sort)>($r0, filter, n, sort);
+        return $r1;
+    }
+
+    public void search(org.apache.lucene.search.Query, org.apache.lucene.search.HitCollector) throws java.io.IOException
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.search.Query query;
+        org.apache.lucene.search.HitCollector results;
+        org.apache.lucene.search.Filter $r0;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        query := @parameter0: org.apache.lucene.search.Query;
+        results := @parameter1: org.apache.lucene.search.HitCollector;
+        $r0 = (org.apache.lucene.search.Filter) null;
+        virtualinvoke this.<org.apache.lucene.search.Searcher: void search(org.apache.lucene.search.Query,org.apache.lucene.search.Filter,org.apache.lucene.search.HitCollector)>(query, $r0, results);
+        return;
+    }
+
+    public void search(org.apache.lucene.search.Query, org.apache.lucene.search.Filter, org.apache.lucene.search.HitCollector) throws java.io.IOException
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.search.Query query;
+        org.apache.lucene.search.Filter filter;
+        org.apache.lucene.search.HitCollector results;
+        org.apache.lucene.search.Weight $r0;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        query := @parameter0: org.apache.lucene.search.Query;
+        filter := @parameter1: org.apache.lucene.search.Filter;
+        results := @parameter2: org.apache.lucene.search.HitCollector;
+        $r0 = virtualinvoke this.<org.apache.lucene.search.Searcher: org.apache.lucene.search.Weight createWeight(org.apache.lucene.search.Query)>(query);
+        virtualinvoke this.<org.apache.lucene.search.Searcher: void search(org.apache.lucene.search.Weight,org.apache.lucene.search.Filter,org.apache.lucene.search.HitCollector)>($r0, filter, results);
+        return;
+    }
+
+    public org.apache.lucene.search.TopDocs search(org.apache.lucene.search.Query, org.apache.lucene.search.Filter, int) throws java.io.IOException
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.search.Query query;
+        org.apache.lucene.search.Filter filter;
+        int n;
+        org.apache.lucene.search.Weight $r0;
+        org.apache.lucene.search.TopDocs $r1;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        query := @parameter0: org.apache.lucene.search.Query;
+        filter := @parameter1: org.apache.lucene.search.Filter;
+        n := @parameter2: int;
+        $r0 = virtualinvoke this.<org.apache.lucene.search.Searcher: org.apache.lucene.search.Weight createWeight(org.apache.lucene.search.Query)>(query);
+        $r1 = virtualinvoke this.<org.apache.lucene.search.Searcher: org.apache.lucene.search.TopDocs search(org.apache.lucene.search.Weight,org.apache.lucene.search.Filter,int)>($r0, filter, n);
+        return $r1;
+    }
+
+    public org.apache.lucene.search.TopDocs search(org.apache.lucene.search.Query, int) throws java.io.IOException
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.search.Query query;
+        int n;
+        org.apache.lucene.search.TopDocs $r0;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        query := @parameter0: org.apache.lucene.search.Query;
+        n := @parameter1: int;
+        $r0 = virtualinvoke this.<org.apache.lucene.search.Searcher: org.apache.lucene.search.TopDocs search(org.apache.lucene.search.Query,org.apache.lucene.search.Filter,int)>(query, null, n);
+        return $r0;
+    }
+
+    public org.apache.lucene.search.Explanation explain(org.apache.lucene.search.Query, int) throws java.io.IOException
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.search.Query query;
+        int doc;
+        org.apache.lucene.search.Weight $r0;
+        org.apache.lucene.search.Explanation $r1;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        query := @parameter0: org.apache.lucene.search.Query;
+        doc := @parameter1: int;
+        $r0 = virtualinvoke this.<org.apache.lucene.search.Searcher: org.apache.lucene.search.Weight createWeight(org.apache.lucene.search.Query)>(query);
+        $r1 = virtualinvoke this.<org.apache.lucene.search.Searcher: org.apache.lucene.search.Explanation explain(org.apache.lucene.search.Weight,int)>($r0, doc);
+        return $r1;
+    }
+
+    public void setSimilarity(org.apache.lucene.search.Similarity)
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.search.Similarity similarity;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        similarity := @parameter0: org.apache.lucene.search.Similarity;
+        this.<org.apache.lucene.search.Searcher: org.apache.lucene.search.Similarity similarity> = similarity;
+        return;
+    }
+
+    public org.apache.lucene.search.Similarity getSimilarity()
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.search.Similarity $r0;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        $r0 = this.<org.apache.lucene.search.Searcher: org.apache.lucene.search.Similarity similarity>;
+        return $r0;
+    }
+
+    protected org.apache.lucene.search.Weight createWeight(org.apache.lucene.search.Query) throws java.io.IOException
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.search.Query query;
+        org.apache.lucene.search.Weight $r0;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        query := @parameter0: org.apache.lucene.search.Query;
+        $r0 = virtualinvoke query.<org.apache.lucene.search.Query: org.apache.lucene.search.Weight weight(org.apache.lucene.search.Searcher)>(this);
+        return $r0;
+    }
+
+    public int[] docFreqs(org.apache.lucene.index.Term[]) throws java.io.IOException
+    {
+        org.apache.lucene.search.Searcher this;
+        org.apache.lucene.index.Term[] terms;
+        int[] result;
+        int i, $i0, $i1, $i2;
+        org.apache.lucene.index.Term $r0;
+        long tid_docFreqs;
+        java.lang.Thread thread_docFreqs;
+
+        this := @this: org.apache.lucene.search.Searcher;
+        terms := @parameter0: org.apache.lucene.index.Term[];
+        thread_docFreqs = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_docFreqs = virtualinvoke thread_docFreqs.<java.lang.Thread: long getId()>();
+        $i0 = lengthof terms;
+        result = newarray (int)[$i0];
+        i = 0;
+
+     label0:
+        $i1 = lengthof terms;
+        if i >= $i1 goto label1;
+
+        $r0 = terms[i];
+        $i2 = virtualinvoke this.<org.apache.lucene.search.Searcher: int docFreq(org.apache.lucene.index.Term)>($r0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(result, 22, tid_docFreqs, "org.apache.lucene.search.Searcher", 192, i, $i2);
+        result[i] = $i2;
+        i = i + 1;
+        goto label0;
+
+     label1:
+        return result;
+    }
+
+    public abstract void search(org.apache.lucene.search.Weight, org.apache.lucene.search.Filter, org.apache.lucene.search.HitCollector) throws java.io.IOException;
+
+    public abstract void close() throws java.io.IOException;
+
+    public abstract int docFreq(org.apache.lucene.index.Term) throws java.io.IOException;
+
+    public abstract int maxDoc() throws java.io.IOException;
+
+    public abstract org.apache.lucene.search.TopDocs search(org.apache.lucene.search.Weight, org.apache.lucene.search.Filter, int) throws java.io.IOException;
+
+    public abstract org.apache.lucene.document.Document doc(int) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException;
+
+    public abstract org.apache.lucene.search.Query rewrite(org.apache.lucene.search.Query) throws java.io.IOException;
+
+    public abstract org.apache.lucene.search.Explanation explain(org.apache.lucene.search.Weight, int) throws java.io.IOException;
+
+    public abstract org.apache.lucene.search.TopFieldDocs search(org.apache.lucene.search.Weight, org.apache.lucene.search.Filter, int, org.apache.lucene.search.Sort) throws java.io.IOException;
+}

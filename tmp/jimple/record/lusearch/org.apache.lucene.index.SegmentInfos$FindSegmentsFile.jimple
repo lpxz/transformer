@@ -1,0 +1,407 @@
+public abstract class org.apache.lucene.index.SegmentInfos$FindSegmentsFile extends java.lang.Object
+{
+    java.io.File fileDirectory;
+    org.apache.lucene.store.Directory directory;
+
+    public void <init>(java.io.File)
+    {
+        org.apache.lucene.index.SegmentInfos$FindSegmentsFile this;
+        java.io.File directory;
+
+        this := @this: org.apache.lucene.index.SegmentInfos$FindSegmentsFile;
+        directory := @parameter0: java.io.File;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: java.io.File fileDirectory> = directory;
+        return;
+    }
+
+    public void <init>(org.apache.lucene.store.Directory)
+    {
+        org.apache.lucene.index.SegmentInfos$FindSegmentsFile this;
+        org.apache.lucene.store.Directory directory;
+
+        this := @this: org.apache.lucene.index.SegmentInfos$FindSegmentsFile;
+        directory := @parameter0: org.apache.lucene.store.Directory;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: org.apache.lucene.store.Directory directory> = directory;
+        return;
+    }
+
+    public java.lang.Object run() throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfos$FindSegmentsFile this;
+        null_type segmentFileName, files;
+        long lastGen, gen, genA, genB, gen0, gen1, $l3, $l4, tid_run;
+        int genLookaheadCount, i, version, $i0, $i2;
+        java.io.IOException exc, err2, err, $r5, e, $r6, $r15, $r17;
+        boolean retry, method, prevExists;
+        org.apache.lucene.store.IndexInput genInput;
+        java.io.FileNotFoundException e, $r4, $r10;
+        java.lang.Throwable l22, $r7;
+        java.lang.String s, prevSegmentFileName, $r3, $r9, $r13, segmentFileName;
+        java.lang.Object v;
+        org.apache.lucene.store.Directory $r0, $r12;
+        java.lang.String[] files;
+        java.io.File $r1, $r16;
+        java.lang.StringBuffer $r2, $r11;
+        byte $b1;
+        java.lang.InterruptedException $r8, e;
+        java.lang.Thread thread_run;
+
+        this := @this: org.apache.lucene.index.SegmentInfos$FindSegmentsFile;
+        thread_run = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_run = virtualinvoke thread_run.<java.lang.Thread: long getId()>();
+        segmentFileName = null;
+        lastGen = -1L;
+        gen = 0L;
+        genLookaheadCount = 0;
+        exc = null;
+        retry = 0;
+        method = 0;
+
+     label0:
+        if 0 != method goto label30;
+
+        files = null;
+        genA = -1L;
+        $r0 = this.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: org.apache.lucene.store.Directory directory>;
+        if $r0 == null goto label1;
+
+        $r0 = this.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: org.apache.lucene.store.Directory directory>;
+        files = virtualinvoke $r0.<org.apache.lucene.store.Directory: java.lang.String[] list()>();
+        goto label2;
+
+     label1:
+        $r1 = this.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: java.io.File fileDirectory>;
+        files = virtualinvoke $r1.<java.io.File: java.lang.String[] list()>();
+
+     label2:
+        if files == null goto label3;
+
+        genA = staticinvoke <org.apache.lucene.index.SegmentInfos: long getCurrentSegmentGeneration(java.lang.String[])>(files);
+
+     label3:
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("directory listing genA=");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(long)>(genA);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <org.apache.lucene.index.SegmentInfos: void access$000(java.lang.String)>($r3);
+        genB = -1L;
+        $r0 = this.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: org.apache.lucene.store.Directory directory>;
+        if $r0 == null goto label23;
+
+        i = 0;
+
+     label4:
+        $i0 = staticinvoke <org.apache.lucene.index.SegmentInfos: int access$100()>();
+        if i >= $i0 goto label23;
+
+        genInput = null;
+
+     label5:
+        $r0 = this.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: org.apache.lucene.store.Directory directory>;
+        genInput = virtualinvoke $r0.<org.apache.lucene.store.Directory: org.apache.lucene.store.IndexInput openInput(java.lang.String)>("segments.gen");
+
+     label6:
+        goto label9;
+
+     label7:
+        $r4 := @caughtexception;
+        e = $r4;
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("segments.gen open: FileNotFoundException ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(e);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <org.apache.lucene.index.SegmentInfos: void access$000(java.lang.String)>($r3);
+        goto label23;
+
+     label8:
+        $r5 := @caughtexception;
+        e = $r5;
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("segments.gen open: IOException ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(e);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <org.apache.lucene.index.SegmentInfos: void access$000(java.lang.String)>($r3);
+
+     label9:
+        if genInput == null goto label19;
+
+     label10:
+        version = virtualinvoke genInput.<org.apache.lucene.store.IndexInput: int readInt()>();
+        if version != -2 goto label12;
+
+        gen0 = virtualinvoke genInput.<org.apache.lucene.store.IndexInput: long readLong()>();
+        gen1 = virtualinvoke genInput.<org.apache.lucene.store.IndexInput: long readLong()>();
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("fallback check: ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(long)>(gen0);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("; ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(long)>(gen1);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <org.apache.lucene.index.SegmentInfos: void access$000(java.lang.String)>($r3);
+        $b1 = gen0 cmp gen1;
+        if $b1 != 0 goto label12;
+
+        genB = gen0;
+
+     label11:
+        virtualinvoke genInput.<org.apache.lucene.store.IndexInput: void close()>();
+        goto label23;
+
+     label12:
+        virtualinvoke genInput.<org.apache.lucene.store.IndexInput: void close()>();
+        goto label19;
+
+     label13:
+        $r6 := @caughtexception;
+
+     label14:
+        err2 = $r6;
+
+     label15:
+        virtualinvoke genInput.<org.apache.lucene.store.IndexInput: void close()>();
+        goto label19;
+
+     label16:
+        $r7 := @caughtexception;
+
+     label17:
+        l22 = $r7;
+
+     label18:
+        virtualinvoke genInput.<org.apache.lucene.store.IndexInput: void close()>();
+        throw l22;
+
+     label19:
+        $i2 = staticinvoke <org.apache.lucene.index.SegmentInfos: int access$200()>();
+        $l3 = (long) $i2;
+        staticinvoke <java.lang.Thread: void sleep(long)>($l3);
+
+     label20:
+        goto label22;
+
+     label21:
+        $r8 := @caughtexception;
+        e = $r8;
+
+     label22:
+        i = i + 1;
+        goto label4;
+
+     label23:
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("segments.gen check: genB=");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(long)>(genB);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <org.apache.lucene.index.SegmentInfos: void access$000(java.lang.String)>($r3);
+        $b1 = genA cmp genB;
+        if $b1 <= 0 goto label24;
+
+        gen = genA;
+        goto label25;
+
+     label24:
+        gen = genB;
+
+     label25:
+        $b1 = gen cmp -1L;
+        if $b1 != 0 goto label30;
+
+        if files == null goto label28;
+
+        s = "";
+        i = 0;
+
+     label26:
+        $i0 = lengthof files;
+        if i >= $i0 goto label27;
+
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(s);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(files, 10, tid_run, "org.apache.lucene.index.SegmentInfos$FindSegmentsFile", 601, i, $r9);
+        $r9 = files[i];
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r9);
+        s = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        i = i + 1;
+        goto label26;
+
+     label27:
+        goto label29;
+
+     label28:
+        s = " null";
+
+     label29:
+        $r10 = new java.io.FileNotFoundException;
+        $r11 = new java.lang.StringBuffer;
+        specialinvoke $r11.<java.lang.StringBuffer: void <init>()>();
+        $r11 = virtualinvoke $r11.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("no segments* file found in ");
+        $r12 = this.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: org.apache.lucene.store.Directory directory>;
+        $r11 = virtualinvoke $r11.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r12);
+        $r11 = virtualinvoke $r11.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(": files:");
+        $r11 = virtualinvoke $r11.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(s);
+        $r13 = virtualinvoke $r11.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r10.<java.io.FileNotFoundException: void <init>(java.lang.String)>($r13);
+        throw $r10;
+
+     label30:
+        if 1 == method goto label31;
+
+        if 0 != method goto label32;
+
+        $b1 = lastGen cmp gen;
+        if $b1 != 0 goto label32;
+
+        if retry == 0 goto label32;
+
+     label31:
+        method = 1;
+        $i0 = staticinvoke <org.apache.lucene.index.SegmentInfos: int access$300()>();
+        if genLookaheadCount >= $i0 goto label32;
+
+        gen = gen + 1L;
+        genLookaheadCount = genLookaheadCount + 1;
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("look ahead increment gen to ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(long)>(gen);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <org.apache.lucene.index.SegmentInfos: void access$000(java.lang.String)>($r3);
+
+     label32:
+        $b1 = lastGen cmp gen;
+        if $b1 != 0 goto label34;
+
+        if retry == 0 goto label33;
+
+        throw exc;
+
+     label33:
+        retry = 1;
+        goto label35;
+
+     label34:
+        if 0 != method goto label35;
+
+        retry = 0;
+
+     label35:
+        lastGen = gen;
+        segmentFileName = staticinvoke <org.apache.lucene.index.IndexFileNames: java.lang.String fileNameFromGeneration(java.lang.String,java.lang.String,long)>("segments", "", gen);
+
+     label36:
+        v = virtualinvoke this.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: java.lang.Object doBody(java.lang.String)>(segmentFileName);
+        if exc == null goto label37;
+
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("success on ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(segmentFileName);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <org.apache.lucene.index.SegmentInfos: void access$000(java.lang.String)>($r3);
+
+     label37:
+        return v;
+
+     label38:
+        $r15 := @caughtexception;
+        err = $r15;
+        if exc != null goto label39;
+
+        exc = err;
+
+     label39:
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("primary Exception on \'");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(segmentFileName);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\': ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(err);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\'; will retry: retry=");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(boolean)>(retry);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("; gen = ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(long)>(gen);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <org.apache.lucene.index.SegmentInfos: void access$000(java.lang.String)>($r3);
+        if retry != 0 goto label45;
+
+        $b1 = gen cmp 1L;
+        if $b1 <= 0 goto label45;
+
+        $l4 = gen - 1L;
+        prevSegmentFileName = staticinvoke <org.apache.lucene.index.IndexFileNames: java.lang.String fileNameFromGeneration(java.lang.String,java.lang.String,long)>("segments", "", $l4);
+        $r0 = this.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: org.apache.lucene.store.Directory directory>;
+        if $r0 == null goto label40;
+
+        $r0 = this.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: org.apache.lucene.store.Directory directory>;
+        prevExists = virtualinvoke $r0.<org.apache.lucene.store.Directory: boolean fileExists(java.lang.String)>(prevSegmentFileName);
+        goto label41;
+
+     label40:
+        $r1 = new java.io.File;
+        $r16 = this.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: java.io.File fileDirectory>;
+        specialinvoke $r1.<java.io.File: void <init>(java.io.File,java.lang.String)>($r16, prevSegmentFileName);
+        prevExists = virtualinvoke $r1.<java.io.File: boolean exists()>();
+
+     label41:
+        if prevExists == 0 goto label45;
+
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("fallback to prior segment file \'");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(prevSegmentFileName);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\'");
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <org.apache.lucene.index.SegmentInfos: void access$000(java.lang.String)>($r3);
+
+     label42:
+        v = virtualinvoke this.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: java.lang.Object doBody(java.lang.String)>(prevSegmentFileName);
+        if exc == null goto label43;
+
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("success on fallback ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(prevSegmentFileName);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <org.apache.lucene.index.SegmentInfos: void access$000(java.lang.String)>($r3);
+
+     label43:
+        return v;
+
+     label44:
+        $r17 := @caughtexception;
+        err2 = $r17;
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("secondary Exception on \'");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(prevSegmentFileName);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\': ");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(err2);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\'; will retry");
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <org.apache.lucene.index.SegmentInfos: void access$000(java.lang.String)>($r3);
+
+     label45:
+        goto label0;
+
+        catch java.io.FileNotFoundException from label5 to label6 with label7;
+        catch java.io.IOException from label5 to label6 with label8;
+        catch java.io.IOException from label10 to label11 with label13;
+        catch java.lang.Throwable from label10 to label11 with label16;
+        catch java.lang.Throwable from label14 to label15 with label16;
+        catch java.lang.Throwable from label17 to label18 with label16;
+        catch java.lang.InterruptedException from label19 to label20 with label21;
+        catch java.io.IOException from label36 to label37 with label38;
+        catch java.io.IOException from label42 to label43 with label44;
+    }
+
+    protected abstract java.lang.Object doBody(java.lang.String) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException;
+}

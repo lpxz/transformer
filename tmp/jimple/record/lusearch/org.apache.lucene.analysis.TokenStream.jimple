@@ -1,0 +1,135 @@
+public abstract class org.apache.lucene.analysis.TokenStream extends java.lang.Object
+{
+    static final boolean $assertionsDisabled;
+    static java.lang.Class class$org$apache$lucene$analysis$TokenStream;
+
+    public void <init>()
+    {
+        org.apache.lucene.analysis.TokenStream this;
+
+        this := @this: org.apache.lucene.analysis.TokenStream;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public org.apache.lucene.analysis.Token next() throws java.io.IOException
+    {
+        org.apache.lucene.analysis.TokenStream this;
+        org.apache.lucene.analysis.Token $r0, reusableToken, nextToken;
+        org.apache.lucene.index.Payload p, $r2;
+        java.lang.Object $r1;
+
+        this := @this: org.apache.lucene.analysis.TokenStream;
+        $r0 = new org.apache.lucene.analysis.Token;
+        specialinvoke $r0.<org.apache.lucene.analysis.Token: void <init>()>();
+        reusableToken = $r0;
+        nextToken = virtualinvoke this.<org.apache.lucene.analysis.TokenStream: org.apache.lucene.analysis.Token next(org.apache.lucene.analysis.Token)>(reusableToken);
+        if nextToken == null goto label0;
+
+        p = virtualinvoke nextToken.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload getPayload()>();
+        if p == null goto label0;
+
+        $r1 = virtualinvoke p.<org.apache.lucene.index.Payload: java.lang.Object clone()>();
+        $r2 = (org.apache.lucene.index.Payload) $r1;
+        virtualinvoke nextToken.<org.apache.lucene.analysis.Token: void setPayload(org.apache.lucene.index.Payload)>($r2);
+
+     label0:
+        return nextToken;
+    }
+
+    public org.apache.lucene.analysis.Token next(org.apache.lucene.analysis.Token) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.TokenStream this;
+        org.apache.lucene.analysis.Token reusableToken, $r1;
+        boolean $z0;
+        java.lang.AssertionError $r0;
+
+        this := @this: org.apache.lucene.analysis.TokenStream;
+        reusableToken := @parameter0: org.apache.lucene.analysis.Token;
+        $z0 = <org.apache.lucene.analysis.TokenStream: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label0;
+
+        if reusableToken != null goto label0;
+
+        $r0 = new java.lang.AssertionError;
+        specialinvoke $r0.<java.lang.AssertionError: void <init>()>();
+        throw $r0;
+
+     label0:
+        $r1 = virtualinvoke this.<org.apache.lucene.analysis.TokenStream: org.apache.lucene.analysis.Token next()>();
+        return $r1;
+    }
+
+    public void reset() throws java.io.IOException
+    {
+        org.apache.lucene.analysis.TokenStream this;
+
+        this := @this: org.apache.lucene.analysis.TokenStream;
+        return;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        org.apache.lucene.analysis.TokenStream this;
+
+        this := @this: org.apache.lucene.analysis.TokenStream;
+        return;
+    }
+
+    static java.lang.Class class$(java.lang.String)
+    {
+        java.lang.String x0;
+        java.lang.ClassNotFoundException x1, $r1;
+        java.lang.Class $r0;
+        java.lang.NoClassDefFoundError $r2;
+        java.lang.Throwable $r3;
+
+        x0 := @parameter0: java.lang.String;
+
+     label0:
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(x0);
+
+     label1:
+        return $r0;
+
+     label2:
+        $r1 := @caughtexception;
+        x1 = $r1;
+        $r2 = new java.lang.NoClassDefFoundError;
+        specialinvoke $r2.<java.lang.NoClassDefFoundError: void <init>()>();
+        $r3 = virtualinvoke $r2.<java.lang.NoClassDefFoundError: java.lang.Throwable initCause(java.lang.Throwable)>(x1);
+        throw $r3;
+
+        catch java.lang.ClassNotFoundException from label0 to label1 with label2;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        boolean $z0;
+
+        $r0 = <org.apache.lucene.analysis.TokenStream: java.lang.Class class$org$apache$lucene$analysis$TokenStream>;
+        if $r0 != null goto label0;
+
+        $r0 = staticinvoke <org.apache.lucene.analysis.TokenStream: java.lang.Class class$(java.lang.String)>("org.apache.lucene.analysis.TokenStream");
+        <org.apache.lucene.analysis.TokenStream: java.lang.Class class$org$apache$lucene$analysis$TokenStream> = $r0;
+        goto label1;
+
+     label0:
+        $r0 = <org.apache.lucene.analysis.TokenStream: java.lang.Class class$org$apache$lucene$analysis$TokenStream>;
+
+     label1:
+        $z0 = virtualinvoke $r0.<java.lang.Class: boolean desiredAssertionStatus()>();
+        if $z0 != 0 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        <org.apache.lucene.analysis.TokenStream: boolean $assertionsDisabled> = $z0;
+        return;
+    }
+}

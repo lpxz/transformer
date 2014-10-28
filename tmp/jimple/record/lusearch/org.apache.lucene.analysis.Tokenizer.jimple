@@ -1,0 +1,47 @@
+public abstract class org.apache.lucene.analysis.Tokenizer extends org.apache.lucene.analysis.TokenStream
+{
+    protected java.io.Reader input;
+
+    protected void <init>()
+    {
+        org.apache.lucene.analysis.Tokenizer this;
+
+        this := @this: org.apache.lucene.analysis.Tokenizer;
+        specialinvoke this.<org.apache.lucene.analysis.TokenStream: void <init>()>();
+        return;
+    }
+
+    protected void <init>(java.io.Reader)
+    {
+        org.apache.lucene.analysis.Tokenizer this;
+        java.io.Reader input;
+
+        this := @this: org.apache.lucene.analysis.Tokenizer;
+        input := @parameter0: java.io.Reader;
+        specialinvoke this.<org.apache.lucene.analysis.TokenStream: void <init>()>();
+        this.<org.apache.lucene.analysis.Tokenizer: java.io.Reader input> = input;
+        return;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        org.apache.lucene.analysis.Tokenizer this;
+        java.io.Reader $r0;
+
+        this := @this: org.apache.lucene.analysis.Tokenizer;
+        $r0 = this.<org.apache.lucene.analysis.Tokenizer: java.io.Reader input>;
+        virtualinvoke $r0.<java.io.Reader: void close()>();
+        return;
+    }
+
+    public void reset(java.io.Reader) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.Tokenizer this;
+        java.io.Reader input;
+
+        this := @this: org.apache.lucene.analysis.Tokenizer;
+        input := @parameter0: java.io.Reader;
+        this.<org.apache.lucene.analysis.Tokenizer: java.io.Reader input> = input;
+        return;
+    }
+}

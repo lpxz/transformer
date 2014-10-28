@@ -1,0 +1,193 @@
+public class cck.util.VersionTag extends java.lang.Object
+{
+    private static final java.util.HashMap tags;
+    public final java.lang.String module;
+    public final java.lang.String prefix;
+    public final int major;
+    public final int minor;
+    public final int commit;
+    public final java.lang.String string;
+    public final java.lang.String suffix;
+
+    public static cck.util.VersionTag getVersionTag(java.lang.String)
+    {
+        java.lang.String module;
+        java.util.HashMap $r0;
+        java.lang.Object $r1;
+        cck.util.VersionTag $r2;
+
+        module := @parameter0: java.lang.String;
+        $r0 = <cck.util.VersionTag: java.util.HashMap tags>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(module);
+        $r2 = (cck.util.VersionTag) $r1;
+        return $r2;
+    }
+
+    public void <init>(java.lang.String, java.lang.String, int, int, int)
+    {
+        cck.util.VersionTag this;
+        java.lang.String mod, prefix, $r1, $r2;
+        int maj, min, comm, $i0;
+        java.lang.StringBuilder $r0;
+        java.util.HashMap $r3;
+
+        this := @this: cck.util.VersionTag;
+        mod := @parameter0: java.lang.String;
+        prefix := @parameter1: java.lang.String;
+        maj := @parameter2: int;
+        min := @parameter3: int;
+        comm := @parameter4: int;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<cck.util.VersionTag: java.lang.String module> = mod;
+        this.<cck.util.VersionTag: java.lang.String prefix> = prefix;
+        this.<cck.util.VersionTag: int major> = maj;
+        this.<cck.util.VersionTag: int minor> = min;
+        this.<cck.util.VersionTag: int commit> = comm;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r1 = specialinvoke this.<cck.util.VersionTag: java.lang.String prefixString(boolean,char)>(0, 32);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $i0 = this.<cck.util.VersionTag: int major>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+        $i0 = this.<cck.util.VersionTag: int minor>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+        $r1 = specialinvoke this.<cck.util.VersionTag: java.lang.String commitNumber()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        this.<cck.util.VersionTag: java.lang.String string> = $r2;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r1 = specialinvoke this.<cck.util.VersionTag: java.lang.String prefixString(boolean,char)>(1, 45);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $i0 = this.<cck.util.VersionTag: int major>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+        $i0 = this.<cck.util.VersionTag: int minor>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+        $r1 = specialinvoke this.<cck.util.VersionTag: java.lang.String commitNumber()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        this.<cck.util.VersionTag: java.lang.String suffix> = $r2;
+        $r3 = <cck.util.VersionTag: java.util.HashMap tags>;
+        virtualinvoke $r3.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(mod, this);
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        cck.util.VersionTag this;
+        java.lang.String $r0;
+
+        this := @this: cck.util.VersionTag;
+        $r0 = this.<cck.util.VersionTag: java.lang.String string>;
+        return $r0;
+    }
+
+    private java.lang.String prefixString(boolean, char)
+    {
+        cck.util.VersionTag this;
+        boolean lower;
+        char suffix;
+        java.lang.String $r0, $r2;
+        int $i0;
+        java.lang.StringBuilder $r1;
+
+        this := @this: cck.util.VersionTag;
+        lower := @parameter0: boolean;
+        suffix := @parameter1: char;
+        $r0 = this.<cck.util.VersionTag: java.lang.String prefix>;
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+        if $i0 != 0 goto label0;
+
+        return "";
+
+     label0:
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+        if lower == 0 goto label1;
+
+        $r2 = this.<cck.util.VersionTag: java.lang.String prefix>;
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String toLowerCase()>();
+        goto label2;
+
+     label1:
+        $r2 = this.<cck.util.VersionTag: java.lang.String prefix>;
+
+     label2:
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(suffix);
+        $r0 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r0;
+    }
+
+    private java.lang.String commitNumber()
+    {
+        cck.util.VersionTag this;
+        int $i0, $i1;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+
+        this := @this: cck.util.VersionTag;
+        $i0 = this.<cck.util.VersionTag: int commit>;
+        if $i0 >= 10 goto label0;
+
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("00");
+        $i1 = this.<cck.util.VersionTag: int commit>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r1;
+
+     label0:
+        $i0 = this.<cck.util.VersionTag: int commit>;
+        if $i0 >= 100 goto label1;
+
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("0");
+        $i1 = this.<cck.util.VersionTag: int commit>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r1;
+
+     label1:
+        $i0 = this.<cck.util.VersionTag: int commit>;
+        $r1 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>($i0);
+        return $r1;
+    }
+
+    public boolean isStable()
+    {
+        cck.util.VersionTag this;
+        int $i0;
+        boolean $z0;
+
+        this := @this: cck.util.VersionTag;
+        $i0 = this.<cck.util.VersionTag: int minor>;
+        $i0 = $i0 % 2;
+        if $i0 != 0 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    static void <clinit>()
+    {
+        java.util.HashMap $r0;
+
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        <cck.util.VersionTag: java.util.HashMap tags> = $r0;
+        return;
+    }
+}

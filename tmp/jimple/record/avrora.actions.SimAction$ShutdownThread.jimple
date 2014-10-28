@@ -1,0 +1,36 @@
+public class avrora.actions.SimAction$ShutdownThread extends java.lang.Thread
+{
+    final avrora.actions.SimAction this$0;
+
+    public void <init>(avrora.actions.SimAction)
+    {
+        avrora.actions.SimAction$ShutdownThread this;
+        avrora.actions.SimAction l1;
+
+        this := @this: avrora.actions.SimAction$ShutdownThread;
+        l1 := @parameter0: avrora.actions.SimAction;
+        this.<avrora.actions.SimAction$ShutdownThread: avrora.actions.SimAction this$0> = l1;
+        specialinvoke this.<java.lang.Thread: void <init>()>();
+        return;
+    }
+
+    public void run()
+    {
+        avrora.actions.SimAction$ShutdownThread this;
+        avrora.actions.SimAction$AsynchronousExit $r0;
+        avrora.actions.SimAction $r1;
+        long tid_run;
+        java.lang.Thread thread_run;
+
+        this := @this: avrora.actions.SimAction$ShutdownThread;
+        thread_run = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_run = virtualinvoke thread_run.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void threadStartRun(long)>(tid_run);
+        $r1 = this.<avrora.actions.SimAction$ShutdownThread: avrora.actions.SimAction this$0>;
+        $r0 = new avrora.actions.SimAction$AsynchronousExit;
+        specialinvoke $r0.<avrora.actions.SimAction$AsynchronousExit: void <init>()>();
+        staticinvoke <avrora.actions.SimAction: void access$000(avrora.actions.SimAction,java.lang.Throwable)>($r1, $r0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void threadExitRun(long)>(tid_run);
+        return;
+    }
+}

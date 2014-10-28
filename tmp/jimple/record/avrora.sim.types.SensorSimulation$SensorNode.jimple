@@ -1,0 +1,442 @@
+public class avrora.sim.types.SensorSimulation$SensorNode extends avrora.sim.Simulation$Node
+{
+    avrora.sim.radio.Radio radio;
+    long startup;
+    java.util.List sensorInput;
+    final avrora.sim.types.SensorSimulation this$0;
+
+    void <init>(avrora.sim.types.SensorSimulation, int, avrora.sim.platform.PlatformFactory, avrora.core.LoadableProgram)
+    {
+        avrora.sim.types.SensorSimulation$SensorNode this;
+        avrora.sim.types.SensorSimulation l1;
+        int id;
+        avrora.sim.platform.PlatformFactory pf;
+        avrora.core.LoadableProgram p;
+        java.util.LinkedList $r0;
+
+        this := @this: avrora.sim.types.SensorSimulation$SensorNode;
+        l1 := @parameter0: avrora.sim.types.SensorSimulation;
+        id := @parameter1: int;
+        pf := @parameter2: avrora.sim.platform.PlatformFactory;
+        p := @parameter3: avrora.core.LoadableProgram;
+        this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0> = l1;
+        specialinvoke this.<avrora.sim.Simulation$Node: void <init>(avrora.sim.Simulation,int,avrora.sim.platform.PlatformFactory,avrora.core.LoadableProgram)>(l1, id, pf, p);
+        $r0 = new java.util.LinkedList;
+        specialinvoke $r0.<java.util.LinkedList: void <init>()>();
+        this.<avrora.sim.types.SensorSimulation$SensorNode: java.util.List sensorInput> = $r0;
+        return;
+    }
+
+    protected void instantiate()
+    {
+        avrora.sim.types.SensorSimulation$SensorNode this;
+
+        this := @this: avrora.sim.types.SensorSimulation$SensorNode;
+        specialinvoke this.<avrora.sim.types.SensorSimulation$SensorNode: void createNode()>();
+        specialinvoke this.<avrora.sim.types.SensorSimulation$SensorNode: void updateNodeID()>();
+        specialinvoke this.<avrora.sim.types.SensorSimulation$SensorNode: void addSensorData()>();
+        return;
+    }
+
+    private void addSensorData()
+    {
+        avrora.sim.types.SensorSimulation$SensorNode this;
+        java.util.Iterator i;
+        avrora.sim.types.SensorSimulation$SensorDataInput sdi;
+        java.util.List $r0;
+        boolean $z0;
+        java.lang.Object $r1;
+        avrora.sim.platform.Platform $r2;
+
+        this := @this: avrora.sim.types.SensorSimulation$SensorNode;
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: java.util.List sensorInput>;
+        i = interfaceinvoke $r0.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r1 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        sdi = (avrora.sim.types.SensorSimulation$SensorDataInput) $r1;
+        $r2 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.platform.Platform platform>;
+        virtualinvoke sdi.<avrora.sim.types.SensorSimulation$SensorDataInput: void instantiate(avrora.sim.platform.Platform)>($r2);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    private void createNode()
+    {
+        avrora.sim.types.SensorSimulation$SensorNode this;
+        avrora.sim.SimulatorThread $r0;
+        java.lang.Object dev;
+        avrora.sim.radio.CC2420Radio radio;
+        avrora.sim.platform.Platform $r1;
+        boolean $z0;
+        avrora.sim.radio.Medium $r2;
+        avrora.sim.radio.CC1000Radio radio;
+        avrora.sim.Simulator $r3;
+        long $l0;
+        avrora.sim.types.SensorSimulation $r4;
+        avrora.sim.radio.Topology $r5;
+
+        this := @this: avrora.sim.types.SensorSimulation$SensorNode;
+        $r0 = new avrora.sim.SimulatorThread;
+        specialinvoke $r0.<avrora.sim.SimulatorThread: void <init>(avrora.sim.Simulation$Node)>(this);
+        this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.SimulatorThread thread> = $r0;
+        specialinvoke this.<avrora.sim.Simulation$Node: void instantiate()>();
+        $r1 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.platform.Platform platform>;
+        dev = virtualinvoke $r1.<avrora.sim.platform.Platform: java.lang.Object getDevice(java.lang.String)>("radio");
+        $z0 = dev instanceof avrora.sim.radio.CC2420Radio;
+        if $z0 == 0 goto label0;
+
+        radio = (avrora.sim.radio.CC2420Radio) dev;
+        this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.radio.Radio radio> = radio;
+        $r2 = specialinvoke this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.radio.Medium createCC2420Medium()>();
+        virtualinvoke radio.<avrora.sim.radio.CC2420Radio: void setMedium(avrora.sim.radio.Medium)>($r2);
+        goto label1;
+
+     label0:
+        $z0 = dev instanceof avrora.sim.radio.CC1000Radio;
+        if $z0 == 0 goto label1;
+
+        radio = (avrora.sim.radio.CC1000Radio) dev;
+        this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.radio.Radio radio> = radio;
+        $r2 = specialinvoke this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.radio.Medium createCC1000Medium()>();
+        virtualinvoke radio.<avrora.sim.radio.CC1000Radio: void setMedium(avrora.sim.radio.Medium)>($r2);
+
+     label1:
+        $r3 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.Simulator simulator>;
+        $l0 = this.<avrora.sim.types.SensorSimulation$SensorNode: long startup>;
+        virtualinvoke $r3.<avrora.sim.Simulator: void delay(long)>($l0);
+        $r4 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r5 = $r4.<avrora.sim.types.SensorSimulation: avrora.sim.radio.Topology topology>;
+        if $r5 == null goto label2;
+
+        specialinvoke this.<avrora.sim.types.SensorSimulation$SensorNode: void setNodePosition()>();
+        return;
+
+     label2:
+        return;
+    }
+
+    private avrora.sim.radio.Medium createCC2420Medium()
+    {
+        avrora.sim.types.SensorSimulation$SensorNode this;
+        avrora.sim.types.SensorSimulation $r0, $r3, $r5;
+        avrora.sim.radio.Medium $r1, $r7;
+        cck.util.Option$Bool $r2;
+        boolean $z0;
+        avrora.sim.clock.Synchronizer $r4;
+        avrora.sim.radio.LossyModel $r6;
+        avrora.sim.radio.RadiusModel $r8;
+        avrora.sim.radio.Medium$Arbitrator tmp;
+
+        this := @this: avrora.sim.types.SensorSimulation$SensorNode;
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r1 = $r0.<avrora.sim.types.SensorSimulation: avrora.sim.radio.Medium cc2420_medium>;
+        if $r1 != null goto label1;
+
+        specialinvoke this.<avrora.sim.types.SensorSimulation$SensorNode: void createRadioModel()>();
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r2 = $r0.<avrora.sim.types.SensorSimulation: cck.util.Option$Bool LOSSY_MODEL>;
+        $z0 = virtualinvoke $r2.<cck.util.Option$Bool: boolean get()>();
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r3 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r4 = staticinvoke <avrora.sim.types.SensorSimulation: avrora.sim.clock.Synchronizer access$000(avrora.sim.types.SensorSimulation)>($r3);
+        $r5 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r6 = $r5.<avrora.sim.types.SensorSimulation: avrora.sim.radio.LossyModel lossyModel>;
+        tmp = (avrora.sim.radio.Medium$Arbitrator) $r6;
+        $r7 = staticinvoke <avrora.sim.radio.CC2420Radio: avrora.sim.radio.Medium createMedium(avrora.sim.clock.Synchronizer,avrora.sim.radio.Medium$Arbitrator)>($r4, tmp);
+        $r0.<avrora.sim.types.SensorSimulation: avrora.sim.radio.Medium cc2420_medium> = $r7;
+        return $r7;
+
+     label0:
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r3 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r4 = staticinvoke <avrora.sim.types.SensorSimulation: avrora.sim.clock.Synchronizer access$100(avrora.sim.types.SensorSimulation)>($r3);
+        $r5 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r8 = $r5.<avrora.sim.types.SensorSimulation: avrora.sim.radio.RadiusModel radiusModel>;
+        tmp = (avrora.sim.radio.Medium$Arbitrator) $r8;
+        $r7 = staticinvoke <avrora.sim.radio.CC2420Radio: avrora.sim.radio.Medium createMedium(avrora.sim.clock.Synchronizer,avrora.sim.radio.Medium$Arbitrator)>($r4, tmp);
+        $r0.<avrora.sim.types.SensorSimulation: avrora.sim.radio.Medium cc2420_medium> = $r7;
+        return $r7;
+
+     label1:
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r1 = $r0.<avrora.sim.types.SensorSimulation: avrora.sim.radio.Medium cc2420_medium>;
+        return $r1;
+    }
+
+    private avrora.sim.radio.Medium createCC1000Medium()
+    {
+        avrora.sim.types.SensorSimulation$SensorNode this;
+        avrora.sim.types.SensorSimulation $r0, $r3, $r5;
+        avrora.sim.radio.Medium $r1, $r7;
+        cck.util.Option$Bool $r2;
+        boolean $z0;
+        avrora.sim.clock.Synchronizer $r4;
+        avrora.sim.radio.LossyModel $r6;
+        avrora.sim.radio.RadiusModel $r8;
+        avrora.sim.radio.Medium$Arbitrator tmp;
+
+        this := @this: avrora.sim.types.SensorSimulation$SensorNode;
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r1 = $r0.<avrora.sim.types.SensorSimulation: avrora.sim.radio.Medium cc1000_medium>;
+        if $r1 != null goto label1;
+
+        specialinvoke this.<avrora.sim.types.SensorSimulation$SensorNode: void createRadioModel()>();
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r2 = $r0.<avrora.sim.types.SensorSimulation: cck.util.Option$Bool LOSSY_MODEL>;
+        $z0 = virtualinvoke $r2.<cck.util.Option$Bool: boolean get()>();
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r3 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r4 = staticinvoke <avrora.sim.types.SensorSimulation: avrora.sim.clock.Synchronizer access$200(avrora.sim.types.SensorSimulation)>($r3);
+        $r5 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r6 = $r5.<avrora.sim.types.SensorSimulation: avrora.sim.radio.LossyModel lossyModel>;
+        tmp = (avrora.sim.radio.Medium$Arbitrator) $r6;
+        $r7 = staticinvoke <avrora.sim.radio.CC1000Radio: avrora.sim.radio.Medium createMedium(avrora.sim.clock.Synchronizer,avrora.sim.radio.Medium$Arbitrator)>($r4, tmp);
+        $r0.<avrora.sim.types.SensorSimulation: avrora.sim.radio.Medium cc1000_medium> = $r7;
+        return $r7;
+
+     label0:
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r3 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r4 = staticinvoke <avrora.sim.types.SensorSimulation: avrora.sim.clock.Synchronizer access$300(avrora.sim.types.SensorSimulation)>($r3);
+        $r5 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r8 = $r5.<avrora.sim.types.SensorSimulation: avrora.sim.radio.RadiusModel radiusModel>;
+        tmp = (avrora.sim.radio.Medium$Arbitrator) $r8;
+        $r7 = staticinvoke <avrora.sim.radio.CC1000Radio: avrora.sim.radio.Medium createMedium(avrora.sim.clock.Synchronizer,avrora.sim.radio.Medium$Arbitrator)>($r4, tmp);
+        $r0.<avrora.sim.types.SensorSimulation: avrora.sim.radio.Medium cc1000_medium> = $r7;
+        return $r7;
+
+     label1:
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r1 = $r0.<avrora.sim.types.SensorSimulation: avrora.sim.radio.Medium cc1000_medium>;
+        return $r1;
+    }
+
+    private void createRadioModel()
+    {
+        avrora.sim.types.SensorSimulation$SensorNode this;
+        avrora.sim.radio.Topology $r0, $r2;
+        java.io.IOException e, $r12;
+        avrora.sim.types.SensorSimulation $r1, $r5, $r10;
+        cck.util.Option$Str $r3, $r6;
+        boolean $z0;
+        cck.util.Option$Bool $r4;
+        java.lang.String $r7;
+        avrora.sim.radio.LossyModel $r8;
+        avrora.sim.radio.RadiusModel $r9;
+        cck.util.Option$Double $r11;
+        double $d0;
+        cck.util.Util$Unexpected $r13;
+
+        this := @this: avrora.sim.types.SensorSimulation$SensorNode;
+        $r1 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r2 = $r1.<avrora.sim.types.SensorSimulation: avrora.sim.radio.Topology topology>;
+        if $r2 != null goto label4;
+
+        $r1 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r3 = $r1.<avrora.sim.types.SensorSimulation: cck.util.Option$Str TOPOLOGY>;
+        $z0 = virtualinvoke $r3.<cck.util.Option$Str: boolean isBlank()>();
+        if $z0 != 0 goto label4;
+
+     label0:
+        $r1 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r4 = $r1.<avrora.sim.types.SensorSimulation: cck.util.Option$Bool LOSSY_MODEL>;
+        $z0 = virtualinvoke $r4.<cck.util.Option$Bool: boolean get()>();
+        if $z0 == 0 goto label1;
+
+        $r1 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r0 = new avrora.sim.radio.Topology;
+        $r5 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r6 = $r5.<avrora.sim.types.SensorSimulation: cck.util.Option$Str TOPOLOGY>;
+        $r7 = virtualinvoke $r6.<cck.util.Option$Str: java.lang.String get()>();
+        specialinvoke $r0.<avrora.sim.radio.Topology: void <init>(java.lang.String,boolean)>($r7, 1);
+        $r1.<avrora.sim.types.SensorSimulation: avrora.sim.radio.Topology topology> = $r0;
+        $r1 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r8 = new avrora.sim.radio.LossyModel;
+        specialinvoke $r8.<avrora.sim.radio.LossyModel: void <init>()>();
+        $r1.<avrora.sim.types.SensorSimulation: avrora.sim.radio.LossyModel lossyModel> = $r8;
+        goto label2;
+
+     label1:
+        $r1 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r0 = new avrora.sim.radio.Topology;
+        $r5 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r6 = $r5.<avrora.sim.types.SensorSimulation: cck.util.Option$Str TOPOLOGY>;
+        $r7 = virtualinvoke $r6.<cck.util.Option$Str: java.lang.String get()>();
+        specialinvoke $r0.<avrora.sim.radio.Topology: void <init>(java.lang.String,boolean)>($r7, 0);
+        $r1.<avrora.sim.types.SensorSimulation: avrora.sim.radio.Topology topology> = $r0;
+        $r1 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r9 = new avrora.sim.radio.RadiusModel;
+        $r10 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r11 = $r10.<avrora.sim.types.SensorSimulation: cck.util.Option$Double RANGE>;
+        $d0 = virtualinvoke $r11.<cck.util.Option$Double: double get()>();
+        specialinvoke $r9.<avrora.sim.radio.RadiusModel: void <init>(double,double)>(1.0, $d0);
+        $r1.<avrora.sim.types.SensorSimulation: avrora.sim.radio.RadiusModel radiusModel> = $r9;
+
+     label2:
+        goto label4;
+
+     label3:
+        $r12 := @caughtexception;
+        e = $r12;
+        $r13 = staticinvoke <cck.util.Util: cck.util.Util$Unexpected unexpected(java.lang.Throwable)>(e);
+        throw $r13;
+
+     label4:
+        return;
+
+        catch java.io.IOException from label0 to label2 with label3;
+    }
+
+    private void setNodePosition()
+    {
+        avrora.sim.types.SensorSimulation$SensorNode this;
+        avrora.sim.radio.LossyModel$Position p;
+        avrora.sim.types.SensorSimulation $r0;
+        cck.util.Option$Bool $r1;
+        boolean $z0;
+        avrora.sim.radio.Topology $r2;
+        int $i0;
+        avrora.sim.radio.Radio $r3, $r5;
+        avrora.sim.radio.LossyModel $r4;
+        avrora.sim.radio.RadiusModel$Position p;
+        avrora.sim.radio.RadiusModel $r6;
+
+        this := @this: avrora.sim.types.SensorSimulation$SensorNode;
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r1 = $r0.<avrora.sim.types.SensorSimulation: cck.util.Option$Bool LOSSY_MODEL>;
+        $z0 = virtualinvoke $r1.<cck.util.Option$Bool: boolean get()>();
+        if $z0 == 0 goto label1;
+
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r2 = $r0.<avrora.sim.types.SensorSimulation: avrora.sim.radio.Topology topology>;
+        $i0 = this.<avrora.sim.types.SensorSimulation$SensorNode: int id>;
+        p = virtualinvoke $r2.<avrora.sim.radio.Topology: avrora.sim.radio.LossyModel$Position getPosition(int)>($i0);
+        if p == null goto label0;
+
+        $r3 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.radio.Radio radio>;
+        if $r3 == null goto label0;
+
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r4 = $r0.<avrora.sim.types.SensorSimulation: avrora.sim.radio.LossyModel lossyModel>;
+        $r5 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.radio.Radio radio>;
+        virtualinvoke $r4.<avrora.sim.radio.LossyModel: void setPosition(avrora.sim.radio.Radio,avrora.sim.radio.LossyModel$Position)>($r5, p);
+
+     label0:
+        goto label2;
+
+     label1:
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r2 = $r0.<avrora.sim.types.SensorSimulation: avrora.sim.radio.Topology topology>;
+        $i0 = this.<avrora.sim.types.SensorSimulation$SensorNode: int id>;
+        p = virtualinvoke $r2.<avrora.sim.radio.Topology: avrora.sim.radio.RadiusModel$Position getPositioninRadius(int)>($i0);
+        if p == null goto label2;
+
+        $r3 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.radio.Radio radio>;
+        if $r3 == null goto label2;
+
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r6 = $r0.<avrora.sim.types.SensorSimulation: avrora.sim.radio.RadiusModel radiusModel>;
+        $r5 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.radio.Radio radio>;
+        virtualinvoke $r6.<avrora.sim.radio.RadiusModel: void setPosition(avrora.sim.radio.Radio,avrora.sim.radio.RadiusModel$Position)>($r5, p);
+
+     label2:
+        return;
+    }
+
+    private void updateNodeID()
+    {
+        avrora.sim.types.SensorSimulation$SensorNode this;
+        avrora.core.Program p;
+        avrora.core.SourceMapping smap;
+        avrora.sim.types.SensorSimulation $r0;
+        cck.util.Option$Bool $r1;
+        boolean $z0;
+        avrora.core.LoadableProgram $r2;
+        int $i0;
+
+        this := @this: avrora.sim.types.SensorSimulation$SensorNode;
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r1 = $r0.<avrora.sim.types.SensorSimulation: cck.util.Option$Bool UPDATE_NODE_ID>;
+        $z0 = virtualinvoke $r1.<cck.util.Option$Bool: boolean get()>();
+        if $z0 == 0 goto label0;
+
+        $r2 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.core.LoadableProgram path>;
+        p = virtualinvoke $r2.<avrora.core.LoadableProgram: avrora.core.Program getProgram()>();
+        smap = virtualinvoke p.<avrora.core.Program: avrora.core.SourceMapping getSourceMapping()>();
+        if smap == null goto label0;
+
+        $i0 = this.<avrora.sim.types.SensorSimulation$SensorNode: int id>;
+        specialinvoke this.<avrora.sim.types.SensorSimulation$SensorNode: void updateVariable(avrora.core.SourceMapping,java.lang.String,int)>(smap, "TOS_LOCAL_ADDRESS", $i0);
+        $i0 = this.<avrora.sim.types.SensorSimulation$SensorNode: int id>;
+        specialinvoke this.<avrora.sim.types.SensorSimulation$SensorNode: void updateVariable(avrora.core.SourceMapping,java.lang.String,int)>(smap, "node_address", $i0);
+        $i0 = this.<avrora.sim.types.SensorSimulation$SensorNode: int id>;
+        specialinvoke this.<avrora.sim.types.SensorSimulation$SensorNode: void updateVariable(avrora.core.SourceMapping,java.lang.String,int)>(smap, "TOS_NODE_ID", $i0);
+        $i0 = this.<avrora.sim.types.SensorSimulation$SensorNode: int id>;
+        specialinvoke this.<avrora.sim.types.SensorSimulation$SensorNode: void updateVariable(avrora.core.SourceMapping,java.lang.String,int)>(smap, "ActiveMessageAddressC$addr", $i0);
+
+     label0:
+        return;
+    }
+
+    private void updateVariable(avrora.core.SourceMapping, java.lang.String, int)
+    {
+        avrora.sim.types.SensorSimulation$SensorNode this;
+        avrora.core.SourceMapping smap;
+        java.lang.String name;
+        int value, $i0;
+        avrora.core.SourceMapping$Location location;
+        avrora.sim.AtmelInterpreter bi;
+        avrora.sim.Simulator $r0;
+        avrora.sim.Interpreter $r1;
+        byte $b1;
+
+        this := @this: avrora.sim.types.SensorSimulation$SensorNode;
+        smap := @parameter0: avrora.core.SourceMapping;
+        name := @parameter1: java.lang.String;
+        value := @parameter2: int;
+        location = virtualinvoke smap.<avrora.core.SourceMapping: avrora.core.SourceMapping$Location getLocation(java.lang.String)>(name);
+        if location != null goto label0;
+
+        location = virtualinvoke smap.<avrora.core.SourceMapping: avrora.core.SourceMapping$Location getLocation(java.lang.String)>("node_address");
+
+     label0:
+        if location == null goto label1;
+
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.Simulator simulator>;
+        $r1 = virtualinvoke $r0.<avrora.sim.Simulator: avrora.sim.Interpreter getInterpreter()>();
+        bi = (avrora.sim.AtmelInterpreter) $r1;
+        $i0 = location.<avrora.core.SourceMapping$Location: int lma_addr>;
+        $b1 = staticinvoke <cck.util.Arithmetic: byte low(int)>(value);
+        virtualinvoke bi.<avrora.sim.AtmelInterpreter: void writeFlashByte(int,byte)>($i0, $b1);
+        $i0 = location.<avrora.core.SourceMapping$Location: int lma_addr>;
+        $i0 = $i0 + 1;
+        $b1 = staticinvoke <cck.util.Arithmetic: byte high(int)>(value);
+        virtualinvoke bi.<avrora.sim.AtmelInterpreter: void writeFlashByte(int,byte)>($i0, $b1);
+
+     label1:
+        return;
+    }
+
+    protected void remove()
+    {
+        avrora.sim.types.SensorSimulation$SensorNode this;
+        avrora.sim.types.SensorSimulation $r0;
+        avrora.sim.clock.Synchronizer $r1;
+
+        this := @this: avrora.sim.types.SensorSimulation$SensorNode;
+        $r0 = this.<avrora.sim.types.SensorSimulation$SensorNode: avrora.sim.types.SensorSimulation this$0>;
+        $r1 = staticinvoke <avrora.sim.types.SensorSimulation: avrora.sim.clock.Synchronizer access$400(avrora.sim.types.SensorSimulation)>($r0);
+        virtualinvoke $r1.<avrora.sim.clock.Synchronizer: void removeNode(avrora.sim.Simulation$Node)>(this);
+        return;
+    }
+}

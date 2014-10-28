@@ -1,0 +1,139 @@
+public class cck.util.Option$List extends cck.util.Option
+{
+    protected java.util.List value;
+    protected java.lang.String orig;
+
+    public void <init>(java.lang.String, java.lang.String, java.lang.String)
+    {
+        cck.util.Option$List this;
+        java.lang.String nm, val, desc;
+
+        this := @this: cck.util.Option$List;
+        nm := @parameter0: java.lang.String;
+        val := @parameter1: java.lang.String;
+        desc := @parameter2: java.lang.String;
+        specialinvoke this.<cck.util.Option: void <init>(java.lang.String,java.lang.String)>(nm, desc);
+        specialinvoke this.<cck.util.Option$List: void parseString(java.lang.String)>(val);
+        return;
+    }
+
+    public void set(java.lang.String)
+    {
+        cck.util.Option$List this;
+        java.lang.String val;
+
+        this := @this: cck.util.Option$List;
+        val := @parameter0: java.lang.String;
+        specialinvoke this.<cck.util.Option$List: void parseString(java.lang.String)>(val);
+        return;
+    }
+
+    public void setNewDefault(java.lang.String)
+    {
+        cck.util.Option$List this;
+        java.lang.String val;
+
+        this := @this: cck.util.Option$List;
+        val := @parameter0: java.lang.String;
+        specialinvoke this.<cck.util.Option$List: void parseString(java.lang.String)>(val);
+        return;
+    }
+
+    public java.util.List get()
+    {
+        cck.util.Option$List this;
+        java.util.List $r0;
+
+        this := @this: cck.util.Option$List;
+        $r0 = this.<cck.util.Option$List: java.util.List value>;
+        return $r0;
+    }
+
+    public java.lang.String stringValue()
+    {
+        cck.util.Option$List this;
+        java.lang.String $r0;
+
+        this := @this: cck.util.Option$List;
+        $r0 = this.<cck.util.Option$List: java.lang.String orig>;
+        return $r0;
+    }
+
+    private void parseString(java.lang.String)
+    {
+        cck.util.Option$List this;
+        java.lang.String val;
+        java.util.List $r0;
+
+        this := @this: cck.util.Option$List;
+        val := @parameter0: java.lang.String;
+        this.<cck.util.Option$List: java.lang.String orig> = val;
+        $r0 = staticinvoke <cck.text.StringUtil: java.util.List toList(java.lang.String)>(val);
+        this.<cck.util.Option$List: java.util.List value> = $r0;
+        return;
+    }
+
+    public java.lang.String[] toArray()
+    {
+        cck.util.Option$List this;
+        java.lang.String[] result;
+        java.util.Iterator i;
+        int cntr, $i0, $i1;
+        java.util.List $r0;
+        boolean $z0;
+        java.lang.Object $r1;
+        java.lang.String $r2;
+        long tid_toArray;
+        java.lang.Thread thread_toArray;
+
+        this := @this: cck.util.Option$List;
+        thread_toArray = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_toArray = virtualinvoke thread_toArray.<java.lang.Thread: long getId()>();
+        $r0 = this.<cck.util.Option$List: java.util.List value>;
+        $i1 = interfaceinvoke $r0.<java.util.List: int size()>();
+        result = newarray (java.lang.String)[$i1];
+        $r0 = this.<cck.util.Option$List: java.util.List value>;
+        i = interfaceinvoke $r0.<java.util.List: java.util.Iterator iterator()>();
+        cntr = 0;
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $i0 = cntr;
+        cntr = cntr + 1;
+        $r1 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        $r2 = (java.lang.String) $r1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(result, 18, tid_toArray, "cck.util.Option$List", 543, $i0, $r2);
+        result[$i0] = $r2;
+        goto label0;
+
+     label1:
+        return result;
+    }
+
+    public void printHelp()
+    {
+        cck.util.Option$List this;
+        java.lang.String $r0, defvalue, $r1;
+        boolean $z0;
+
+        this := @this: cck.util.Option$List;
+        $r0 = "";
+        $r1 = this.<cck.util.Option$List: java.lang.String orig>;
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+        if $z0 == 0 goto label0;
+
+        $r0 = "(null)";
+        goto label1;
+
+     label0:
+        $r0 = this.<cck.util.Option$List: java.lang.String orig>;
+
+     label1:
+        defvalue = $r0;
+        virtualinvoke this.<cck.util.Option$List: void printHeader(java.lang.String,java.lang.String)>("list", defvalue);
+        virtualinvoke this.<cck.util.Option$List: void printDescription()>();
+        return;
+    }
+}

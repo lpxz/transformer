@@ -1,0 +1,29 @@
+public class avrora.actions.SimAction$BreakPointException extends java.lang.RuntimeException
+{
+    public final int address;
+    public final avrora.sim.State state;
+
+    public void <init>(int, avrora.sim.State)
+    {
+        avrora.actions.SimAction$BreakPointException this;
+        int a;
+        avrora.sim.State s;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1, $r2;
+
+        this := @this: avrora.actions.SimAction$BreakPointException;
+        a := @parameter0: int;
+        s := @parameter1: avrora.sim.State;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("breakpoint @ ");
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String addrToString(int)>(a);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" reached");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke this.<java.lang.RuntimeException: void <init>(java.lang.String)>($r2);
+        this.<avrora.actions.SimAction$BreakPointException: int address> = a;
+        this.<avrora.actions.SimAction$BreakPointException: avrora.sim.State state> = s;
+        return;
+    }
+}

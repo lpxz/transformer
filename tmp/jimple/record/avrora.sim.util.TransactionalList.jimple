@@ -1,0 +1,290 @@
+public class avrora.sim.util.TransactionalList extends java.lang.Object
+{
+    protected avrora.sim.util.TransactionalList$Link head;
+    protected avrora.sim.util.TransactionalList$Link tail;
+    protected avrora.sim.util.TransactionalList$Link transHead;
+    protected avrora.sim.util.TransactionalList$Link transTail;
+    protected int nesting;
+
+    public void <init>()
+    {
+        avrora.sim.util.TransactionalList this;
+
+        this := @this: avrora.sim.util.TransactionalList;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public void add(java.lang.Object)
+    {
+        avrora.sim.util.TransactionalList this;
+        java.lang.Object b;
+        int $i0;
+        avrora.sim.util.TransactionalList$Link $r0, $r1, $r3;
+        long tid_add;
+        java.lang.Thread thread_add;
+
+        this := @this: avrora.sim.util.TransactionalList;
+        b := @parameter0: java.lang.Object;
+        thread_add = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_add = virtualinvoke thread_add.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 200, tid_add, "avrora.sim.util.TransactionalList", 81, $i0);
+        $i0 = this.<avrora.sim.util.TransactionalList: int nesting>;
+        if $i0 <= 0 goto label0;
+
+        specialinvoke this.<avrora.sim.util.TransactionalList: void addTransaction(java.lang.Object,boolean)>(b, 1);
+        return;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_add, "avrora.sim.util.TransactionalList", 86, $r0);
+        $r0 = this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link head>;
+        if $r0 != null goto label1;
+
+        $r1 = new avrora.sim.util.TransactionalList$Link;
+        specialinvoke $r1.<avrora.sim.util.TransactionalList$Link: void <init>(java.lang.Object)>(b);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 201, tid_add, "avrora.sim.util.TransactionalList", 87, $r1);
+        this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link tail> = $r1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_add, "avrora.sim.util.TransactionalList", 87, $r1);
+        this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link head> = $r1;
+        goto label2;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 201, tid_add, "avrora.sim.util.TransactionalList", 89, $r0);
+        $r0 = this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link tail>;
+        $r3 = new avrora.sim.util.TransactionalList$Link;
+        specialinvoke $r3.<avrora.sim.util.TransactionalList$Link: void <init>(java.lang.Object)>(b);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r0, 79, tid_add, "avrora.sim.util.TransactionalList", 89, $r3);
+        $r0.<avrora.sim.util.TransactionalList$Link: avrora.sim.util.TransactionalList$Link next> = $r3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 201, tid_add, "avrora.sim.util.TransactionalList", 90, $r3);
+        $r3 = this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link tail>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r3, 79, tid_add, "avrora.sim.util.TransactionalList", 90, $r3);
+        $r3 = $r3.<avrora.sim.util.TransactionalList$Link: avrora.sim.util.TransactionalList$Link next>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 201, tid_add, "avrora.sim.util.TransactionalList", 90, $r3);
+        this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link tail> = $r3;
+
+     label2:
+        return;
+    }
+
+    public void remove(java.lang.Object)
+    {
+        avrora.sim.util.TransactionalList this;
+        java.lang.Object o, $r0;
+        avrora.sim.util.TransactionalList$Link prev, pos, next, $r1;
+        int $i0;
+        long tid_remove;
+        java.lang.Thread thread_remove;
+
+        this := @this: avrora.sim.util.TransactionalList;
+        o := @parameter0: java.lang.Object;
+        thread_remove = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_remove = virtualinvoke thread_remove.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 200, tid_remove, "avrora.sim.util.TransactionalList", 102, $i0);
+        $i0 = this.<avrora.sim.util.TransactionalList: int nesting>;
+        if $i0 <= 0 goto label0;
+
+        specialinvoke this.<avrora.sim.util.TransactionalList: void addTransaction(java.lang.Object,boolean)>(o, 0);
+        return;
+
+     label0:
+        prev = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_remove, "avrora.sim.util.TransactionalList", 108, pos);
+        pos = this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link head>;
+
+     label1:
+        if pos == null goto label6;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 79, tid_remove, "avrora.sim.util.TransactionalList", 110, next);
+        next = pos.<avrora.sim.util.TransactionalList$Link: avrora.sim.util.TransactionalList$Link next>;
+        $r0 = pos.<avrora.sim.util.TransactionalList$Link: java.lang.Object object>;
+        if $r0 != o goto label4;
+
+        if prev != null goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 79, tid_remove, "avrora.sim.util.TransactionalList", 115, $r1);
+        $r1 = pos.<avrora.sim.util.TransactionalList$Link: avrora.sim.util.TransactionalList$Link next>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_remove, "avrora.sim.util.TransactionalList", 115, $r1);
+        this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link head> = $r1;
+        goto label3;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 79, tid_remove, "avrora.sim.util.TransactionalList", 117, $r1);
+        $r1 = pos.<avrora.sim.util.TransactionalList$Link: avrora.sim.util.TransactionalList$Link next>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(prev, 79, tid_remove, "avrora.sim.util.TransactionalList", 117, $r1);
+        prev.<avrora.sim.util.TransactionalList$Link: avrora.sim.util.TransactionalList$Link next> = $r1;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 201, tid_remove, "avrora.sim.util.TransactionalList", 119, $r1);
+        $r1 = this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link tail>;
+        if pos != $r1 goto label5;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 201, tid_remove, "avrora.sim.util.TransactionalList", 119, prev);
+        this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link tail> = prev;
+        goto label5;
+
+     label4:
+        prev = pos;
+
+     label5:
+        pos = next;
+        goto label1;
+
+     label6:
+        return;
+    }
+
+    private void addTransaction(java.lang.Object, boolean)
+    {
+        avrora.sim.util.TransactionalList this;
+        java.lang.Object o;
+        boolean isAdd;
+        avrora.sim.util.TransactionalList$Link $r0, $r1, $r3;
+        long tid_addTransaction;
+        java.lang.Thread thread_addTransaction;
+
+        this := @this: avrora.sim.util.TransactionalList;
+        o := @parameter0: java.lang.Object;
+        isAdd := @parameter1: boolean;
+        thread_addTransaction = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addTransaction = virtualinvoke thread_addTransaction.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 202, tid_addTransaction, "avrora.sim.util.TransactionalList", 130, $r1);
+        $r1 = this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link transHead>;
+        if $r1 != null goto label0;
+
+        $r0 = new avrora.sim.util.TransactionalList$Link;
+        specialinvoke $r0.<avrora.sim.util.TransactionalList$Link: void <init>(java.lang.Object,boolean)>(o, isAdd);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 203, tid_addTransaction, "avrora.sim.util.TransactionalList", 131, $r0);
+        this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link transTail> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 202, tid_addTransaction, "avrora.sim.util.TransactionalList", 131, $r0);
+        this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link transHead> = $r0;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 203, tid_addTransaction, "avrora.sim.util.TransactionalList", 133, $r1);
+        $r1 = this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link transTail>;
+        $r3 = new avrora.sim.util.TransactionalList$Link;
+        specialinvoke $r3.<avrora.sim.util.TransactionalList$Link: void <init>(java.lang.Object,boolean)>(o, isAdd);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r1, 79, tid_addTransaction, "avrora.sim.util.TransactionalList", 133, $r3);
+        $r1.<avrora.sim.util.TransactionalList$Link: avrora.sim.util.TransactionalList$Link next> = $r3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 203, tid_addTransaction, "avrora.sim.util.TransactionalList", 134, $r3);
+        $r3 = this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link transTail>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r3, 79, tid_addTransaction, "avrora.sim.util.TransactionalList", 134, $r3);
+        $r3 = $r3.<avrora.sim.util.TransactionalList$Link: avrora.sim.util.TransactionalList$Link next>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 203, tid_addTransaction, "avrora.sim.util.TransactionalList", 134, $r3);
+        this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link transTail> = $r3;
+
+     label1:
+        return;
+    }
+
+    public boolean isEmpty()
+    {
+        avrora.sim.util.TransactionalList this;
+        avrora.sim.util.TransactionalList$Link $r0;
+        boolean $z0;
+        long tid_isEmpty;
+        java.lang.Thread thread_isEmpty;
+
+        this := @this: avrora.sim.util.TransactionalList;
+        thread_isEmpty = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_isEmpty = virtualinvoke thread_isEmpty.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_isEmpty, "avrora.sim.util.TransactionalList", 145, $r0);
+        $r0 = this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link head>;
+        if $r0 != null goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public void beginTransaction()
+    {
+        avrora.sim.util.TransactionalList this;
+        int $i0;
+        long tid_beginTransaction;
+        java.lang.Thread thread_beginTransaction;
+
+        this := @this: avrora.sim.util.TransactionalList;
+        thread_beginTransaction = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_beginTransaction = virtualinvoke thread_beginTransaction.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 200, tid_beginTransaction, "avrora.sim.util.TransactionalList", 155, $i0);
+        $i0 = this.<avrora.sim.util.TransactionalList: int nesting>;
+        $i0 = $i0 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 200, tid_beginTransaction, "avrora.sim.util.TransactionalList", 155, $i0);
+        this.<avrora.sim.util.TransactionalList: int nesting> = $i0;
+        return;
+    }
+
+    public void endTransaction()
+    {
+        avrora.sim.util.TransactionalList this;
+        avrora.sim.util.TransactionalList$Link thead, pos;
+        int $i0, $i1;
+        boolean $z0;
+        java.lang.Object $r1;
+        long tid_endTransaction;
+        java.lang.Thread thread_endTransaction;
+
+        this := @this: avrora.sim.util.TransactionalList;
+        thread_endTransaction = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_endTransaction = virtualinvoke thread_endTransaction.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 200, tid_endTransaction, "avrora.sim.util.TransactionalList", 163, $i0);
+        $i0 = this.<avrora.sim.util.TransactionalList: int nesting>;
+        $i0 = $i0 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 200, tid_endTransaction, "avrora.sim.util.TransactionalList", 163, $i0);
+        this.<avrora.sim.util.TransactionalList: int nesting> = $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 200, tid_endTransaction, "avrora.sim.util.TransactionalList", 164, $i1);
+        $i1 = this.<avrora.sim.util.TransactionalList: int nesting>;
+        if $i1 != 0 goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 202, tid_endTransaction, "avrora.sim.util.TransactionalList", 165, thead);
+        thead = this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link transHead>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 202, tid_endTransaction, "avrora.sim.util.TransactionalList", 166, null);
+        this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link transHead> = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 203, tid_endTransaction, "avrora.sim.util.TransactionalList", 167, null);
+        this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link transTail> = null;
+        pos = thead;
+
+     label0:
+        if pos == null goto label3;
+
+        $z0 = pos.<avrora.sim.util.TransactionalList$Link: boolean addTransaction>;
+        if $z0 == 0 goto label1;
+
+        $r1 = pos.<avrora.sim.util.TransactionalList$Link: java.lang.Object object>;
+        virtualinvoke this.<avrora.sim.util.TransactionalList: void add(java.lang.Object)>($r1);
+        goto label2;
+
+     label1:
+        $r1 = pos.<avrora.sim.util.TransactionalList$Link: java.lang.Object object>;
+        virtualinvoke this.<avrora.sim.util.TransactionalList: void remove(java.lang.Object)>($r1);
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 79, tid_endTransaction, "avrora.sim.util.TransactionalList", 168, pos);
+        pos = pos.<avrora.sim.util.TransactionalList$Link: avrora.sim.util.TransactionalList$Link next>;
+        goto label0;
+
+     label3:
+        return;
+    }
+
+    public avrora.sim.util.TransactionalList$Link getHead()
+    {
+        avrora.sim.util.TransactionalList this;
+        avrora.sim.util.TransactionalList$Link $r0;
+        long tid_getHead;
+        java.lang.Thread thread_getHead;
+
+        this := @this: avrora.sim.util.TransactionalList;
+        thread_getHead = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getHead = virtualinvoke thread_getHead.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_getHead, "avrora.sim.util.TransactionalList", 176, $r0);
+        $r0 = this.<avrora.sim.util.TransactionalList: avrora.sim.util.TransactionalList$Link head>;
+        return $r0;
+    }
+}

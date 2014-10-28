@@ -1,0 +1,2557 @@
+public class cck.text.StringUtil extends java.lang.Object
+{
+    public static final java.lang.String QUOTE;
+    public static final java.lang.String SQUOTE;
+    public static final java.lang.String LPAREN;
+    public static final java.lang.String RPAREN;
+    public static final java.lang.String COMMA;
+    public static final java.lang.String COMMA_SPACE;
+    public static final java.lang.String[] EMPTY_STRING_ARRAY;
+    public static final char SQUOTE_CHAR;
+    public static final char BACKSLASH;
+    public static final char QUOTE_CHAR;
+    protected static final java.lang.String[] spacers;
+
+    public void <init>()
+    {
+        cck.text.StringUtil this;
+
+        this := @this: cck.text.StringUtil;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public static java.lang.String addrToString(int)
+    {
+        int address;
+        long $l0;
+        java.lang.String $r0;
+
+        address := @parameter0: int;
+        $l0 = (long) address;
+        $r0 = staticinvoke <cck.text.StringUtil: java.lang.String to0xHex(long,int)>($l0, 4);
+        return $r0;
+    }
+
+    public static java.lang.String baseFileName(java.lang.String)
+    {
+        java.lang.String f;
+        int sind, dind, $i0;
+
+        f := @parameter0: java.lang.String;
+        sind = virtualinvoke f.<java.lang.String: int lastIndexOf(int)>(47);
+        if sind < 0 goto label0;
+
+        $i0 = sind + 1;
+        f = virtualinvoke f.<java.lang.String: java.lang.String substring(int)>($i0);
+
+     label0:
+        dind = virtualinvoke f.<java.lang.String: int lastIndexOf(int)>(46);
+        if dind < 0 goto label1;
+
+        f = virtualinvoke f.<java.lang.String: java.lang.String substring(int,int)>(0, dind);
+
+     label1:
+        return f;
+    }
+
+    public static java.lang.String readIdentifier(java.text.CharacterIterator)
+    {
+        java.text.CharacterIterator i;
+        java.lang.StringBuffer $r0, buf;
+        char c;
+        boolean $z0;
+        java.lang.String $r1;
+
+        i := @parameter0: java.text.CharacterIterator;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buf = $r0;
+
+     label0:
+        c = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        $z0 = staticinvoke <java.lang.Character: boolean isLetterOrDigit(char)>(c);
+        if $z0 != 0 goto label1;
+
+        if c == 95 goto label1;
+
+        goto label2;
+
+     label1:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(c);
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        goto label0;
+
+     label2:
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String readDotIdentifier(java.text.CharacterIterator)
+    {
+        java.text.CharacterIterator i;
+        java.lang.StringBuffer $r0, buf;
+        char c;
+        boolean $z0;
+        java.lang.String $r1;
+
+        i := @parameter0: java.text.CharacterIterator;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buf = $r0;
+
+     label0:
+        c = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        $z0 = staticinvoke <java.lang.Character: boolean isLetterOrDigit(char)>(c);
+        if $z0 != 0 goto label1;
+
+        if c == 95 goto label1;
+
+        if c == 46 goto label1;
+
+        goto label2;
+
+     label1:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(c);
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        goto label0;
+
+     label2:
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static int readHexValue(java.text.CharacterIterator, int)
+    {
+        java.text.CharacterIterator i;
+        int max_chars, accumul, cntr, $i0, $i1;
+        char c;
+        boolean $z0;
+
+        i := @parameter0: java.text.CharacterIterator;
+        max_chars := @parameter1: int;
+        accumul = 0;
+        cntr = 0;
+
+     label0:
+        if cntr >= max_chars goto label3;
+
+        c = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        if c != 65535 goto label1;
+
+        goto label3;
+
+     label1:
+        $z0 = staticinvoke <cck.text.StringUtil: boolean isHexDigit(char)>(c);
+        if $z0 != 0 goto label2;
+
+        goto label3;
+
+     label2:
+        $i0 = accumul << 4;
+        $i1 = staticinvoke <cck.text.StringUtil: int hexValueOf(char)>(c);
+        accumul = $i0 | $i1;
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        cntr = cntr + 1;
+        goto label0;
+
+     label3:
+        return accumul;
+    }
+
+    public static int readOctalValue(java.text.CharacterIterator, int)
+    {
+        java.text.CharacterIterator i;
+        int max_chars, accumul, cntr, $i0, $i1;
+        char c;
+        boolean $z0;
+
+        i := @parameter0: java.text.CharacterIterator;
+        max_chars := @parameter1: int;
+        accumul = 0;
+        cntr = 0;
+
+     label0:
+        if cntr >= max_chars goto label2;
+
+        c = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        $z0 = staticinvoke <cck.text.StringUtil: boolean isOctalDigit(char)>(c);
+        if $z0 != 0 goto label1;
+
+        goto label2;
+
+     label1:
+        $i0 = accumul << 3;
+        $i1 = staticinvoke <cck.text.StringUtil: int octalValueOf(char)>(c);
+        accumul = $i0 | $i1;
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        cntr = cntr + 1;
+        goto label0;
+
+     label2:
+        return accumul;
+    }
+
+    public static int readBinaryValue(java.text.CharacterIterator, int)
+    {
+        java.text.CharacterIterator i;
+        int max_chars, accumul, cntr, $i1;
+        char ch;
+
+        i := @parameter0: java.text.CharacterIterator;
+        max_chars := @parameter1: int;
+        accumul = 0;
+        cntr = 0;
+
+     label0:
+        if cntr >= max_chars goto label3;
+
+        ch = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        if ch != 48 goto label1;
+
+        accumul = accumul << 1;
+        goto label2;
+
+     label1:
+        if ch != 49 goto label3;
+
+        $i1 = accumul << 1;
+        accumul = $i1 | 1;
+
+     label2:
+        cntr = cntr + 1;
+        goto label0;
+
+     label3:
+        return accumul;
+    }
+
+    public static int readDecimalValue(java.text.CharacterIterator, int)
+    {
+        java.text.CharacterIterator i;
+        int max_chars, $i0;
+        java.lang.String $r0;
+
+        i := @parameter0: java.text.CharacterIterator;
+        max_chars := @parameter1: int;
+        $r0 = staticinvoke <cck.text.StringUtil: java.lang.String readDecimalString(java.text.CharacterIterator,int)>(i, max_chars);
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r0);
+        return $i0;
+    }
+
+    public static java.lang.String readDecimalString(java.text.CharacterIterator, int)
+    {
+        java.text.CharacterIterator i;
+        int max_chars, cntr;
+        java.lang.StringBuffer $r0, buf;
+        char c;
+        boolean $z0;
+        java.lang.String $r1;
+
+        i := @parameter0: java.text.CharacterIterator;
+        max_chars := @parameter1: int;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buf = $r0;
+        $z0 = staticinvoke <cck.text.StringUtil: boolean peekAndEat(java.text.CharacterIterator,char)>(i, 45);
+        if $z0 == 0 goto label0;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(45);
+
+     label0:
+        cntr = 0;
+
+     label1:
+        if cntr >= max_chars goto label3;
+
+        c = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        $z0 = staticinvoke <java.lang.Character: boolean isDigit(char)>(c);
+        if $z0 != 0 goto label2;
+
+        goto label3;
+
+     label2:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(c);
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        cntr = cntr + 1;
+        goto label1;
+
+     label3:
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static int readIntegerValue(java.text.CharacterIterator)
+    {
+        java.text.CharacterIterator i;
+        char ch;
+        int $i0;
+
+        i := @parameter0: java.text.CharacterIterator;
+        ch = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        if ch != 45 goto label0;
+
+        $i0 = staticinvoke <cck.text.StringUtil: int readDecimalValue(java.text.CharacterIterator,int)>(i, 10);
+        return $i0;
+
+     label0:
+        if ch != 48 goto label5;
+
+        ch = interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        if ch == 120 goto label1;
+
+        if ch != 88 goto label2;
+
+     label1:
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        $i0 = staticinvoke <cck.text.StringUtil: int readHexValue(java.text.CharacterIterator,int)>(i, 8);
+        return $i0;
+
+     label2:
+        if ch == 98 goto label3;
+
+        if ch != 66 goto label4;
+
+     label3:
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        $i0 = staticinvoke <cck.text.StringUtil: int readBinaryValue(java.text.CharacterIterator,int)>(i, 32);
+        return $i0;
+
+     label4:
+        $i0 = staticinvoke <cck.text.StringUtil: int readOctalValue(java.text.CharacterIterator,int)>(i, 11);
+        return $i0;
+
+     label5:
+        $i0 = staticinvoke <cck.text.StringUtil: int readDecimalValue(java.text.CharacterIterator,int)>(i, 10);
+        return $i0;
+    }
+
+    public static void skipWhiteSpace(java.text.CharacterIterator)
+    {
+        java.text.CharacterIterator i;
+        char c;
+
+        i := @parameter0: java.text.CharacterIterator;
+
+     label0:
+        c = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        if c == 32 goto label1;
+
+        if c == 10 goto label1;
+
+        if c == 9 goto label1;
+
+        goto label2;
+
+     label1:
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        goto label0;
+
+     label2:
+        return;
+    }
+
+    public static char peek(java.text.CharacterIterator)
+    {
+        java.text.CharacterIterator i;
+        char $c0;
+
+        i := @parameter0: java.text.CharacterIterator;
+        $c0 = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        return $c0;
+    }
+
+    public static boolean peekAndEat(java.text.CharacterIterator, char)
+    {
+        java.text.CharacterIterator i;
+        char c, r;
+
+        i := @parameter0: java.text.CharacterIterator;
+        c := @parameter1: char;
+        r = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        if r != c goto label0;
+
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        return 1;
+
+     label0:
+        return 0;
+    }
+
+    public static boolean peekAndEat(java.text.CharacterIterator, java.lang.String)
+    {
+        java.text.CharacterIterator i;
+        java.lang.String s;
+        int ind, cntr, $i0;
+        char $c1, $c2;
+
+        i := @parameter0: java.text.CharacterIterator;
+        s := @parameter1: java.lang.String;
+        ind = interfaceinvoke i.<java.text.CharacterIterator: int getIndex()>();
+        cntr = 0;
+
+     label0:
+        $i0 = virtualinvoke s.<java.lang.String: int length()>();
+        if cntr >= $i0 goto label3;
+
+        $c1 = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        $c2 = virtualinvoke s.<java.lang.String: char charAt(int)>(cntr);
+        if $c1 != $c2 goto label1;
+
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        goto label2;
+
+     label1:
+        interfaceinvoke i.<java.text.CharacterIterator: char setIndex(int)>(ind);
+        return 0;
+
+     label2:
+        cntr = cntr + 1;
+        goto label0;
+
+     label3:
+        return 1;
+    }
+
+    public static void expectChar(java.text.CharacterIterator, char) throws java.lang.Exception
+    {
+        java.text.CharacterIterator i;
+        char c, r;
+        java.lang.StringBuilder $r0;
+        int $i1;
+        java.lang.String $r1, $r2;
+
+        i := @parameter0: java.text.CharacterIterator;
+        c := @parameter1: char;
+        r = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        if r == c goto label0;
+
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("parse error at ");
+        $i1 = interfaceinvoke i.<java.text.CharacterIterator: int getIndex()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", expected character ");
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String squote(char)>(c);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.util.Util: cck.util.Util$InternalError failure(java.lang.String)>($r2);
+
+     label0:
+        return;
+    }
+
+    public static void expectChars(java.text.CharacterIterator, java.lang.String) throws java.lang.Exception
+    {
+        java.text.CharacterIterator i;
+        java.lang.String s;
+        int cntr, $i0;
+        char $c1;
+
+        i := @parameter0: java.text.CharacterIterator;
+        s := @parameter1: java.lang.String;
+        cntr = 0;
+
+     label0:
+        $i0 = virtualinvoke s.<java.lang.String: int length()>();
+        if cntr >= $i0 goto label1;
+
+        $c1 = virtualinvoke s.<java.lang.String: char charAt(int)>(cntr);
+        staticinvoke <cck.text.StringUtil: void expectChar(java.text.CharacterIterator,char)>(i, $c1);
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    public static void expectKeyword(java.text.CharacterIterator, java.lang.String)
+    {
+        java.text.CharacterIterator i;
+        java.lang.String kw, str, $r1, $r2;
+        boolean $z0;
+        java.lang.StringBuilder $r0;
+        int $i0;
+
+        i := @parameter0: java.text.CharacterIterator;
+        kw := @parameter1: java.lang.String;
+        str = staticinvoke <cck.text.StringUtil: java.lang.String readIdentifier(java.text.CharacterIterator)>(i);
+        $z0 = virtualinvoke str.<java.lang.String: boolean equals(java.lang.Object)>(kw);
+        if $z0 != 0 goto label0;
+
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("parse error at ");
+        $i0 = interfaceinvoke i.<java.text.CharacterIterator: int getIndex()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", expected keyword ");
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>(kw);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.util.Util: cck.util.Util$InternalError failure(java.lang.String)>($r2);
+
+     label0:
+        return;
+    }
+
+    public static boolean isHex(java.lang.String)
+    {
+        java.lang.String s;
+        char c, $c1;
+        int $i0;
+        boolean $z0;
+
+        s := @parameter0: java.lang.String;
+        $i0 = virtualinvoke s.<java.lang.String: int length()>();
+        if $i0 >= 2 goto label0;
+
+        return 0;
+
+     label0:
+        c = virtualinvoke s.<java.lang.String: char charAt(int)>(1);
+        $c1 = virtualinvoke s.<java.lang.String: char charAt(int)>(0);
+        if $c1 != 48 goto label2;
+
+        if c == 120 goto label1;
+
+        if c != 88 goto label2;
+
+     label1:
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        return $z0;
+    }
+
+    public static boolean isBin(java.lang.String)
+    {
+        java.lang.String s;
+        char c, $c1;
+        int $i0;
+        boolean $z0;
+
+        s := @parameter0: java.lang.String;
+        $i0 = virtualinvoke s.<java.lang.String: int length()>();
+        if $i0 >= 2 goto label0;
+
+        return 0;
+
+     label0:
+        c = virtualinvoke s.<java.lang.String: char charAt(int)>(1);
+        $c1 = virtualinvoke s.<java.lang.String: char charAt(int)>(0);
+        if $c1 != 48 goto label2;
+
+        if c == 98 goto label1;
+
+        if c != 66 goto label2;
+
+     label1:
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        return $z0;
+    }
+
+    public static boolean isHexDigit(char)
+    {
+        char c;
+        boolean $z0;
+
+        c := @parameter0: char;
+        $z0 = staticinvoke <cck.text.CharUtil: boolean isHexDigit(char)>(c);
+        return $z0;
+    }
+
+    public static int hexValueOf(char)
+    {
+        char c;
+        int $i0;
+
+        c := @parameter0: char;
+        $i0 = staticinvoke <cck.text.CharUtil: int hexValueOf(char)>(c);
+        return $i0;
+    }
+
+    public static int octalValueOf(char)
+    {
+        char c;
+        int $i0;
+
+        c := @parameter0: char;
+        $i0 = staticinvoke <cck.text.CharUtil: int octValueOf(char)>(c);
+        return $i0;
+    }
+
+    public static boolean isOctalDigit(char)
+    {
+        char c;
+        boolean $z0;
+
+        c := @parameter0: char;
+        $z0 = staticinvoke <cck.text.CharUtil: boolean isOctDigit(char)>(c);
+        return $z0;
+    }
+
+    public static void justify(boolean, java.lang.StringBuffer, java.lang.String, int)
+    {
+        boolean right;
+        java.lang.StringBuffer buf;
+        java.lang.String s;
+        int width, pad, $i0;
+
+        right := @parameter0: boolean;
+        buf := @parameter1: java.lang.StringBuffer;
+        s := @parameter2: java.lang.String;
+        width := @parameter3: int;
+        $i0 = virtualinvoke s.<java.lang.String: int length()>();
+        pad = width - $i0;
+        if right == 0 goto label0;
+
+        staticinvoke <cck.text.StringUtil: void space(java.lang.StringBuffer,int)>(buf, pad);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(s);
+        goto label1;
+
+     label0:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(s);
+        staticinvoke <cck.text.StringUtil: void space(java.lang.StringBuffer,int)>(buf, pad);
+
+     label1:
+        return;
+    }
+
+    public static void justify(boolean, java.lang.StringBuffer, long, int)
+    {
+        boolean right;
+        java.lang.StringBuffer buf;
+        long l;
+        int width;
+        java.lang.String $r0;
+
+        right := @parameter0: boolean;
+        buf := @parameter1: java.lang.StringBuffer;
+        l := @parameter2: long;
+        width := @parameter3: int;
+        $r0 = staticinvoke <java.lang.Long: java.lang.String toString(long)>(l);
+        staticinvoke <cck.text.StringUtil: void justify(boolean,java.lang.StringBuffer,java.lang.String,int)>(right, buf, $r0, width);
+        return;
+    }
+
+    public static void justify(boolean, java.lang.StringBuffer, float, int)
+    {
+        boolean right;
+        java.lang.StringBuffer buf;
+        float f;
+        int width;
+        java.lang.String $r0;
+
+        right := @parameter0: boolean;
+        buf := @parameter1: java.lang.StringBuffer;
+        f := @parameter2: float;
+        width := @parameter3: int;
+        $r0 = staticinvoke <java.lang.Float: java.lang.String toString(float)>(f);
+        staticinvoke <cck.text.StringUtil: void justify(boolean,java.lang.StringBuffer,java.lang.String,int)>(right, buf, $r0, width);
+        return;
+    }
+
+    public static java.lang.String justify(boolean, java.lang.String, int)
+    {
+        boolean right;
+        java.lang.String s, $r1;
+        int width, $i0, $i1;
+        java.lang.StringBuffer buf, $r0;
+
+        right := @parameter0: boolean;
+        s := @parameter1: java.lang.String;
+        width := @parameter2: int;
+        $i0 = virtualinvoke s.<java.lang.String: int length()>();
+        $i1 = width - $i0;
+        if $i1 > 0 goto label0;
+
+        return s;
+
+     label0:
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>(width);
+        buf = $r0;
+        staticinvoke <cck.text.StringUtil: void justify(boolean,java.lang.StringBuffer,java.lang.String,int)>(right, buf, s, width);
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String justify(boolean, long, int)
+    {
+        boolean right;
+        long l;
+        int width;
+        java.lang.String $r0, $r1;
+
+        right := @parameter0: boolean;
+        l := @parameter1: long;
+        width := @parameter2: int;
+        $r0 = staticinvoke <java.lang.Long: java.lang.String toString(long)>(l);
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String justify(boolean,java.lang.String,int)>(right, $r0, width);
+        return $r1;
+    }
+
+    public static java.lang.String justify(boolean, float, int)
+    {
+        boolean right;
+        float f;
+        int width;
+        java.lang.String $r0, $r1;
+
+        right := @parameter0: boolean;
+        f := @parameter1: float;
+        width := @parameter2: int;
+        $r0 = staticinvoke <java.lang.Float: java.lang.String toString(float)>(f);
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String justify(boolean,java.lang.String,int)>(right, $r0, width);
+        return $r1;
+    }
+
+    public static java.lang.String leftJustify(long, int)
+    {
+        long v;
+        int width;
+        java.lang.String $r0;
+
+        v := @parameter0: long;
+        width := @parameter1: int;
+        $r0 = staticinvoke <cck.text.StringUtil: java.lang.String justify(boolean,long,int)>(0, v, width);
+        return $r0;
+    }
+
+    public static java.lang.String leftJustify(float, int)
+    {
+        float v;
+        int width;
+        java.lang.String $r0;
+
+        v := @parameter0: float;
+        width := @parameter1: int;
+        $r0 = staticinvoke <cck.text.StringUtil: java.lang.String justify(boolean,float,int)>(0, v, width);
+        return $r0;
+    }
+
+    public static java.lang.String leftJustify(java.lang.String, int)
+    {
+        java.lang.String s, $r0;
+        int width;
+
+        s := @parameter0: java.lang.String;
+        width := @parameter1: int;
+        $r0 = staticinvoke <cck.text.StringUtil: java.lang.String justify(boolean,java.lang.String,int)>(0, s, width);
+        return $r0;
+    }
+
+    public static java.lang.String rightJustify(long, int)
+    {
+        long v;
+        int width;
+        java.lang.String $r0;
+
+        v := @parameter0: long;
+        width := @parameter1: int;
+        $r0 = staticinvoke <cck.text.StringUtil: java.lang.String justify(boolean,long,int)>(1, v, width);
+        return $r0;
+    }
+
+    public static java.lang.String rightJustify(float, int)
+    {
+        float v;
+        int width;
+        java.lang.String $r0;
+
+        v := @parameter0: float;
+        width := @parameter1: int;
+        $r0 = staticinvoke <cck.text.StringUtil: java.lang.String justify(boolean,float,int)>(1, v, width);
+        return $r0;
+    }
+
+    public static java.lang.String rightJustify(java.lang.String, int)
+    {
+        java.lang.String s, $r0;
+        int width;
+
+        s := @parameter0: java.lang.String;
+        width := @parameter1: int;
+        $r0 = staticinvoke <cck.text.StringUtil: java.lang.String justify(boolean,java.lang.String,int)>(1, s, width);
+        return $r0;
+    }
+
+    public static java.lang.String toHex(long, int)
+    {
+        long value;
+        int width;
+        char[] $r0, $r1;
+        java.lang.String $r2;
+
+        value := @parameter0: long;
+        width := @parameter1: int;
+        $r1 = newarray (char)[width];
+        $r0 = <cck.text.CharUtil: char[] HEX_CHARS>;
+        $r2 = staticinvoke <cck.text.StringUtil: java.lang.String convertToHex(long,int,int,char[],char[])>(value, width, 0, $r1, $r0);
+        return $r2;
+    }
+
+    public static java.lang.String toLowHex(long, int)
+    {
+        long value;
+        int width;
+        char[] $r0, $r1;
+        java.lang.String $r2;
+
+        value := @parameter0: long;
+        width := @parameter1: int;
+        $r1 = newarray (char)[width];
+        $r0 = <cck.text.CharUtil: char[] LOW_HEX_CHARS>;
+        $r2 = staticinvoke <cck.text.StringUtil: java.lang.String convertToHex(long,int,int,char[],char[])>(value, width, 0, $r1, $r0);
+        return $r2;
+    }
+
+    private static java.lang.String convertToHex(long, int, int, char[], char[])
+    {
+        long value, $l1, $l7, tid_convertToHex;
+        int width, start, cntr, i, $i0, $i4, $i5, $i6, $i8;
+        char[] result, hexChars;
+        java.lang.StringBuffer buf, $r0;
+        byte $b2;
+        char $c3, $c9;
+        java.lang.String $r1, $r2;
+        java.lang.Thread thread_convertToHex;
+
+        value := @parameter0: long;
+        width := @parameter1: int;
+        start := @parameter2: int;
+        result := @parameter3: char[];
+        hexChars := @parameter4: char[];
+        thread_convertToHex = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_convertToHex = virtualinvoke thread_convertToHex.<java.lang.Thread: long getId()>();
+        $i0 = width * 4;
+        $l1 = 1L << $i0;
+        $b2 = value cmp $l1;
+        if $b2 <= 0 goto label2;
+
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buf = $r0;
+        cntr = 0;
+
+     label0:
+        if cntr >= start goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(result, 69, tid_convertToHex, "cck.text.StringUtil", 458, cntr, $c3);
+        $c3 = result[cntr];
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c3);
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        $r1 = staticinvoke <java.lang.Long: java.lang.String toHexString(long)>(value);
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String toUpperCase()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        $r2 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r2;
+
+     label2:
+        $i4 = start + width;
+        i = $i4 - 1;
+        cntr = 0;
+
+     label3:
+        if cntr >= width goto label4;
+
+        $i5 = i - cntr;
+        $i6 = cntr * 4;
+        $l7 = value >> $i6;
+        $i8 = (int) $l7;
+        $i8 = $i8 & 15;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(hexChars, 69, tid_convertToHex, "cck.text.StringUtil", 465, $i8, $c9);
+        $c9 = hexChars[$i8];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(result, 69, tid_convertToHex, "cck.text.StringUtil", 465, $i5, $c9);
+        result[$i5] = $c9;
+        cntr = cntr + 1;
+        goto label3;
+
+     label4:
+        $r2 = new java.lang.String;
+        specialinvoke $r2.<java.lang.String: void <init>(char[])>(result);
+        return $r2;
+    }
+
+    public static java.lang.String to0xHex(long, int)
+    {
+        long value, tid_to0xHex;
+        int width, $i0;
+        char[] result, $r0;
+        java.lang.String $r1;
+        java.lang.Thread thread_to0xHex;
+
+        value := @parameter0: long;
+        width := @parameter1: int;
+        thread_to0xHex = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_to0xHex = virtualinvoke thread_to0xHex.<java.lang.Thread: long getId()>();
+        $i0 = width + 2;
+        result = newarray (char)[$i0];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(result, 69, tid_to0xHex, "cck.text.StringUtil", 473, 0, 48);
+        result[0] = 48;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(result, 69, tid_to0xHex, "cck.text.StringUtil", 474, 1, 120);
+        result[1] = 120;
+        $r0 = <cck.text.CharUtil: char[] HEX_CHARS>;
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String convertToHex(long,int,int,char[],char[])>(value, width, 2, result, $r0);
+        return $r1;
+    }
+
+    public static java.lang.String toBin(long, int)
+    {
+        long value, $l2, $l3, tid_toBin;
+        int width, cntr, $i0, $i1;
+        char[] result;
+        byte $b4;
+        char $c5;
+        java.lang.String $r1;
+        java.lang.Thread thread_toBin;
+
+        value := @parameter0: long;
+        width := @parameter1: int;
+        thread_toBin = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_toBin = virtualinvoke thread_toBin.<java.lang.Thread: long getId()>();
+        result = newarray (char)[width];
+        cntr = 0;
+
+     label0:
+        if cntr >= width goto label3;
+
+        $i0 = width - cntr;
+        $i0 = $i0 - 1;
+        $i1 = 1 << cntr;
+        $l2 = (long) $i1;
+        $l3 = value & $l2;
+        $b4 = $l3 cmp 0L;
+        if $b4 != 0 goto label1;
+
+        $c5 = 48;
+        goto label2;
+
+     label1:
+        $c5 = 49;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(result, 69, tid_toBin, "cck.text.StringUtil", 482, $i0, $c5);
+        result[$i0] = $c5;
+        cntr = cntr + 1;
+        goto label0;
+
+     label3:
+        $r1 = new java.lang.String;
+        specialinvoke $r1.<java.lang.String: void <init>(char[])>(result);
+        return $r1;
+    }
+
+    public static void toHex(java.lang.StringBuffer, long, int)
+    {
+        java.lang.StringBuffer buf;
+        long value, $l1, tid_toHex;
+        int width, cntr, $i0, $i3;
+        byte $b2;
+        java.lang.String $r0;
+        char[] $r2;
+        char $c4;
+        java.lang.Thread thread_toHex;
+
+        buf := @parameter0: java.lang.StringBuffer;
+        value := @parameter1: long;
+        width := @parameter2: int;
+        thread_toHex = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_toHex = virtualinvoke thread_toHex.<java.lang.Thread: long getId()>();
+        $i0 = width * 4;
+        $l1 = 1L << $i0;
+        $b2 = value cmp $l1;
+        if $b2 <= 0 goto label0;
+
+        $r0 = staticinvoke <java.lang.Long: java.lang.String toHexString(long)>(value);
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String toUpperCase()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r0);
+        return;
+
+     label0:
+        cntr = width - 1;
+
+     label1:
+        if cntr < 0 goto label2;
+
+        $r2 = <cck.text.CharUtil: char[] HEX_CHARS>;
+        $i0 = cntr * 4;
+        $l1 = value >> $i0;
+        $i3 = (int) $l1;
+        $i3 = $i3 & 15;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>($r2, 69, tid_toHex, "cck.text.StringUtil", 494, $i3, $c4);
+        $c4 = $r2[$i3];
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c4);
+        cntr = cntr + -1;
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public static java.lang.String splice(java.lang.String[], java.lang.String[])
+    {
+        java.lang.String[] a, b;
+        java.lang.StringBuffer $r0, buf;
+        int cntr, $i0;
+        java.lang.String $r1, $r2;
+        long tid_splice;
+        java.lang.Thread thread_splice;
+
+        a := @parameter0: java.lang.String[];
+        b := @parameter1: java.lang.String[];
+        thread_splice = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_splice = virtualinvoke thread_splice.<java.lang.Thread: long getId()>();
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buf = $r0;
+        cntr = 0;
+
+     label0:
+        $i0 = lengthof a;
+        if cntr >= $i0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(a, 18, tid_splice, "cck.text.StringUtil", 501, cntr, $r1);
+        $r1 = a[cntr];
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        $i0 = lengthof b;
+        if cntr >= $i0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(b, 18, tid_splice, "cck.text.StringUtil", 502, cntr, $r1);
+        $r1 = b[cntr];
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+
+     label1:
+        cntr = cntr + 1;
+        goto label0;
+
+     label2:
+        $i0 = lengthof b;
+        if cntr >= $i0 goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(b, 18, tid_splice, "cck.text.StringUtil", 506, cntr, $r1);
+        $r1 = b[cntr];
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        cntr = cntr + 1;
+        goto label2;
+
+     label3:
+        $r2 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r2;
+    }
+
+    public static java.lang.String quote(java.lang.Object)
+    {
+        java.lang.Object s;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+
+        s := @parameter0: java.lang.Object;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\"");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(s);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\"");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String squote(char)
+    {
+        char c;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+
+        c := @parameter0: char;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(c);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String embed(java.lang.Object)
+    {
+        java.lang.Object s;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+
+        s := @parameter0: java.lang.Object;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(s);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String embed(java.lang.Object, java.lang.Object)
+    {
+        java.lang.Object lead, arg;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+
+        lead := @parameter0: java.lang.Object;
+        arg := @parameter1: java.lang.Object;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(lead);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(arg);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String embed(java.lang.Object, java.lang.Object, java.lang.Object)
+    {
+        java.lang.Object lead, arg1, arg2;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+
+        lead := @parameter0: java.lang.Object;
+        arg1 := @parameter1: java.lang.Object;
+        arg2 := @parameter2: java.lang.Object;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(lead);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(arg1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(arg2);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String embed(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object)
+    {
+        java.lang.Object lead, arg1, arg2, arg3;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+
+        lead := @parameter0: java.lang.Object;
+        arg1 := @parameter1: java.lang.Object;
+        arg2 := @parameter2: java.lang.Object;
+        arg3 := @parameter3: java.lang.Object;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(lead);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(arg1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(arg2);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(arg3);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String embed(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object)
+    {
+        java.lang.Object lead, arg1, arg2, arg3, arg4;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+
+        lead := @parameter0: java.lang.Object;
+        arg1 := @parameter1: java.lang.Object;
+        arg2 := @parameter2: java.lang.Object;
+        arg3 := @parameter3: java.lang.Object;
+        arg4 := @parameter4: java.lang.Object;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(lead);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(arg1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(arg2);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(arg3);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(arg4);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String commalist(java.util.List)
+    {
+        java.util.List l;
+        java.lang.StringBuffer $r0, buf;
+        java.lang.String $r1;
+
+        l := @parameter0: java.util.List;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buf = $r0;
+        staticinvoke <cck.text.StringUtil: void commalist(java.util.List,java.lang.StringBuffer)>(l, buf);
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static void commalist(java.util.List, java.lang.StringBuffer)
+    {
+        java.util.List l;
+        java.lang.StringBuffer buf;
+        java.util.Iterator i;
+        boolean $z0;
+        java.lang.Object $r0;
+        java.lang.String $r1;
+
+        l := @parameter0: java.util.List;
+        buf := @parameter1: java.lang.StringBuffer;
+        i = interfaceinvoke l.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r0 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        $r1 = virtualinvoke $r0.<java.lang.Object: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label0;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", ");
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    public static java.lang.String commalist(java.lang.Object[])
+    {
+        java.lang.Object[] o;
+        java.lang.StringBuffer $r0, buf;
+        java.lang.String $r1;
+
+        o := @parameter0: java.lang.Object[];
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buf = $r0;
+        staticinvoke <cck.text.StringUtil: void commalist(java.lang.Object[],java.lang.StringBuffer)>(o, buf);
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static void commalist(java.lang.Object[], java.lang.StringBuffer)
+    {
+        java.lang.Object[] o;
+        java.lang.StringBuffer buf;
+        int cntr, $i0;
+        java.lang.Object $r1;
+        java.lang.String $r2;
+
+        o := @parameter0: java.lang.Object[];
+        buf := @parameter1: java.lang.StringBuffer;
+        cntr = 0;
+
+     label0:
+        $i0 = lengthof o;
+        if cntr >= $i0 goto label2;
+
+        if cntr <= 0 goto label1;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", ");
+
+     label1:
+        $r1 = o[cntr];
+        $r2 = virtualinvoke $r1.<java.lang.Object: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        cntr = cntr + 1;
+        goto label0;
+
+     label2:
+        return;
+    }
+
+    public static void commalist(java.util.Iterator, java.lang.StringBuffer)
+    {
+        java.util.Iterator i;
+        java.lang.StringBuffer buf;
+        int cntr;
+        boolean $z0;
+        java.lang.Object $r1;
+        java.lang.String $r2;
+
+        i := @parameter0: java.util.Iterator;
+        buf := @parameter1: java.lang.StringBuffer;
+        cntr = 0;
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        if cntr <= 0 goto label1;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", ");
+
+     label1:
+        $r1 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        $r2 = virtualinvoke $r1.<java.lang.Object: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        cntr = cntr + 1;
+        goto label0;
+
+     label2:
+        return;
+    }
+
+    public static java.lang.String linelist(java.util.List)
+    {
+        java.util.List l;
+        java.lang.StringBuffer $r0, buf;
+        java.lang.String $r1;
+
+        l := @parameter0: java.util.List;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buf = $r0;
+        staticinvoke <cck.text.StringUtil: void linelist(java.lang.StringBuffer,java.util.List)>(buf, l);
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static void linelist(java.lang.StringBuffer, java.util.List)
+    {
+        java.lang.StringBuffer buf;
+        java.util.List l;
+        java.util.Iterator i;
+        boolean $z0;
+        java.lang.Object $r0;
+        java.lang.String $r1;
+
+        buf := @parameter0: java.lang.StringBuffer;
+        l := @parameter1: java.util.List;
+        i = interfaceinvoke l.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r0 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        $r1 = virtualinvoke $r0.<java.lang.Object: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(10);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    public static java.lang.String commalist(java.lang.Object, java.lang.Object)
+    {
+        java.lang.Object o1, o2;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+
+        o1 := @parameter0: java.lang.Object;
+        o2 := @parameter1: java.lang.Object;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(o1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(",");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(o2);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String commalist(java.lang.Object, java.lang.Object, java.lang.Object)
+    {
+        java.lang.Object o1, o2, o3;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+
+        o1 := @parameter0: java.lang.Object;
+        o2 := @parameter1: java.lang.Object;
+        o3 := @parameter2: java.lang.Object;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(o1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(",");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(o2);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(",");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(o3);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String commalist(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object)
+    {
+        java.lang.Object o1, o2, o3, o4;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+
+        o1 := @parameter0: java.lang.Object;
+        o2 := @parameter1: java.lang.Object;
+        o3 := @parameter2: java.lang.Object;
+        o4 := @parameter3: java.lang.Object;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(o1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(",");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(o2);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(",");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(o3);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(",");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(o4);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String interval(int, int)
+    {
+        int low, high;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+
+        low := @parameter0: int;
+        high := @parameter1: int;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(low);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(high);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(93);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static char alpha(int)
+    {
+        int num, $i0;
+        char $c1;
+
+        num := @parameter0: int;
+        $i0 = 97 + num;
+        $i0 = $i0 - 1;
+        $c1 = (char) $i0;
+        return $c1;
+    }
+
+    public static java.lang.String qembed(java.lang.String, java.lang.String, java.lang.String)
+    {
+        java.lang.String s1, s2, s3, $r1, $r2;
+        java.lang.StringBuilder $r0;
+
+        s1 := @parameter0: java.lang.String;
+        s2 := @parameter1: java.lang.String;
+        s3 := @parameter2: java.lang.String;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(s1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>(s2);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(s3);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r2;
+    }
+
+    public static int evaluateIntegerLiteral(java.lang.String)
+    {
+        java.lang.String val;
+        java.text.StringCharacterIterator $r0;
+        int $i0;
+
+        val := @parameter0: java.lang.String;
+        $r0 = new java.text.StringCharacterIterator;
+        specialinvoke $r0.<java.text.StringCharacterIterator: void <init>(java.lang.String)>(val);
+        $i0 = staticinvoke <cck.text.StringUtil: int readIntegerValue(java.text.CharacterIterator)>($r0);
+        return $i0;
+    }
+
+    public static java.lang.String evaluateStringLiteral(java.lang.String) throws java.lang.Exception
+    {
+        java.lang.String literal, $r2;
+        java.lang.StringBuffer $r0, buffer;
+        java.text.StringCharacterIterator i, $r1;
+        char c;
+        int $i0;
+        boolean $z0;
+
+        literal := @parameter0: java.lang.String;
+        $r0 = new java.lang.StringBuffer;
+        $i0 = virtualinvoke literal.<java.lang.String: int length()>();
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>($i0);
+        buffer = $r0;
+        $r1 = new java.text.StringCharacterIterator;
+        specialinvoke $r1.<java.text.StringCharacterIterator: void <init>(java.lang.String)>(literal);
+        i = $r1;
+        staticinvoke <cck.text.StringUtil: void expectChar(java.text.CharacterIterator,char)>(i, 34);
+
+     label0:
+        $z0 = staticinvoke <cck.text.StringUtil: boolean peekAndEat(java.text.CharacterIterator,char)>(i, 34);
+        if $z0 == 0 goto label1;
+
+        goto label4;
+
+     label1:
+        c = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        if c != 65535 goto label2;
+
+        goto label4;
+
+     label2:
+        if c != 92 goto label3;
+
+        c = staticinvoke <cck.text.StringUtil: char escapeChar(java.text.CharacterIterator)>(i);
+
+     label3:
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(c);
+        goto label0;
+
+     label4:
+        staticinvoke <cck.text.StringUtil: void expectChar(java.text.CharacterIterator,char)>(i, 65535);
+        $r2 = virtualinvoke buffer.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r2;
+    }
+
+    public static char evaluateCharLiteral(java.lang.String) throws java.lang.Exception
+    {
+        java.lang.String literal;
+        java.text.StringCharacterIterator $r0, i;
+        char ch;
+        boolean $z0;
+
+        literal := @parameter0: java.lang.String;
+        $r0 = new java.text.StringCharacterIterator;
+        specialinvoke $r0.<java.text.StringCharacterIterator: void <init>(java.lang.String)>(literal);
+        i = $r0;
+        staticinvoke <cck.text.StringUtil: void expectChar(java.text.CharacterIterator,char)>(i, 39);
+        $z0 = staticinvoke <cck.text.StringUtil: boolean peekAndEat(java.text.CharacterIterator,char)>(i, 92);
+        if $z0 == 0 goto label0;
+
+        ch = staticinvoke <cck.text.StringUtil: char escapeChar(java.text.CharacterIterator)>(i);
+        goto label1;
+
+     label0:
+        ch = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+
+     label1:
+        staticinvoke <cck.text.StringUtil: void expectChar(java.text.CharacterIterator,char)>(i, 39);
+        staticinvoke <cck.text.StringUtil: void expectChar(java.text.CharacterIterator,char)>(i, 65535);
+        return ch;
+    }
+
+    private static char escapeChar(java.text.CharacterIterator)
+    {
+        java.text.CharacterIterator i;
+        char c, $c0;
+        int $i1;
+
+        i := @parameter0: java.text.CharacterIterator;
+        c = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        lookupswitch(c)
+        {
+            case 34: goto label6;
+            case 39: goto label5;
+            case 48: goto label9;
+            case 49: goto label9;
+            case 50: goto label9;
+            case 51: goto label9;
+            case 52: goto label9;
+            case 53: goto label9;
+            case 54: goto label9;
+            case 55: goto label9;
+            case 92: goto label4;
+            case 98: goto label1;
+            case 102: goto label0;
+            case 110: goto label2;
+            case 114: goto label3;
+            case 116: goto label7;
+            case 120: goto label8;
+            default: goto label10;
+        };
+
+     label0:
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        return 12;
+
+     label1:
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        return 8;
+
+     label2:
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        return 10;
+
+     label3:
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        return 13;
+
+     label4:
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        return 92;
+
+     label5:
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        return 39;
+
+     label6:
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        return 34;
+
+     label7:
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        return 9;
+
+     label8:
+        $i1 = staticinvoke <cck.text.StringUtil: int readHexValue(java.text.CharacterIterator,int)>(i, 4);
+        $c0 = (char) $i1;
+        return $c0;
+
+     label9:
+        $i1 = staticinvoke <cck.text.StringUtil: int readOctalValue(java.text.CharacterIterator,int)>(i, 3);
+        $c0 = (char) $i1;
+        return $c0;
+
+     label10:
+        return c;
+    }
+
+    private static java.lang.IllegalArgumentException invalidCharLiteral(java.lang.String)
+    {
+        java.lang.String lit, $r2;
+        java.lang.IllegalArgumentException $r0;
+        java.lang.StringBuilder $r1;
+
+        lit := @parameter0: java.lang.String;
+        $r0 = new java.lang.IllegalArgumentException;
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid character literal: ");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(lit);
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r2);
+        return $r0;
+    }
+
+    public static java.lang.String trimquotes(java.lang.String)
+    {
+        java.lang.String s, $r0;
+        int start, end, $i0, $i2;
+        char $c1;
+
+        s := @parameter0: java.lang.String;
+        $i0 = virtualinvoke s.<java.lang.String: int length()>();
+        if $i0 != 0 goto label0;
+
+        return s;
+
+     label0:
+        start = 0;
+        end = virtualinvoke s.<java.lang.String: int length()>();
+        $c1 = virtualinvoke s.<java.lang.String: char charAt(int)>(start);
+        if $c1 != 34 goto label1;
+
+        start = start + 1;
+
+     label1:
+        $i2 = end - 1;
+        $c1 = virtualinvoke s.<java.lang.String: char charAt(int)>($i2);
+        if $c1 != 34 goto label2;
+
+        end = end + -1;
+
+     label2:
+        if start >= end goto label3;
+
+        $r0 = virtualinvoke s.<java.lang.String: java.lang.String substring(int,int)>(start, end);
+        return $r0;
+
+     label3:
+        return "";
+    }
+
+    public static java.lang.String formatParagraphs(java.lang.String, int, int, int)
+    {
+        java.lang.String s, indstr, ljstr, $r1;
+        int leftJust, indent, width, len, consumed, lastSp, cntr, indent, $i0, $i1, $i2;
+        java.lang.StringBuffer buf, $r0;
+        char c;
+        boolean $z0;
+
+        s := @parameter0: java.lang.String;
+        leftJust := @parameter1: int;
+        indent := @parameter2: int;
+        width := @parameter3: int;
+        len = virtualinvoke s.<java.lang.String: int length()>();
+        indent = indent + leftJust;
+        consumed = indent + leftJust;
+        indstr = staticinvoke <cck.text.StringUtil: java.lang.String space(int)>(indent);
+        ljstr = staticinvoke <cck.text.StringUtil: java.lang.String space(int)>(leftJust);
+        $r0 = new java.lang.StringBuffer;
+        $i0 = virtualinvoke s.<java.lang.String: int length()>();
+        $i0 = $i0 + 50;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>($i0);
+        buf = $r0;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(indstr);
+        lastSp = -1;
+        cntr = 0;
+
+     label0:
+        if cntr >= len goto label4;
+
+        c = virtualinvoke s.<java.lang.String: char charAt(int)>(cntr);
+        if c != 10 goto label1;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(10);
+        consumed = indent;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(indstr);
+        goto label3;
+
+     label1:
+        $z0 = staticinvoke <java.lang.Character: boolean isWhitespace(char)>(c);
+        if $z0 == 0 goto label2;
+
+        lastSp = virtualinvoke buf.<java.lang.StringBuffer: int length()>();
+
+     label2:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(c);
+        consumed = consumed + 1;
+        if consumed <= width goto label3;
+
+        if lastSp < 0 goto label3;
+
+        virtualinvoke buf.<java.lang.StringBuffer: void setCharAt(int,char)>(lastSp, 10);
+        $i1 = lastSp + 1;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer insert(int,java.lang.String)>($i1, ljstr);
+        $i2 = virtualinvoke buf.<java.lang.StringBuffer: int length()>();
+        $i2 = $i2 - lastSp;
+        $i2 = $i2 + leftJust;
+        consumed = $i2 - 1;
+
+     label3:
+        cntr = cntr + 1;
+        goto label0;
+
+     label4:
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.util.List trimLines(java.lang.String, int, int)
+    {
+        java.lang.String s, indstr, leftover, $r2;
+        int indent, width, len, consumed, lastSp, cntr, $i0, $i1, $i2;
+        java.util.LinkedList $r0, list;
+        java.lang.StringBuffer buf, $r1;
+        char c;
+        boolean $z0;
+
+        s := @parameter0: java.lang.String;
+        indent := @parameter1: int;
+        width := @parameter2: int;
+        $r0 = new java.util.LinkedList;
+        specialinvoke $r0.<java.util.LinkedList: void <init>()>();
+        list = $r0;
+        len = virtualinvoke s.<java.lang.String: int length()>();
+        consumed = indent;
+        indstr = staticinvoke <cck.text.StringUtil: java.lang.String space(int)>(indent);
+        $r1 = new java.lang.StringBuffer;
+        $i0 = virtualinvoke s.<java.lang.String: int length()>();
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>(int)>($i0);
+        buf = $r1;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(indstr);
+        lastSp = -1;
+        cntr = 0;
+
+     label0:
+        if cntr >= len goto label4;
+
+        c = virtualinvoke s.<java.lang.String: char charAt(int)>(cntr);
+        if c != 10 goto label1;
+
+        buf = staticinvoke <cck.text.StringUtil: java.lang.StringBuffer newBuffer(java.lang.String,java.lang.StringBuffer,java.util.List)>(indstr, buf, list);
+        consumed = virtualinvoke buf.<java.lang.StringBuffer: int length()>();
+        goto label3;
+
+     label1:
+        $z0 = staticinvoke <java.lang.Character: boolean isWhitespace(char)>(c);
+        if $z0 == 0 goto label2;
+
+        lastSp = consumed;
+
+     label2:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(c);
+        consumed = consumed + 1;
+        if consumed <= width goto label3;
+
+        if lastSp < 0 goto label3;
+
+        $i1 = lastSp + 1;
+        leftover = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String substring(int)>($i1);
+        virtualinvoke buf.<java.lang.StringBuffer: void setLength(int)>(lastSp);
+        buf = staticinvoke <cck.text.StringUtil: java.lang.StringBuffer newBuffer(java.lang.String,java.lang.StringBuffer,java.util.List)>(leftover, buf, list);
+        consumed = virtualinvoke buf.<java.lang.StringBuffer: int length()>();
+
+     label3:
+        cntr = cntr + 1;
+        goto label0;
+
+     label4:
+        $i2 = virtualinvoke buf.<java.lang.StringBuffer: int length()>();
+        if $i2 <= 0 goto label5;
+
+        $r2 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke list.<java.util.LinkedList: boolean add(java.lang.Object)>($r2);
+
+     label5:
+        return list;
+    }
+
+    static java.lang.StringBuffer newBuffer(java.lang.String, java.lang.StringBuffer, java.util.List)
+    {
+        java.lang.String n, $r0;
+        java.lang.StringBuffer old, $r1;
+        java.util.List strs;
+
+        n := @parameter0: java.lang.String;
+        old := @parameter1: java.lang.StringBuffer;
+        strs := @parameter2: java.util.List;
+        $r0 = virtualinvoke old.<java.lang.StringBuffer: java.lang.String toString()>();
+        interfaceinvoke strs.<java.util.List: boolean add(java.lang.Object)>($r0);
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>(java.lang.String)>(n);
+        return $r1;
+    }
+
+    public static java.lang.String dup(char, int)
+    {
+        char c;
+        int len, cntr;
+        java.lang.StringBuffer $r0, buf;
+        java.lang.String $r1;
+
+        c := @parameter0: char;
+        len := @parameter1: int;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>(len);
+        buf = $r0;
+        cntr = 0;
+
+     label0:
+        if cntr >= len goto label1;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(c);
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String space(int)
+    {
+        int len, $i0;
+        java.lang.String[] $r0, $r1;
+        java.lang.String $r2;
+        long tid_space;
+        java.lang.Thread thread_space;
+
+        len := @parameter0: int;
+        thread_space = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_space = virtualinvoke thread_space.<java.lang.Thread: long getId()>();
+        if len > 0 goto label0;
+
+        return "";
+
+     label0:
+        $r0 = <cck.text.StringUtil: java.lang.String[] spacers>;
+        $i0 = lengthof $r0;
+        if len >= $i0 goto label1;
+
+        $r1 = <cck.text.StringUtil: java.lang.String[] spacers>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_space, "cck.text.StringUtil", 837, len, $r2);
+        $r2 = $r1[len];
+        return $r2;
+
+     label1:
+        $r2 = staticinvoke <cck.text.StringUtil: java.lang.String dup(char,int)>(32, len);
+        return $r2;
+    }
+
+    public static void space(java.lang.StringBuffer, int)
+    {
+        java.lang.StringBuffer buf;
+        int len, $i0;
+
+        buf := @parameter0: java.lang.StringBuffer;
+        len := @parameter1: int;
+
+     label0:
+        $i0 = len;
+        len = len - 1;
+        if $i0 <= 0 goto label1;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(32);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    public static java.lang.String toFixedFloat(float, int)
+    {
+        float fval, fract, $f0, $f1;
+        int places, $i0;
+        java.lang.StringBuffer buf, $r0;
+        long val;
+        boolean $z0;
+        byte $b1;
+        double $d0;
+        java.lang.String $r1;
+
+        fval := @parameter0: float;
+        places := @parameter1: int;
+        $z0 = staticinvoke <java.lang.Float: boolean isInfinite(float)>(fval);
+        if $z0 == 0 goto label0;
+
+        return "(inf)";
+
+     label0:
+        $z0 = staticinvoke <java.lang.Float: boolean isNaN(float)>(fval);
+        if $z0 == 0 goto label1;
+
+        return "(NaN)";
+
+     label1:
+        $r0 = new java.lang.StringBuffer;
+        $i0 = places + 5;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>($i0);
+        buf = $r0;
+        val = (long) fval;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(long)>(val);
+        $b1 = fval cmpl 0.0F;
+        if $b1 < 0 goto label2;
+
+        $f0 = (float) val;
+        $f1 = fval - $f0;
+        goto label3;
+
+     label2:
+        $f1 = (float) val;
+        $f1 = $f1 - fval;
+
+     label3:
+        fract = $f1;
+        $d0 = (double) fract;
+        staticinvoke <cck.text.StringUtil: void appendFract(java.lang.StringBuffer,double,int)>(buf, $d0, places);
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String toDecimal(long, int)
+    {
+        long val, $l1;
+        int places, $i0;
+        java.lang.StringBuffer $r0, buf;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2, $r3;
+
+        val := @parameter0: long;
+        places := @parameter1: int;
+        $r0 = new java.lang.StringBuffer;
+        $i0 = 10 + places;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>($i0);
+        buf = $r0;
+
+     label0:
+        if places <= 0 goto label1;
+
+        $l1 = val % 10L;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(long)>($l1);
+        places = places + -1;
+        val = val / 10L;
+        if places != 0 goto label0;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(46);
+        goto label0;
+
+     label1:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer reverse()>();
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>(val);
+        $r2 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r3;
+    }
+
+    public static java.lang.String toMultirepString(int, int)
+    {
+        int value, bits, hexdigs, bit, $i0, $i1;
+        java.lang.StringBuffer $r0, buf;
+        long $l2;
+        boolean $z0;
+        char $c3;
+        java.lang.String $r1;
+
+        value := @parameter0: int;
+        bits := @parameter1: int;
+        $r0 = new java.lang.StringBuffer;
+        $i0 = bits * 3;
+        $i0 = $i0 + 8;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>($i0);
+        buf = $r0;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("0x");
+        $i1 = bits + 3;
+        hexdigs = $i1 / 4;
+        $l2 = (long) value;
+        staticinvoke <cck.text.StringUtil: void toHex(java.lang.StringBuffer,long,int)>(buf, $l2, hexdigs);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" [");
+        bit = bits - 1;
+
+     label0:
+        if bit < 0 goto label3;
+
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(int,int)>(value, bit);
+        if $z0 == 0 goto label1;
+
+        $c3 = 49;
+        goto label2;
+
+     label1:
+        $c3 = 48;
+
+     label2:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c3);
+        bit = bit + -1;
+        goto label0;
+
+     label3:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("] (");
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(value);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(") ");
+        if bits >= 9 goto label4;
+
+        staticinvoke <cck.text.StringUtil: void appendChar(int,java.lang.StringBuffer)>(value, buf);
+
+     label4:
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    private static void appendChar(int, java.lang.StringBuffer)
+    {
+        int value;
+        java.lang.StringBuffer buf;
+        char $c0;
+
+        value := @parameter0: int;
+        buf := @parameter1: java.lang.StringBuffer;
+        tableswitch(value)
+        {
+            case 8: goto label2;
+            case 9: goto label3;
+            case 10: goto label0;
+            case 11: goto label4;
+            case 12: goto label4;
+            case 13: goto label1;
+            default: goto label4;
+        };
+
+     label0:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\'\\n\'");
+        goto label5;
+
+     label1:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\'\\r\'");
+        goto label5;
+
+     label2:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\'\\b\'");
+        goto label5;
+
+     label3:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\'\\t\'");
+        goto label5;
+
+     label4:
+        if value < 32 goto label5;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\'");
+        $c0 = (char) value;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\'");
+
+     label5:
+        return;
+    }
+
+    public static char toBit(boolean)
+    {
+        boolean f;
+        char $c0;
+
+        f := @parameter0: boolean;
+        if f == 0 goto label0;
+
+        $c0 = 49;
+        goto label1;
+
+     label0:
+        $c0 = 48;
+
+     label1:
+        return $c0;
+    }
+
+    public static void appendFract(java.lang.StringBuffer, double, int)
+    {
+        java.lang.StringBuffer buf;
+        double val, $d0, $d1;
+        int digits, cntr, radix, digit, $i0, $i1;
+        char $c2;
+
+        buf := @parameter0: java.lang.StringBuffer;
+        val := @parameter1: double;
+        digits := @parameter2: int;
+        cntr = 0;
+        radix = 10;
+
+     label0:
+        if cntr >= digits goto label2;
+
+        if cntr != 0 goto label1;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(46);
+
+     label1:
+        $d0 = (double) radix;
+        $d1 = val * $d0;
+        $i0 = (int) $d1;
+        digit = $i0 % 10;
+        $i1 = digit + 48;
+        $c2 = (char) $i1;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c2);
+        radix = radix * 10;
+        cntr = cntr + 1;
+        goto label0;
+
+     label2:
+        return;
+    }
+
+    public static java.lang.String stringReplace(java.lang.String, java.util.Properties, java.lang.Object)
+    {
+        java.lang.String template, $r0, $r2;
+        java.util.Properties p;
+        java.lang.Object o1;
+
+        template := @parameter0: java.lang.String;
+        p := @parameter1: java.util.Properties;
+        o1 := @parameter2: java.lang.Object;
+        $r0 = virtualinvoke o1.<java.lang.Object: java.lang.String toString()>();
+        virtualinvoke p.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("1", $r0);
+        $r2 = staticinvoke <cck.text.StringUtil: java.lang.String stringReplace(java.lang.String,java.util.Properties)>(template, p);
+        return $r2;
+    }
+
+    public static java.lang.String stringReplace(java.lang.String, java.util.Properties, java.lang.Object[])
+    {
+        java.lang.String template, $r0, $r2, $r4;
+        java.util.Properties p;
+        java.lang.Object[] strs;
+        int cntr, $i0;
+        java.lang.Object $r1;
+
+        template := @parameter0: java.lang.String;
+        p := @parameter1: java.util.Properties;
+        strs := @parameter2: java.lang.Object[];
+        cntr = 0;
+
+     label0:
+        $i0 = lengthof strs;
+        if cntr >= $i0 goto label1;
+
+        $i0 = cntr + 1;
+        $r0 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i0);
+        $r1 = strs[cntr];
+        $r2 = virtualinvoke $r1.<java.lang.Object: java.lang.String toString()>();
+        virtualinvoke p.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>($r0, $r2);
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        $r4 = staticinvoke <cck.text.StringUtil: java.lang.String stringReplace(java.lang.String,java.util.Properties)>(template, p);
+        return $r4;
+    }
+
+    public static java.lang.String stringReplace(java.lang.String, java.util.Properties, java.lang.String[])
+    {
+        java.lang.String template, $r0, $r1, $r3;
+        java.util.Properties p;
+        java.lang.String[] strs;
+        int cntr, $i0;
+        long tid_stringReplace;
+        java.lang.Thread thread_stringReplace;
+
+        template := @parameter0: java.lang.String;
+        p := @parameter1: java.util.Properties;
+        strs := @parameter2: java.lang.String[];
+        thread_stringReplace = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_stringReplace = virtualinvoke thread_stringReplace.<java.lang.Thread: long getId()>();
+        cntr = 0;
+
+     label0:
+        $i0 = lengthof strs;
+        if cntr >= $i0 goto label1;
+
+        $i0 = cntr + 1;
+        $r0 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(strs, 18, tid_stringReplace, "cck.text.StringUtil", 946, cntr, $r1);
+        $r1 = strs[cntr];
+        virtualinvoke p.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>($r0, $r1);
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        $r3 = staticinvoke <cck.text.StringUtil: java.lang.String stringReplace(java.lang.String,java.util.Properties)>(template, p);
+        return $r3;
+    }
+
+    public static java.lang.String stringReplace(java.lang.String, java.util.Properties, java.lang.Object, java.lang.Object)
+    {
+        java.lang.String template, $r0, $r2;
+        java.util.Properties p;
+        java.lang.Object o1, o2;
+
+        template := @parameter0: java.lang.String;
+        p := @parameter1: java.util.Properties;
+        o1 := @parameter2: java.lang.Object;
+        o2 := @parameter3: java.lang.Object;
+        $r0 = virtualinvoke o1.<java.lang.Object: java.lang.String toString()>();
+        virtualinvoke p.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("1", $r0);
+        $r0 = virtualinvoke o2.<java.lang.Object: java.lang.String toString()>();
+        virtualinvoke p.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("2", $r0);
+        $r2 = staticinvoke <cck.text.StringUtil: java.lang.String stringReplace(java.lang.String,java.util.Properties)>(template, p);
+        return $r2;
+    }
+
+    public static java.lang.String stringReplace(java.lang.String, java.util.Properties, java.lang.Object, java.lang.Object, java.lang.Object)
+    {
+        java.lang.String template, $r0, $r2;
+        java.util.Properties p;
+        java.lang.Object o1, o2, o3;
+
+        template := @parameter0: java.lang.String;
+        p := @parameter1: java.util.Properties;
+        o1 := @parameter2: java.lang.Object;
+        o2 := @parameter3: java.lang.Object;
+        o3 := @parameter4: java.lang.Object;
+        $r0 = virtualinvoke o1.<java.lang.Object: java.lang.String toString()>();
+        virtualinvoke p.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("1", $r0);
+        $r0 = virtualinvoke o2.<java.lang.Object: java.lang.String toString()>();
+        virtualinvoke p.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("2", $r0);
+        $r0 = virtualinvoke o3.<java.lang.Object: java.lang.String toString()>();
+        virtualinvoke p.<java.util.Properties: java.lang.Object setProperty(java.lang.String,java.lang.String)>("3", $r0);
+        $r2 = staticinvoke <cck.text.StringUtil: java.lang.String stringReplace(java.lang.String,java.util.Properties)>(template, p);
+        return $r2;
+    }
+
+    public static java.lang.String stringReplace(java.lang.String, java.util.Properties)
+    {
+        java.lang.String template, $r1;
+        java.util.Properties p;
+        int max, pos;
+        java.lang.StringBuffer buf, $r0;
+        char ch;
+
+        template := @parameter0: java.lang.String;
+        p := @parameter1: java.util.Properties;
+        max = virtualinvoke template.<java.lang.String: int length()>();
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>(max);
+        buf = $r0;
+        pos = 0;
+
+     label0:
+        if pos >= max goto label4;
+
+        ch = virtualinvoke template.<java.lang.String: char charAt(int)>(pos);
+        if ch != 36 goto label1;
+
+        pos = staticinvoke <cck.text.StringUtil: int replaceVar(int,int,java.lang.String,java.lang.StringBuffer,java.util.Properties)>(pos, max, template, buf, p);
+        goto label3;
+
+     label1:
+        if ch != 37 goto label2;
+
+        pos = staticinvoke <cck.text.StringUtil: int replaceVarQuote(int,int,java.lang.String,java.lang.StringBuffer,java.util.Properties)>(pos, max, template, buf, p);
+        goto label3;
+
+     label2:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(ch);
+
+     label3:
+        pos = pos + 1;
+        goto label0;
+
+     label4:
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    private static int replaceVar(int, int, java.lang.String, java.lang.StringBuffer, java.util.Properties)
+    {
+        int pos, max, pos;
+        java.lang.String template, result;
+        java.lang.StringBuffer buf, $r0, var;
+        java.util.Properties p;
+
+        pos := @parameter0: int;
+        max := @parameter1: int;
+        template := @parameter2: java.lang.String;
+        buf := @parameter3: java.lang.StringBuffer;
+        p := @parameter4: java.util.Properties;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>(10);
+        var = $r0;
+        pos = staticinvoke <cck.text.StringUtil: int scanAhead(int,char,int,java.lang.String,java.lang.StringBuffer,java.lang.StringBuffer)>(pos, 36, max, template, buf, var);
+        result = staticinvoke <cck.text.StringUtil: java.lang.String getProperty(java.lang.StringBuffer,java.util.Properties)>(var, p);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(result);
+        return pos;
+    }
+
+    private static int scanAhead(int, char, int, java.lang.String, java.lang.StringBuffer, java.lang.StringBuffer)
+    {
+        int pos, max, pos;
+        char ch, vch;
+        java.lang.String template;
+        java.lang.StringBuffer buf, var;
+        boolean $z0;
+
+        pos := @parameter0: int;
+        ch := @parameter1: char;
+        max := @parameter2: int;
+        template := @parameter3: java.lang.String;
+        buf := @parameter4: java.lang.StringBuffer;
+        var := @parameter5: java.lang.StringBuffer;
+        pos = pos + 1;
+
+     label0:
+        if pos >= max goto label3;
+
+        vch = virtualinvoke template.<java.lang.String: char charAt(int)>(pos);
+        $z0 = staticinvoke <java.lang.Character: boolean isLetterOrDigit(char)>(vch);
+        if $z0 != 0 goto label1;
+
+        pos = pos + -1;
+        goto label3;
+
+     label1:
+        if vch != ch goto label2;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(ch);
+        goto label3;
+
+     label2:
+        virtualinvoke var.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(vch);
+        pos = pos + 1;
+        goto label0;
+
+     label3:
+        return pos;
+    }
+
+    private static java.lang.String getProperty(java.lang.StringBuffer, java.util.Properties)
+    {
+        java.lang.StringBuffer var;
+        java.util.Properties p;
+        java.lang.String varname, result, $r1, $r2;
+        java.lang.StringBuilder $r0;
+        cck.util.Util$InternalError $r3;
+
+        var := @parameter0: java.lang.StringBuffer;
+        p := @parameter1: java.util.Properties;
+        varname = virtualinvoke var.<java.lang.StringBuffer: java.lang.String toString()>();
+        result = virtualinvoke p.<java.util.Properties: java.lang.String getProperty(java.lang.String)>(varname);
+        if result != null goto label0;
+
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("stringReplace(): unknown variable ");
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>(varname);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r3 = staticinvoke <cck.util.Util: cck.util.Util$InternalError failure(java.lang.String)>($r2);
+        throw $r3;
+
+     label0:
+        return result;
+    }
+
+    private static int replaceVarQuote(int, int, java.lang.String, java.lang.StringBuffer, java.util.Properties)
+    {
+        int pos, max, pos;
+        java.lang.String template, result;
+        java.lang.StringBuffer buf, $r0, var;
+        java.util.Properties p;
+
+        pos := @parameter0: int;
+        max := @parameter1: int;
+        template := @parameter2: java.lang.String;
+        buf := @parameter3: java.lang.StringBuffer;
+        p := @parameter4: java.util.Properties;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>(10);
+        var = $r0;
+        pos = staticinvoke <cck.text.StringUtil: int scanAhead(int,char,int,java.lang.String,java.lang.StringBuffer,java.lang.StringBuffer)>(pos, 37, max, template, buf, var);
+        result = staticinvoke <cck.text.StringUtil: java.lang.String getProperty(java.lang.StringBuffer,java.util.Properties)>(var, p);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(34);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(result);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(34);
+        return pos;
+    }
+
+    public static char[] getStringChars(java.lang.String)
+    {
+        java.lang.String str;
+        char[] val;
+        int $i0, $i1;
+
+        str := @parameter0: java.lang.String;
+        $i0 = virtualinvoke str.<java.lang.String: int length()>();
+        val = newarray (char)[$i0];
+        $i1 = lengthof val;
+        virtualinvoke str.<java.lang.String: void getChars(int,int,char[],int)>(0, $i1, val, 0);
+        return val;
+    }
+
+    public static java.util.List toList(java.lang.String)
+    {
+        java.lang.String val, $r1, $r4;
+        java.util.LinkedList $r0, list;
+        java.text.StringCharacterIterator i, $r2;
+        java.lang.StringBuffer buf, $r3;
+        boolean $z0;
+        char $c0, $c1;
+
+        val := @parameter0: java.lang.String;
+        $r0 = new java.util.LinkedList;
+        specialinvoke $r0.<java.util.LinkedList: void <init>()>();
+        list = $r0;
+        $r1 = "";
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>(val);
+        if $z0 == 0 goto label0;
+
+        return list;
+
+     label0:
+        $r2 = new java.text.StringCharacterIterator;
+        specialinvoke $r2.<java.text.StringCharacterIterator: void <init>(java.lang.String)>(val);
+        i = $r2;
+        $r3 = new java.lang.StringBuffer;
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>(int)>(32);
+        buf = $r3;
+
+     label1:
+        $c0 = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        if $c0 == 65535 goto label4;
+
+        $c0 = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        if $c0 != 44 goto label2;
+
+        $r4 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        $r4 = virtualinvoke $r4.<java.lang.String: java.lang.String trim()>();
+        virtualinvoke list.<java.util.LinkedList: boolean add(java.lang.Object)>($r4);
+        $r3 = new java.lang.StringBuffer;
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>(int)>(32);
+        buf = $r3;
+        goto label3;
+
+     label2:
+        $c1 = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c1);
+
+     label3:
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        goto label1;
+
+     label4:
+        $r4 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        $r4 = virtualinvoke $r4.<java.lang.String: java.lang.String trim()>();
+        virtualinvoke list.<java.util.LinkedList: boolean add(java.lang.Object)>($r4);
+        return list;
+    }
+
+    public static java.lang.String getShortName(java.lang.Class)
+    {
+        java.lang.Class clazz;
+        java.lang.String nm;
+        int dollar, dot, $i0, $i1;
+
+        clazz := @parameter0: java.lang.Class;
+        nm = virtualinvoke clazz.<java.lang.Class: java.lang.String getName()>();
+        dollar = virtualinvoke nm.<java.lang.String: int lastIndexOf(int)>(36);
+        dot = virtualinvoke nm.<java.lang.String: int lastIndexOf(int)>(46);
+        if dot > 0 goto label0;
+
+        if dollar <= 0 goto label2;
+
+     label0:
+        if dot <= dollar goto label1;
+
+        $i0 = dot + 1;
+        $i1 = virtualinvoke nm.<java.lang.String: int length()>();
+        nm = virtualinvoke nm.<java.lang.String: java.lang.String substring(int,int)>($i0, $i1);
+        goto label2;
+
+     label1:
+        $i0 = dollar + 1;
+        $i1 = virtualinvoke nm.<java.lang.String: int length()>();
+        nm = virtualinvoke nm.<java.lang.String: java.lang.String substring(int,int)>($i0, $i1);
+
+     label2:
+        return nm;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String[] $r0;
+
+        $r0 = newarray (java.lang.String)[0];
+        <cck.text.StringUtil: java.lang.String[] EMPTY_STRING_ARRAY> = $r0;
+        $r0 = newarray (java.lang.String)[11];
+        $r0[0] = "";
+        $r0[1] = " ";
+        $r0[2] = "  ";
+        $r0[3] = "   ";
+        $r0[4] = "    ";
+        $r0[5] = "     ";
+        $r0[6] = "      ";
+        $r0[7] = "       ";
+        $r0[8] = "        ";
+        $r0[9] = "         ";
+        $r0[10] = "          ";
+        <cck.text.StringUtil: java.lang.String[] spacers> = $r0;
+        return;
+    }
+}

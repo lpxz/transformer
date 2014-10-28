@@ -1,0 +1,86 @@
+public class cck.util.Option$Double extends cck.util.Option
+{
+    protected final double defvalue;
+    protected double value;
+
+    public void <init>(java.lang.String, double, java.lang.String)
+    {
+        cck.util.Option$Double this;
+        java.lang.String nm, desc;
+        double val;
+
+        this := @this: cck.util.Option$Double;
+        nm := @parameter0: java.lang.String;
+        val := @parameter1: double;
+        desc := @parameter2: java.lang.String;
+        specialinvoke this.<cck.util.Option: void <init>(java.lang.String,java.lang.String)>(nm, desc);
+        this.<cck.util.Option$Double: double value> = val;
+        this.<cck.util.Option$Double: double defvalue> = val;
+        return;
+    }
+
+    public void set(java.lang.String)
+    {
+        cck.util.Option$Double this;
+        java.lang.String val, $r1;
+        java.lang.Exception e, $r0;
+        double $d0;
+
+        this := @this: cck.util.Option$Double;
+        val := @parameter0: java.lang.String;
+
+     label0:
+        $d0 = staticinvoke <java.lang.Double: double parseDouble(java.lang.String)>(val);
+        this.<cck.util.Option$Double: double value> = $d0;
+
+     label1:
+        goto label3;
+
+     label2:
+        $r0 := @caughtexception;
+        e = $r0;
+        $r1 = this.<cck.util.Option$Double: java.lang.String name>;
+        virtualinvoke this.<cck.util.Option$Double: void parseError(java.lang.String,java.lang.String,java.lang.String)>($r1, "double", val);
+
+     label3:
+        return;
+
+        catch java.lang.Exception from label0 to label1 with label2;
+    }
+
+    public double get()
+    {
+        cck.util.Option$Double this;
+        double $d0;
+
+        this := @this: cck.util.Option$Double;
+        $d0 = this.<cck.util.Option$Double: double value>;
+        return $d0;
+    }
+
+    public java.lang.String stringValue()
+    {
+        cck.util.Option$Double this;
+        double $d0;
+        java.lang.String $r0;
+
+        this := @this: cck.util.Option$Double;
+        $d0 = this.<cck.util.Option$Double: double value>;
+        $r0 = staticinvoke <java.lang.String: java.lang.String valueOf(double)>($d0);
+        return $r0;
+    }
+
+    public void printHelp()
+    {
+        cck.util.Option$Double this;
+        double $d0;
+        java.lang.String $r0;
+
+        this := @this: cck.util.Option$Double;
+        $d0 = this.<cck.util.Option$Double: double defvalue>;
+        $r0 = staticinvoke <java.lang.String: java.lang.String valueOf(double)>($d0);
+        virtualinvoke this.<cck.util.Option$Double: void printHeader(java.lang.String,java.lang.String)>("double", $r0);
+        virtualinvoke this.<cck.util.Option$Double: void printDescription()>();
+        return;
+    }
+}

@@ -1,0 +1,112 @@
+class org.apache.lucene.search.BooleanScorer2$SingleMatchScorer extends org.apache.lucene.search.Scorer
+{
+    private org.apache.lucene.search.Scorer scorer;
+    private int lastScoredDoc;
+    private final org.apache.lucene.search.BooleanScorer2 this$0;
+
+    void <init>(org.apache.lucene.search.BooleanScorer2, org.apache.lucene.search.Scorer)
+    {
+        org.apache.lucene.search.BooleanScorer2$SingleMatchScorer this;
+        org.apache.lucene.search.BooleanScorer2 l1;
+        org.apache.lucene.search.Scorer scorer;
+        org.apache.lucene.search.Similarity $r0;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2$SingleMatchScorer;
+        l1 := @parameter0: org.apache.lucene.search.BooleanScorer2;
+        scorer := @parameter1: org.apache.lucene.search.Scorer;
+        this.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: org.apache.lucene.search.BooleanScorer2 this$0> = l1;
+        $r0 = virtualinvoke scorer.<org.apache.lucene.search.Scorer: org.apache.lucene.search.Similarity getSimilarity()>();
+        specialinvoke this.<org.apache.lucene.search.Scorer: void <init>(org.apache.lucene.search.Similarity)>($r0);
+        this.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: int lastScoredDoc> = -1;
+        this.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: org.apache.lucene.search.Scorer scorer> = scorer;
+        return;
+    }
+
+    public float score() throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2$SingleMatchScorer this;
+        int $i0, $i1;
+        org.apache.lucene.search.BooleanScorer2 $r0;
+        org.apache.lucene.search.BooleanScorer2$Coordinator $r1;
+        org.apache.lucene.search.Scorer $r2;
+        float $f0;
+        long tid_score;
+        java.lang.Thread thread_score;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2$SingleMatchScorer;
+        thread_score = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_score = virtualinvoke thread_score.<java.lang.Thread: long getId()>();
+        $i0 = virtualinvoke this.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: int doc()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 86, tid_score, "org.apache.lucene.search.BooleanScorer2$SingleMatchScorer", 157, $i1);
+        $i1 = this.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: int lastScoredDoc>;
+        if $i0 < $i1 goto label0;
+
+        $i1 = virtualinvoke this.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: int doc()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 86, tid_score, "org.apache.lucene.search.BooleanScorer2$SingleMatchScorer", 158, $i1);
+        this.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: int lastScoredDoc> = $i1;
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: org.apache.lucene.search.BooleanScorer2 this$0>;
+        $r1 = staticinvoke <org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.BooleanScorer2$Coordinator access$100(org.apache.lucene.search.BooleanScorer2)>($r0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 85, tid_score, "org.apache.lucene.search.BooleanScorer2$SingleMatchScorer", 159, $i1);
+        $i1 = $r1.<org.apache.lucene.search.BooleanScorer2$Coordinator: int nrMatchers>;
+        $i1 = $i1 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 85, tid_score, "org.apache.lucene.search.BooleanScorer2$SingleMatchScorer", 159, $i1);
+        $r1.<org.apache.lucene.search.BooleanScorer2$Coordinator: int nrMatchers> = $i1;
+
+     label0:
+        $r2 = this.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: org.apache.lucene.search.Scorer scorer>;
+        $f0 = virtualinvoke $r2.<org.apache.lucene.search.Scorer: float score()>();
+        return $f0;
+    }
+
+    public int doc()
+    {
+        org.apache.lucene.search.BooleanScorer2$SingleMatchScorer this;
+        org.apache.lucene.search.Scorer $r0;
+        int $i0;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2$SingleMatchScorer;
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: org.apache.lucene.search.Scorer scorer>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: int doc()>();
+        return $i0;
+    }
+
+    public boolean next() throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2$SingleMatchScorer this;
+        org.apache.lucene.search.Scorer $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2$SingleMatchScorer;
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: org.apache.lucene.search.Scorer scorer>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: boolean next()>();
+        return $z0;
+    }
+
+    public boolean skipTo(int) throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2$SingleMatchScorer this;
+        int docNr;
+        org.apache.lucene.search.Scorer $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2$SingleMatchScorer;
+        docNr := @parameter0: int;
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: org.apache.lucene.search.Scorer scorer>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: boolean skipTo(int)>(docNr);
+        return $z0;
+    }
+
+    public org.apache.lucene.search.Explanation explain(int) throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2$SingleMatchScorer this;
+        int docNr;
+        org.apache.lucene.search.Scorer $r0;
+        org.apache.lucene.search.Explanation $r1;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2$SingleMatchScorer;
+        docNr := @parameter0: int;
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: org.apache.lucene.search.Scorer scorer>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: org.apache.lucene.search.Explanation explain(int)>(docNr);
+        return $r1;
+    }
+}

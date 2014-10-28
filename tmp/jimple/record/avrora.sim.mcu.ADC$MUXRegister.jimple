@@ -1,0 +1,124 @@
+public class avrora.sim.mcu.ADC$MUXRegister extends avrora.sim.RWRegister
+{
+    final avrora.sim.state.RegisterView _mux;
+    final avrora.sim.mcu.ADC this$0;
+
+    protected void <init>(avrora.sim.mcu.ADC)
+    {
+        avrora.sim.mcu.ADC$MUXRegister this;
+        avrora.sim.mcu.ADC l1;
+        avrora.sim.state.RegisterView $r0;
+
+        this := @this: avrora.sim.mcu.ADC$MUXRegister;
+        l1 := @parameter0: avrora.sim.mcu.ADC;
+        this.<avrora.sim.mcu.ADC$MUXRegister: avrora.sim.mcu.ADC this$0> = l1;
+        specialinvoke this.<avrora.sim.RWRegister: void <init>()>();
+        $r0 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.RegisterView bitRangeView(avrora.sim.state.RegisterView,int,int)>(this, 0, 4);
+        this.<avrora.sim.mcu.ADC$MUXRegister: avrora.sim.state.RegisterView _mux> = $r0;
+        return;
+    }
+
+    boolean isSingleEnded()
+    {
+        avrora.sim.mcu.ADC$MUXRegister this;
+        int $i0;
+        boolean $z0;
+
+        this := @this: avrora.sim.mcu.ADC$MUXRegister;
+        $i0 = virtualinvoke this.<avrora.sim.mcu.ADC$MUXRegister: int getSingleIndex()>();
+        if $i0 < 0 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    int getSingleIndex()
+    {
+        avrora.sim.mcu.ADC$MUXRegister this;
+        byte[] $r0;
+        avrora.sim.state.RegisterView $r1;
+        int $i0;
+        byte $b1;
+        long tid_getSingleIndex;
+        java.lang.Thread thread_getSingleIndex;
+
+        this := @this: avrora.sim.mcu.ADC$MUXRegister;
+        thread_getSingleIndex = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getSingleIndex = virtualinvoke thread_getSingleIndex.<java.lang.Thread: long getId()>();
+        $r0 = <avrora.sim.mcu.ADC: byte[] SINGLE_ENDED_INPUT>;
+        $r1 = this.<avrora.sim.mcu.ADC$MUXRegister: avrora.sim.state.RegisterView _mux>;
+        $i0 = interfaceinvoke $r1.<avrora.sim.state.RegisterView: int getValue()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_getSingleIndex, "avrora.sim.mcu.ADC$MUXRegister", 178, $i0, $b1);
+        $b1 = $r0[$i0];
+        return $b1;
+    }
+
+    int getPosIndex()
+    {
+        avrora.sim.mcu.ADC$MUXRegister this;
+        byte[] $r0;
+        avrora.sim.state.RegisterView $r1;
+        int $i0;
+        byte $b1;
+        long tid_getPosIndex;
+        java.lang.Thread thread_getPosIndex;
+
+        this := @this: avrora.sim.mcu.ADC$MUXRegister;
+        thread_getPosIndex = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getPosIndex = virtualinvoke thread_getPosIndex.<java.lang.Thread: long getId()>();
+        $r0 = <avrora.sim.mcu.ADC: byte[] POS_INPUT>;
+        $r1 = this.<avrora.sim.mcu.ADC$MUXRegister: avrora.sim.state.RegisterView _mux>;
+        $i0 = interfaceinvoke $r1.<avrora.sim.state.RegisterView: int getValue()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_getPosIndex, "avrora.sim.mcu.ADC$MUXRegister", 182, $i0, $b1);
+        $b1 = $r0[$i0];
+        return $b1;
+    }
+
+    int getNegIndex()
+    {
+        avrora.sim.mcu.ADC$MUXRegister this;
+        byte[] $r0;
+        avrora.sim.state.RegisterView $r1;
+        int $i0;
+        byte $b1;
+        long tid_getNegIndex;
+        java.lang.Thread thread_getNegIndex;
+
+        this := @this: avrora.sim.mcu.ADC$MUXRegister;
+        thread_getNegIndex = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getNegIndex = virtualinvoke thread_getNegIndex.<java.lang.Thread: long getId()>();
+        $r0 = <avrora.sim.mcu.ADC: byte[] NEG_INPUT>;
+        $r1 = this.<avrora.sim.mcu.ADC$MUXRegister: avrora.sim.state.RegisterView _mux>;
+        $i0 = interfaceinvoke $r1.<avrora.sim.state.RegisterView: int getValue()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_getNegIndex, "avrora.sim.mcu.ADC$MUXRegister", 186, $i0, $b1);
+        $b1 = $r0[$i0];
+        return $b1;
+    }
+
+    int getGain()
+    {
+        avrora.sim.mcu.ADC$MUXRegister this;
+        short[] $r0;
+        avrora.sim.state.RegisterView $r1;
+        int $i0;
+        short $s1;
+        long tid_getGain;
+        java.lang.Thread thread_getGain;
+
+        this := @this: avrora.sim.mcu.ADC$MUXRegister;
+        thread_getGain = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getGain = virtualinvoke thread_getGain.<java.lang.Thread: long getId()>();
+        $r0 = <avrora.sim.mcu.ADC: short[] GAIN>;
+        $r1 = this.<avrora.sim.mcu.ADC$MUXRegister: avrora.sim.state.RegisterView _mux>;
+        $i0 = interfaceinvoke $r1.<avrora.sim.state.RegisterView: int getValue()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,short)>($r0, 39, tid_getGain, "avrora.sim.mcu.ADC$MUXRegister", 190, $i0, $s1);
+        $s1 = $r0[$i0];
+        return $s1;
+    }
+}

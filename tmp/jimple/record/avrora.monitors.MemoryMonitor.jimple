@@ -1,0 +1,35 @@
+public class avrora.monitors.MemoryMonitor extends avrora.monitors.MonitorFactory
+{
+    public final cck.util.Option$List LOCATIONS;
+    public final cck.util.Option$Bool LOWER_ADDRESS;
+
+    public void <init>()
+    {
+        avrora.monitors.MemoryMonitor this;
+        cck.util.Option$List $r0;
+        cck.util.Option$Bool $r1;
+
+        this := @this: avrora.monitors.MemoryMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"memory\" monitor collects information about the memory usage statistics of the program, including the number of reads and writes to every byte of data memory.");
+        $r0 = virtualinvoke this.<avrora.monitors.MemoryMonitor: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("locations", "", "This option, when set, specifies a list of memory locations to instrument. When this option is not specified, the monitor will instrument all reads and writes to memory.");
+        this.<avrora.monitors.MemoryMonitor: cck.util.Option$List LOCATIONS> = $r0;
+        $r1 = virtualinvoke this.<avrora.monitors.MemoryMonitor: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("low-addresses", 0, "When this option is enabled, the memory monitor will be inserted for lower addresses, recording reads and writes to the general purpose registers on the AVR and also IO registers through direct and indirect memory reads and writes.");
+        this.<avrora.monitors.MemoryMonitor: cck.util.Option$Bool LOWER_ADDRESS> = $r1;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.MemoryMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.MemoryMonitor$Monitor tmp$548743507;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.MemoryMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$548743507 = new avrora.monitors.MemoryMonitor$Monitor;
+        specialinvoke tmp$548743507.<avrora.monitors.MemoryMonitor$Monitor: void <init>(avrora.monitors.MemoryMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$548743507;
+        return tmp;
+    }
+}

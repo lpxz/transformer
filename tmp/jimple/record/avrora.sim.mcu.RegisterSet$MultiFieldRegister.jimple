@@ -1,0 +1,69 @@
+public class avrora.sim.mcu.RegisterSet$MultiFieldRegister extends java.lang.Object implements avrora.sim.ActiveRegister
+{
+    byte value;
+    final avrora.sim.mcu.RegisterSet$SubRegWriter[] subFields;
+    final avrora.sim.mcu.RegisterSet this$0;
+
+    void <init>(avrora.sim.mcu.RegisterSet, avrora.sim.mcu.RegisterSet$SubRegWriter[])
+    {
+        avrora.sim.mcu.RegisterSet$MultiFieldRegister this;
+        avrora.sim.mcu.RegisterSet l1;
+        avrora.sim.mcu.RegisterSet$SubRegWriter[] srw;
+
+        this := @this: avrora.sim.mcu.RegisterSet$MultiFieldRegister;
+        l1 := @parameter0: avrora.sim.mcu.RegisterSet;
+        srw := @parameter1: avrora.sim.mcu.RegisterSet$SubRegWriter[];
+        this.<avrora.sim.mcu.RegisterSet$MultiFieldRegister: avrora.sim.mcu.RegisterSet this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.mcu.RegisterSet$MultiFieldRegister: avrora.sim.mcu.RegisterSet$SubRegWriter[] subFields> = srw;
+        return;
+    }
+
+    public byte read()
+    {
+        avrora.sim.mcu.RegisterSet$MultiFieldRegister this;
+        byte $b0;
+        long tid_read;
+        java.lang.Thread thread_read;
+
+        this := @this: avrora.sim.mcu.RegisterSet$MultiFieldRegister;
+        thread_read = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_read = virtualinvoke thread_read.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 185, tid_read, "avrora.sim.mcu.RegisterSet$MultiFieldRegister", 185, $b0);
+        $b0 = this.<avrora.sim.mcu.RegisterSet$MultiFieldRegister: byte value>;
+        return $b0;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.mcu.RegisterSet$MultiFieldRegister this;
+        byte nval;
+        int cntr, $i0;
+        avrora.sim.mcu.RegisterSet$SubRegWriter sf;
+        avrora.sim.mcu.RegisterSet$SubRegWriter[] $r0, $r1;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.mcu.RegisterSet$MultiFieldRegister;
+        nval := @parameter0: byte;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 185, tid_write, "avrora.sim.mcu.RegisterSet$MultiFieldRegister", 189, nval);
+        this.<avrora.sim.mcu.RegisterSet$MultiFieldRegister: byte value> = nval;
+        cntr = 0;
+
+     label0:
+        $r0 = this.<avrora.sim.mcu.RegisterSet$MultiFieldRegister: avrora.sim.mcu.RegisterSet$SubRegWriter[] subFields>;
+        $i0 = lengthof $r0;
+        if cntr >= $i0 goto label1;
+
+        $r1 = this.<avrora.sim.mcu.RegisterSet$MultiFieldRegister: avrora.sim.mcu.RegisterSet$SubRegWriter[] subFields>;
+        sf = $r1[cntr];
+        virtualinvoke sf.<avrora.sim.mcu.RegisterSet$SubRegWriter: void write(byte)>(nval);
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+}

@@ -1,0 +1,20 @@
+public class org.apache.lucene.search.ScoreDoc extends java.lang.Object implements java.io.Serializable
+{
+    public float score;
+    public int doc;
+
+    public void <init>(int, float)
+    {
+        org.apache.lucene.search.ScoreDoc this;
+        int doc;
+        float score;
+
+        this := @this: org.apache.lucene.search.ScoreDoc;
+        doc := @parameter0: int;
+        score := @parameter1: float;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.search.ScoreDoc: int doc> = doc;
+        this.<org.apache.lucene.search.ScoreDoc: float score> = score;
+        return;
+    }
+}

@@ -1,0 +1,82 @@
+public abstract class org.apache.lucene.search.Scorer extends org.apache.lucene.search.DocIdSetIterator
+{
+    private org.apache.lucene.search.Similarity similarity;
+
+    protected void <init>(org.apache.lucene.search.Similarity)
+    {
+        org.apache.lucene.search.Scorer this;
+        org.apache.lucene.search.Similarity similarity;
+
+        this := @this: org.apache.lucene.search.Scorer;
+        similarity := @parameter0: org.apache.lucene.search.Similarity;
+        specialinvoke this.<org.apache.lucene.search.DocIdSetIterator: void <init>()>();
+        this.<org.apache.lucene.search.Scorer: org.apache.lucene.search.Similarity similarity> = similarity;
+        return;
+    }
+
+    public org.apache.lucene.search.Similarity getSimilarity()
+    {
+        org.apache.lucene.search.Scorer this;
+        org.apache.lucene.search.Similarity $r0;
+
+        this := @this: org.apache.lucene.search.Scorer;
+        $r0 = this.<org.apache.lucene.search.Scorer: org.apache.lucene.search.Similarity similarity>;
+        return $r0;
+    }
+
+    public void score(org.apache.lucene.search.HitCollector) throws java.io.IOException
+    {
+        org.apache.lucene.search.Scorer this;
+        org.apache.lucene.search.HitCollector hc;
+        boolean $z0;
+        int $i0;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.Scorer;
+        hc := @parameter0: org.apache.lucene.search.HitCollector;
+
+     label0:
+        $z0 = virtualinvoke this.<org.apache.lucene.search.Scorer: boolean next()>();
+        if $z0 == 0 goto label1;
+
+        $i0 = virtualinvoke this.<org.apache.lucene.search.Scorer: int doc()>();
+        $f0 = virtualinvoke this.<org.apache.lucene.search.Scorer: float score()>();
+        virtualinvoke hc.<org.apache.lucene.search.HitCollector: void collect(int,float)>($i0, $f0);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    protected boolean score(org.apache.lucene.search.HitCollector, int) throws java.io.IOException
+    {
+        org.apache.lucene.search.Scorer this;
+        org.apache.lucene.search.HitCollector hc;
+        int max, $i0, $i1;
+        float $f0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.Scorer;
+        hc := @parameter0: org.apache.lucene.search.HitCollector;
+        max := @parameter1: int;
+
+     label0:
+        $i0 = virtualinvoke this.<org.apache.lucene.search.Scorer: int doc()>();
+        if $i0 >= max goto label1;
+
+        $i1 = virtualinvoke this.<org.apache.lucene.search.Scorer: int doc()>();
+        $f0 = virtualinvoke this.<org.apache.lucene.search.Scorer: float score()>();
+        virtualinvoke hc.<org.apache.lucene.search.HitCollector: void collect(int,float)>($i1, $f0);
+        $z0 = virtualinvoke this.<org.apache.lucene.search.Scorer: boolean next()>();
+        if $z0 != 0 goto label0;
+
+        return 0;
+
+     label1:
+        return 1;
+    }
+
+    public abstract float score() throws java.io.IOException;
+
+    public abstract org.apache.lucene.search.Explanation explain(int) throws java.io.IOException;
+}

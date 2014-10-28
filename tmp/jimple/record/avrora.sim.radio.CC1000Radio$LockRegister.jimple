@@ -1,0 +1,168 @@
+public class avrora.sim.radio.CC1000Radio$LockRegister extends avrora.sim.radio.CC1000Radio$RadioRegister
+{
+    static final int LOCK_NORMAL;
+    static final int LOCK_CONTINUOUS;
+    static final int LOCK_INSTANT;
+    static final int ALARM_H;
+    static final int ALARM_L;
+    static final int CAL_COMPLETE;
+    static final int IF_OUT;
+    static final int REFERENCE_DIVIDER;
+    static final int TX_DPB;
+    static final int MANCHESTER_VIOLATION;
+    static final int RX_PDB;
+    static final int LOCK_AVG_FILTER;
+    static final int N_DIVIDER;
+    static final int F_COMP;
+    final java.lang.String[] LOCK_SELECT;
+    int lockSelect;
+    boolean pllLockLength;
+    int setsLockThreshold;
+    int resetLockThreshold;
+    boolean lockInstant;
+    boolean lockContinuous;
+    final avrora.sim.radio.CC1000Radio this$0;
+
+    void <init>(avrora.sim.radio.CC1000Radio)
+    {
+        avrora.sim.radio.CC1000Radio$LockRegister this;
+        avrora.sim.radio.CC1000Radio l1;
+        java.lang.String[] $r0;
+
+        this := @this: avrora.sim.radio.CC1000Radio$LockRegister;
+        l1 := @parameter0: avrora.sim.radio.CC1000Radio;
+        this.<avrora.sim.radio.CC1000Radio$LockRegister: avrora.sim.radio.CC1000Radio this$0> = l1;
+        specialinvoke this.<avrora.sim.radio.CC1000Radio$RadioRegister: void <init>(avrora.sim.radio.CC1000Radio,java.lang.String,byte)>(l1, "LOCK", 0);
+        $r0 = newarray (java.lang.String)[16];
+        $r0[0] = "LOCK NORMAL";
+        $r0[1] = "LOCK CONTINUOUS";
+        $r0[2] = "LOCK INSTANT";
+        $r0[3] = "ALARM HIGH";
+        $r0[4] = "ALARM LOW";
+        $r0[5] = "CAL COMPLETE";
+        $r0[6] = "IF OUT";
+        $r0[7] = "REFERENCE DIVIDER";
+        $r0[8] = "TX DPB";
+        $r0[9] = "MANCHESTER VIOLATION";
+        $r0[10] = "RX PDB";
+        $r0[11] = "NOT DEFINED (11)";
+        $r0[12] = "NOT DEFINED (12)";
+        $r0[13] = "LOCK AVG FILTER";
+        $r0[14] = "N DIVIDER";
+        $r0[15] = "F COMP";
+        this.<avrora.sim.radio.CC1000Radio$LockRegister: java.lang.String[] LOCK_SELECT> = $r0;
+        this.<avrora.sim.radio.CC1000Radio$LockRegister: int setsLockThreshold> = 127;
+        this.<avrora.sim.radio.CC1000Radio$LockRegister: int resetLockThreshold> = 111;
+        return;
+    }
+
+    protected void decode(byte)
+    {
+        avrora.sim.radio.CC1000Radio$LockRegister this;
+        byte val, pllLockAccuracy, $b1;
+        short $s0;
+        int[] $r0;
+        int $i2;
+        boolean $z0;
+        long tid_decode;
+        java.lang.Thread thread_decode;
+
+        this := @this: avrora.sim.radio.CC1000Radio$LockRegister;
+        val := @parameter0: byte;
+        thread_decode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_decode = virtualinvoke thread_decode.<java.lang.Thread: long getId()>();
+        $s0 = val & 240;
+        $s0 = $s0 >> 4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 137, tid_decode, "avrora.sim.radio.CC1000Radio$LockRegister", 605, $s0);
+        this.<avrora.sim.radio.CC1000Radio$LockRegister: int lockSelect> = $s0;
+        $b1 = val & 12;
+        pllLockAccuracy = $b1 >> 2;
+        $r0 = <avrora.sim.radio.CC1000Radio: int[] SETS_LOCK_THRESHOLD>;
+        $i2 = $r0[pllLockAccuracy];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 138, tid_decode, "avrora.sim.radio.CC1000Radio$LockRegister", 607, $i2);
+        this.<avrora.sim.radio.CC1000Radio$LockRegister: int setsLockThreshold> = $i2;
+        $r0 = <avrora.sim.radio.CC1000Radio: int[] RESET_LOCK_THRESHOLD>;
+        $i2 = $r0[pllLockAccuracy];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 139, tid_decode, "avrora.sim.radio.CC1000Radio$LockRegister", 608, $i2);
+        this.<avrora.sim.radio.CC1000Radio$LockRegister: int resetLockThreshold> = $i2;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 140, tid_decode, "avrora.sim.radio.CC1000Radio$LockRegister", 610, $z0);
+        this.<avrora.sim.radio.CC1000Radio$LockRegister: boolean pllLockLength> = $z0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 141, tid_decode, "avrora.sim.radio.CC1000Radio$LockRegister", 611, $z0);
+        this.<avrora.sim.radio.CC1000Radio$LockRegister: boolean lockInstant> = $z0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 142, tid_decode, "avrora.sim.radio.CC1000Radio$LockRegister", 612, $z0);
+        this.<avrora.sim.radio.CC1000Radio$LockRegister: boolean lockContinuous> = $z0;
+        return;
+    }
+
+    protected void printStatus()
+    {
+        avrora.sim.radio.CC1000Radio$LockRegister this;
+        java.lang.StringBuffer $r0, buf;
+        java.lang.String[] $r1;
+        int $i0, $i1;
+        java.lang.String $r2;
+        boolean $z0;
+        char $c2;
+        avrora.sim.radio.CC1000Radio $r3;
+        avrora.sim.output.SimPrinter $r4;
+        long tid_printStatus;
+        java.lang.Thread thread_printStatus;
+
+        this := @this: avrora.sim.radio.CC1000Radio$LockRegister;
+        thread_printStatus = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_printStatus = virtualinvoke thread_printStatus.<java.lang.Thread: long getId()>();
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>(100);
+        buf = $r0;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("CC1000[LOCK]: lock select: ");
+        $r1 = this.<avrora.sim.radio.CC1000Radio$LockRegister: java.lang.String[] LOCK_SELECT>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 137, tid_printStatus, "avrora.sim.radio.CC1000Radio$LockRegister", 619, $i0);
+        $i0 = this.<avrora.sim.radio.CC1000Radio$LockRegister: int lockSelect>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 18, tid_printStatus, "avrora.sim.radio.CC1000Radio$LockRegister", 619, $i0, $r2);
+        $r2 = $r1[$i0];
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", set thr: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 138, tid_printStatus, "avrora.sim.radio.CC1000Radio$LockRegister", 621, $i1);
+        $i1 = this.<avrora.sim.radio.CC1000Radio$LockRegister: int setsLockThreshold>;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i1);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", reset thr: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 139, tid_printStatus, "avrora.sim.radio.CC1000Radio$LockRegister", 623, $i1);
+        $i1 = this.<avrora.sim.radio.CC1000Radio$LockRegister: int resetLockThreshold>;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i1);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", inst: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 141, tid_printStatus, "avrora.sim.radio.CC1000Radio$LockRegister", 625, $z0);
+        $z0 = this.<avrora.sim.radio.CC1000Radio$LockRegister: boolean lockInstant>;
+        $c2 = staticinvoke <cck.text.StringUtil: char toBit(boolean)>($z0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c2);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", contin: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 142, tid_printStatus, "avrora.sim.radio.CC1000Radio$LockRegister", 627, $z0);
+        $z0 = this.<avrora.sim.radio.CC1000Radio$LockRegister: boolean lockContinuous>;
+        $c2 = staticinvoke <cck.text.StringUtil: char toBit(boolean)>($z0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c2);
+        $r3 = this.<avrora.sim.radio.CC1000Radio$LockRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r4 = $r3.<avrora.sim.radio.CC1000Radio: avrora.sim.output.SimPrinter radioPrinter>;
+        $r2 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke $r4.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r2);
+        return;
+    }
+
+    public byte read()
+    {
+        avrora.sim.radio.CC1000Radio$LockRegister this;
+        byte $b0;
+        long tid_read;
+        java.lang.Thread thread_read;
+
+        this := @this: avrora.sim.radio.CC1000Radio$LockRegister;
+        thread_read = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_read = virtualinvoke thread_read.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 64, tid_read, "avrora.sim.radio.CC1000Radio$LockRegister", 632, $b0);
+        $b0 = this.<avrora.sim.radio.CC1000Radio$LockRegister: byte value>;
+        $b0 = $b0 & 3;
+        $b0 = (byte) $b0;
+        return $b0;
+    }
+}

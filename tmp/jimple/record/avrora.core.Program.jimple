@@ -1,0 +1,447 @@
+public class avrora.core.Program extends java.lang.Object
+{
+    private final avrora.arch.AbstractArchitecture arch;
+    private final java.util.HashMap indirectEdges;
+    private avrora.core.SourceMapping sourceMapping;
+    private avrora.core.ControlFlowGraph cfg;
+    public final int program_start;
+    public final int program_end;
+    public final int program_length;
+    protected final byte[] flash_data;
+    protected final avrora.arch.AbstractInstr[] flash_instrs;
+
+    public void <init>(avrora.arch.AbstractArchitecture, int, int)
+    {
+        avrora.core.Program this;
+        avrora.arch.AbstractArchitecture a, $r1;
+        int pstart, pend, size, $i0, $i1;
+        byte[] $r0, $r3;
+        avrora.arch.AbstractInstr[] $r2;
+        java.util.HashMap $r4;
+
+        this := @this: avrora.core.Program;
+        a := @parameter0: avrora.arch.AbstractArchitecture;
+        pstart := @parameter1: int;
+        pend := @parameter2: int;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.core.Program: avrora.arch.AbstractArchitecture arch> = a;
+        this.<avrora.core.Program: int program_start> = pstart;
+        this.<avrora.core.Program: int program_end> = pend;
+        $i0 = pend - pstart;
+        this.<avrora.core.Program: int program_length> = $i0;
+        $i1 = this.<avrora.core.Program: int program_end>;
+        $i0 = this.<avrora.core.Program: int program_start>;
+        size = $i1 - $i0;
+        $r0 = newarray (byte)[size];
+        this.<avrora.core.Program: byte[] flash_data> = $r0;
+        $r1 = this.<avrora.core.Program: avrora.arch.AbstractArchitecture arch>;
+        $r2 = interfaceinvoke $r1.<avrora.arch.AbstractArchitecture: avrora.arch.AbstractInstr[] newInstrArray(int)>(size);
+        this.<avrora.core.Program: avrora.arch.AbstractInstr[] flash_instrs> = $r2;
+        $r3 = this.<avrora.core.Program: byte[] flash_data>;
+        staticinvoke <java.util.Arrays: void fill(byte[],byte)>($r3, -1);
+        $r4 = new java.util.HashMap;
+        specialinvoke $r4.<java.util.HashMap: void <init>()>();
+        this.<avrora.core.Program: java.util.HashMap indirectEdges> = $r4;
+        return;
+    }
+
+    public void writeInstr(avrora.arch.AbstractInstr, int)
+    {
+        avrora.core.Program this;
+        avrora.arch.AbstractInstr i;
+        int address, size, cntr, $i0, $i1;
+        avrora.arch.AbstractInstr[] $r0;
+
+        this := @this: avrora.core.Program;
+        i := @parameter0: avrora.arch.AbstractInstr;
+        address := @parameter1: int;
+        size = interfaceinvoke i.<avrora.arch.AbstractInstr: int getSize()>();
+        virtualinvoke this.<avrora.core.Program: void checkAddress(int)>(address);
+        $i0 = address + size;
+        $i0 = $i0 - 1;
+        virtualinvoke this.<avrora.core.Program: void checkAddress(int)>($i0);
+        $r0 = this.<avrora.core.Program: avrora.arch.AbstractInstr[] flash_instrs>;
+        $i1 = this.<avrora.core.Program: int program_start>;
+        $i0 = address - $i1;
+        $r0[$i0] = i;
+        cntr = 1;
+
+     label0:
+        if cntr >= size goto label1;
+
+        $r0 = this.<avrora.core.Program: avrora.arch.AbstractInstr[] flash_instrs>;
+        $i1 = this.<avrora.core.Program: int program_start>;
+        $i0 = address - $i1;
+        $i0 = $i0 + cntr;
+        $r0[$i0] = null;
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    public avrora.arch.AbstractInstr readInstr(int)
+    {
+        avrora.core.Program this;
+        int address, $i0, $i1;
+        avrora.arch.AbstractInstr[] $r0;
+        avrora.arch.AbstractInstr $r1;
+
+        this := @this: avrora.core.Program;
+        address := @parameter0: int;
+        $i0 = this.<avrora.core.Program: int program_start>;
+        if address < $i0 goto label0;
+
+        $i0 = this.<avrora.core.Program: int program_end>;
+        if address < $i0 goto label1;
+
+     label0:
+        return null;
+
+     label1:
+        $r0 = this.<avrora.core.Program: avrora.arch.AbstractInstr[] flash_instrs>;
+        $i1 = this.<avrora.core.Program: int program_start>;
+        $i0 = address - $i1;
+        $r1 = $r0[$i0];
+        return $r1;
+    }
+
+    public avrora.arch.AbstractInstr disassembleInstr(int)
+    {
+        avrora.core.Program this;
+        int address, offset, $i0;
+        avrora.arch.AbstractDisassembler d;
+        avrora.arch.AbstractInstr instr;
+        avrora.arch.AbstractArchitecture $r0;
+        byte[] $r1;
+        avrora.arch.AbstractInstr[] $r2;
+
+        this := @this: avrora.core.Program;
+        address := @parameter0: int;
+        $i0 = this.<avrora.core.Program: int program_start>;
+        if address < $i0 goto label0;
+
+        $i0 = this.<avrora.core.Program: int program_end>;
+        if address < $i0 goto label1;
+
+     label0:
+        return null;
+
+     label1:
+        $r0 = this.<avrora.core.Program: avrora.arch.AbstractArchitecture arch>;
+        d = interfaceinvoke $r0.<avrora.arch.AbstractArchitecture: avrora.arch.AbstractDisassembler getDisassembler()>();
+        $i0 = this.<avrora.core.Program: int program_start>;
+        offset = address - $i0;
+        $i0 = this.<avrora.core.Program: int program_start>;
+        $r1 = this.<avrora.core.Program: byte[] flash_data>;
+        instr = interfaceinvoke d.<avrora.arch.AbstractDisassembler: avrora.arch.AbstractInstr disassemble(int,int,byte[])>($i0, offset, $r1);
+        if instr == null goto label2;
+
+        $r2 = this.<avrora.core.Program: avrora.arch.AbstractInstr[] flash_instrs>;
+        $r2[offset] = instr;
+
+     label2:
+        return instr;
+    }
+
+    public byte readProgramByte(int)
+    {
+        avrora.core.Program this;
+        int address, $i0, $i1;
+        byte[] $r0;
+        byte $b2;
+        long tid_readProgramByte;
+        java.lang.Thread thread_readProgramByte;
+
+        this := @this: avrora.core.Program;
+        address := @parameter0: int;
+        thread_readProgramByte = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_readProgramByte = virtualinvoke thread_readProgramByte.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<avrora.core.Program: void checkAddress(int)>(address);
+        $r0 = this.<avrora.core.Program: byte[] flash_data>;
+        $i0 = this.<avrora.core.Program: int program_start>;
+        $i1 = address - $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_readProgramByte, "avrora.core.Program", 173, $i1, $b2);
+        $b2 = $r0[$i1];
+        return $b2;
+    }
+
+    public void writeProgramByte(byte, int)
+    {
+        avrora.core.Program this;
+        byte val;
+        int byteAddress, offset, $i0;
+
+        this := @this: avrora.core.Program;
+        val := @parameter0: byte;
+        byteAddress := @parameter1: int;
+        virtualinvoke this.<avrora.core.Program: void checkAddress(int)>(byteAddress);
+        $i0 = this.<avrora.core.Program: int program_start>;
+        offset = byteAddress - $i0;
+        specialinvoke this.<avrora.core.Program: void writeByteInto(byte,int)>(val, offset);
+        return;
+    }
+
+    private void writeByteInto(byte, int)
+    {
+        avrora.core.Program this;
+        byte val;
+        int offset;
+        byte[] $r0;
+        long tid_writeByteInto;
+        java.lang.Thread thread_writeByteInto;
+
+        this := @this: avrora.core.Program;
+        val := @parameter0: byte;
+        offset := @parameter1: int;
+        thread_writeByteInto = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_writeByteInto = virtualinvoke thread_writeByteInto.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.core.Program: byte[] flash_data>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_writeByteInto, "avrora.core.Program", 191, offset, val);
+        $r0[offset] = val;
+        return;
+    }
+
+    public void writeProgramBytes(byte[], int)
+    {
+        avrora.core.Program this;
+        byte[] val;
+        int byteAddress, offset, cntr, $i0, $i1;
+        byte $b2;
+        long tid_writeProgramBytes;
+        java.lang.Thread thread_writeProgramBytes;
+
+        this := @this: avrora.core.Program;
+        val := @parameter0: byte[];
+        byteAddress := @parameter1: int;
+        thread_writeProgramBytes = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_writeProgramBytes = virtualinvoke thread_writeProgramBytes.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<avrora.core.Program: void checkAddress(int)>(byteAddress);
+        $i0 = lengthof val;
+        $i1 = byteAddress + $i0;
+        $i1 = $i1 - 1;
+        virtualinvoke this.<avrora.core.Program: void checkAddress(int)>($i1);
+        $i1 = this.<avrora.core.Program: int program_start>;
+        offset = byteAddress - $i1;
+        cntr = 0;
+
+     label0:
+        $i1 = lengthof val;
+        if cntr >= $i1 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(val, 0, tid_writeProgramBytes, "avrora.core.Program", 207, cntr, $b2);
+        $b2 = val[cntr];
+        $i0 = offset + cntr;
+        specialinvoke this.<avrora.core.Program: void writeByteInto(byte,int)>($b2, $i0);
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    protected void checkAddress(int)
+    {
+        avrora.core.Program this;
+        int addr, $i0;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1, $r2;
+        cck.util.Util$InternalError $r3;
+
+        this := @this: avrora.core.Program;
+        addr := @parameter0: int;
+        $i0 = this.<avrora.core.Program: int program_start>;
+        if addr < $i0 goto label0;
+
+        $i0 = this.<avrora.core.Program: int program_end>;
+        if addr < $i0 goto label1;
+
+     label0:
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("address out of range: ");
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String addrToString(int)>(addr);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r3 = staticinvoke <cck.util.Util: cck.util.Util$InternalError failure(java.lang.String)>($r2);
+        throw $r3;
+
+     label1:
+        return;
+    }
+
+    public int getNextPC(int)
+    {
+        avrora.core.Program this;
+        int pc, $i0, $i1;
+        avrora.arch.AbstractInstr i;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1, $r2;
+        cck.util.Util$InternalError $r3;
+
+        this := @this: avrora.core.Program;
+        pc := @parameter0: int;
+        $i0 = this.<avrora.core.Program: int program_end>;
+        if pc <= $i0 goto label0;
+
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("no next PC after: ");
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String addrToString(int)>(pc);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r3 = staticinvoke <cck.util.Util: cck.util.Util$InternalError failure(java.lang.String)>($r2);
+        throw $r3;
+
+     label0:
+        i = virtualinvoke this.<avrora.core.Program: avrora.arch.AbstractInstr readInstr(int)>(pc);
+        if i != null goto label1;
+
+        $i1 = pc + 2;
+        return $i1;
+
+     label1:
+        $i0 = interfaceinvoke i.<avrora.arch.AbstractInstr: int getSize()>();
+        $i1 = pc + $i0;
+        return $i1;
+    }
+
+    public java.util.List getIndirectEdges(int)
+    {
+        avrora.core.Program this;
+        int callsite;
+        java.lang.Integer $r0;
+        java.util.HashMap $r1;
+        java.lang.Object $r2;
+        java.util.List $r3;
+
+        this := @this: avrora.core.Program;
+        callsite := @parameter0: int;
+        $r1 = this.<avrora.core.Program: java.util.HashMap indirectEdges>;
+        $r0 = new java.lang.Integer;
+        specialinvoke $r0.<java.lang.Integer: void <init>(int)>(callsite);
+        $r2 = virtualinvoke $r1.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r0);
+        $r3 = (java.util.List) $r2;
+        return $r3;
+    }
+
+    public void addIndirectEdge(int, int)
+    {
+        avrora.core.Program this;
+        int callsite, target;
+        java.lang.Integer $r0, c, t;
+        java.util.List l;
+        java.util.HashMap $r1;
+        java.lang.Object $r2;
+        java.util.LinkedList $r3, l;
+
+        this := @this: avrora.core.Program;
+        callsite := @parameter0: int;
+        target := @parameter1: int;
+        $r0 = new java.lang.Integer;
+        specialinvoke $r0.<java.lang.Integer: void <init>(int)>(callsite);
+        c = $r0;
+        $r0 = new java.lang.Integer;
+        specialinvoke $r0.<java.lang.Integer: void <init>(int)>(target);
+        t = $r0;
+        $r1 = this.<avrora.core.Program: java.util.HashMap indirectEdges>;
+        $r2 = virtualinvoke $r1.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(c);
+        l = (java.util.List) $r2;
+        if l != null goto label0;
+
+        $r3 = new java.util.LinkedList;
+        specialinvoke $r3.<java.util.LinkedList: void <init>()>();
+        l = $r3;
+        interfaceinvoke l.<java.util.List: boolean add(java.lang.Object)>(t);
+        $r1 = this.<avrora.core.Program: java.util.HashMap indirectEdges>;
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(c, l);
+        goto label1;
+
+     label0:
+        interfaceinvoke l.<java.util.List: boolean add(java.lang.Object)>(t);
+
+     label1:
+        return;
+    }
+
+    public avrora.arch.AbstractArchitecture getArchitecture()
+    {
+        avrora.core.Program this;
+        avrora.arch.AbstractArchitecture $r0;
+
+        this := @this: avrora.core.Program;
+        $r0 = this.<avrora.core.Program: avrora.arch.AbstractArchitecture arch>;
+        return $r0;
+    }
+
+    public avrora.core.SourceMapping getSourceMapping()
+    {
+        avrora.core.Program this;
+        avrora.core.SourceMapping $r0;
+
+        this := @this: avrora.core.Program;
+        $r0 = this.<avrora.core.Program: avrora.core.SourceMapping sourceMapping>;
+        return $r0;
+    }
+
+    public void setSourceMapping(avrora.core.SourceMapping)
+    {
+        avrora.core.Program this;
+        avrora.core.SourceMapping s;
+
+        this := @this: avrora.core.Program;
+        s := @parameter0: avrora.core.SourceMapping;
+        this.<avrora.core.Program: avrora.core.SourceMapping sourceMapping> = s;
+        return;
+    }
+
+    public avrora.core.ControlFlowGraph getCFG()
+    {
+        avrora.core.Program this;
+        avrora.core.CFGBuilder $r0;
+        avrora.core.ControlFlowGraph $r1, $r2;
+        java.lang.Object localthislockgetCFG;
+        java.lang.Throwable throwableLocal9;
+        long tid_getCFG;
+        java.lang.Thread thread_getCFG;
+
+        this := @this: avrora.core.Program;
+        thread_getCFG = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getCFG = virtualinvoke thread_getCFG.<java.lang.Thread: long getId()>();
+        localthislockgetCFG = this;
+
+     label0:
+        entermonitor localthislockgetCFG;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockgetCFG, 0, tid_getCFG);
+        $r1 = this.<avrora.core.Program: avrora.core.ControlFlowGraph cfg>;
+        if $r1 != null goto label1;
+
+        $r0 = new avrora.core.CFGBuilder;
+        specialinvoke $r0.<avrora.core.CFGBuilder: void <init>(avrora.core.Program)>(this);
+        $r2 = virtualinvoke $r0.<avrora.core.CFGBuilder: avrora.core.ControlFlowGraph buildCFG()>();
+        this.<avrora.core.Program: avrora.core.ControlFlowGraph cfg> = $r2;
+
+     label1:
+        $r1 = this.<avrora.core.Program: avrora.core.ControlFlowGraph cfg>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockgetCFG, 0, tid_getCFG);
+        exitmonitor localthislockgetCFG;
+        goto label2;
+
+     label2:
+        return $r1;
+
+     label3:
+        throwableLocal9 := @caughtexception;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockgetCFG, 0, tid_getCFG);
+        exitmonitor localthislockgetCFG;
+
+     label5:
+        throw throwableLocal9;
+
+        catch java.lang.Throwable from label0 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+}

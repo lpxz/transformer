@@ -1,0 +1,197 @@
+public abstract class org.apache.lucene.search.Similarity extends java.lang.Object implements java.io.Serializable
+{
+    private static org.apache.lucene.search.Similarity defaultImpl;
+    private static final float[] NORM_TABLE;
+
+    public void <init>()
+    {
+        org.apache.lucene.search.Similarity this;
+
+        this := @this: org.apache.lucene.search.Similarity;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public static void setDefault(org.apache.lucene.search.Similarity)
+    {
+        org.apache.lucene.search.Similarity similarity;
+        long tid_setDefault;
+        java.lang.Thread thread_setDefault;
+
+        similarity := @parameter0: org.apache.lucene.search.Similarity;
+        thread_setDefault = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setDefault = virtualinvoke thread_setDefault.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(49, tid_setDefault, "org.apache.lucene.searchorg.apache.lucene.search.Similarity", 299, similarity);
+        <org.apache.lucene.search.Similarity: org.apache.lucene.search.Similarity defaultImpl> = similarity;
+        return;
+    }
+
+    public static org.apache.lucene.search.Similarity getDefault()
+    {
+        org.apache.lucene.search.Similarity $r0;
+        long tid_getDefault;
+        java.lang.Thread thread_getDefault;
+
+        thread_getDefault = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getDefault = virtualinvoke thread_getDefault.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(49, tid_getDefault, "org.apache.lucene.searchorg.apache.lucene.search.Similarity", 311, $r0);
+        $r0 = <org.apache.lucene.search.Similarity: org.apache.lucene.search.Similarity defaultImpl>;
+        return $r0;
+    }
+
+    public static float decodeNorm(byte)
+    {
+        byte b;
+        float[] $r0;
+        short $s0;
+        float $f0;
+        long tid_decodeNorm;
+        java.lang.Thread thread_decodeNorm;
+
+        b := @parameter0: byte;
+        thread_decodeNorm = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_decodeNorm = virtualinvoke thread_decodeNorm.<java.lang.Thread: long getId()>();
+        $r0 = <org.apache.lucene.search.Similarity: float[] NORM_TABLE>;
+        $s0 = b & 255;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,float)>($r0, 50, tid_decodeNorm, "org.apache.lucene.search.Similarity", 326, $s0, $f0);
+        $f0 = $r0[$s0];
+        return $f0;
+    }
+
+    public static float[] getNormDecoder()
+    {
+        float[] $r0;
+
+        nop;
+        $r0 = <org.apache.lucene.search.Similarity: float[] NORM_TABLE>;
+        return $r0;
+    }
+
+    public abstract float lengthNorm(java.lang.String, int);
+
+    public abstract float queryNorm(float);
+
+    public static byte encodeNorm(float)
+    {
+        float f;
+        byte $b0;
+
+        f := @parameter0: float;
+        $b0 = staticinvoke <org.apache.lucene.util.SmallFloat: byte floatToByte315(float)>(f);
+        return $b0;
+    }
+
+    public float tf(int)
+    {
+        org.apache.lucene.search.Similarity this;
+        int freq;
+        float $f0, $f1;
+
+        this := @this: org.apache.lucene.search.Similarity;
+        freq := @parameter0: int;
+        $f0 = (float) freq;
+        $f1 = virtualinvoke this.<org.apache.lucene.search.Similarity: float tf(float)>($f0);
+        return $f1;
+    }
+
+    public abstract float sloppyFreq(int);
+
+    public abstract float tf(float);
+
+    public float idf(org.apache.lucene.index.Term, org.apache.lucene.search.Searcher) throws java.io.IOException
+    {
+        org.apache.lucene.search.Similarity this;
+        org.apache.lucene.index.Term term;
+        org.apache.lucene.search.Searcher searcher;
+        int $i0, $i1;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.Similarity;
+        term := @parameter0: org.apache.lucene.index.Term;
+        searcher := @parameter1: org.apache.lucene.search.Searcher;
+        $i0 = virtualinvoke searcher.<org.apache.lucene.search.Searcher: int docFreq(org.apache.lucene.index.Term)>(term);
+        $i1 = virtualinvoke searcher.<org.apache.lucene.search.Searcher: int maxDoc()>();
+        $f0 = virtualinvoke this.<org.apache.lucene.search.Similarity: float idf(int,int)>($i0, $i1);
+        return $f0;
+    }
+
+    public float idf(java.util.Collection, org.apache.lucene.search.Searcher) throws java.io.IOException
+    {
+        org.apache.lucene.search.Similarity this;
+        java.util.Collection terms;
+        org.apache.lucene.search.Searcher searcher;
+        float idf, $f0;
+        java.util.Iterator i;
+        boolean $z0;
+        java.lang.Object $r0;
+        org.apache.lucene.index.Term $r1;
+
+        this := @this: org.apache.lucene.search.Similarity;
+        terms := @parameter0: java.util.Collection;
+        searcher := @parameter1: org.apache.lucene.search.Searcher;
+        idf = 0.0F;
+        i = interfaceinvoke terms.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r0 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        $r1 = (org.apache.lucene.index.Term) $r0;
+        $f0 = virtualinvoke this.<org.apache.lucene.search.Similarity: float idf(org.apache.lucene.index.Term,org.apache.lucene.search.Searcher)>($r1, searcher);
+        idf = idf + $f0;
+        goto label0;
+
+     label1:
+        return idf;
+    }
+
+    public abstract float idf(int, int);
+
+    public abstract float coord(int, int);
+
+    public float scorePayload(java.lang.String, byte[], int, int)
+    {
+        org.apache.lucene.search.Similarity this;
+        java.lang.String fieldName;
+        byte[] payload;
+        int offset, length;
+
+        this := @this: org.apache.lucene.search.Similarity;
+        fieldName := @parameter0: java.lang.String;
+        payload := @parameter1: byte[];
+        offset := @parameter2: int;
+        length := @parameter3: int;
+        return 1.0F;
+    }
+
+    static void <clinit>()
+    {
+        org.apache.lucene.search.DefaultSimilarity $r0;
+        int i;
+        float[] $r1;
+        byte $b0;
+        float $f0;
+
+        $r0 = new org.apache.lucene.search.DefaultSimilarity;
+        specialinvoke $r0.<org.apache.lucene.search.DefaultSimilarity: void <init>()>();
+        <org.apache.lucene.search.Similarity: org.apache.lucene.search.Similarity defaultImpl> = $r0;
+        $r1 = newarray (float)[256];
+        <org.apache.lucene.search.Similarity: float[] NORM_TABLE> = $r1;
+        i = 0;
+
+     label0:
+        if i >= 256 goto label1;
+
+        $r1 = <org.apache.lucene.search.Similarity: float[] NORM_TABLE>;
+        $b0 = (byte) i;
+        $f0 = staticinvoke <org.apache.lucene.util.SmallFloat: float byte315ToFloat(byte)>($b0);
+        $r1[i] = $f0;
+        i = i + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+}

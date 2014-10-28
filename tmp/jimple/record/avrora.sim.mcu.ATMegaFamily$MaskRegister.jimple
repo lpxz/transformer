@@ -1,0 +1,73 @@
+public class avrora.sim.mcu.ATMegaFamily$MaskRegister extends avrora.sim.RWRegister
+{
+    protected final int[] mapping;
+    protected final avrora.sim.AtmelInterpreter interpreter;
+
+    public void <init>(avrora.sim.AtmelInterpreter, int[])
+    {
+        avrora.sim.mcu.ATMegaFamily$MaskRegister this;
+        avrora.sim.AtmelInterpreter interp;
+        int[] map;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$MaskRegister;
+        interp := @parameter0: avrora.sim.AtmelInterpreter;
+        map := @parameter1: int[];
+        specialinvoke this.<avrora.sim.RWRegister: void <init>()>();
+        this.<avrora.sim.mcu.ATMegaFamily$MaskRegister: int[] mapping> = map;
+        this.<avrora.sim.mcu.ATMegaFamily$MaskRegister: avrora.sim.AtmelInterpreter interpreter> = interp;
+        return;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.mcu.ATMegaFamily$MaskRegister this;
+        byte val;
+        int cntr;
+        boolean $z0;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$MaskRegister;
+        val := @parameter0: byte;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.mcu.ATMegaFamily$MaskRegister", 165, val);
+        this.<avrora.sim.mcu.ATMegaFamily$MaskRegister: byte value> = val;
+        cntr = 0;
+
+     label0:
+        if cntr >= 8 goto label1;
+
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, cntr);
+        virtualinvoke this.<avrora.sim.mcu.ATMegaFamily$MaskRegister: void setEnabled(int,boolean)>(cntr, $z0);
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    void setEnabled(int, boolean)
+    {
+        avrora.sim.mcu.ATMegaFamily$MaskRegister this;
+        int cntr, $i0, $i1;
+        boolean e;
+        int[] $r0, $r2;
+        avrora.sim.AtmelInterpreter $r1;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$MaskRegister;
+        cntr := @parameter0: int;
+        e := @parameter1: boolean;
+        $r0 = this.<avrora.sim.mcu.ATMegaFamily$MaskRegister: int[] mapping>;
+        $i0 = $r0[cntr];
+        if $i0 <= 0 goto label0;
+
+        $r1 = this.<avrora.sim.mcu.ATMegaFamily$MaskRegister: avrora.sim.AtmelInterpreter interpreter>;
+        $r2 = this.<avrora.sim.mcu.ATMegaFamily$MaskRegister: int[] mapping>;
+        $i1 = $r2[cntr];
+        virtualinvoke $r1.<avrora.sim.AtmelInterpreter: void setEnabled(int,boolean)>($i1, e);
+
+     label0:
+        return;
+    }
+}

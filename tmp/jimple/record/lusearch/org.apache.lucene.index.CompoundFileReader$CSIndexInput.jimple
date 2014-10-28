@@ -1,0 +1,154 @@
+final class org.apache.lucene.index.CompoundFileReader$CSIndexInput extends org.apache.lucene.store.BufferedIndexInput
+{
+    org.apache.lucene.store.IndexInput base;
+    long fileOffset;
+    long length;
+
+    void <init>(org.apache.lucene.store.IndexInput, long, long)
+    {
+        org.apache.lucene.index.CompoundFileReader$CSIndexInput this;
+        org.apache.lucene.store.IndexInput base;
+        long fileOffset, length;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader$CSIndexInput;
+        base := @parameter0: org.apache.lucene.store.IndexInput;
+        fileOffset := @parameter1: long;
+        length := @parameter2: long;
+        specialinvoke this.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: void <init>(org.apache.lucene.store.IndexInput,long,long,int)>(base, fileOffset, length, 1024);
+        return;
+    }
+
+    void <init>(org.apache.lucene.store.IndexInput, long, long, int)
+    {
+        org.apache.lucene.index.CompoundFileReader$CSIndexInput this;
+        org.apache.lucene.store.IndexInput base, $r1;
+        long fileOffset, length;
+        int readBufferSize;
+        java.lang.Object $r0;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader$CSIndexInput;
+        base := @parameter0: org.apache.lucene.store.IndexInput;
+        fileOffset := @parameter1: long;
+        length := @parameter2: long;
+        readBufferSize := @parameter3: int;
+        specialinvoke this.<org.apache.lucene.store.BufferedIndexInput: void <init>(int)>(readBufferSize);
+        $r0 = virtualinvoke base.<org.apache.lucene.store.IndexInput: java.lang.Object clone()>();
+        $r1 = (org.apache.lucene.store.IndexInput) $r0;
+        this.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: org.apache.lucene.store.IndexInput base> = $r1;
+        this.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: long fileOffset> = fileOffset;
+        this.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: long length> = length;
+        return;
+    }
+
+    public java.lang.Object clone()
+    {
+        org.apache.lucene.index.CompoundFileReader$CSIndexInput this, clone;
+        java.lang.Object $r0, $r2;
+        org.apache.lucene.store.IndexInput $r1;
+        long $l0, tid_clone;
+        java.lang.Thread thread_clone;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader$CSIndexInput;
+        thread_clone = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clone = virtualinvoke thread_clone.<java.lang.Thread: long getId()>();
+        $r0 = specialinvoke this.<org.apache.lucene.store.BufferedIndexInput: java.lang.Object clone()>();
+        clone = (org.apache.lucene.index.CompoundFileReader$CSIndexInput) $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 54, tid_clone, "org.apache.lucene.index.CompoundFileReader$CSIndexInput", 228, $r1);
+        $r1 = this.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: org.apache.lucene.store.IndexInput base>;
+        $r2 = virtualinvoke $r1.<org.apache.lucene.store.IndexInput: java.lang.Object clone()>();
+        $r1 = (org.apache.lucene.store.IndexInput) $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(clone, 54, tid_clone, "org.apache.lucene.index.CompoundFileReader$CSIndexInput", 228, $r1);
+        clone.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: org.apache.lucene.store.IndexInput base> = $r1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 55, tid_clone, "org.apache.lucene.index.CompoundFileReader$CSIndexInput", 229, $l0);
+        $l0 = this.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: long fileOffset>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(clone, 55, tid_clone, "org.apache.lucene.index.CompoundFileReader$CSIndexInput", 229, $l0);
+        clone.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: long fileOffset> = $l0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 56, tid_clone, "org.apache.lucene.index.CompoundFileReader$CSIndexInput", 230, $l0);
+        $l0 = this.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: long length>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(clone, 56, tid_clone, "org.apache.lucene.index.CompoundFileReader$CSIndexInput", 230, $l0);
+        clone.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: long length> = $l0;
+        return clone;
+    }
+
+    protected void readInternal(byte[], int, int) throws java.io.IOException
+    {
+        org.apache.lucene.index.CompoundFileReader$CSIndexInput this;
+        byte[] b;
+        int offset, len;
+        long start, $l0, $l1, $l3, tid_readInternal;
+        byte $b2;
+        java.io.IOException $r0;
+        org.apache.lucene.store.IndexInput $r1;
+        java.lang.Thread thread_readInternal;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader$CSIndexInput;
+        b := @parameter0: byte[];
+        offset := @parameter1: int;
+        len := @parameter2: int;
+        thread_readInternal = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_readInternal = virtualinvoke thread_readInternal.<java.lang.Thread: long getId()>();
+        start = virtualinvoke this.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: long getFilePointer()>();
+        $l0 = (long) len;
+        $l1 = start + $l0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 56, tid_readInternal, "org.apache.lucene.index.CompoundFileReader$CSIndexInput", 244, $l0);
+        $l0 = this.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: long length>;
+        $b2 = $l1 cmp $l0;
+        if $b2 <= 0 goto label0;
+
+        $r0 = new java.io.IOException;
+        specialinvoke $r0.<java.io.IOException: void <init>(java.lang.String)>("read past EOF");
+        throw $r0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 54, tid_readInternal, "org.apache.lucene.index.CompoundFileReader$CSIndexInput", 246, $r1);
+        $r1 = this.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: org.apache.lucene.store.IndexInput base>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 55, tid_readInternal, "org.apache.lucene.index.CompoundFileReader$CSIndexInput", 246, $l3);
+        $l3 = this.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: long fileOffset>;
+        $l3 = $l3 + start;
+        virtualinvoke $r1.<org.apache.lucene.store.IndexInput: void seek(long)>($l3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 54, tid_readInternal, "org.apache.lucene.index.CompoundFileReader$CSIndexInput", 247, $r1);
+        $r1 = this.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: org.apache.lucene.store.IndexInput base>;
+        virtualinvoke $r1.<org.apache.lucene.store.IndexInput: void readBytes(byte[],int,int,boolean)>(b, offset, len, 0);
+        return;
+    }
+
+    protected void seekInternal(long)
+    {
+        org.apache.lucene.index.CompoundFileReader$CSIndexInput this;
+        long pos;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader$CSIndexInput;
+        pos := @parameter0: long;
+        return;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        org.apache.lucene.index.CompoundFileReader$CSIndexInput this;
+        org.apache.lucene.store.IndexInput $r0;
+        long tid_close;
+        java.lang.Thread thread_close;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader$CSIndexInput;
+        thread_close = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_close = virtualinvoke thread_close.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 54, tid_close, "org.apache.lucene.index.CompoundFileReader$CSIndexInput", 258, $r0);
+        $r0 = this.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: org.apache.lucene.store.IndexInput base>;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void close()>();
+        return;
+    }
+
+    public long length()
+    {
+        org.apache.lucene.index.CompoundFileReader$CSIndexInput this;
+        long $l0, tid_length;
+        java.lang.Thread thread_length;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader$CSIndexInput;
+        thread_length = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_length = virtualinvoke thread_length.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 56, tid_length, "org.apache.lucene.index.CompoundFileReader$CSIndexInput", 262, $l0);
+        $l0 = this.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: long length>;
+        return $l0;
+    }
+}

@@ -1,0 +1,153 @@
+public class avrora.sim.mcu.ATMegaFamily$PinRegister extends java.lang.Object implements avrora.sim.ActiveRegister
+{
+    protected avrora.sim.mcu.DefaultMCU$Pin[] pins;
+
+    protected void <init>(avrora.sim.mcu.DefaultMCU$Pin[])
+    {
+        avrora.sim.mcu.ATMegaFamily$PinRegister this;
+        avrora.sim.mcu.DefaultMCU$Pin[] p;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$PinRegister;
+        p := @parameter0: avrora.sim.mcu.DefaultMCU$Pin[];
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.mcu.ATMegaFamily$PinRegister: avrora.sim.mcu.DefaultMCU$Pin[] pins> = p;
+        return;
+    }
+
+    public byte read()
+    {
+        avrora.sim.mcu.ATMegaFamily$PinRegister this;
+        short value, $s0, $s1;
+        avrora.sim.mcu.DefaultMCU$Pin[] $r0;
+        avrora.sim.mcu.DefaultMCU$Pin $r1;
+        boolean $z0;
+        byte $b2;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$PinRegister;
+        value = 0;
+        $s0 = value;
+        $r0 = this.<avrora.sim.mcu.ATMegaFamily$PinRegister: avrora.sim.mcu.DefaultMCU$Pin[] pins>;
+        $r1 = $r0[0];
+        $z0 = virtualinvoke $r1.<avrora.sim.mcu.DefaultMCU$Pin: boolean read()>();
+        if $z0 == 0 goto label0;
+
+        $s1 = 1;
+        goto label1;
+
+     label0:
+        $s1 = 0;
+
+     label1:
+        value = $s0 | $s1;
+        $s0 = value;
+        $r0 = this.<avrora.sim.mcu.ATMegaFamily$PinRegister: avrora.sim.mcu.DefaultMCU$Pin[] pins>;
+        $r1 = $r0[1];
+        $z0 = virtualinvoke $r1.<avrora.sim.mcu.DefaultMCU$Pin: boolean read()>();
+        if $z0 == 0 goto label2;
+
+        $s1 = 2;
+        goto label3;
+
+     label2:
+        $s1 = 0;
+
+     label3:
+        value = $s0 | $s1;
+        $s0 = value;
+        $r0 = this.<avrora.sim.mcu.ATMegaFamily$PinRegister: avrora.sim.mcu.DefaultMCU$Pin[] pins>;
+        $r1 = $r0[2];
+        $z0 = virtualinvoke $r1.<avrora.sim.mcu.DefaultMCU$Pin: boolean read()>();
+        if $z0 == 0 goto label4;
+
+        $s1 = 4;
+        goto label5;
+
+     label4:
+        $s1 = 0;
+
+     label5:
+        value = $s0 | $s1;
+        $s0 = value;
+        $r0 = this.<avrora.sim.mcu.ATMegaFamily$PinRegister: avrora.sim.mcu.DefaultMCU$Pin[] pins>;
+        $r1 = $r0[3];
+        $z0 = virtualinvoke $r1.<avrora.sim.mcu.DefaultMCU$Pin: boolean read()>();
+        if $z0 == 0 goto label6;
+
+        $s1 = 8;
+        goto label7;
+
+     label6:
+        $s1 = 0;
+
+     label7:
+        value = $s0 | $s1;
+        $s0 = value;
+        $r0 = this.<avrora.sim.mcu.ATMegaFamily$PinRegister: avrora.sim.mcu.DefaultMCU$Pin[] pins>;
+        $r1 = $r0[4];
+        $z0 = virtualinvoke $r1.<avrora.sim.mcu.DefaultMCU$Pin: boolean read()>();
+        if $z0 == 0 goto label8;
+
+        $s1 = 16;
+        goto label9;
+
+     label8:
+        $s1 = 0;
+
+     label9:
+        value = $s0 | $s1;
+        $s0 = value;
+        $r0 = this.<avrora.sim.mcu.ATMegaFamily$PinRegister: avrora.sim.mcu.DefaultMCU$Pin[] pins>;
+        $r1 = $r0[5];
+        $z0 = virtualinvoke $r1.<avrora.sim.mcu.DefaultMCU$Pin: boolean read()>();
+        if $z0 == 0 goto label10;
+
+        $s1 = 32;
+        goto label11;
+
+     label10:
+        $s1 = 0;
+
+     label11:
+        value = $s0 | $s1;
+        $s0 = value;
+        $r0 = this.<avrora.sim.mcu.ATMegaFamily$PinRegister: avrora.sim.mcu.DefaultMCU$Pin[] pins>;
+        $r1 = $r0[6];
+        $z0 = virtualinvoke $r1.<avrora.sim.mcu.DefaultMCU$Pin: boolean read()>();
+        if $z0 == 0 goto label12;
+
+        $s1 = 64;
+        goto label13;
+
+     label12:
+        $s1 = 0;
+
+     label13:
+        value = $s0 | $s1;
+        $s0 = value;
+        $r0 = this.<avrora.sim.mcu.ATMegaFamily$PinRegister: avrora.sim.mcu.DefaultMCU$Pin[] pins>;
+        $r1 = $r0[7];
+        $z0 = virtualinvoke $r1.<avrora.sim.mcu.DefaultMCU$Pin: boolean read()>();
+        if $z0 == 0 goto label14;
+
+        $s1 = 128;
+        goto label15;
+
+     label14:
+        $s1 = 0;
+
+     label15:
+        value = $s0 | $s1;
+        $b2 = (byte) value;
+        return $b2;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.mcu.ATMegaFamily$PinRegister this;
+        byte val;
+
+        this := @this: avrora.sim.mcu.ATMegaFamily$PinRegister;
+        val := @parameter0: byte;
+        return;
+    }
+}

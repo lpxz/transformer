@@ -1,0 +1,39 @@
+public class avrora.monitors.CallTreeProfiler extends avrora.monitors.MonitorFactory
+{
+    private static final int MAX_CALL_DEPTH;
+    final cck.util.Option$Long DEPTH;
+    final cck.util.Option$Double THRESHOLD;
+
+    public void <init>()
+    {
+        avrora.monitors.CallTreeProfiler this;
+        cck.util.Options $r0;
+        cck.util.Option$Long $r1;
+        cck.util.Option$Double $r2;
+
+        this := @this: avrora.monitors.CallTreeProfiler;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The call tree monitor builds a complete call tree and records the time spent executing each function, both internally and in nested calls.");
+        $r0 = this.<avrora.monitors.CallTreeProfiler: cck.util.Options options>;
+        $r1 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Long newOption(java.lang.String,long,java.lang.String)>("profile-depth", 5L, "This option controls how deep the display of the whole-program profiler goes.");
+        this.<avrora.monitors.CallTreeProfiler: cck.util.Option$Long DEPTH> = $r1;
+        $r0 = this.<avrora.monitors.CallTreeProfiler: cck.util.Options options>;
+        $r2 = virtualinvoke $r0.<cck.util.Options: cck.util.Option$Double newOption(java.lang.String,double,java.lang.String)>("profile-threshold", 0.0, "This option controls the threshold at which call subtrees are show in the profiler.");
+        this.<avrora.monitors.CallTreeProfiler: cck.util.Option$Double THRESHOLD> = $r2;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.CallTreeProfiler this;
+        avrora.sim.Simulator s;
+        avrora.monitors.CallTreeProfiler$ProfileMonitor tmp$550468514;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.CallTreeProfiler;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$550468514 = new avrora.monitors.CallTreeProfiler$ProfileMonitor;
+        specialinvoke tmp$550468514.<avrora.monitors.CallTreeProfiler$ProfileMonitor: void <init>(avrora.monitors.CallTreeProfiler,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$550468514;
+        return tmp;
+    }
+}

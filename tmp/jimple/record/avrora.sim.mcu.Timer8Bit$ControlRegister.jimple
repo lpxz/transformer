@@ -1,0 +1,262 @@
+public class avrora.sim.mcu.Timer8Bit$ControlRegister extends avrora.sim.RWRegister
+{
+    public static final int FOCn;
+    public static final int WGMn0;
+    public static final int COMn1;
+    public static final int COMn0;
+    public static final int WGMn1;
+    public static final int CSn2;
+    public static final int CSn1;
+    public static final int CSn0;
+    final avrora.sim.state.RegisterView CSn;
+    final avrora.sim.state.RegisterView COMn;
+    final avrora.sim.state.RegisterView WGMn;
+    int mode;
+    int scale;
+    final avrora.sim.mcu.Timer8Bit this$0;
+
+    protected void <init>(avrora.sim.mcu.Timer8Bit)
+    {
+        avrora.sim.mcu.Timer8Bit$ControlRegister this;
+        avrora.sim.mcu.Timer8Bit l1;
+        avrora.sim.state.RegisterView $r0;
+        byte[] $r1;
+
+        this := @this: avrora.sim.mcu.Timer8Bit$ControlRegister;
+        l1 := @parameter0: avrora.sim.mcu.Timer8Bit;
+        this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0> = l1;
+        specialinvoke this.<avrora.sim.RWRegister: void <init>()>();
+        $r0 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.RegisterView bitRangeView(avrora.sim.state.RegisterView,int,int)>(this, 0, 2);
+        this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.state.RegisterView CSn> = $r0;
+        $r0 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.RegisterView bitRangeView(avrora.sim.state.RegisterView,int,int)>(this, 4, 5);
+        this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.state.RegisterView COMn> = $r0;
+        $r1 = newarray (byte)[2];
+        $r1[0] = 6;
+        $r1[1] = 3;
+        $r0 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.RegisterView permutedView(avrora.sim.state.RegisterView,byte[])>(this, $r1);
+        this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.state.RegisterView WGMn> = $r0;
+        this.<avrora.sim.mcu.Timer8Bit$ControlRegister: int mode> = -1;
+        this.<avrora.sim.mcu.Timer8Bit$ControlRegister: int scale> = -1;
+        return;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.mcu.Timer8Bit$ControlRegister this;
+        byte val, $b0;
+        int nmode, nscale, $i2, $i3, $i4;
+        short $s1;
+        avrora.sim.state.RegisterView $r0;
+        avrora.sim.mcu.Timer8Bit $r1, $r4, $r8;
+        avrora.sim.Simulator$Event $r2, $r5;
+        avrora.sim.clock.Clock $r3;
+        avrora.sim.Simulator$Event[] $r6;
+        int[] $r7;
+        long $l5, tid_write;
+        avrora.sim.output.SimPrinter $r9;
+        java.lang.StringBuilder $r10;
+        java.lang.String $r11;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.mcu.Timer8Bit$ControlRegister;
+        val := @parameter0: byte;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        $b0 = val & 127;
+        $b0 = (byte) $b0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 205, $b0);
+        this.<avrora.sim.mcu.Timer8Bit$ControlRegister: byte value> = $b0;
+        $s1 = val & 128;
+        if $s1 == 0 goto label0;
+
+        specialinvoke this.<avrora.sim.mcu.Timer8Bit$ControlRegister: void forcedOutputCompare()>();
+
+     label0:
+        $r0 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.state.RegisterView WGMn>;
+        nmode = interfaceinvoke $r0.<avrora.sim.state.RegisterView: int getValue()>();
+        $r0 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.state.RegisterView CSn>;
+        nscale = interfaceinvoke $r0.<avrora.sim.state.RegisterView: int getValue()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 204, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 215, $i2);
+        $i2 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: int mode>;
+        if nmode != $i2 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 205, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 215, $i2);
+        $i2 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: int scale>;
+        if nscale == $i2 goto label5;
+
+     label1:
+        $r1 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r1, 206, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 216, $r2);
+        $r2 = $r1.<avrora.sim.mcu.Timer8Bit: avrora.sim.Simulator$Event ticker>;
+        if $r2 == null goto label2;
+
+        $r1 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r1, 86, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 216, $r3);
+        $r3 = $r1.<avrora.sim.mcu.Timer8Bit: avrora.sim.clock.Clock timerClock>;
+        $r4 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r4, 206, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 216, $r5);
+        $r5 = $r4.<avrora.sim.mcu.Timer8Bit: avrora.sim.Simulator$Event ticker>;
+        virtualinvoke $r3.<avrora.sim.clock.Clock: void removeEvent(avrora.sim.Simulator$Event)>($r5);
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 204, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 217, nmode);
+        this.<avrora.sim.mcu.Timer8Bit$ControlRegister: int mode> = nmode;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 205, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 218, nscale);
+        this.<avrora.sim.mcu.Timer8Bit$ControlRegister: int scale> = nscale;
+        $r1 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $r4 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $r6 = $r4.<avrora.sim.mcu.Timer8Bit: avrora.sim.Simulator$Event[] tickers>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 204, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 219, $i3);
+        $i3 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: int mode>;
+        $r5 = $r6[$i3];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r1, 206, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 219, $r5);
+        $r1.<avrora.sim.mcu.Timer8Bit: avrora.sim.Simulator$Event ticker> = $r5;
+        $r1 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $r4 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $r7 = $r4.<avrora.sim.mcu.Timer8Bit: int[] periods>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 205, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 220, $i3);
+        $i3 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: int scale>;
+        $i2 = $r7[$i3];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 87, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 220, $i2);
+        $r1.<avrora.sim.mcu.Timer8Bit: int period> = $i2;
+        $r1 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 87, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 221, $i4);
+        $i4 = $r1.<avrora.sim.mcu.Timer8Bit: int period>;
+        if $i4 == 0 goto label3;
+
+        $r1 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r1, 86, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 222, $r3);
+        $r3 = $r1.<avrora.sim.mcu.Timer8Bit: avrora.sim.clock.Clock timerClock>;
+        $r4 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r4, 206, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 222, $r5);
+        $r5 = $r4.<avrora.sim.mcu.Timer8Bit: avrora.sim.Simulator$Event ticker>;
+        $r8 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r8, 87, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 222, $i3);
+        $i3 = $r8.<avrora.sim.mcu.Timer8Bit: int period>;
+        $l5 = (long) $i3;
+        virtualinvoke $r3.<avrora.sim.clock.Clock: void insertEvent(avrora.sim.Simulator$Event,long)>($r5, $l5);
+
+     label3:
+        $r1 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $r9 = $r1.<avrora.sim.mcu.Timer8Bit: avrora.sim.output.SimPrinter devicePrinter>;
+        if $r9 == null goto label5;
+
+        $r1 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 87, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 225, $i4);
+        $i4 = $r1.<avrora.sim.mcu.Timer8Bit: int period>;
+        if $i4 == 0 goto label4;
+
+        $r1 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $r9 = $r1.<avrora.sim.mcu.Timer8Bit: avrora.sim.output.SimPrinter devicePrinter>;
+        $r10 = new java.lang.StringBuilder;
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Timer");
+        $r8 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $i3 = $r8.<avrora.sim.mcu.Timer8Bit: int n>;
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" enabled: period = ");
+        $r8 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r8, 87, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 226, $i3);
+        $i3 = $r8.<avrora.sim.mcu.Timer8Bit: int period>;
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" mode = ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 204, tid_write, "avrora.sim.mcu.Timer8Bit$ControlRegister", 226, $i3);
+        $i3 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: int mode>;
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r9.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r11);
+        goto label5;
+
+     label4:
+        $r1 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $r9 = $r1.<avrora.sim.mcu.Timer8Bit: avrora.sim.output.SimPrinter devicePrinter>;
+        $r10 = new java.lang.StringBuilder;
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Timer");
+        $r8 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $i3 = $r8.<avrora.sim.mcu.Timer8Bit: int n>;
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+        $r10 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" disabled");
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r9.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r11);
+
+     label5:
+        return;
+    }
+
+    private void forcedOutputCompare()
+    {
+        avrora.sim.mcu.Timer8Bit$ControlRegister this;
+        short count, compare;
+        avrora.sim.mcu.Timer8Bit $r0, $r5;
+        avrora.sim.mcu.Timer8Bit$TCNTnRegister $r1;
+        byte $b0;
+        avrora.sim.mcu.Timer8Bit$BufferedRegister $r2;
+        avrora.sim.state.RegisterView $r3;
+        int $i1;
+        avrora.sim.mcu.DefaultMCU$Pin $r4, $r6;
+        boolean $z0;
+
+        this := @this: avrora.sim.mcu.Timer8Bit$ControlRegister;
+        $r0 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $r1 = $r0.<avrora.sim.mcu.Timer8Bit: avrora.sim.mcu.Timer8Bit$TCNTnRegister TCNTn_reg>;
+        $b0 = virtualinvoke $r1.<avrora.sim.mcu.Timer8Bit$TCNTnRegister: byte read()>();
+        count = $b0 & 255;
+        $r0 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $r2 = $r0.<avrora.sim.mcu.Timer8Bit: avrora.sim.mcu.Timer8Bit$BufferedRegister OCRn_reg>;
+        $b0 = virtualinvoke $r2.<avrora.sim.mcu.Timer8Bit$BufferedRegister: byte read()>();
+        compare = $b0 & 255;
+        if count != compare goto label6;
+
+        $r3 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.state.RegisterView COMn>;
+        $i1 = interfaceinvoke $r3.<avrora.sim.state.RegisterView: int getValue()>();
+        tableswitch($i1)
+        {
+            case 1: goto label0;
+            case 2: goto label4;
+            case 3: goto label5;
+            default: goto label6;
+        };
+
+     label0:
+        $r3 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.state.RegisterView WGMn>;
+        $i1 = interfaceinvoke $r3.<avrora.sim.state.RegisterView: int getValue()>();
+        if $i1 == 0 goto label1;
+
+        $r3 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.state.RegisterView WGMn>;
+        $i1 = interfaceinvoke $r3.<avrora.sim.state.RegisterView: int getValue()>();
+        if $i1 != 2 goto label6;
+
+     label1:
+        $r0 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $r4 = $r0.<avrora.sim.mcu.Timer8Bit: avrora.sim.mcu.DefaultMCU$Pin outputComparePin>;
+        $r5 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $r6 = $r5.<avrora.sim.mcu.Timer8Bit: avrora.sim.mcu.DefaultMCU$Pin outputComparePin>;
+        $z0 = virtualinvoke $r6.<avrora.sim.mcu.DefaultMCU$Pin: boolean read()>();
+        if $z0 != 0 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        virtualinvoke $r4.<avrora.sim.mcu.DefaultMCU$Pin: void write(boolean)>($z0);
+        goto label6;
+
+     label4:
+        $r0 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $r4 = $r0.<avrora.sim.mcu.Timer8Bit: avrora.sim.mcu.DefaultMCU$Pin outputComparePin>;
+        virtualinvoke $r4.<avrora.sim.mcu.DefaultMCU$Pin: void write(boolean)>(0);
+        goto label6;
+
+     label5:
+        $r0 = this.<avrora.sim.mcu.Timer8Bit$ControlRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        $r4 = $r0.<avrora.sim.mcu.Timer8Bit: avrora.sim.mcu.DefaultMCU$Pin outputComparePin>;
+        virtualinvoke $r4.<avrora.sim.mcu.DefaultMCU$Pin: void write(boolean)>(1);
+
+     label6:
+        return;
+    }
+}

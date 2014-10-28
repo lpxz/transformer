@@ -1,0 +1,27 @@
+public class avrora.monitors.SleepMonitor extends avrora.monitors.MonitorFactory
+{
+
+    public void <init>()
+    {
+        avrora.monitors.SleepMonitor this;
+
+        this := @this: avrora.monitors.SleepMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"sleep\" is a monitor that tracks statistics about the sleeping patterns of programs, including the total number of cycles awake and the total number of cycles asleep during the simulation.");
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.SleepMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.SleepMonitor$Mon tmp$549050469;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.SleepMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$549050469 = new avrora.monitors.SleepMonitor$Mon;
+        specialinvoke tmp$549050469.<avrora.monitors.SleepMonitor$Mon: void <init>(avrora.sim.Simulator)>(s);
+        tmp = (avrora.monitors.Monitor) tmp$549050469;
+        return tmp;
+    }
+}

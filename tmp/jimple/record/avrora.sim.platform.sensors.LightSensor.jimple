@@ -1,0 +1,113 @@
+public class avrora.sim.platform.sensors.LightSensor extends avrora.sim.platform.sensors.Sensor
+{
+    protected final avrora.sim.mcu.AtmelMicrocontroller mcu;
+    protected final int channel;
+    protected final avrora.sim.FiniteStateMachine fsm;
+    protected static final java.lang.String[] names;
+    protected boolean power;
+    protected boolean on;
+    public avrora.sim.mcu.ADC adcDevice;
+
+    public void <init>(avrora.sim.mcu.AtmelMicrocontroller, int, java.lang.String, java.lang.String)
+    {
+        avrora.sim.platform.sensors.LightSensor this;
+        avrora.sim.mcu.AtmelMicrocontroller m, $r1, $r6, $r9;
+        int adcChannel, $i0;
+        java.lang.String onPin, powPin;
+        java.lang.String[] $r0;
+        avrora.sim.mcu.Microcontroller$Pin $r2;
+        avrora.sim.platform.sensors.LightSensor$OnPin $r3;
+        avrora.sim.platform.sensors.LightSensor$PowerPin $r4;
+        avrora.sim.FiniteStateMachine $r5;
+        avrora.sim.clock.ClockDomain $r7;
+        avrora.sim.clock.MainClock $r8;
+        avrora.sim.mcu.AtmelInternalDevice $r10;
+        avrora.sim.mcu.ADC $r11, $r12;
+        avrora.sim.platform.sensors.LightSensor$ADCInput $r13;
+
+        this := @this: avrora.sim.platform.sensors.LightSensor;
+        m := @parameter0: avrora.sim.mcu.AtmelMicrocontroller;
+        adcChannel := @parameter1: int;
+        onPin := @parameter2: java.lang.String;
+        powPin := @parameter3: java.lang.String;
+        specialinvoke this.<avrora.sim.platform.sensors.Sensor: void <init>()>();
+        this.<avrora.sim.platform.sensors.LightSensor: avrora.sim.mcu.AtmelMicrocontroller mcu> = m;
+        this.<avrora.sim.platform.sensors.LightSensor: int channel> = adcChannel;
+        $r1 = this.<avrora.sim.platform.sensors.LightSensor: avrora.sim.mcu.AtmelMicrocontroller mcu>;
+        $r2 = virtualinvoke $r1.<avrora.sim.mcu.AtmelMicrocontroller: avrora.sim.mcu.Microcontroller$Pin getPin(java.lang.String)>(onPin);
+        $r3 = new avrora.sim.platform.sensors.LightSensor$OnPin;
+        specialinvoke $r3.<avrora.sim.platform.sensors.LightSensor$OnPin: void <init>(avrora.sim.platform.sensors.LightSensor)>(this);
+        interfaceinvoke $r2.<avrora.sim.mcu.Microcontroller$Pin: void connectOutput(avrora.sim.mcu.Microcontroller$Pin$Output)>($r3);
+        $r1 = this.<avrora.sim.platform.sensors.LightSensor: avrora.sim.mcu.AtmelMicrocontroller mcu>;
+        $r2 = virtualinvoke $r1.<avrora.sim.mcu.AtmelMicrocontroller: avrora.sim.mcu.Microcontroller$Pin getPin(java.lang.String)>(powPin);
+        $r4 = new avrora.sim.platform.sensors.LightSensor$PowerPin;
+        specialinvoke $r4.<avrora.sim.platform.sensors.LightSensor$PowerPin: void <init>(avrora.sim.platform.sensors.LightSensor)>(this);
+        interfaceinvoke $r2.<avrora.sim.mcu.Microcontroller$Pin: void connectOutput(avrora.sim.mcu.Microcontroller$Pin$Output)>($r4);
+        $r5 = new avrora.sim.FiniteStateMachine;
+        $r6 = this.<avrora.sim.platform.sensors.LightSensor: avrora.sim.mcu.AtmelMicrocontroller mcu>;
+        $r7 = virtualinvoke $r6.<avrora.sim.mcu.AtmelMicrocontroller: avrora.sim.clock.ClockDomain getClockDomain()>();
+        $r8 = virtualinvoke $r7.<avrora.sim.clock.ClockDomain: avrora.sim.clock.MainClock getMainClock()>();
+        $r0 = <avrora.sim.platform.sensors.LightSensor: java.lang.String[] names>;
+        specialinvoke $r5.<avrora.sim.FiniteStateMachine: void <init>(avrora.sim.clock.Clock,int,java.lang.String[],int)>($r8, 0, $r0, 0);
+        this.<avrora.sim.platform.sensors.LightSensor: avrora.sim.FiniteStateMachine fsm> = $r5;
+        $r9 = this.<avrora.sim.platform.sensors.LightSensor: avrora.sim.mcu.AtmelMicrocontroller mcu>;
+        $r10 = virtualinvoke $r9.<avrora.sim.mcu.AtmelMicrocontroller: avrora.sim.mcu.AtmelInternalDevice getDevice(java.lang.String)>("adc");
+        $r11 = (avrora.sim.mcu.ADC) $r10;
+        this.<avrora.sim.platform.sensors.LightSensor: avrora.sim.mcu.ADC adcDevice> = $r11;
+        $r12 = this.<avrora.sim.platform.sensors.LightSensor: avrora.sim.mcu.ADC adcDevice>;
+        $r13 = new avrora.sim.platform.sensors.LightSensor$ADCInput;
+        specialinvoke $r13.<avrora.sim.platform.sensors.LightSensor$ADCInput: void <init>(avrora.sim.platform.sensors.LightSensor)>(this);
+        $i0 = this.<avrora.sim.platform.sensors.LightSensor: int channel>;
+        virtualinvoke $r12.<avrora.sim.mcu.ADC: void connectADCInput(avrora.sim.mcu.ADC$ADCInput,int)>($r13, $i0);
+        return;
+    }
+
+    private int state()
+    {
+        avrora.sim.platform.sensors.LightSensor this;
+        boolean $z0;
+        long tid_state;
+        java.lang.Thread thread_state;
+
+        this := @this: avrora.sim.platform.sensors.LightSensor;
+        thread_state = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_state = virtualinvoke thread_state.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 56, tid_state, "avrora.sim.platform.sensors.LightSensor", 81, $z0);
+        $z0 = this.<avrora.sim.platform.sensors.LightSensor: boolean power>;
+        if $z0 != 0 goto label0;
+
+        return 0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 57, tid_state, "avrora.sim.platform.sensors.LightSensor", 82, $z0);
+        $z0 = this.<avrora.sim.platform.sensors.LightSensor: boolean on>;
+        if $z0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 2;
+    }
+
+    static int access$000(avrora.sim.platform.sensors.LightSensor)
+    {
+        avrora.sim.platform.sensors.LightSensor x0;
+        int $i0;
+
+        x0 := @parameter0: avrora.sim.platform.sensors.LightSensor;
+        $i0 = specialinvoke x0.<avrora.sim.platform.sensors.LightSensor: int state()>();
+        return $i0;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String[] $r0;
+
+        $r0 = newarray (java.lang.String)[3];
+        $r0[0] = "power down";
+        $r0[1] = "off";
+        $r0[2] = "on";
+        <avrora.sim.platform.sensors.LightSensor: java.lang.String[] names> = $r0;
+        return;
+    }
+}

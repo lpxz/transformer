@@ -1,0 +1,23 @@
+final class org.apache.lucene.queryParser.QueryParser$LookaheadSuccess extends java.lang.Error
+{
+
+    private void <init>()
+    {
+        org.apache.lucene.queryParser.QueryParser$LookaheadSuccess this;
+
+        this := @this: org.apache.lucene.queryParser.QueryParser$LookaheadSuccess;
+        specialinvoke this.<java.lang.Error: void <init>()>();
+        return;
+    }
+
+    void <init>(org.apache.lucene.queryParser.QueryParser$1)
+    {
+        org.apache.lucene.queryParser.QueryParser$LookaheadSuccess this;
+        org.apache.lucene.queryParser.QueryParser$1 x0;
+
+        this := @this: org.apache.lucene.queryParser.QueryParser$LookaheadSuccess;
+        x0 := @parameter0: org.apache.lucene.queryParser.QueryParser$1;
+        specialinvoke this.<org.apache.lucene.queryParser.QueryParser$LookaheadSuccess: void <init>()>();
+        return;
+    }
+}

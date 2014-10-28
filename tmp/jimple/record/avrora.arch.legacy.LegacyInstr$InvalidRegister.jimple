@@ -1,0 +1,30 @@
+public class avrora.arch.legacy.LegacyInstr$InvalidRegister extends avrora.arch.legacy.LegacyInstr$InvalidOperand
+{
+    public final avrora.arch.legacy.LegacyRegister$Set set;
+    public final avrora.arch.legacy.LegacyRegister register;
+
+    public void <init>(int, avrora.arch.legacy.LegacyRegister, avrora.arch.legacy.LegacyRegister$Set)
+    {
+        avrora.arch.legacy.LegacyInstr$InvalidRegister this;
+        int num;
+        avrora.arch.legacy.LegacyRegister reg;
+        avrora.arch.legacy.LegacyRegister$Set s;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1, $r2;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$InvalidRegister;
+        num := @parameter0: int;
+        reg := @parameter1: avrora.arch.legacy.LegacyRegister;
+        s := @parameter2: avrora.arch.legacy.LegacyRegister$Set;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("must be one of ");
+        $r1 = s.<avrora.arch.legacy.LegacyRegister$Set: java.lang.String contents>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke this.<avrora.arch.legacy.LegacyInstr$InvalidOperand: void <init>(int,java.lang.String)>(num, $r2);
+        this.<avrora.arch.legacy.LegacyInstr$InvalidRegister: avrora.arch.legacy.LegacyRegister$Set set> = s;
+        this.<avrora.arch.legacy.LegacyInstr$InvalidRegister: avrora.arch.legacy.LegacyRegister register> = reg;
+        return;
+    }
+}

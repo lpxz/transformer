@@ -1,0 +1,154 @@
+public class cck.elf.ELFSymbolTable$Entry extends java.lang.Object
+{
+    public int st_name;
+    public int st_value;
+    public int st_size;
+    public int st_info;
+    public int st_other;
+    public short st_shndx;
+    final cck.elf.ELFSymbolTable this$0;
+
+    public void <init>(cck.elf.ELFSymbolTable)
+    {
+        cck.elf.ELFSymbolTable$Entry this;
+        cck.elf.ELFSymbolTable l1;
+
+        this := @this: cck.elf.ELFSymbolTable$Entry;
+        l1 := @parameter0: cck.elf.ELFSymbolTable;
+        this.<cck.elf.ELFSymbolTable$Entry: cck.elf.ELFSymbolTable this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public java.lang.String getBinding()
+    {
+        cck.elf.ELFSymbolTable$Entry this;
+        int $i0;
+
+        this := @this: cck.elf.ELFSymbolTable$Entry;
+        $i0 = this.<cck.elf.ELFSymbolTable$Entry: int st_info>;
+        $i0 = $i0 >> 4;
+        $i0 = $i0 & 15;
+        tableswitch($i0)
+        {
+            case 0: goto label0;
+            case 1: goto label1;
+            case 2: goto label2;
+            default: goto label3;
+        };
+
+     label0:
+        return "LOCAL";
+
+     label1:
+        return "GLOBAL";
+
+     label2:
+        return "WEAK";
+
+     label3:
+        return "unknown";
+    }
+
+    public java.lang.String getType()
+    {
+        cck.elf.ELFSymbolTable$Entry this;
+        int $i0;
+
+        this := @this: cck.elf.ELFSymbolTable$Entry;
+        $i0 = this.<cck.elf.ELFSymbolTable$Entry: int st_info>;
+        $i0 = $i0 & 15;
+        tableswitch($i0)
+        {
+            case 0: goto label0;
+            case 1: goto label1;
+            case 2: goto label2;
+            case 3: goto label3;
+            case 4: goto label4;
+            default: goto label5;
+        };
+
+     label0:
+        return "n";
+
+     label1:
+        return "object";
+
+     label2:
+        return "func";
+
+     label3:
+        return "section";
+
+     label4:
+        return "file";
+
+     label5:
+        return "unknown";
+    }
+
+    public boolean isFunction()
+    {
+        cck.elf.ELFSymbolTable$Entry this;
+        int $i0;
+        boolean $z0;
+
+        this := @this: cck.elf.ELFSymbolTable$Entry;
+        $i0 = this.<cck.elf.ELFSymbolTable$Entry: int st_info>;
+        $i0 = $i0 & 15;
+        if $i0 != 2 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public boolean isObject()
+    {
+        cck.elf.ELFSymbolTable$Entry this;
+        int $i0;
+        boolean $z0;
+
+        this := @this: cck.elf.ELFSymbolTable$Entry;
+        $i0 = this.<cck.elf.ELFSymbolTable$Entry: int st_info>;
+        $i0 = $i0 & 15;
+        if $i0 != 1 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public java.lang.String getName()
+    {
+        cck.elf.ELFSymbolTable$Entry this;
+        cck.elf.ELFSymbolTable $r0;
+        cck.elf.ELFStringTable $r1;
+        int $i0;
+        java.lang.String $r2;
+
+        this := @this: cck.elf.ELFSymbolTable$Entry;
+        $r0 = this.<cck.elf.ELFSymbolTable$Entry: cck.elf.ELFSymbolTable this$0>;
+        $r1 = $r0.<cck.elf.ELFSymbolTable: cck.elf.ELFStringTable strtab>;
+        if $r1 == null goto label0;
+
+        $r0 = this.<cck.elf.ELFSymbolTable$Entry: cck.elf.ELFSymbolTable this$0>;
+        $r1 = $r0.<cck.elf.ELFSymbolTable: cck.elf.ELFStringTable strtab>;
+        $i0 = this.<cck.elf.ELFSymbolTable$Entry: int st_name>;
+        $r2 = virtualinvoke $r1.<cck.elf.ELFStringTable: java.lang.String getString(int)>($i0);
+        return $r2;
+
+     label0:
+        return "";
+    }
+}

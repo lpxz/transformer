@@ -1,0 +1,100 @@
+public class org.apache.lucene.util.cache.SimpleMapCache extends org.apache.lucene.util.cache.Cache
+{
+    java.util.Map map;
+
+    public void <init>()
+    {
+        org.apache.lucene.util.cache.SimpleMapCache this;
+        java.util.HashMap $r0;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache;
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        specialinvoke this.<org.apache.lucene.util.cache.SimpleMapCache: void <init>(java.util.Map)>($r0);
+        return;
+    }
+
+    public void <init>(java.util.Map)
+    {
+        org.apache.lucene.util.cache.SimpleMapCache this;
+        java.util.Map map;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache;
+        map := @parameter0: java.util.Map;
+        specialinvoke this.<org.apache.lucene.util.cache.Cache: void <init>()>();
+        this.<org.apache.lucene.util.cache.SimpleMapCache: java.util.Map map> = map;
+        return;
+    }
+
+    public java.lang.Object get(java.lang.Object)
+    {
+        org.apache.lucene.util.cache.SimpleMapCache this;
+        java.lang.Object key, $r1;
+        java.util.Map $r0;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache;
+        key := @parameter0: java.lang.Object;
+        $r0 = this.<org.apache.lucene.util.cache.SimpleMapCache: java.util.Map map>;
+        $r1 = interfaceinvoke $r0.<java.util.Map: java.lang.Object get(java.lang.Object)>(key);
+        return $r1;
+    }
+
+    public void put(java.lang.Object, java.lang.Object)
+    {
+        org.apache.lucene.util.cache.SimpleMapCache this;
+        java.lang.Object key, value;
+        java.util.Map $r0;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache;
+        key := @parameter0: java.lang.Object;
+        value := @parameter1: java.lang.Object;
+        $r0 = this.<org.apache.lucene.util.cache.SimpleMapCache: java.util.Map map>;
+        interfaceinvoke $r0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, value);
+        return;
+    }
+
+    public void close()
+    {
+        org.apache.lucene.util.cache.SimpleMapCache this;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache;
+        return;
+    }
+
+    public boolean containsKey(java.lang.Object)
+    {
+        org.apache.lucene.util.cache.SimpleMapCache this;
+        java.lang.Object key;
+        java.util.Map $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache;
+        key := @parameter0: java.lang.Object;
+        $r0 = this.<org.apache.lucene.util.cache.SimpleMapCache: java.util.Map map>;
+        $z0 = interfaceinvoke $r0.<java.util.Map: boolean containsKey(java.lang.Object)>(key);
+        return $z0;
+    }
+
+    public java.util.Set keySet()
+    {
+        org.apache.lucene.util.cache.SimpleMapCache this;
+        java.util.Map $r0;
+        java.util.Set $r1;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache;
+        $r0 = this.<org.apache.lucene.util.cache.SimpleMapCache: java.util.Map map>;
+        $r1 = interfaceinvoke $r0.<java.util.Map: java.util.Set keySet()>();
+        return $r1;
+    }
+
+    org.apache.lucene.util.cache.Cache getSynchronizedCache()
+    {
+        org.apache.lucene.util.cache.SimpleMapCache this;
+        org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache $r0;
+
+        this := @this: org.apache.lucene.util.cache.SimpleMapCache;
+        $r0 = new org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache;
+        specialinvoke $r0.<org.apache.lucene.util.cache.SimpleMapCache$SynchronizedSimpleMapCache: void <init>(org.apache.lucene.util.cache.SimpleMapCache)>(this);
+        return $r0;
+    }
+}

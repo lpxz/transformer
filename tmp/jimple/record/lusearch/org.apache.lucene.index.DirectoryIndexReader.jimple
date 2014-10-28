@@ -1,0 +1,1066 @@
+abstract class org.apache.lucene.index.DirectoryIndexReader extends org.apache.lucene.index.IndexReader
+{
+    protected org.apache.lucene.store.Directory directory;
+    protected boolean closeDirectory;
+    private org.apache.lucene.index.IndexDeletionPolicy deletionPolicy;
+    private org.apache.lucene.index.SegmentInfos segmentInfos;
+    private org.apache.lucene.store.Lock writeLock;
+    private boolean stale;
+    private final java.util.HashSet synced;
+    private boolean rollbackHasChanges;
+    private org.apache.lucene.index.SegmentInfos rollbackSegmentInfos;
+    protected boolean readOnly;
+    static final boolean $assertionsDisabled;
+    static java.lang.Class class$org$apache$lucene$index$DirectoryIndexReader;
+
+    void init(org.apache.lucene.store.Directory, org.apache.lucene.index.SegmentInfos, boolean, boolean) throws java.io.IOException
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        org.apache.lucene.store.Directory directory;
+        org.apache.lucene.index.SegmentInfos segmentInfos;
+        boolean closeDirectory, readOnly;
+        int i, j, $i0;
+        org.apache.lucene.index.SegmentInfo info;
+        java.util.List files;
+        java.util.HashSet $r0;
+        java.lang.Object $r1;
+        long tid_init;
+        java.lang.Thread thread_init;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        directory := @parameter0: org.apache.lucene.store.Directory;
+        segmentInfos := @parameter1: org.apache.lucene.index.SegmentInfos;
+        closeDirectory := @parameter2: boolean;
+        readOnly := @parameter3: boolean;
+        thread_init = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_init = virtualinvoke thread_init.<java.lang.Thread: long getId()>();
+        this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory> = directory;
+        this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos> = segmentInfos;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 3, tid_init, "org.apache.lucene.index.DirectoryIndexReader", 61, closeDirectory);
+        this.<org.apache.lucene.index.DirectoryIndexReader: boolean closeDirectory> = closeDirectory;
+        this.<org.apache.lucene.index.DirectoryIndexReader: boolean readOnly> = readOnly;
+        if readOnly != 0 goto label3;
+
+        if segmentInfos == null goto label3;
+
+        i = 0;
+
+     label0:
+        $i0 = virtualinvoke segmentInfos.<org.apache.lucene.index.SegmentInfos: int size()>();
+        if i >= $i0 goto label3;
+
+        info = virtualinvoke segmentInfos.<org.apache.lucene.index.SegmentInfos: org.apache.lucene.index.SegmentInfo info(int)>(i);
+        files = virtualinvoke info.<org.apache.lucene.index.SegmentInfo: java.util.List files()>();
+        j = 0;
+
+     label1:
+        $i0 = interfaceinvoke files.<java.util.List: int size()>();
+        if j >= $i0 goto label2;
+
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader: java.util.HashSet synced>;
+        $r1 = interfaceinvoke files.<java.util.List: java.lang.Object get(int)>(j);
+        virtualinvoke $r0.<java.util.HashSet: boolean add(java.lang.Object)>($r1);
+        j = j + 1;
+        goto label1;
+
+     label2:
+        i = i + 1;
+        goto label0;
+
+     label3:
+        return;
+    }
+
+    protected void <init>()
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        java.util.HashSet $r0;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        specialinvoke this.<org.apache.lucene.index.IndexReader: void <init>()>();
+        $r0 = new java.util.HashSet;
+        specialinvoke $r0.<java.util.HashSet: void <init>()>();
+        this.<org.apache.lucene.index.DirectoryIndexReader: java.util.HashSet synced> = $r0;
+        return;
+    }
+
+    void <init>(org.apache.lucene.store.Directory, org.apache.lucene.index.SegmentInfos, boolean, boolean) throws java.io.IOException
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        org.apache.lucene.store.Directory directory;
+        org.apache.lucene.index.SegmentInfos segmentInfos;
+        boolean closeDirectory, readOnly;
+        java.util.HashSet $r0;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        directory := @parameter0: org.apache.lucene.store.Directory;
+        segmentInfos := @parameter1: org.apache.lucene.index.SegmentInfos;
+        closeDirectory := @parameter2: boolean;
+        readOnly := @parameter3: boolean;
+        specialinvoke this.<org.apache.lucene.index.IndexReader: void <init>()>();
+        $r0 = new java.util.HashSet;
+        specialinvoke $r0.<java.util.HashSet: void <init>()>();
+        this.<org.apache.lucene.index.DirectoryIndexReader: java.util.HashSet synced> = $r0;
+        virtualinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void init(org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfos,boolean,boolean)>(directory, segmentInfos, closeDirectory, readOnly);
+        return;
+    }
+
+    static org.apache.lucene.index.DirectoryIndexReader open(org.apache.lucene.store.Directory, boolean, org.apache.lucene.index.IndexDeletionPolicy) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.store.Directory directory;
+        boolean closeDirectory;
+        org.apache.lucene.index.IndexDeletionPolicy deletionPolicy;
+        org.apache.lucene.index.DirectoryIndexReader $r0;
+
+        directory := @parameter0: org.apache.lucene.store.Directory;
+        closeDirectory := @parameter1: boolean;
+        deletionPolicy := @parameter2: org.apache.lucene.index.IndexDeletionPolicy;
+        $r0 = staticinvoke <org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.DirectoryIndexReader open(org.apache.lucene.store.Directory,boolean,org.apache.lucene.index.IndexDeletionPolicy,org.apache.lucene.index.IndexCommit,boolean)>(directory, closeDirectory, deletionPolicy, null, 0);
+        return $r0;
+    }
+
+    static org.apache.lucene.index.DirectoryIndexReader open(org.apache.lucene.store.Directory, boolean, org.apache.lucene.index.IndexDeletionPolicy, org.apache.lucene.index.IndexCommit, boolean) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.store.Directory directory, $r2;
+        boolean closeDirectory, readOnly;
+        org.apache.lucene.index.IndexDeletionPolicy deletionPolicy;
+        org.apache.lucene.index.IndexCommit commit;
+        org.apache.lucene.index.DirectoryIndexReader$1 $r0, finder;
+        org.apache.lucene.index.DirectoryIndexReader reader;
+        java.lang.Throwable l7, ioe, $r5, $r7, $r8;
+        java.lang.Object $r1;
+        java.io.IOException $r3, $r6;
+        java.lang.String $r4;
+
+        directory := @parameter0: org.apache.lucene.store.Directory;
+        closeDirectory := @parameter1: boolean;
+        deletionPolicy := @parameter2: org.apache.lucene.index.IndexDeletionPolicy;
+        commit := @parameter3: org.apache.lucene.index.IndexCommit;
+        readOnly := @parameter4: boolean;
+        $r0 = new org.apache.lucene.index.DirectoryIndexReader$1;
+        specialinvoke $r0.<org.apache.lucene.index.DirectoryIndexReader$1: void <init>(org.apache.lucene.store.Directory,boolean,org.apache.lucene.index.IndexDeletionPolicy,boolean)>(directory, readOnly, deletionPolicy, closeDirectory);
+        finder = $r0;
+        reader = null;
+
+     label0:
+        if commit != null goto label1;
+
+        $r1 = virtualinvoke finder.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: java.lang.Object run()>();
+        reader = (org.apache.lucene.index.DirectoryIndexReader) $r1;
+        goto label3;
+
+     label1:
+        $r2 = virtualinvoke commit.<org.apache.lucene.index.IndexCommit: org.apache.lucene.store.Directory getDirectory()>();
+        if directory == $r2 goto label2;
+
+        $r3 = new java.io.IOException;
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>("the specified commit does not match the specified Directory");
+        throw $r3;
+
+     label2:
+        $r4 = virtualinvoke commit.<org.apache.lucene.index.IndexCommit: java.lang.String getSegmentsFileName()>();
+        $r1 = virtualinvoke finder.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: java.lang.Object doBody(java.lang.String)>($r4);
+        reader = (org.apache.lucene.index.DirectoryIndexReader) $r1;
+
+     label3:
+        goto label9;
+
+     label4:
+        goto label8;
+
+     label5:
+        $r5 := @caughtexception;
+
+     label6:
+        l7 = $r5;
+        goto label14;
+
+     label7:
+        throw l7;
+
+     label8:
+        return reader;
+
+     label9:
+        if reader != null goto label13;
+
+        if closeDirectory == 0 goto label13;
+
+     label10:
+        virtualinvoke directory.<org.apache.lucene.store.Directory: void close()>();
+
+     label11:
+        goto label13;
+
+     label12:
+        $r7 := @caughtexception;
+        ioe = $r7;
+
+     label13:
+        goto label4;
+
+     label14:
+        if reader != null goto label18;
+
+        if closeDirectory == 0 goto label18;
+
+     label15:
+        virtualinvoke directory.<org.apache.lucene.store.Directory: void close()>();
+
+     label16:
+        goto label18;
+
+     label17:
+        $r8 := @caughtexception;
+        ioe = $r8;
+
+     label18:
+        goto label7;
+
+        catch java.lang.Throwable from label0 to label4 with label5;
+        catch java.lang.Throwable from label6 to label7 with label5;
+        catch java.lang.Throwable from label10 to label11 with label12;
+        catch java.lang.Throwable from label15 to label16 with label17;
+    }
+
+    public final org.apache.lucene.index.IndexReader reopen() throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.DirectoryIndexReader this, reader;
+        org.apache.lucene.index.DirectoryIndexReader$2 finder, $r0;
+        boolean myCloseDirectory, $z0;
+        java.lang.Throwable l4, $r3, throwableLocal12;
+        org.apache.lucene.store.Directory $r1, $r4, $r6;
+        java.lang.Object $r2, localthislockreopen;
+        java.lang.AssertionError $r5;
+        org.apache.lucene.store.FSDirectory $r7;
+        java.io.File $r8;
+        long tid_reopen;
+        java.lang.Thread thread_reopen;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        thread_reopen = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_reopen = virtualinvoke thread_reopen.<java.lang.Thread: long getId()>();
+        localthislockreopen = this;
+
+     label0:
+        entermonitor localthislockreopen;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockreopen, 0, tid_reopen);
+        virtualinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void ensureOpen()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 5, tid_reopen, "org.apache.lucene.index.DirectoryIndexReader", 145, $z0);
+        $z0 = this.<org.apache.lucene.index.DirectoryIndexReader: boolean hasChanges>;
+        if $z0 != 0 goto label1;
+
+        $z0 = virtualinvoke this.<org.apache.lucene.index.DirectoryIndexReader: boolean isCurrent()>();
+        if $z0 == 0 goto label3;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockreopen, 0, tid_reopen);
+        exitmonitor localthislockreopen;
+        goto label2;
+
+     label2:
+        return this;
+
+     label3:
+        $r0 = new org.apache.lucene.index.DirectoryIndexReader$2;
+        $r1 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        specialinvoke $r0.<org.apache.lucene.index.DirectoryIndexReader$2: void <init>(org.apache.lucene.index.DirectoryIndexReader,org.apache.lucene.store.Directory)>(this, $r1);
+        finder = $r0;
+        reader = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 3, tid_reopen, "org.apache.lucene.index.DirectoryIndexReader", 175, myCloseDirectory);
+        myCloseDirectory = this.<org.apache.lucene.index.DirectoryIndexReader: boolean closeDirectory>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 3, tid_reopen, "org.apache.lucene.index.DirectoryIndexReader", 176, 0);
+        this.<org.apache.lucene.index.DirectoryIndexReader: boolean closeDirectory> = 0;
+
+     label4:
+        $r2 = virtualinvoke finder.<org.apache.lucene.index.SegmentInfos$FindSegmentsFile: java.lang.Object run()>();
+        reader = (org.apache.lucene.index.DirectoryIndexReader) $r2;
+        goto label11;
+
+     label5:
+        goto label9;
+
+     label6:
+        $r3 := @caughtexception;
+
+     label7:
+        l4 = $r3;
+        goto label14;
+
+     label8:
+        throw l4;
+
+     label9:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockreopen, 0, tid_reopen);
+        exitmonitor localthislockreopen;
+        goto label10;
+
+     label10:
+        return reader;
+
+     label11:
+        if myCloseDirectory == 0 goto label13;
+
+        $z0 = <org.apache.lucene.index.DirectoryIndexReader: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label12;
+
+        $r4 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        $z0 = $r4 instanceof org.apache.lucene.store.FSDirectory;
+        if $z0 != 0 goto label12;
+
+        $r5 = new java.lang.AssertionError;
+        specialinvoke $r5.<java.lang.AssertionError: void <init>()>();
+        throw $r5;
+
+     label12:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 3, tid_reopen, "org.apache.lucene.index.DirectoryIndexReader", 194, 1);
+        this.<org.apache.lucene.index.DirectoryIndexReader: boolean closeDirectory> = 1;
+        if reader == null goto label13;
+
+        if reader == this goto label13;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(reader, 3, tid_reopen, "org.apache.lucene.index.DirectoryIndexReader", 194, 1);
+        reader.<org.apache.lucene.index.DirectoryIndexReader: boolean closeDirectory> = 1;
+        $r6 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        $r7 = (org.apache.lucene.store.FSDirectory) $r6;
+        $r8 = virtualinvoke $r7.<org.apache.lucene.store.FSDirectory: java.io.File getFile()>();
+        $r7 = staticinvoke <org.apache.lucene.store.FSDirectory: org.apache.lucene.store.FSDirectory getDirectory(java.io.File)>($r8);
+        reader.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory> = $r7;
+
+     label13:
+        goto label5;
+
+     label14:
+        if myCloseDirectory == 0 goto label16;
+
+        $z0 = <org.apache.lucene.index.DirectoryIndexReader: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label15;
+
+        $r4 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        $z0 = $r4 instanceof org.apache.lucene.store.FSDirectory;
+        if $z0 != 0 goto label15;
+
+        $r5 = new java.lang.AssertionError;
+        specialinvoke $r5.<java.lang.AssertionError: void <init>()>();
+        throw $r5;
+
+     label15:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 3, tid_reopen, "org.apache.lucene.index.DirectoryIndexReader", 194, 1);
+        this.<org.apache.lucene.index.DirectoryIndexReader: boolean closeDirectory> = 1;
+        if reader == null goto label16;
+
+        if reader == this goto label16;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(reader, 3, tid_reopen, "org.apache.lucene.index.DirectoryIndexReader", 194, 1);
+        reader.<org.apache.lucene.index.DirectoryIndexReader: boolean closeDirectory> = 1;
+        $r6 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        $r7 = (org.apache.lucene.store.FSDirectory) $r6;
+        $r8 = virtualinvoke $r7.<org.apache.lucene.store.FSDirectory: java.io.File getFile()>();
+        $r7 = staticinvoke <org.apache.lucene.store.FSDirectory: org.apache.lucene.store.FSDirectory getDirectory(java.io.File)>($r8);
+        reader.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory> = $r7;
+
+     label16:
+        goto label8;
+
+     label17:
+        throwableLocal12 := @caughtexception;
+
+     label18:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockreopen, 0, tid_reopen);
+        exitmonitor localthislockreopen;
+
+     label19:
+        throw throwableLocal12;
+
+        catch java.lang.Throwable from label0 to label16 with label17;
+        catch java.lang.Throwable from label18 to label19 with label17;
+        catch java.lang.Throwable from label4 to label5 with label6;
+        catch java.lang.Throwable from label7 to label8 with label6;
+    }
+
+    protected abstract org.apache.lucene.index.DirectoryIndexReader doReopen(org.apache.lucene.index.SegmentInfos) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException;
+
+    public void setDeletionPolicy(org.apache.lucene.index.IndexDeletionPolicy)
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        org.apache.lucene.index.IndexDeletionPolicy deletionPolicy;
+        long tid_setDeletionPolicy;
+        java.lang.Thread thread_setDeletionPolicy;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        deletionPolicy := @parameter0: org.apache.lucene.index.IndexDeletionPolicy;
+        thread_setDeletionPolicy = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setDeletionPolicy = virtualinvoke thread_setDeletionPolicy.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 6, tid_setDeletionPolicy, "org.apache.lucene.index.DirectoryIndexReader", 203, deletionPolicy);
+        this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.IndexDeletionPolicy deletionPolicy> = deletionPolicy;
+        return;
+    }
+
+    public org.apache.lucene.store.Directory directory()
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        org.apache.lucene.store.Directory $r0;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        virtualinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        return $r0;
+    }
+
+    public long getVersion()
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        org.apache.lucene.index.SegmentInfos $r0;
+        long $l0;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        virtualinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        $l0 = virtualinvoke $r0.<org.apache.lucene.index.SegmentInfos: long getVersion()>();
+        return $l0;
+    }
+
+    public boolean isCurrent() throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        org.apache.lucene.store.Directory $r0;
+        long $l0, $l1;
+        org.apache.lucene.index.SegmentInfos $r1;
+        byte $b2;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        virtualinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        $l0 = staticinvoke <org.apache.lucene.index.SegmentInfos: long readCurrentVersion(org.apache.lucene.store.Directory)>($r0);
+        $r1 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        $l1 = virtualinvoke $r1.<org.apache.lucene.index.SegmentInfos: long getVersion()>();
+        $b2 = $l0 cmp $l1;
+        if $b2 != 0 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public boolean isOptimized()
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        org.apache.lucene.index.SegmentInfos $r0;
+        int $i0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        virtualinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.index.SegmentInfos: int size()>();
+        if $i0 != 1 goto label0;
+
+        $z0 = virtualinvoke this.<org.apache.lucene.index.DirectoryIndexReader: boolean hasDeletions()>();
+        if $z0 != 0 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    protected void doClose() throws java.io.IOException
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        boolean $z0;
+        org.apache.lucene.store.Directory $r0;
+        long tid_doClose;
+        java.lang.Thread thread_doClose;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        thread_doClose = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_doClose = virtualinvoke thread_doClose.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 3, tid_doClose, "org.apache.lucene.index.DirectoryIndexReader", 250, $z0);
+        $z0 = this.<org.apache.lucene.index.DirectoryIndexReader: boolean closeDirectory>;
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        virtualinvoke $r0.<org.apache.lucene.store.Directory: void close()>();
+
+     label0:
+        return;
+    }
+
+    protected void doCommit() throws java.io.IOException
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        org.apache.lucene.index.IndexFileDeleter deleter, tmp$555642138;
+        boolean success, $z0;
+        int i, j, $i0;
+        org.apache.lucene.index.SegmentInfo info;
+        java.util.List files;
+        java.lang.String fileName;
+        java.lang.Throwable l8, $r12;
+        org.apache.lucene.index.SegmentInfos $r1, $r5, $r6;
+        org.apache.lucene.store.Directory $r3, $r9, $r11;
+        org.apache.lucene.index.IndexDeletionPolicy $r4;
+        java.lang.Object $r7;
+        java.util.HashSet $r8;
+        org.apache.lucene.store.Lock $r13;
+        org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy tmp$555642073;
+        java.lang.AssertionError tmp$555642201;
+        long tid_doCommit;
+        java.lang.Thread thread_doCommit;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        thread_doCommit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_doCommit = virtualinvoke thread_doCommit.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 5, tid_doCommit, "org.apache.lucene.index.DirectoryIndexReader", 264, $z0);
+        $z0 = this.<org.apache.lucene.index.DirectoryIndexReader: boolean hasChanges>;
+        if $z0 == 0 goto label16;
+
+        $r1 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        if $r1 == null goto label15;
+
+        tmp$555642138 = new org.apache.lucene.index.IndexFileDeleter;
+        $r3 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 6, tid_doCommit, "org.apache.lucene.index.DirectoryIndexReader", 269, $r4);
+        $r4 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.IndexDeletionPolicy deletionPolicy>;
+        if $r4 != null goto label0;
+
+        tmp$555642073 = new org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy;
+        $r4 = tmp$555642073;
+        specialinvoke tmp$555642073.<org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy: void <init>()>();
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 6, tid_doCommit, "org.apache.lucene.index.DirectoryIndexReader", 269, $r4);
+        $r4 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.IndexDeletionPolicy deletionPolicy>;
+
+     label1:
+        $r5 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        specialinvoke tmp$555642138.<org.apache.lucene.index.IndexFileDeleter: void <init>(org.apache.lucene.store.Directory,org.apache.lucene.index.IndexDeletionPolicy,org.apache.lucene.index.SegmentInfos,java.io.PrintStream,org.apache.lucene.index.DocumentsWriter)>($r3, $r4, $r5, null, null);
+        deleter = tmp$555642138;
+        virtualinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void startCommit()>();
+        success = 0;
+
+     label2:
+        virtualinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void commitChanges()>();
+        i = 0;
+
+     label3:
+        $r6 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        $i0 = virtualinvoke $r6.<org.apache.lucene.index.SegmentInfos: int size()>();
+        if i >= $i0 goto label8;
+
+        $r1 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        info = virtualinvoke $r1.<org.apache.lucene.index.SegmentInfos: org.apache.lucene.index.SegmentInfo info(int)>(i);
+        files = virtualinvoke info.<org.apache.lucene.index.SegmentInfo: java.util.List files()>();
+        j = 0;
+
+     label4:
+        $i0 = interfaceinvoke files.<java.util.List: int size()>();
+        if j >= $i0 goto label7;
+
+        $r7 = interfaceinvoke files.<java.util.List: java.lang.Object get(int)>(j);
+        fileName = (java.lang.String) $r7;
+        $r8 = this.<org.apache.lucene.index.DirectoryIndexReader: java.util.HashSet synced>;
+        $z0 = virtualinvoke $r8.<java.util.HashSet: boolean contains(java.lang.Object)>(fileName);
+        if $z0 != 0 goto label6;
+
+        $z0 = <org.apache.lucene.index.DirectoryIndexReader: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label5;
+
+        $r9 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        $z0 = virtualinvoke $r9.<org.apache.lucene.store.Directory: boolean fileExists(java.lang.String)>(fileName);
+        if $z0 != 0 goto label5;
+
+        tmp$555642201 = new java.lang.AssertionError;
+        specialinvoke tmp$555642201.<java.lang.AssertionError: void <init>()>();
+        throw tmp$555642201;
+
+     label5:
+        $r9 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        virtualinvoke $r9.<org.apache.lucene.store.Directory: void sync(java.lang.String)>(fileName);
+        $r8 = this.<org.apache.lucene.index.DirectoryIndexReader: java.util.HashSet synced>;
+        virtualinvoke $r8.<java.util.HashSet: boolean add(java.lang.Object)>(fileName);
+
+     label6:
+        j = j + 1;
+        goto label4;
+
+     label7:
+        i = i + 1;
+        goto label3;
+
+     label8:
+        $r1 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        $r11 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        virtualinvoke $r1.<org.apache.lucene.index.SegmentInfos: void commit(org.apache.lucene.store.Directory)>($r11);
+        success = 1;
+        goto label17;
+
+     label9:
+        goto label13;
+
+     label10:
+        $r12 := @caughtexception;
+
+     label11:
+        l8 = $r12;
+        goto label19;
+
+     label12:
+        throw l8;
+
+     label13:
+        $r6 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        virtualinvoke deleter.<org.apache.lucene.index.IndexFileDeleter: void checkpoint(org.apache.lucene.index.SegmentInfos,boolean)>($r6, 1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 7, tid_doCommit, "org.apache.lucene.index.DirectoryIndexReader", 319, $r13);
+        $r13 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Lock writeLock>;
+        if $r13 == null goto label14;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 7, tid_doCommit, "org.apache.lucene.index.DirectoryIndexReader", 320, $r13);
+        $r13 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Lock writeLock>;
+        virtualinvoke $r13.<org.apache.lucene.store.Lock: void release()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 7, tid_doCommit, "org.apache.lucene.index.DirectoryIndexReader", 321, null);
+        this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Lock writeLock> = null;
+
+     label14:
+        goto label16;
+
+     label15:
+        virtualinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void commitChanges()>();
+
+     label16:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 5, tid_doCommit, "org.apache.lucene.index.DirectoryIndexReader", 327, 0);
+        this.<org.apache.lucene.index.DirectoryIndexReader: boolean hasChanges> = 0;
+        return;
+
+     label17:
+        if success != 0 goto label18;
+
+        virtualinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void rollbackCommit()>();
+        virtualinvoke deleter.<org.apache.lucene.index.IndexFileDeleter: void refresh()>();
+
+     label18:
+        goto label9;
+
+     label19:
+        if success != 0 goto label20;
+
+        virtualinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void rollbackCommit()>();
+        virtualinvoke deleter.<org.apache.lucene.index.IndexFileDeleter: void refresh()>();
+
+     label20:
+        goto label12;
+
+        catch java.lang.Throwable from label2 to label9 with label10;
+        catch java.lang.Throwable from label11 to label12 with label10;
+    }
+
+    protected abstract void commitChanges() throws java.io.IOException;
+
+    protected void acquireWriteLock() throws org.apache.lucene.index.StaleReaderException, org.apache.lucene.index.CorruptIndexException, org.apache.lucene.store.LockObtainFailedException, java.io.IOException
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        org.apache.lucene.store.Lock writeLock, $r2;
+        org.apache.lucene.index.SegmentInfos $r0, $r7;
+        boolean $z0;
+        org.apache.lucene.index.StaleReaderException $r1;
+        org.apache.lucene.store.Directory $r3;
+        long $l0, $l1, $l2, tid_acquireWriteLock;
+        org.apache.lucene.store.LockObtainFailedException $r4;
+        java.lang.StringBuffer $r5;
+        java.lang.String $r6;
+        byte $b3;
+        java.lang.Thread thread_acquireWriteLock;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        thread_acquireWriteLock = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_acquireWriteLock = virtualinvoke thread_acquireWriteLock.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        if $r0 == null goto label2;
+
+        virtualinvoke this.<org.apache.lucene.index.DirectoryIndexReader: void ensureOpen()>();
+        $z0 = this.<org.apache.lucene.index.DirectoryIndexReader: boolean stale>;
+        if $z0 == 0 goto label0;
+
+        $r1 = new org.apache.lucene.index.StaleReaderException;
+        specialinvoke $r1.<org.apache.lucene.index.StaleReaderException: void <init>(java.lang.String)>("IndexReader out of date and no longer valid for delete, undelete, or setNorm operations");
+        throw $r1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 7, tid_acquireWriteLock, "org.apache.lucene.index.DirectoryIndexReader", 350, $r2);
+        $r2 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Lock writeLock>;
+        if $r2 != null goto label2;
+
+        $r3 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        writeLock = virtualinvoke $r3.<org.apache.lucene.store.Directory: org.apache.lucene.store.Lock makeLock(java.lang.String)>("write.lock");
+        $l0 = <org.apache.lucene.index.IndexWriter: long WRITE_LOCK_TIMEOUT>;
+        $z0 = virtualinvoke writeLock.<org.apache.lucene.store.Lock: boolean obtain(long)>($l0);
+        if $z0 != 0 goto label1;
+
+        $r4 = new org.apache.lucene.store.LockObtainFailedException;
+        $r5 = new java.lang.StringBuffer;
+        specialinvoke $r5.<java.lang.StringBuffer: void <init>()>();
+        $r5 = virtualinvoke $r5.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Index locked for write: ");
+        $r5 = virtualinvoke $r5.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(writeLock);
+        $r6 = virtualinvoke $r5.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r4.<org.apache.lucene.store.LockObtainFailedException: void <init>(java.lang.String)>($r6);
+        throw $r4;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 7, tid_acquireWriteLock, "org.apache.lucene.index.DirectoryIndexReader", 354, writeLock);
+        this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Lock writeLock> = writeLock;
+        $r3 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        $l1 = staticinvoke <org.apache.lucene.index.SegmentInfos: long readCurrentVersion(org.apache.lucene.store.Directory)>($r3);
+        $r7 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        $l2 = virtualinvoke $r7.<org.apache.lucene.index.SegmentInfos: long getVersion()>();
+        $b3 = $l1 cmp $l2;
+        if $b3 <= 0 goto label2;
+
+        this.<org.apache.lucene.index.DirectoryIndexReader: boolean stale> = 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 7, tid_acquireWriteLock, "org.apache.lucene.index.DirectoryIndexReader", 360, $r2);
+        $r2 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Lock writeLock>;
+        virtualinvoke $r2.<org.apache.lucene.store.Lock: void release()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 7, tid_acquireWriteLock, "org.apache.lucene.index.DirectoryIndexReader", 361, null);
+        this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Lock writeLock> = null;
+        $r1 = new org.apache.lucene.index.StaleReaderException;
+        specialinvoke $r1.<org.apache.lucene.index.StaleReaderException: void <init>(java.lang.String)>("IndexReader out of date and no longer valid for delete, undelete, or setNorm operations");
+        throw $r1;
+
+     label2:
+        return;
+    }
+
+    void startCommit()
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        org.apache.lucene.index.SegmentInfos $r0, $r1;
+        java.lang.Object $r2;
+        boolean $z0;
+        long tid_startCommit;
+        java.lang.Thread thread_startCommit;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        thread_startCommit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_startCommit = virtualinvoke thread_startCommit.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        if $r0 == null goto label0;
+
+        $r1 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        $r2 = virtualinvoke $r1.<org.apache.lucene.index.SegmentInfos: java.lang.Object clone()>();
+        $r1 = (org.apache.lucene.index.SegmentInfos) $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 8, tid_startCommit, "org.apache.lucene.index.DirectoryIndexReader", 374, $r1);
+        this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos rollbackSegmentInfos> = $r1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 5, tid_startCommit, "org.apache.lucene.index.DirectoryIndexReader", 376, $z0);
+        $z0 = this.<org.apache.lucene.index.DirectoryIndexReader: boolean hasChanges>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 9, tid_startCommit, "org.apache.lucene.index.DirectoryIndexReader", 376, $z0);
+        this.<org.apache.lucene.index.DirectoryIndexReader: boolean rollbackHasChanges> = $z0;
+        return;
+    }
+
+    void rollbackCommit()
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        int i, $i0;
+        org.apache.lucene.index.SegmentInfos $r0, $r1;
+        org.apache.lucene.index.SegmentInfo $r2, $r3;
+        boolean $z0;
+        long tid_rollbackCommit;
+        java.lang.Thread thread_rollbackCommit;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        thread_rollbackCommit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_rollbackCommit = virtualinvoke thread_rollbackCommit.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        if $r0 == null goto label2;
+
+        i = 0;
+
+     label0:
+        $r1 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        $i0 = virtualinvoke $r1.<org.apache.lucene.index.SegmentInfos: int size()>();
+        if i >= $i0 goto label1;
+
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        $r2 = virtualinvoke $r0.<org.apache.lucene.index.SegmentInfos: org.apache.lucene.index.SegmentInfo info(int)>(i);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 8, tid_rollbackCommit, "org.apache.lucene.index.DirectoryIndexReader", 391, $r1);
+        $r1 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos rollbackSegmentInfos>;
+        $r3 = virtualinvoke $r1.<org.apache.lucene.index.SegmentInfos: org.apache.lucene.index.SegmentInfo info(int)>(i);
+        virtualinvoke $r2.<org.apache.lucene.index.SegmentInfo: void reset(org.apache.lucene.index.SegmentInfo)>($r3);
+        i = i + 1;
+        goto label0;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 8, tid_rollbackCommit, "org.apache.lucene.index.DirectoryIndexReader", 393, null);
+        this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos rollbackSegmentInfos> = null;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 9, tid_rollbackCommit, "org.apache.lucene.index.DirectoryIndexReader", 396, $z0);
+        $z0 = this.<org.apache.lucene.index.DirectoryIndexReader: boolean rollbackHasChanges>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 5, tid_rollbackCommit, "org.apache.lucene.index.DirectoryIndexReader", 396, $z0);
+        this.<org.apache.lucene.index.DirectoryIndexReader: boolean hasChanges> = $z0;
+        return;
+    }
+
+    protected void finalize() throws java.lang.Throwable
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        java.lang.Throwable l1, $r1;
+        org.apache.lucene.store.Lock $r0;
+        long tid_finalize;
+        java.lang.Thread thread_finalize;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        thread_finalize = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_finalize = virtualinvoke thread_finalize.<java.lang.Thread: long getId()>();
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 7, tid_finalize, "org.apache.lucene.index.DirectoryIndexReader", 402, $r0);
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Lock writeLock>;
+        if $r0 == null goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 7, tid_finalize, "org.apache.lucene.index.DirectoryIndexReader", 403, $r0);
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Lock writeLock>;
+        virtualinvoke $r0.<org.apache.lucene.store.Lock: void release()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 7, tid_finalize, "org.apache.lucene.index.DirectoryIndexReader", 404, null);
+        this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Lock writeLock> = null;
+
+     label1:
+        goto label7;
+
+     label2:
+        goto label6;
+
+     label3:
+        $r1 := @caughtexception;
+
+     label4:
+        l1 = $r1;
+        goto label8;
+
+     label5:
+        throw l1;
+
+     label6:
+        return;
+
+     label7:
+        specialinvoke this.<java.lang.Object: void finalize()>();
+        goto label2;
+
+     label8:
+        specialinvoke this.<java.lang.Object: void finalize()>();
+        goto label5;
+
+        catch java.lang.Throwable from label0 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    public org.apache.lucene.index.IndexCommit getIndexCommit() throws java.io.IOException
+    {
+        org.apache.lucene.index.DirectoryIndexReader this;
+        org.apache.lucene.index.DirectoryIndexReader$ReaderCommit $r0;
+        org.apache.lucene.index.SegmentInfos $r1;
+        org.apache.lucene.store.Directory $r2;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader;
+        $r0 = new org.apache.lucene.index.DirectoryIndexReader$ReaderCommit;
+        $r1 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.SegmentInfos segmentInfos>;
+        $r2 = this.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.store.Directory directory>;
+        specialinvoke $r0.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: void <init>(org.apache.lucene.index.SegmentInfos,org.apache.lucene.store.Directory)>($r1, $r2);
+        return $r0;
+    }
+
+    public static java.util.Collection listCommits(org.apache.lucene.store.Directory) throws java.io.IOException
+    {
+        org.apache.lucene.store.Directory dir;
+        java.lang.String[] files;
+        java.lang.StringBuffer $r0;
+        java.util.ArrayList commits, $r3;
+        org.apache.lucene.index.SegmentInfos latest, sis, $r4;
+        long currentGen, $l1, tid_listCommits;
+        int i, $i0;
+        java.lang.String fileName, $r2;
+        java.io.FileNotFoundException fnfe, $r6;
+        java.io.IOException $r1;
+        org.apache.lucene.index.DirectoryIndexReader$ReaderCommit $r5;
+        boolean $z0;
+        byte $b2;
+        java.lang.Thread thread_listCommits;
+
+        dir := @parameter0: org.apache.lucene.store.Directory;
+        thread_listCommits = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_listCommits = virtualinvoke thread_listCommits.<java.lang.Thread: long getId()>();
+        files = virtualinvoke dir.<org.apache.lucene.store.Directory: java.lang.String[] list()>();
+        if files != null goto label0;
+
+        $r1 = new java.io.IOException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cannot read directory ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(dir);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(": list() returned null");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>($r2);
+        throw $r1;
+
+     label0:
+        $r3 = new java.util.ArrayList;
+        specialinvoke $r3.<java.util.ArrayList: void <init>()>();
+        commits = $r3;
+        $r4 = new org.apache.lucene.index.SegmentInfos;
+        specialinvoke $r4.<org.apache.lucene.index.SegmentInfos: void <init>()>();
+        latest = $r4;
+        virtualinvoke latest.<org.apache.lucene.index.SegmentInfos: void read(org.apache.lucene.store.Directory)>(dir);
+        currentGen = virtualinvoke latest.<org.apache.lucene.index.SegmentInfos: long getGeneration()>();
+        $r5 = new org.apache.lucene.index.DirectoryIndexReader$ReaderCommit;
+        specialinvoke $r5.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: void <init>(org.apache.lucene.index.SegmentInfos,org.apache.lucene.store.Directory)>(latest, dir);
+        interfaceinvoke commits.<java.util.Collection: boolean add(java.lang.Object)>($r5);
+        i = 0;
+
+     label1:
+        $i0 = lengthof files;
+        if i >= $i0 goto label7;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(files, 10, tid_listCommits, "org.apache.lucene.index.DirectoryIndexReader", 486, i, fileName);
+        fileName = files[i];
+        $z0 = virtualinvoke fileName.<java.lang.String: boolean startsWith(java.lang.String)>("segments");
+        if $z0 == 0 goto label6;
+
+        $z0 = virtualinvoke fileName.<java.lang.String: boolean equals(java.lang.Object)>("segments.gen");
+        if $z0 != 0 goto label6;
+
+        $l1 = staticinvoke <org.apache.lucene.index.SegmentInfos: long generationFromSegmentsFileName(java.lang.String)>(fileName);
+        $b2 = $l1 cmp currentGen;
+        if $b2 >= 0 goto label6;
+
+        $r4 = new org.apache.lucene.index.SegmentInfos;
+        specialinvoke $r4.<org.apache.lucene.index.SegmentInfos: void <init>()>();
+        sis = $r4;
+
+     label2:
+        virtualinvoke sis.<org.apache.lucene.index.SegmentInfos: void read(org.apache.lucene.store.Directory,java.lang.String)>(dir, fileName);
+
+     label3:
+        goto label5;
+
+     label4:
+        $r6 := @caughtexception;
+        fnfe = $r6;
+        sis = null;
+
+     label5:
+        if sis == null goto label6;
+
+        $r5 = new org.apache.lucene.index.DirectoryIndexReader$ReaderCommit;
+        specialinvoke $r5.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: void <init>(org.apache.lucene.index.SegmentInfos,org.apache.lucene.store.Directory)>(sis, dir);
+        interfaceinvoke commits.<java.util.Collection: boolean add(java.lang.Object)>($r5);
+
+     label6:
+        i = i + 1;
+        goto label1;
+
+     label7:
+        return commits;
+
+        catch java.io.FileNotFoundException from label2 to label3 with label4;
+    }
+
+    static org.apache.lucene.index.IndexDeletionPolicy access$002(org.apache.lucene.index.DirectoryIndexReader, org.apache.lucene.index.IndexDeletionPolicy)
+    {
+        org.apache.lucene.index.DirectoryIndexReader x0;
+        org.apache.lucene.index.IndexDeletionPolicy x1;
+        long tid_access$002;
+        java.lang.Thread thread_access$002;
+
+        x0 := @parameter0: org.apache.lucene.index.DirectoryIndexReader;
+        x1 := @parameter1: org.apache.lucene.index.IndexDeletionPolicy;
+        thread_access$002 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_access$002 = virtualinvoke thread_access$002.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(x0, 6, tid_access$002, "org.apache.lucene.index.DirectoryIndexReader", 39, x1);
+        x0.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.IndexDeletionPolicy deletionPolicy> = x1;
+        return x1;
+    }
+
+    static org.apache.lucene.index.IndexDeletionPolicy access$000(org.apache.lucene.index.DirectoryIndexReader)
+    {
+        org.apache.lucene.index.DirectoryIndexReader x0;
+        org.apache.lucene.index.IndexDeletionPolicy $r0;
+        long tid_access$000;
+        java.lang.Thread thread_access$000;
+
+        x0 := @parameter0: org.apache.lucene.index.DirectoryIndexReader;
+        thread_access$000 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_access$000 = virtualinvoke thread_access$000.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(x0, 6, tid_access$000, "org.apache.lucene.index.DirectoryIndexReader", 39, $r0);
+        $r0 = x0.<org.apache.lucene.index.DirectoryIndexReader: org.apache.lucene.index.IndexDeletionPolicy deletionPolicy>;
+        return $r0;
+    }
+
+    static java.lang.Class class$(java.lang.String)
+    {
+        java.lang.String x0;
+        java.lang.ClassNotFoundException x1, $r1;
+        java.lang.Class $r0;
+        java.lang.NoClassDefFoundError $r2;
+        java.lang.Throwable $r3;
+
+        x0 := @parameter0: java.lang.String;
+
+     label0:
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(x0);
+
+     label1:
+        return $r0;
+
+     label2:
+        $r1 := @caughtexception;
+        x1 = $r1;
+        $r2 = new java.lang.NoClassDefFoundError;
+        specialinvoke $r2.<java.lang.NoClassDefFoundError: void <init>()>();
+        $r3 = virtualinvoke $r2.<java.lang.NoClassDefFoundError: java.lang.Throwable initCause(java.lang.Throwable)>(x1);
+        throw $r3;
+
+        catch java.lang.ClassNotFoundException from label0 to label1 with label2;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        boolean $z0;
+
+        $r0 = <org.apache.lucene.index.DirectoryIndexReader: java.lang.Class class$org$apache$lucene$index$DirectoryIndexReader>;
+        if $r0 != null goto label0;
+
+        $r0 = staticinvoke <org.apache.lucene.index.DirectoryIndexReader: java.lang.Class class$(java.lang.String)>("org.apache.lucene.index.DirectoryIndexReader");
+        <org.apache.lucene.index.DirectoryIndexReader: java.lang.Class class$org$apache$lucene$index$DirectoryIndexReader> = $r0;
+        goto label1;
+
+     label0:
+        $r0 = <org.apache.lucene.index.DirectoryIndexReader: java.lang.Class class$org$apache$lucene$index$DirectoryIndexReader>;
+
+     label1:
+        $z0 = virtualinvoke $r0.<java.lang.Class: boolean desiredAssertionStatus()>();
+        if $z0 != 0 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        <org.apache.lucene.index.DirectoryIndexReader: boolean $assertionsDisabled> = $z0;
+        return;
+    }
+}

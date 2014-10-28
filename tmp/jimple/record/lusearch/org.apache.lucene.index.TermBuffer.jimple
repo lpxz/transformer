@@ -1,0 +1,398 @@
+final class org.apache.lucene.index.TermBuffer extends java.lang.Object implements java.lang.Cloneable
+{
+    private java.lang.String field;
+    private org.apache.lucene.index.Term term;
+    private boolean preUTF8Strings;
+    private boolean dirty;
+    private org.apache.lucene.util.UnicodeUtil$UTF16Result text;
+    private org.apache.lucene.util.UnicodeUtil$UTF8Result bytes;
+
+    void <init>()
+    {
+        org.apache.lucene.index.TermBuffer this;
+        org.apache.lucene.util.UnicodeUtil$UTF16Result $r0;
+        org.apache.lucene.util.UnicodeUtil$UTF8Result $r1;
+
+        this := @this: org.apache.lucene.index.TermBuffer;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new org.apache.lucene.util.UnicodeUtil$UTF16Result;
+        specialinvoke $r0.<org.apache.lucene.util.UnicodeUtil$UTF16Result: void <init>()>();
+        this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text> = $r0;
+        $r1 = new org.apache.lucene.util.UnicodeUtil$UTF8Result;
+        specialinvoke $r1.<org.apache.lucene.util.UnicodeUtil$UTF8Result: void <init>()>();
+        this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF8Result bytes> = $r1;
+        return;
+    }
+
+    public final int compareTo(org.apache.lucene.index.TermBuffer)
+    {
+        org.apache.lucene.index.TermBuffer this, other;
+        java.lang.String $r0, $r1;
+        org.apache.lucene.util.UnicodeUtil$UTF16Result $r2, $r4, $r5, $r7;
+        char[] $r3, $r6;
+        int $i0, $i1, $i2;
+        long tid_compareTo;
+        java.lang.Thread thread_compareTo;
+
+        this := @this: org.apache.lucene.index.TermBuffer;
+        other := @parameter0: org.apache.lucene.index.TermBuffer;
+        thread_compareTo = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_compareTo = virtualinvoke thread_compareTo.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.index.TermBuffer: java.lang.String field>;
+        $r1 = other.<org.apache.lucene.index.TermBuffer: java.lang.String field>;
+        if $r0 != $r1 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_compareTo, "org.apache.lucene.index.TermBuffer", 36, $r2);
+        $r2 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r2, 58, tid_compareTo, "org.apache.lucene.index.TermBuffer", 36, $r3);
+        $r3 = $r2.<org.apache.lucene.util.UnicodeUtil$UTF16Result: char[] result>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_compareTo, "org.apache.lucene.index.TermBuffer", 36, $r4);
+        $r4 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r4, 59, tid_compareTo, "org.apache.lucene.index.TermBuffer", 36, $i0);
+        $i0 = $r4.<org.apache.lucene.util.UnicodeUtil$UTF16Result: int length>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(other, 57, tid_compareTo, "org.apache.lucene.index.TermBuffer", 36, $r5);
+        $r5 = other.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r5, 58, tid_compareTo, "org.apache.lucene.index.TermBuffer", 36, $r6);
+        $r6 = $r5.<org.apache.lucene.util.UnicodeUtil$UTF16Result: char[] result>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(other, 57, tid_compareTo, "org.apache.lucene.index.TermBuffer", 36, $r7);
+        $r7 = other.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r7, 59, tid_compareTo, "org.apache.lucene.index.TermBuffer", 36, $i1);
+        $i1 = $r7.<org.apache.lucene.util.UnicodeUtil$UTF16Result: int length>;
+        $i2 = staticinvoke <org.apache.lucene.index.TermBuffer: int compareChars(char[],int,char[],int)>($r3, $i0, $r6, $i1);
+        return $i2;
+
+     label0:
+        $r0 = this.<org.apache.lucene.index.TermBuffer: java.lang.String field>;
+        $r1 = other.<org.apache.lucene.index.TermBuffer: java.lang.String field>;
+        $i2 = virtualinvoke $r0.<java.lang.String: int compareTo(java.lang.String)>($r1);
+        return $i2;
+    }
+
+    private static final int compareChars(char[], int, char[], int)
+    {
+        char[] chars1, chars2;
+        int len1, len2, end, k, $i0;
+        char c1, c2;
+        long tid_compareChars;
+        java.lang.Thread thread_compareChars;
+
+        chars1 := @parameter0: char[];
+        len1 := @parameter1: int;
+        chars2 := @parameter2: char[];
+        len2 := @parameter3: int;
+        thread_compareChars = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_compareChars = virtualinvoke thread_compareChars.<java.lang.Thread: long getId()>();
+        if len1 >= len2 goto label0;
+
+        $i0 = len1;
+        goto label1;
+
+     label0:
+        $i0 = len2;
+
+     label1:
+        end = $i0;
+        k = 0;
+
+     label2:
+        if k >= end goto label4;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(chars1, 25, tid_compareChars, "org.apache.lucene.index.TermBuffer", 45, k, c1);
+        c1 = chars1[k];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(chars2, 25, tid_compareChars, "org.apache.lucene.index.TermBuffer", 46, k, c2);
+        c2 = chars2[k];
+        if c1 == c2 goto label3;
+
+        $i0 = c1 - c2;
+        return $i0;
+
+     label3:
+        k = k + 1;
+        goto label2;
+
+     label4:
+        $i0 = len1 - len2;
+        return $i0;
+    }
+
+    void setPreUTF8Strings()
+    {
+        org.apache.lucene.index.TermBuffer this;
+
+        this := @this: org.apache.lucene.index.TermBuffer;
+        this.<org.apache.lucene.index.TermBuffer: boolean preUTF8Strings> = 1;
+        return;
+    }
+
+    public final void read(org.apache.lucene.store.IndexInput, org.apache.lucene.index.FieldInfos) throws java.io.IOException
+    {
+        org.apache.lucene.index.TermBuffer this;
+        org.apache.lucene.store.IndexInput input;
+        org.apache.lucene.index.FieldInfos fieldInfos;
+        int start, length, totalLength, $i0;
+        boolean $z0;
+        org.apache.lucene.util.UnicodeUtil$UTF16Result $r0, $r1, $r4, $r10;
+        char[] $r2, $r3;
+        org.apache.lucene.util.UnicodeUtil$UTF8Result $r5, $r6, $r7;
+        byte[] $r8, $r9;
+        java.lang.String $r11;
+        long tid_read;
+        java.lang.Thread thread_read;
+
+        this := @this: org.apache.lucene.index.TermBuffer;
+        input := @parameter0: org.apache.lucene.store.IndexInput;
+        fieldInfos := @parameter1: org.apache.lucene.index.FieldInfos;
+        thread_read = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_read = virtualinvoke thread_read.<java.lang.Thread: long getId()>();
+        this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.index.Term term> = null;
+        start = virtualinvoke input.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        length = virtualinvoke input.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        totalLength = start + length;
+        $z0 = this.<org.apache.lucene.index.TermBuffer: boolean preUTF8Strings>;
+        if $z0 == 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_read, "org.apache.lucene.index.TermBuffer", 68, $r0);
+        $r0 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        virtualinvoke $r0.<org.apache.lucene.util.UnicodeUtil$UTF16Result: void setLength(int)>(totalLength);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_read, "org.apache.lucene.index.TermBuffer", 69, $r1);
+        $r1 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r1, 58, tid_read, "org.apache.lucene.index.TermBuffer", 69, $r2);
+        $r2 = $r1.<org.apache.lucene.util.UnicodeUtil$UTF16Result: char[] result>;
+        virtualinvoke input.<org.apache.lucene.store.IndexInput: void readChars(char[],int,int)>($r2, start, length);
+        goto label2;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 60, tid_read, "org.apache.lucene.index.TermBuffer", 72, $z0);
+        $z0 = this.<org.apache.lucene.index.TermBuffer: boolean dirty>;
+        if $z0 == 0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_read, "org.apache.lucene.index.TermBuffer", 74, $r0);
+        $r0 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r0, 58, tid_read, "org.apache.lucene.index.TermBuffer", 74, $r3);
+        $r3 = $r0.<org.apache.lucene.util.UnicodeUtil$UTF16Result: char[] result>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_read, "org.apache.lucene.index.TermBuffer", 74, $r4);
+        $r4 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r4, 59, tid_read, "org.apache.lucene.index.TermBuffer", 74, $i0);
+        $i0 = $r4.<org.apache.lucene.util.UnicodeUtil$UTF16Result: int length>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 61, tid_read, "org.apache.lucene.index.TermBuffer", 74, $r5);
+        $r5 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF8Result bytes>;
+        staticinvoke <org.apache.lucene.util.UnicodeUtil: void UTF16toUTF8(char[],int,int,org.apache.lucene.util.UnicodeUtil$UTF8Result)>($r3, 0, $i0, $r5);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 61, tid_read, "org.apache.lucene.index.TermBuffer", 75, $r6);
+        $r6 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF8Result bytes>;
+        virtualinvoke $r6.<org.apache.lucene.util.UnicodeUtil$UTF8Result: void setLength(int)>(totalLength);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 61, tid_read, "org.apache.lucene.index.TermBuffer", 76, $r7);
+        $r7 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF8Result bytes>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r7, 52, tid_read, "org.apache.lucene.index.TermBuffer", 76, $r8);
+        $r8 = $r7.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result>;
+        virtualinvoke input.<org.apache.lucene.store.IndexInput: void readBytes(byte[],int,int)>($r8, start, length);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 61, tid_read, "org.apache.lucene.index.TermBuffer", 77, $r6);
+        $r6 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF8Result bytes>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r6, 52, tid_read, "org.apache.lucene.index.TermBuffer", 77, $r9);
+        $r9 = $r6.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_read, "org.apache.lucene.index.TermBuffer", 77, $r10);
+        $r10 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        staticinvoke <org.apache.lucene.util.UnicodeUtil: void UTF8toUTF16(byte[],int,int,org.apache.lucene.util.UnicodeUtil$UTF16Result)>($r9, 0, totalLength, $r10);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 60, tid_read, "org.apache.lucene.index.TermBuffer", 78, 0);
+        this.<org.apache.lucene.index.TermBuffer: boolean dirty> = 0;
+        goto label2;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 61, tid_read, "org.apache.lucene.index.TermBuffer", 81, $r6);
+        $r6 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF8Result bytes>;
+        virtualinvoke $r6.<org.apache.lucene.util.UnicodeUtil$UTF8Result: void setLength(int)>(totalLength);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 61, tid_read, "org.apache.lucene.index.TermBuffer", 82, $r7);
+        $r7 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF8Result bytes>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r7, 52, tid_read, "org.apache.lucene.index.TermBuffer", 82, $r8);
+        $r8 = $r7.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result>;
+        virtualinvoke input.<org.apache.lucene.store.IndexInput: void readBytes(byte[],int,int)>($r8, start, length);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 61, tid_read, "org.apache.lucene.index.TermBuffer", 83, $r6);
+        $r6 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF8Result bytes>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r6, 52, tid_read, "org.apache.lucene.index.TermBuffer", 83, $r9);
+        $r9 = $r6.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_read, "org.apache.lucene.index.TermBuffer", 83, $r10);
+        $r10 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        staticinvoke <org.apache.lucene.util.UnicodeUtil: void UTF8toUTF16(byte[],int,int,org.apache.lucene.util.UnicodeUtil$UTF16Result)>($r9, start, length, $r10);
+
+     label2:
+        $i0 = virtualinvoke input.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        $r11 = virtualinvoke fieldInfos.<org.apache.lucene.index.FieldInfos: java.lang.String fieldName(int)>($i0);
+        this.<org.apache.lucene.index.TermBuffer: java.lang.String field> = $r11;
+        return;
+    }
+
+    public final void set(org.apache.lucene.index.Term)
+    {
+        org.apache.lucene.index.TermBuffer this;
+        org.apache.lucene.index.Term term;
+        java.lang.String termText, $r3;
+        int termLen;
+        org.apache.lucene.util.UnicodeUtil$UTF16Result $r0, $r1;
+        char[] $r2;
+        long tid_set;
+        java.lang.Thread thread_set;
+
+        this := @this: org.apache.lucene.index.TermBuffer;
+        term := @parameter0: org.apache.lucene.index.Term;
+        thread_set = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_set = virtualinvoke thread_set.<java.lang.Thread: long getId()>();
+        if term != null goto label0;
+
+        virtualinvoke this.<org.apache.lucene.index.TermBuffer: void reset()>();
+        return;
+
+     label0:
+        termText = virtualinvoke term.<org.apache.lucene.index.Term: java.lang.String text()>();
+        termLen = virtualinvoke termText.<java.lang.String: int length()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_set, "org.apache.lucene.index.TermBuffer", 96, $r0);
+        $r0 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        virtualinvoke $r0.<org.apache.lucene.util.UnicodeUtil$UTF16Result: void setLength(int)>(termLen);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_set, "org.apache.lucene.index.TermBuffer", 97, $r1);
+        $r1 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r1, 58, tid_set, "org.apache.lucene.index.TermBuffer", 97, $r2);
+        $r2 = $r1.<org.apache.lucene.util.UnicodeUtil$UTF16Result: char[] result>;
+        virtualinvoke termText.<java.lang.String: void getChars(int,int,char[],int)>(0, termLen, $r2, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 60, tid_set, "org.apache.lucene.index.TermBuffer", 98, 1);
+        this.<org.apache.lucene.index.TermBuffer: boolean dirty> = 1;
+        $r3 = virtualinvoke term.<org.apache.lucene.index.Term: java.lang.String field()>();
+        this.<org.apache.lucene.index.TermBuffer: java.lang.String field> = $r3;
+        this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.index.Term term> = term;
+        return;
+    }
+
+    public final void set(org.apache.lucene.index.TermBuffer)
+    {
+        org.apache.lucene.index.TermBuffer this, other;
+        org.apache.lucene.util.UnicodeUtil$UTF16Result $r0, $r1;
+        java.lang.String $r2;
+        org.apache.lucene.index.Term $r3;
+        long tid_set;
+        java.lang.Thread thread_set;
+
+        this := @this: org.apache.lucene.index.TermBuffer;
+        other := @parameter0: org.apache.lucene.index.TermBuffer;
+        thread_set = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_set = virtualinvoke thread_set.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_set, "org.apache.lucene.index.TermBuffer", 104, $r0);
+        $r0 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(other, 57, tid_set, "org.apache.lucene.index.TermBuffer", 104, $r1);
+        $r1 = other.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        virtualinvoke $r0.<org.apache.lucene.util.UnicodeUtil$UTF16Result: void copyText(org.apache.lucene.util.UnicodeUtil$UTF16Result)>($r1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 60, tid_set, "org.apache.lucene.index.TermBuffer", 105, 1);
+        this.<org.apache.lucene.index.TermBuffer: boolean dirty> = 1;
+        $r2 = other.<org.apache.lucene.index.TermBuffer: java.lang.String field>;
+        this.<org.apache.lucene.index.TermBuffer: java.lang.String field> = $r2;
+        $r3 = other.<org.apache.lucene.index.TermBuffer: org.apache.lucene.index.Term term>;
+        this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.index.Term term> = $r3;
+        return;
+    }
+
+    public void reset()
+    {
+        org.apache.lucene.index.TermBuffer this;
+        org.apache.lucene.util.UnicodeUtil$UTF16Result $r0;
+        long tid_reset;
+        java.lang.Thread thread_reset;
+
+        this := @this: org.apache.lucene.index.TermBuffer;
+        thread_reset = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_reset = virtualinvoke thread_reset.<java.lang.Thread: long getId()>();
+        this.<org.apache.lucene.index.TermBuffer: java.lang.String field> = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_reset, "org.apache.lucene.index.TermBuffer", 112, $r0);
+        $r0 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        virtualinvoke $r0.<org.apache.lucene.util.UnicodeUtil$UTF16Result: void setLength(int)>(0);
+        this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.index.Term term> = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 60, tid_reset, "org.apache.lucene.index.TermBuffer", 114, 1);
+        this.<org.apache.lucene.index.TermBuffer: boolean dirty> = 1;
+        return;
+    }
+
+    public org.apache.lucene.index.Term toTerm()
+    {
+        org.apache.lucene.index.TermBuffer this;
+        org.apache.lucene.index.Term $r0, $r3;
+        java.lang.String $r1, $r2, $r4;
+        org.apache.lucene.util.UnicodeUtil$UTF16Result $r5, $r7;
+        char[] $r6;
+        int $i0;
+        long tid_toTerm;
+        java.lang.Thread thread_toTerm;
+
+        this := @this: org.apache.lucene.index.TermBuffer;
+        thread_toTerm = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_toTerm = virtualinvoke thread_toTerm.<java.lang.Thread: long getId()>();
+        $r2 = this.<org.apache.lucene.index.TermBuffer: java.lang.String field>;
+        if $r2 != null goto label0;
+
+        return null;
+
+     label0:
+        $r3 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.index.Term term>;
+        if $r3 != null goto label1;
+
+        $r0 = new org.apache.lucene.index.Term;
+        $r4 = this.<org.apache.lucene.index.TermBuffer: java.lang.String field>;
+        $r1 = new java.lang.String;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_toTerm, "org.apache.lucene.index.TermBuffer", 122, $r5);
+        $r5 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r5, 58, tid_toTerm, "org.apache.lucene.index.TermBuffer", 122, $r6);
+        $r6 = $r5.<org.apache.lucene.util.UnicodeUtil$UTF16Result: char[] result>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_toTerm, "org.apache.lucene.index.TermBuffer", 122, $r7);
+        $r7 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r7, 59, tid_toTerm, "org.apache.lucene.index.TermBuffer", 122, $i0);
+        $i0 = $r7.<org.apache.lucene.util.UnicodeUtil$UTF16Result: int length>;
+        specialinvoke $r1.<java.lang.String: void <init>(char[],int,int)>($r6, 0, $i0);
+        specialinvoke $r0.<org.apache.lucene.index.Term: void <init>(java.lang.String,java.lang.String,boolean)>($r4, $r1, 0);
+        this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.index.Term term> = $r0;
+
+     label1:
+        $r3 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.index.Term term>;
+        return $r3;
+    }
+
+    protected java.lang.Object clone()
+    {
+        org.apache.lucene.index.TermBuffer this, clone;
+        java.lang.CloneNotSupportedException e, $r1;
+        java.lang.Object $r0;
+        org.apache.lucene.util.UnicodeUtil$UTF8Result $r2;
+        org.apache.lucene.util.UnicodeUtil$UTF16Result $r3, $r4;
+        long tid_clone;
+        java.lang.Thread thread_clone;
+
+        this := @this: org.apache.lucene.index.TermBuffer;
+        thread_clone = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clone = virtualinvoke thread_clone.<java.lang.Thread: long getId()>();
+        clone = null;
+
+     label0:
+        $r0 = specialinvoke this.<java.lang.Object: java.lang.Object clone()>();
+        clone = (org.apache.lucene.index.TermBuffer) $r0;
+
+     label1:
+        goto label3;
+
+     label2:
+        $r1 := @caughtexception;
+        e = $r1;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(clone, 60, tid_clone, "org.apache.lucene.index.TermBuffer", 133, 1);
+        clone.<org.apache.lucene.index.TermBuffer: boolean dirty> = 1;
+        $r2 = new org.apache.lucene.util.UnicodeUtil$UTF8Result;
+        specialinvoke $r2.<org.apache.lucene.util.UnicodeUtil$UTF8Result: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(clone, 61, tid_clone, "org.apache.lucene.index.TermBuffer", 134, $r2);
+        clone.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF8Result bytes> = $r2;
+        $r3 = new org.apache.lucene.util.UnicodeUtil$UTF16Result;
+        specialinvoke $r3.<org.apache.lucene.util.UnicodeUtil$UTF16Result: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(clone, 57, tid_clone, "org.apache.lucene.index.TermBuffer", 135, $r3);
+        clone.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text> = $r3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(clone, 57, tid_clone, "org.apache.lucene.index.TermBuffer", 136, $r4);
+        $r4 = clone.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 57, tid_clone, "org.apache.lucene.index.TermBuffer", 136, $r3);
+        $r3 = this.<org.apache.lucene.index.TermBuffer: org.apache.lucene.util.UnicodeUtil$UTF16Result text>;
+        virtualinvoke $r4.<org.apache.lucene.util.UnicodeUtil$UTF16Result: void copyText(org.apache.lucene.util.UnicodeUtil$UTF16Result)>($r3);
+        return clone;
+
+        catch java.lang.CloneNotSupportedException from label0 to label1 with label2;
+    }
+}

@@ -1,0 +1,1966 @@
+final class org.apache.lucene.index.SegmentMerger extends java.lang.Object
+{
+    static final byte[] NORMS_HEADER;
+    private org.apache.lucene.store.Directory directory;
+    private java.lang.String segment;
+    private int termIndexInterval;
+    private java.util.List readers;
+    private org.apache.lucene.index.FieldInfos fieldInfos;
+    private int mergedDocs;
+    private org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort;
+    private boolean mergeDocStores;
+    private static final int MAX_RAW_MERGE_DOCS;
+    private org.apache.lucene.index.SegmentReader[] matchingSegmentReaders;
+    private int[] rawDocLengths;
+    private int[] rawDocLengths2;
+    private org.apache.lucene.store.IndexOutput freqOutput;
+    private org.apache.lucene.store.IndexOutput proxOutput;
+    private org.apache.lucene.index.TermInfosWriter termInfosWriter;
+    private int skipInterval;
+    private int maxSkipLevels;
+    private org.apache.lucene.index.SegmentMergeQueue queue;
+    private org.apache.lucene.index.DefaultSkipListWriter skipListWriter;
+    private final org.apache.lucene.index.TermInfo termInfo;
+    private byte[] payloadBuffer;
+    private int[][] docMaps;
+    private int[] delCounts;
+    static final boolean $assertionsDisabled;
+    static java.lang.Class class$org$apache$lucene$index$SegmentMerger;
+
+    void <init>(org.apache.lucene.store.Directory, java.lang.String)
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        org.apache.lucene.store.Directory dir;
+        java.lang.String name;
+        java.util.ArrayList $r0;
+        org.apache.lucene.index.TermInfo $r1;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        dir := @parameter0: org.apache.lucene.store.Directory;
+        name := @parameter1: java.lang.String;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.index.SegmentMerger: int termIndexInterval> = 128;
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+        this.<org.apache.lucene.index.SegmentMerger: java.util.List readers> = $r0;
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput freqOutput> = null;
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput> = null;
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.TermInfosWriter termInfosWriter> = null;
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMergeQueue queue> = null;
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.DefaultSkipListWriter skipListWriter> = null;
+        $r1 = new org.apache.lucene.index.TermInfo;
+        specialinvoke $r1.<org.apache.lucene.index.TermInfo: void <init>()>();
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.TermInfo termInfo> = $r1;
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.Directory directory> = dir;
+        this.<org.apache.lucene.index.SegmentMerger: java.lang.String segment> = name;
+        return;
+    }
+
+    void <init>(org.apache.lucene.index.IndexWriter, java.lang.String, org.apache.lucene.index.MergePolicy$OneMerge)
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        org.apache.lucene.index.IndexWriter writer;
+        java.lang.String name;
+        org.apache.lucene.index.MergePolicy$OneMerge merge;
+        java.util.ArrayList $r0;
+        org.apache.lucene.index.TermInfo $r1;
+        org.apache.lucene.store.Directory $r2, $r4;
+        org.apache.lucene.index.SegmentMerger$CheckAbort $r3;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        writer := @parameter0: org.apache.lucene.index.IndexWriter;
+        name := @parameter1: java.lang.String;
+        merge := @parameter2: org.apache.lucene.index.MergePolicy$OneMerge;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.index.SegmentMerger: int termIndexInterval> = 128;
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+        this.<org.apache.lucene.index.SegmentMerger: java.util.List readers> = $r0;
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput freqOutput> = null;
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput> = null;
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.TermInfosWriter termInfosWriter> = null;
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMergeQueue queue> = null;
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.DefaultSkipListWriter skipListWriter> = null;
+        $r1 = new org.apache.lucene.index.TermInfo;
+        specialinvoke $r1.<org.apache.lucene.index.TermInfo: void <init>()>();
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.TermInfo termInfo> = $r1;
+        $r2 = virtualinvoke writer.<org.apache.lucene.index.IndexWriter: org.apache.lucene.store.Directory getDirectory()>();
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.Directory directory> = $r2;
+        this.<org.apache.lucene.index.SegmentMerger: java.lang.String segment> = name;
+        if merge == null goto label0;
+
+        $r3 = new org.apache.lucene.index.SegmentMerger$CheckAbort;
+        $r4 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.Directory directory>;
+        specialinvoke $r3.<org.apache.lucene.index.SegmentMerger$CheckAbort: void <init>(org.apache.lucene.index.MergePolicy$OneMerge,org.apache.lucene.store.Directory)>(merge, $r4);
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort> = $r3;
+
+     label0:
+        $i0 = virtualinvoke writer.<org.apache.lucene.index.IndexWriter: int getTermIndexInterval()>();
+        this.<org.apache.lucene.index.SegmentMerger: int termIndexInterval> = $i0;
+        return;
+    }
+
+    boolean hasProx()
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        org.apache.lucene.index.FieldInfos $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.index.FieldInfos: boolean hasProx()>();
+        return $z0;
+    }
+
+    final void add(org.apache.lucene.index.IndexReader)
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        org.apache.lucene.index.IndexReader reader;
+        java.util.List $r0;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>(reader);
+        return;
+    }
+
+    final org.apache.lucene.index.IndexReader segmentReader(int)
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        int i;
+        java.util.List $r0;
+        java.lang.Object $r1;
+        org.apache.lucene.index.IndexReader $r2;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        i := @parameter0: int;
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $r1 = interfaceinvoke $r0.<java.util.List: java.lang.Object get(int)>(i);
+        $r2 = (org.apache.lucene.index.IndexReader) $r1;
+        return $r2;
+    }
+
+    final int merge() throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        $i0 = virtualinvoke this.<org.apache.lucene.index.SegmentMerger: int merge(boolean)>(1);
+        return $i0;
+    }
+
+    final int merge(boolean) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        boolean mergeDocStores, $z0;
+        int $i0, $i1;
+        org.apache.lucene.index.FieldInfos $r0;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        mergeDocStores := @parameter0: boolean;
+        this.<org.apache.lucene.index.SegmentMerger: boolean mergeDocStores> = mergeDocStores;
+        $i0 = specialinvoke this.<org.apache.lucene.index.SegmentMerger: int mergeFields()>();
+        this.<org.apache.lucene.index.SegmentMerger: int mergedDocs> = $i0;
+        specialinvoke this.<org.apache.lucene.index.SegmentMerger: void mergeTerms()>();
+        specialinvoke this.<org.apache.lucene.index.SegmentMerger: void mergeNorms()>();
+        if mergeDocStores == 0 goto label0;
+
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.index.FieldInfos: boolean hasVectors()>();
+        if $z0 == 0 goto label0;
+
+        specialinvoke this.<org.apache.lucene.index.SegmentMerger: void mergeVectors()>();
+
+     label0:
+        $i1 = this.<org.apache.lucene.index.SegmentMerger: int mergedDocs>;
+        return $i1;
+    }
+
+    final void closeReaders() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        int i, $i0;
+        org.apache.lucene.index.IndexReader reader;
+        java.util.List $r0, $r1;
+        java.lang.Object $r2;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        i = 0;
+
+     label0:
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $i0 = interfaceinvoke $r0.<java.util.List: int size()>();
+        if i >= $i0 goto label1;
+
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>(i);
+        reader = (org.apache.lucene.index.IndexReader) $r2;
+        virtualinvoke reader.<org.apache.lucene.index.IndexReader: void close()>();
+        i = i + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    final java.util.List createCompoundFile(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        java.lang.String fileName, ext, $r8, $r9;
+        org.apache.lucene.index.CompoundFileWriter $r0, cfsWriter;
+        java.util.ArrayList files, $r3;
+        int i, $i0, $i1;
+        org.apache.lucene.index.FieldInfo fi;
+        java.util.Iterator it;
+        org.apache.lucene.store.Directory $r1;
+        org.apache.lucene.index.SegmentMerger$CheckAbort $r2;
+        java.lang.String[] $r4, $r5, $r6;
+        boolean $z0;
+        java.lang.StringBuffer $r7;
+        org.apache.lucene.index.FieldInfos $r10, $r11;
+        java.lang.Object $r12;
+        long tid_createCompoundFile;
+        java.lang.Thread thread_createCompoundFile;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        fileName := @parameter0: java.lang.String;
+        thread_createCompoundFile = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_createCompoundFile = virtualinvoke thread_createCompoundFile.<java.lang.Thread: long getId()>();
+        $r0 = new org.apache.lucene.index.CompoundFileWriter;
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.Directory directory>;
+        $r2 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort>;
+        specialinvoke $r0.<org.apache.lucene.index.CompoundFileWriter: void <init>(org.apache.lucene.store.Directory,java.lang.String,org.apache.lucene.index.SegmentMerger$CheckAbort)>($r1, fileName, $r2);
+        cfsWriter = $r0;
+        $r3 = new java.util.ArrayList;
+        $r4 = <org.apache.lucene.index.IndexFileNames: java.lang.String[] COMPOUND_EXTENSIONS>;
+        $i0 = lengthof $r4;
+        $i0 = $i0 + 1;
+        specialinvoke $r3.<java.util.ArrayList: void <init>(int)>($i0);
+        files = $r3;
+        i = 0;
+
+     label0:
+        $r5 = <org.apache.lucene.index.IndexFileNames: java.lang.String[] COMPOUND_EXTENSIONS>;
+        $i1 = lengthof $r5;
+        if i >= $i1 goto label4;
+
+        $r6 = <org.apache.lucene.index.IndexFileNames: java.lang.String[] COMPOUND_EXTENSIONS>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r6, 10, tid_createCompoundFile, "org.apache.lucene.index.SegmentMerger", 171, i, ext);
+        ext = $r6[i];
+        $z0 = virtualinvoke ext.<java.lang.String: boolean equals(java.lang.Object)>("prx");
+        if $z0 == 0 goto label1;
+
+        $z0 = virtualinvoke this.<org.apache.lucene.index.SegmentMerger: boolean hasProx()>();
+        if $z0 != 0 goto label1;
+
+        goto label3;
+
+     label1:
+        $z0 = this.<org.apache.lucene.index.SegmentMerger: boolean mergeDocStores>;
+        if $z0 != 0 goto label2;
+
+        $z0 = virtualinvoke ext.<java.lang.String: boolean equals(java.lang.Object)>("fdt");
+        if $z0 != 0 goto label3;
+
+        $z0 = virtualinvoke ext.<java.lang.String: boolean equals(java.lang.Object)>("fdx");
+        if $z0 != 0 goto label3;
+
+     label2:
+        $r7 = new java.lang.StringBuffer;
+        specialinvoke $r7.<java.lang.StringBuffer: void <init>()>();
+        $r8 = this.<org.apache.lucene.index.SegmentMerger: java.lang.String segment>;
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r8);
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(ext);
+        $r9 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.String toString()>();
+        interfaceinvoke files.<java.util.List: boolean add(java.lang.Object)>($r9);
+
+     label3:
+        i = i + 1;
+        goto label0;
+
+     label4:
+        i = 0;
+
+     label5:
+        $r10 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $i1 = virtualinvoke $r10.<org.apache.lucene.index.FieldInfos: int size()>();
+        if i >= $i1 goto label7;
+
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        fi = virtualinvoke $r11.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(int)>(i);
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        if $z0 == 0 goto label6;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean omitNorms>;
+        if $z0 != 0 goto label6;
+
+        $r7 = new java.lang.StringBuffer;
+        specialinvoke $r7.<java.lang.StringBuffer: void <init>()>();
+        $r8 = this.<org.apache.lucene.index.SegmentMerger: java.lang.String segment>;
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r8);
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("nrm");
+        $r9 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.String toString()>();
+        interfaceinvoke files.<java.util.List: boolean add(java.lang.Object)>($r9);
+        goto label7;
+
+     label6:
+        i = i + 1;
+        goto label5;
+
+     label7:
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $z0 = virtualinvoke $r11.<org.apache.lucene.index.FieldInfos: boolean hasVectors()>();
+        if $z0 == 0 goto label9;
+
+        $z0 = this.<org.apache.lucene.index.SegmentMerger: boolean mergeDocStores>;
+        if $z0 == 0 goto label9;
+
+        i = 0;
+
+     label8:
+        $r5 = <org.apache.lucene.index.IndexFileNames: java.lang.String[] VECTOR_EXTENSIONS>;
+        $i1 = lengthof $r5;
+        if i >= $i1 goto label9;
+
+        $r7 = new java.lang.StringBuffer;
+        specialinvoke $r7.<java.lang.StringBuffer: void <init>()>();
+        $r8 = this.<org.apache.lucene.index.SegmentMerger: java.lang.String segment>;
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r8);
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r4 = <org.apache.lucene.index.IndexFileNames: java.lang.String[] VECTOR_EXTENSIONS>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r4, 10, tid_createCompoundFile, "org.apache.lucene.index.SegmentMerger", 193, i, $r8);
+        $r8 = $r4[i];
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r8);
+        $r9 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.String toString()>();
+        interfaceinvoke files.<java.util.List: boolean add(java.lang.Object)>($r9);
+        i = i + 1;
+        goto label8;
+
+     label9:
+        it = interfaceinvoke files.<java.util.List: java.util.Iterator iterator()>();
+
+     label10:
+        $z0 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label11;
+
+        $r12 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+        $r9 = (java.lang.String) $r12;
+        virtualinvoke cfsWriter.<org.apache.lucene.index.CompoundFileWriter: void addFile(java.lang.String)>($r9);
+        goto label10;
+
+     label11:
+        virtualinvoke cfsWriter.<org.apache.lucene.index.CompoundFileWriter: void close()>();
+        return files;
+    }
+
+    private void addIndexed(org.apache.lucene.index.IndexReader, org.apache.lucene.index.FieldInfos, java.util.Collection, boolean, boolean, boolean, boolean, boolean) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        org.apache.lucene.index.IndexReader reader;
+        org.apache.lucene.index.FieldInfos fieldInfos;
+        java.util.Collection names;
+        boolean storeTermVectors, storePositionWithTermVector, storeOffsetWithTermVector, storePayloads, omitTf, $z0, $z4, $z5;
+        java.util.Iterator i;
+        java.lang.String field;
+        java.lang.Object $r1;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        fieldInfos := @parameter1: org.apache.lucene.index.FieldInfos;
+        names := @parameter2: java.util.Collection;
+        storeTermVectors := @parameter3: boolean;
+        storePositionWithTermVector := @parameter4: boolean;
+        storeOffsetWithTermVector := @parameter5: boolean;
+        storePayloads := @parameter6: boolean;
+        omitTf := @parameter7: boolean;
+        i = interfaceinvoke names.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label0:
+        $z4 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z4 == 0 goto label3;
+
+        $r1 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        field = (java.lang.String) $r1;
+        $z0 = 1;
+        $z5 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: boolean hasNorms(java.lang.String)>(field);
+        if $z5 != 0 goto label1;
+
+        $z5 = 1;
+        goto label2;
+
+     label1:
+        $z5 = 0;
+
+     label2:
+        virtualinvoke fieldInfos.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo add(java.lang.String,boolean,boolean,boolean,boolean,boolean,boolean,boolean)>(field, $z0, storeTermVectors, storePositionWithTermVector, storeOffsetWithTermVector, $z5, storePayloads, omitTf);
+        goto label0;
+
+     label3:
+        return;
+    }
+
+    private void setMatchingSegmentReaders()
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        int i, j, $i0;
+        org.apache.lucene.index.IndexReader reader;
+        org.apache.lucene.index.SegmentReader segmentReader;
+        boolean same, $z0;
+        org.apache.lucene.index.FieldInfos segmentFieldInfos, $r4;
+        java.util.List $r0, $r2;
+        org.apache.lucene.index.SegmentReader[] $r1, $r7;
+        java.lang.Object $r3;
+        java.lang.String $r5, $r6;
+        int[] $r8;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $i0 = interfaceinvoke $r0.<java.util.List: int size()>();
+        $r1 = newarray (org.apache.lucene.index.SegmentReader)[$i0];
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentReader[] matchingSegmentReaders> = $r1;
+        i = 0;
+
+     label0:
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $i0 = interfaceinvoke $r0.<java.util.List: int size()>();
+        if i >= $i0 goto label4;
+
+        $r2 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $r3 = interfaceinvoke $r2.<java.util.List: java.lang.Object get(int)>(i);
+        reader = (org.apache.lucene.index.IndexReader) $r3;
+        $z0 = reader instanceof org.apache.lucene.index.SegmentReader;
+        if $z0 == 0 goto label3;
+
+        segmentReader = (org.apache.lucene.index.SegmentReader) reader;
+        same = 1;
+        segmentFieldInfos = virtualinvoke segmentReader.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos getFieldInfos()>();
+        j = 0;
+
+     label1:
+        if same == 0 goto label2;
+
+        $i0 = virtualinvoke segmentFieldInfos.<org.apache.lucene.index.FieldInfos: int size()>();
+        if j >= $i0 goto label2;
+
+        $r4 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r5 = virtualinvoke $r4.<org.apache.lucene.index.FieldInfos: java.lang.String fieldName(int)>(j);
+        $r6 = virtualinvoke segmentFieldInfos.<org.apache.lucene.index.FieldInfos: java.lang.String fieldName(int)>(j);
+        same = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+        j = j + 1;
+        goto label1;
+
+     label2:
+        if same == 0 goto label3;
+
+        $r7 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentReader[] matchingSegmentReaders>;
+        $r7[i] = segmentReader;
+
+     label3:
+        i = i + 1;
+        goto label0;
+
+     label4:
+        $r8 = newarray (int)[4192];
+        this.<org.apache.lucene.index.SegmentMerger: int[] rawDocLengths> = $r8;
+        $r8 = newarray (int)[4192];
+        this.<org.apache.lucene.index.SegmentMerger: int[] rawDocLengths2> = $r8;
+        return;
+    }
+
+    private final int mergeFields() throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        org.apache.lucene.index.SegmentReader sr, segmentReader, matchingSegmentReader;
+        int i, j, docCount, maxDoc, start, numDocs, $i0;
+        org.apache.lucene.index.IndexReader reader, $r30;
+        org.apache.lucene.index.FieldInfo fi;
+        org.apache.lucene.index.SegmentMerger$1 fieldSelectorMerge, tmp$545703588;
+        org.apache.lucene.index.FieldsWriter fieldsWriter, tmp$545703651;
+        org.apache.lucene.index.FieldsReader fieldsReader, matchingFieldsReader;
+        boolean hasMatchingReader, hasDeletions, $z0, $z1, $z2, $z3, $z4, $z5, $z6, $z7;
+        org.apache.lucene.store.IndexInput stream;
+        org.apache.lucene.document.Document doc;
+        java.lang.Throwable l15, $r26;
+        long fdxFileLength, $l1, $l2;
+        java.util.List $r0, $r1;
+        java.lang.Object $r2, $r4;
+        org.apache.lucene.index.FieldInfos $r3, $r5, $r9, $r21, tmp$545702368;
+        java.lang.String $r6, $r7, $r16, $r17;
+        org.apache.lucene.index.IndexReader$FieldOption $r10, $r12;
+        java.util.Collection $r11, $r13;
+        org.apache.lucene.store.Directory $r14, $r20, $r27;
+        java.lang.StringBuffer $r15, $r28, tmp$545703525, tmp$545703714, tmp$545703777;
+        org.apache.lucene.index.SegmentReader[] $r22;
+        int[] $r23, $r24;
+        org.apache.lucene.index.SegmentMerger$CheckAbort $r25;
+        double $d0;
+        byte $b3;
+        java.lang.RuntimeException tmp$545704260;
+        org.apache.lucene.document.FieldSelector tmp;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        $z0 = this.<org.apache.lucene.index.SegmentMerger: boolean mergeDocStores>;
+        if $z0 != 0 goto label0;
+
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $i0 = interfaceinvoke $r1.<java.util.List: int size()>();
+        $i0 = $i0 - 1;
+        $r2 = interfaceinvoke $r0.<java.util.List: java.lang.Object get(int)>($i0);
+        sr = (org.apache.lucene.index.SegmentReader) $r2;
+        $r3 = sr.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r4 = virtualinvoke $r3.<org.apache.lucene.index.FieldInfos: java.lang.Object clone()>();
+        $r3 = (org.apache.lucene.index.FieldInfos) $r4;
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos> = $r3;
+        goto label1;
+
+     label0:
+        tmp$545702368 = new org.apache.lucene.index.FieldInfos;
+        specialinvoke tmp$545702368.<org.apache.lucene.index.FieldInfos: void <init>()>();
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos> = tmp$545702368;
+
+     label1:
+        i = 0;
+
+     label2:
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $i0 = interfaceinvoke $r1.<java.util.List: int size()>();
+        if i >= $i0 goto label9;
+
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $r2 = interfaceinvoke $r0.<java.util.List: java.lang.Object get(int)>(i);
+        reader = (org.apache.lucene.index.IndexReader) $r2;
+        $z0 = reader instanceof org.apache.lucene.index.SegmentReader;
+        if $z0 == 0 goto label7;
+
+        segmentReader = (org.apache.lucene.index.SegmentReader) reader;
+        j = 0;
+
+     label3:
+        $r3 = virtualinvoke segmentReader.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos getFieldInfos()>();
+        $i0 = virtualinvoke $r3.<org.apache.lucene.index.FieldInfos: int size()>();
+        if j >= $i0 goto label6;
+
+        $r5 = virtualinvoke segmentReader.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldInfos getFieldInfos()>();
+        fi = virtualinvoke $r5.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(int)>(j);
+        $r5 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r6 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $z1 = fi.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        $z2 = fi.<org.apache.lucene.index.FieldInfo: boolean storeTermVector>;
+        $z3 = fi.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector>;
+        $z4 = fi.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector>;
+        $r7 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $z5 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: boolean hasNorms(java.lang.String)>($r7);
+        if $z5 != 0 goto label4;
+
+        $z5 = 1;
+        goto label5;
+
+     label4:
+        $z5 = 0;
+
+     label5:
+        $z6 = fi.<org.apache.lucene.index.FieldInfo: boolean storePayloads>;
+        $z7 = fi.<org.apache.lucene.index.FieldInfo: boolean omitTf>;
+        virtualinvoke $r5.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo add(java.lang.String,boolean,boolean,boolean,boolean,boolean,boolean,boolean)>($r6, $z1, $z2, $z3, $z4, $z5, $z6, $z7);
+        j = j + 1;
+        goto label3;
+
+     label6:
+        goto label8;
+
+     label7:
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r10 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption TERMVECTOR_WITH_POSITION_OFFSET>;
+        $r11 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: java.util.Collection getFieldNames(org.apache.lucene.index.IndexReader$FieldOption)>($r10);
+        specialinvoke this.<org.apache.lucene.index.SegmentMerger: void addIndexed(org.apache.lucene.index.IndexReader,org.apache.lucene.index.FieldInfos,java.util.Collection,boolean,boolean,boolean,boolean,boolean)>(reader, $r9, $r11, 1, 1, 1, 0, 0);
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r10 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption TERMVECTOR_WITH_POSITION>;
+        $r11 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: java.util.Collection getFieldNames(org.apache.lucene.index.IndexReader$FieldOption)>($r10);
+        specialinvoke this.<org.apache.lucene.index.SegmentMerger: void addIndexed(org.apache.lucene.index.IndexReader,org.apache.lucene.index.FieldInfos,java.util.Collection,boolean,boolean,boolean,boolean,boolean)>(reader, $r9, $r11, 1, 1, 0, 0, 0);
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r10 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption TERMVECTOR_WITH_OFFSET>;
+        $r11 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: java.util.Collection getFieldNames(org.apache.lucene.index.IndexReader$FieldOption)>($r10);
+        specialinvoke this.<org.apache.lucene.index.SegmentMerger: void addIndexed(org.apache.lucene.index.IndexReader,org.apache.lucene.index.FieldInfos,java.util.Collection,boolean,boolean,boolean,boolean,boolean)>(reader, $r9, $r11, 1, 0, 1, 0, 0);
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r10 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption TERMVECTOR>;
+        $r11 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: java.util.Collection getFieldNames(org.apache.lucene.index.IndexReader$FieldOption)>($r10);
+        specialinvoke this.<org.apache.lucene.index.SegmentMerger: void addIndexed(org.apache.lucene.index.IndexReader,org.apache.lucene.index.FieldInfos,java.util.Collection,boolean,boolean,boolean,boolean,boolean)>(reader, $r9, $r11, 1, 0, 0, 0, 0);
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r10 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption OMIT_TF>;
+        $r11 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: java.util.Collection getFieldNames(org.apache.lucene.index.IndexReader$FieldOption)>($r10);
+        specialinvoke this.<org.apache.lucene.index.SegmentMerger: void addIndexed(org.apache.lucene.index.IndexReader,org.apache.lucene.index.FieldInfos,java.util.Collection,boolean,boolean,boolean,boolean,boolean)>(reader, $r9, $r11, 0, 0, 0, 0, 1);
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r10 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption STORES_PAYLOADS>;
+        $r11 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: java.util.Collection getFieldNames(org.apache.lucene.index.IndexReader$FieldOption)>($r10);
+        specialinvoke this.<org.apache.lucene.index.SegmentMerger: void addIndexed(org.apache.lucene.index.IndexReader,org.apache.lucene.index.FieldInfos,java.util.Collection,boolean,boolean,boolean,boolean,boolean)>(reader, $r9, $r11, 0, 0, 0, 1, 0);
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r10 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption INDEXED>;
+        $r11 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: java.util.Collection getFieldNames(org.apache.lucene.index.IndexReader$FieldOption)>($r10);
+        specialinvoke this.<org.apache.lucene.index.SegmentMerger: void addIndexed(org.apache.lucene.index.IndexReader,org.apache.lucene.index.FieldInfos,java.util.Collection,boolean,boolean,boolean,boolean,boolean)>(reader, $r9, $r11, 0, 0, 0, 0, 0);
+        $r5 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r12 = <org.apache.lucene.index.IndexReader$FieldOption: org.apache.lucene.index.IndexReader$FieldOption UNINDEXED>;
+        $r13 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: java.util.Collection getFieldNames(org.apache.lucene.index.IndexReader$FieldOption)>($r12);
+        virtualinvoke $r5.<org.apache.lucene.index.FieldInfos: void add(java.util.Collection,boolean)>($r13, 0);
+
+     label8:
+        i = i + 1;
+        goto label2;
+
+     label9:
+        $r5 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r14 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.Directory directory>;
+        tmp$545703525 = new java.lang.StringBuffer;
+        specialinvoke tmp$545703525.<java.lang.StringBuffer: void <init>()>();
+        $r16 = this.<org.apache.lucene.index.SegmentMerger: java.lang.String segment>;
+        $r15 = virtualinvoke tmp$545703525.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r16);
+        $r15 = virtualinvoke $r15.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".fnm");
+        $r17 = virtualinvoke $r15.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke $r5.<org.apache.lucene.index.FieldInfos: void write(org.apache.lucene.store.Directory,java.lang.String)>($r14, $r17);
+        docCount = 0;
+        specialinvoke this.<org.apache.lucene.index.SegmentMerger: void setMatchingSegmentReaders()>();
+        $z0 = this.<org.apache.lucene.index.SegmentMerger: boolean mergeDocStores>;
+        if $z0 == 0 goto label34;
+
+        tmp$545703588 = new org.apache.lucene.index.SegmentMerger$1;
+        specialinvoke tmp$545703588.<org.apache.lucene.index.SegmentMerger$1: void <init>(org.apache.lucene.index.SegmentMerger)>(this);
+        fieldSelectorMerge = tmp$545703588;
+        tmp$545703651 = new org.apache.lucene.index.FieldsWriter;
+        $r20 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.Directory directory>;
+        $r16 = this.<org.apache.lucene.index.SegmentMerger: java.lang.String segment>;
+        $r21 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        specialinvoke tmp$545703651.<org.apache.lucene.index.FieldsWriter: void <init>(org.apache.lucene.store.Directory,java.lang.String,org.apache.lucene.index.FieldInfos)>($r20, $r16, $r21);
+        fieldsWriter = tmp$545703651;
+
+     label10:
+        i = 0;
+
+     label11:
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $i0 = interfaceinvoke $r1.<java.util.List: int size()>();
+        if i >= $i0 goto label27;
+
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $r2 = interfaceinvoke $r0.<java.util.List: java.lang.Object get(int)>(i);
+        reader = (org.apache.lucene.index.IndexReader) $r2;
+        $r22 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentReader[] matchingSegmentReaders>;
+        matchingSegmentReader = $r22[i];
+        if matchingSegmentReader == null goto label14;
+
+        fieldsReader = virtualinvoke matchingSegmentReader.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.FieldsReader getFieldsReader()>();
+        if fieldsReader == null goto label12;
+
+        $z0 = virtualinvoke fieldsReader.<org.apache.lucene.index.FieldsReader: boolean canReadRawDocs()>();
+        if $z0 != 0 goto label12;
+
+        matchingFieldsReader = null;
+        hasMatchingReader = 0;
+        goto label13;
+
+     label12:
+        matchingFieldsReader = fieldsReader;
+        hasMatchingReader = 1;
+
+     label13:
+        goto label15;
+
+     label14:
+        hasMatchingReader = 0;
+        matchingFieldsReader = null;
+
+     label15:
+        maxDoc = virtualinvoke reader.<org.apache.lucene.index.IndexReader: int maxDoc()>();
+        hasDeletions = virtualinvoke reader.<org.apache.lucene.index.IndexReader: boolean hasDeletions()>();
+        j = 0;
+
+     label16:
+        if j >= maxDoc goto label26;
+
+        if hasDeletions == 0 goto label17;
+
+        $z0 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: boolean isDeleted(int)>(j);
+        if $z0 != 0 goto label25;
+
+     label17:
+        if hasMatchingReader == 0 goto label23;
+
+        start = j;
+        numDocs = 0;
+
+     label18:
+        j = j + 1;
+        numDocs = numDocs + 1;
+        if j < maxDoc goto label19;
+
+        goto label21;
+
+     label19:
+        if hasDeletions == 0 goto label20;
+
+        $z0 = virtualinvoke matchingSegmentReader.<org.apache.lucene.index.SegmentReader: boolean isDeleted(int)>(j);
+        if $z0 == 0 goto label20;
+
+        j = j + 1;
+        goto label21;
+
+     label20:
+        if numDocs < 4192 goto label18;
+
+     label21:
+        $r23 = this.<org.apache.lucene.index.SegmentMerger: int[] rawDocLengths>;
+        stream = virtualinvoke matchingFieldsReader.<org.apache.lucene.index.FieldsReader: org.apache.lucene.store.IndexInput rawDocs(int[],int,int)>($r23, start, numDocs);
+        $r24 = this.<org.apache.lucene.index.SegmentMerger: int[] rawDocLengths>;
+        virtualinvoke fieldsWriter.<org.apache.lucene.index.FieldsWriter: void addRawDocuments(org.apache.lucene.store.IndexInput,int[],int)>(stream, $r24, numDocs);
+        docCount = docCount + numDocs;
+        $r25 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort>;
+        if $r25 == null goto label22;
+
+        $r25 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort>;
+        $i0 = 300 * numDocs;
+        $d0 = (double) $i0;
+        virtualinvoke $r25.<org.apache.lucene.index.SegmentMerger$CheckAbort: void work(double)>($d0);
+
+     label22:
+        goto label16;
+
+     label23:
+        tmp = (org.apache.lucene.document.FieldSelector) fieldSelectorMerge;
+        doc = virtualinvoke reader.<org.apache.lucene.index.IndexReader: org.apache.lucene.document.Document document(int,org.apache.lucene.document.FieldSelector)>(j, tmp);
+        virtualinvoke fieldsWriter.<org.apache.lucene.index.FieldsWriter: void addDocument(org.apache.lucene.document.Document)>(doc);
+        j = j + 1;
+        docCount = docCount + 1;
+        $r25 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort>;
+        if $r25 == null goto label24;
+
+        $r25 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort>;
+        virtualinvoke $r25.<org.apache.lucene.index.SegmentMerger$CheckAbort: void work(double)>(300.0);
+
+     label24:
+        goto label16;
+
+     label25:
+        j = j + 1;
+        goto label16;
+
+     label26:
+        i = i + 1;
+        goto label11;
+
+     label27:
+        goto label37;
+
+     label28:
+        goto label32;
+
+     label29:
+        $r26 := @caughtexception;
+
+     label30:
+        l15 = $r26;
+        goto label38;
+
+     label31:
+        throw l15;
+
+     label32:
+        $r27 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.Directory directory>;
+        tmp$545703714 = new java.lang.StringBuffer;
+        specialinvoke tmp$545703714.<java.lang.StringBuffer: void <init>()>();
+        $r17 = this.<org.apache.lucene.index.SegmentMerger: java.lang.String segment>;
+        $r28 = virtualinvoke tmp$545703714.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r17);
+        $r28 = virtualinvoke $r28.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r28 = virtualinvoke $r28.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("fdx");
+        $r6 = virtualinvoke $r28.<java.lang.StringBuffer: java.lang.String toString()>();
+        fdxFileLength = virtualinvoke $r27.<org.apache.lucene.store.Directory: long fileLength(java.lang.String)>($r6);
+        $l1 = (long) docCount;
+        $l1 = $l1 * 8L;
+        $l2 = 4L + $l1;
+        $b3 = $l2 cmp fdxFileLength;
+        if $b3 == 0 goto label33;
+
+        tmp$545704260 = new java.lang.RuntimeException;
+        tmp$545703777 = new java.lang.StringBuffer;
+        specialinvoke tmp$545703777.<java.lang.StringBuffer: void <init>()>();
+        $r15 = virtualinvoke tmp$545703777.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("mergeFields produced an invalid result: docCount is ");
+        $r15 = virtualinvoke $r15.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(docCount);
+        $r15 = virtualinvoke $r15.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" but fdx file size is ");
+        $r15 = virtualinvoke $r15.<java.lang.StringBuffer: java.lang.StringBuffer append(long)>(fdxFileLength);
+        $r15 = virtualinvoke $r15.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("; now aborting this merge to prevent index corruption");
+        $r17 = virtualinvoke $r15.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke tmp$545704260.<java.lang.RuntimeException: void <init>(java.lang.String)>($r17);
+        throw tmp$545704260;
+
+     label33:
+        goto label36;
+
+     label34:
+        i = 0;
+
+     label35:
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $i0 = interfaceinvoke $r1.<java.util.List: int size()>();
+        if i >= $i0 goto label36;
+
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $r4 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>(i);
+        $r30 = (org.apache.lucene.index.IndexReader) $r4;
+        $i0 = virtualinvoke $r30.<org.apache.lucene.index.IndexReader: int numDocs()>();
+        docCount = docCount + $i0;
+        i = i + 1;
+        goto label35;
+
+     label36:
+        return docCount;
+
+     label37:
+        virtualinvoke fieldsWriter.<org.apache.lucene.index.FieldsWriter: void close()>();
+        goto label28;
+
+     label38:
+        virtualinvoke fieldsWriter.<org.apache.lucene.index.FieldsWriter: void close()>();
+        goto label31;
+
+        catch java.lang.Throwable from label10 to label28 with label29;
+        catch java.lang.Throwable from label30 to label31 with label29;
+    }
+
+    private final void mergeVectors() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        org.apache.lucene.index.TermVectorsWriter $r0, termVectorsWriter;
+        int r, maxDoc, docNum, start, numDocs, $i0, $i1, $i5;
+        org.apache.lucene.index.SegmentReader matchingSegmentReader;
+        org.apache.lucene.index.TermVectorsReader matchingVectorsReader;
+        boolean hasMatchingReader, hasDeletions, $z0;
+        org.apache.lucene.index.IndexReader reader;
+        org.apache.lucene.index.TermFreqVector[] vectors;
+        java.lang.Throwable l12, $r12;
+        long tvxSize, $l2, $l3;
+        org.apache.lucene.store.Directory $r1, $r13;
+        java.lang.String $r2, $r15, $r16;
+        org.apache.lucene.index.FieldInfos $r3;
+        java.util.List $r4, $r6;
+        org.apache.lucene.index.SegmentReader[] $r5;
+        java.lang.Object $r7;
+        int[] $r8, $r9, $r10;
+        org.apache.lucene.index.SegmentMerger$CheckAbort $r11;
+        double $d0;
+        java.lang.StringBuffer $r14, $r18;
+        byte $b4;
+        java.lang.RuntimeException $r17;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        $r0 = new org.apache.lucene.index.TermVectorsWriter;
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.Directory directory>;
+        $r2 = this.<org.apache.lucene.index.SegmentMerger: java.lang.String segment>;
+        $r3 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        specialinvoke $r0.<org.apache.lucene.index.TermVectorsWriter: void <init>(org.apache.lucene.store.Directory,java.lang.String,org.apache.lucene.index.FieldInfos)>($r1, $r2, $r3);
+        termVectorsWriter = $r0;
+
+     label0:
+        r = 0;
+
+     label1:
+        $r4 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $i0 = interfaceinvoke $r4.<java.util.List: int size()>();
+        if r >= $i0 goto label18;
+
+        $r5 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentReader[] matchingSegmentReaders>;
+        matchingSegmentReader = $r5[r];
+        if matchingSegmentReader == null goto label5;
+
+        matchingVectorsReader = matchingSegmentReader.<org.apache.lucene.index.SegmentReader: org.apache.lucene.index.TermVectorsReader termVectorsReaderOrig>;
+        if matchingVectorsReader == null goto label2;
+
+        $z0 = virtualinvoke matchingVectorsReader.<org.apache.lucene.index.TermVectorsReader: boolean canReadRawDocs()>();
+        if $z0 != 0 goto label2;
+
+        matchingVectorsReader = null;
+        hasMatchingReader = 0;
+        goto label6;
+
+     label2:
+        if matchingVectorsReader == null goto label3;
+
+        $z0 = 1;
+        goto label4;
+
+     label3:
+        $z0 = 0;
+
+     label4:
+        hasMatchingReader = $z0;
+        goto label6;
+
+     label5:
+        hasMatchingReader = 0;
+        matchingVectorsReader = null;
+
+     label6:
+        $r6 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $r7 = interfaceinvoke $r6.<java.util.List: java.lang.Object get(int)>(r);
+        reader = (org.apache.lucene.index.IndexReader) $r7;
+        hasDeletions = virtualinvoke reader.<org.apache.lucene.index.IndexReader: boolean hasDeletions()>();
+        maxDoc = virtualinvoke reader.<org.apache.lucene.index.IndexReader: int maxDoc()>();
+        docNum = 0;
+
+     label7:
+        if docNum >= maxDoc goto label17;
+
+        if hasDeletions == 0 goto label8;
+
+        $z0 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: boolean isDeleted(int)>(docNum);
+        if $z0 != 0 goto label16;
+
+     label8:
+        if hasMatchingReader == 0 goto label14;
+
+        start = docNum;
+        numDocs = 0;
+
+     label9:
+        docNum = docNum + 1;
+        numDocs = numDocs + 1;
+        if docNum < maxDoc goto label10;
+
+        goto label12;
+
+     label10:
+        if hasDeletions == 0 goto label11;
+
+        $z0 = virtualinvoke matchingSegmentReader.<org.apache.lucene.index.SegmentReader: boolean isDeleted(int)>(docNum);
+        if $z0 == 0 goto label11;
+
+        docNum = docNum + 1;
+        goto label12;
+
+     label11:
+        if numDocs < 4192 goto label9;
+
+     label12:
+        $r8 = this.<org.apache.lucene.index.SegmentMerger: int[] rawDocLengths>;
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: int[] rawDocLengths2>;
+        virtualinvoke matchingVectorsReader.<org.apache.lucene.index.TermVectorsReader: void rawDocs(int[],int[],int,int)>($r8, $r9, start, numDocs);
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: int[] rawDocLengths>;
+        $r10 = this.<org.apache.lucene.index.SegmentMerger: int[] rawDocLengths2>;
+        virtualinvoke termVectorsWriter.<org.apache.lucene.index.TermVectorsWriter: void addRawDocuments(org.apache.lucene.index.TermVectorsReader,int[],int[],int)>(matchingVectorsReader, $r9, $r10, numDocs);
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort>;
+        if $r11 == null goto label13;
+
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort>;
+        $i0 = 300 * numDocs;
+        $d0 = (double) $i0;
+        virtualinvoke $r11.<org.apache.lucene.index.SegmentMerger$CheckAbort: void work(double)>($d0);
+
+     label13:
+        goto label7;
+
+     label14:
+        vectors = virtualinvoke reader.<org.apache.lucene.index.IndexReader: org.apache.lucene.index.TermFreqVector[] getTermFreqVectors(int)>(docNum);
+        virtualinvoke termVectorsWriter.<org.apache.lucene.index.TermVectorsWriter: void addAllDocVectors(org.apache.lucene.index.TermFreqVector[])>(vectors);
+        docNum = docNum + 1;
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort>;
+        if $r11 == null goto label15;
+
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort>;
+        virtualinvoke $r11.<org.apache.lucene.index.SegmentMerger$CheckAbort: void work(double)>(300.0);
+
+     label15:
+        goto label7;
+
+     label16:
+        docNum = docNum + 1;
+        goto label7;
+
+     label17:
+        r = r + 1;
+        goto label1;
+
+     label18:
+        goto label25;
+
+     label19:
+        goto label23;
+
+     label20:
+        $r12 := @caughtexception;
+
+     label21:
+        l12 = $r12;
+        goto label26;
+
+     label22:
+        throw l12;
+
+     label23:
+        $r13 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.Directory directory>;
+        $r14 = new java.lang.StringBuffer;
+        specialinvoke $r14.<java.lang.StringBuffer: void <init>()>();
+        $r15 = this.<org.apache.lucene.index.SegmentMerger: java.lang.String segment>;
+        $r14 = virtualinvoke $r14.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r15);
+        $r14 = virtualinvoke $r14.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r14 = virtualinvoke $r14.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("tvx");
+        $r16 = virtualinvoke $r14.<java.lang.StringBuffer: java.lang.String toString()>();
+        tvxSize = virtualinvoke $r13.<org.apache.lucene.store.Directory: long fileLength(java.lang.String)>($r16);
+        $i1 = this.<org.apache.lucene.index.SegmentMerger: int mergedDocs>;
+        $l2 = (long) $i1;
+        $l2 = $l2 * 16L;
+        $l3 = 4L + $l2;
+        $b4 = $l3 cmp tvxSize;
+        if $b4 == 0 goto label24;
+
+        $r17 = new java.lang.RuntimeException;
+        $r18 = new java.lang.StringBuffer;
+        specialinvoke $r18.<java.lang.StringBuffer: void <init>()>();
+        $r18 = virtualinvoke $r18.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("mergeVectors produced an invalid result: mergedDocs is ");
+        $i5 = this.<org.apache.lucene.index.SegmentMerger: int mergedDocs>;
+        $r18 = virtualinvoke $r18.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i5);
+        $r18 = virtualinvoke $r18.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" but tvx size is ");
+        $r18 = virtualinvoke $r18.<java.lang.StringBuffer: java.lang.StringBuffer append(long)>(tvxSize);
+        $r18 = virtualinvoke $r18.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("; now aborting this merge to prevent index corruption");
+        $r15 = virtualinvoke $r18.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r17.<java.lang.RuntimeException: void <init>(java.lang.String)>($r15);
+        throw $r17;
+
+     label24:
+        return;
+
+     label25:
+        virtualinvoke termVectorsWriter.<org.apache.lucene.index.TermVectorsWriter: void close()>();
+        goto label19;
+
+     label26:
+        virtualinvoke termVectorsWriter.<org.apache.lucene.index.TermVectorsWriter: void close()>();
+        goto label22;
+
+        catch java.lang.Throwable from label0 to label19 with label20;
+        catch java.lang.Throwable from label21 to label22 with label20;
+    }
+
+    private final void mergeTerms() throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        java.lang.StringBuffer $r0;
+        java.lang.Throwable l1, $r14;
+        org.apache.lucene.store.Directory $r1, $r6;
+        java.lang.String $r2, $r3, $r7;
+        org.apache.lucene.store.IndexOutput $r4, $r10, $r11, $r15;
+        boolean $z0;
+        org.apache.lucene.index.TermInfosWriter $r5, $r16;
+        org.apache.lucene.index.FieldInfos $r8;
+        int $i0, $i1, $i2, $i3, $i4;
+        org.apache.lucene.index.DefaultSkipListWriter $r9;
+        org.apache.lucene.index.SegmentMergeQueue $r12, $r17;
+        java.util.List $r13;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+
+     label0:
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.Directory directory>;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r2 = this.<org.apache.lucene.index.SegmentMerger: java.lang.String segment>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".frq");
+        $r3 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        $r4 = virtualinvoke $r1.<org.apache.lucene.store.Directory: org.apache.lucene.store.IndexOutput createOutput(java.lang.String)>($r3);
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput freqOutput> = $r4;
+        $z0 = virtualinvoke this.<org.apache.lucene.index.SegmentMerger: boolean hasProx()>();
+        if $z0 == 0 goto label1;
+
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.Directory directory>;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r2 = this.<org.apache.lucene.index.SegmentMerger: java.lang.String segment>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".prx");
+        $r3 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        $r4 = virtualinvoke $r1.<org.apache.lucene.store.Directory: org.apache.lucene.store.IndexOutput createOutput(java.lang.String)>($r3);
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput> = $r4;
+
+     label1:
+        $r5 = new org.apache.lucene.index.TermInfosWriter;
+        $r6 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.Directory directory>;
+        $r7 = this.<org.apache.lucene.index.SegmentMerger: java.lang.String segment>;
+        $r8 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $i0 = this.<org.apache.lucene.index.SegmentMerger: int termIndexInterval>;
+        specialinvoke $r5.<org.apache.lucene.index.TermInfosWriter: void <init>(org.apache.lucene.store.Directory,java.lang.String,org.apache.lucene.index.FieldInfos,int)>($r6, $r7, $r8, $i0);
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.TermInfosWriter termInfosWriter> = $r5;
+        $r5 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.TermInfosWriter termInfosWriter>;
+        $i1 = $r5.<org.apache.lucene.index.TermInfosWriter: int skipInterval>;
+        this.<org.apache.lucene.index.SegmentMerger: int skipInterval> = $i1;
+        $r5 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.TermInfosWriter termInfosWriter>;
+        $i1 = $r5.<org.apache.lucene.index.TermInfosWriter: int maxSkipLevels>;
+        this.<org.apache.lucene.index.SegmentMerger: int maxSkipLevels> = $i1;
+        $r9 = new org.apache.lucene.index.DefaultSkipListWriter;
+        $i2 = this.<org.apache.lucene.index.SegmentMerger: int skipInterval>;
+        $i3 = this.<org.apache.lucene.index.SegmentMerger: int maxSkipLevels>;
+        $i4 = this.<org.apache.lucene.index.SegmentMerger: int mergedDocs>;
+        $r10 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput freqOutput>;
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput>;
+        specialinvoke $r9.<org.apache.lucene.index.DefaultSkipListWriter: void <init>(int,int,int,org.apache.lucene.store.IndexOutput,org.apache.lucene.store.IndexOutput)>($i2, $i3, $i4, $r10, $r11);
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.DefaultSkipListWriter skipListWriter> = $r9;
+        $r12 = new org.apache.lucene.index.SegmentMergeQueue;
+        $r13 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $i2 = interfaceinvoke $r13.<java.util.List: int size()>();
+        specialinvoke $r12.<org.apache.lucene.index.SegmentMergeQueue: void <init>(int)>($i2);
+        this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMergeQueue queue> = $r12;
+        specialinvoke this.<org.apache.lucene.index.SegmentMerger: void mergeTermInfos()>();
+        goto label7;
+
+     label2:
+        goto label6;
+
+     label3:
+        $r14 := @caughtexception;
+
+     label4:
+        l1 = $r14;
+        goto label12;
+
+     label5:
+        throw l1;
+
+     label6:
+        return;
+
+     label7:
+        $r15 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput freqOutput>;
+        if $r15 == null goto label8;
+
+        $r15 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput freqOutput>;
+        virtualinvoke $r15.<org.apache.lucene.store.IndexOutput: void close()>();
+
+     label8:
+        $r15 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput>;
+        if $r15 == null goto label9;
+
+        $r15 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput>;
+        virtualinvoke $r15.<org.apache.lucene.store.IndexOutput: void close()>();
+
+     label9:
+        $r16 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.TermInfosWriter termInfosWriter>;
+        if $r16 == null goto label10;
+
+        $r16 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.TermInfosWriter termInfosWriter>;
+        virtualinvoke $r16.<org.apache.lucene.index.TermInfosWriter: void close()>();
+
+     label10:
+        $r17 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMergeQueue queue>;
+        if $r17 == null goto label11;
+
+        $r17 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMergeQueue queue>;
+        virtualinvoke $r17.<org.apache.lucene.index.SegmentMergeQueue: void close()>();
+
+     label11:
+        goto label2;
+
+     label12:
+        $r15 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput freqOutput>;
+        if $r15 == null goto label13;
+
+        $r15 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput freqOutput>;
+        virtualinvoke $r15.<org.apache.lucene.store.IndexOutput: void close()>();
+
+     label13:
+        $r15 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput>;
+        if $r15 == null goto label14;
+
+        $r15 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput>;
+        virtualinvoke $r15.<org.apache.lucene.store.IndexOutput: void close()>();
+
+     label14:
+        $r16 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.TermInfosWriter termInfosWriter>;
+        if $r16 == null goto label15;
+
+        $r16 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.TermInfosWriter termInfosWriter>;
+        virtualinvoke $r16.<org.apache.lucene.index.TermInfosWriter: void close()>();
+
+     label15:
+        $r17 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMergeQueue queue>;
+        if $r17 == null goto label16;
+
+        $r17 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMergeQueue queue>;
+        virtualinvoke $r17.<org.apache.lucene.index.SegmentMergeQueue: void close()>();
+
+     label16:
+        goto label5;
+
+        catch java.lang.Throwable from label0 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    private final void mergeTermInfos() throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        int base, readerCount, i, df, $i0, $i1, $i2, $i3, matchSize;
+        org.apache.lucene.index.IndexReader reader, $r7, $r8;
+        org.apache.lucene.index.TermEnum termEnum;
+        org.apache.lucene.index.SegmentMergeInfo smi, top, $r2, $r12;
+        int[] docMap, $r5, $r6;
+        org.apache.lucene.index.SegmentMergeInfo[] match;
+        byte matchSize;
+        org.apache.lucene.index.Term term, $r13;
+        java.util.List $r0;
+        java.lang.Object $r1, $r11;
+        int[][] $r3, $r4;
+        boolean $z0;
+        org.apache.lucene.index.SegmentMergeQueue $r9, $r10;
+        org.apache.lucene.index.SegmentMerger$CheckAbort $r14;
+        double $d0;
+        long tid_mergeTermInfos;
+        java.lang.Thread thread_mergeTermInfos;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        thread_mergeTermInfos = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_mergeTermInfos = virtualinvoke thread_mergeTermInfos.<java.lang.Thread: long getId()>();
+        base = 0;
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        readerCount = interfaceinvoke $r0.<java.util.List: int size()>();
+        i = 0;
+
+     label0:
+        if i >= readerCount goto label5;
+
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $r1 = interfaceinvoke $r0.<java.util.List: java.lang.Object get(int)>(i);
+        reader = (org.apache.lucene.index.IndexReader) $r1;
+        termEnum = virtualinvoke reader.<org.apache.lucene.index.IndexReader: org.apache.lucene.index.TermEnum terms()>();
+        $r2 = new org.apache.lucene.index.SegmentMergeInfo;
+        specialinvoke $r2.<org.apache.lucene.index.SegmentMergeInfo: void <init>(int,org.apache.lucene.index.TermEnum,org.apache.lucene.index.IndexReader)>(base, termEnum, reader);
+        smi = $r2;
+        docMap = virtualinvoke smi.<org.apache.lucene.index.SegmentMergeInfo: int[] getDocMap()>();
+        if docMap == null goto label2;
+
+        $r3 = this.<org.apache.lucene.index.SegmentMerger: int[][] docMaps>;
+        if $r3 != null goto label1;
+
+        $r4 = newarray (int[])[readerCount];
+        this.<org.apache.lucene.index.SegmentMerger: int[][] docMaps> = $r4;
+        $r5 = newarray (int)[readerCount];
+        this.<org.apache.lucene.index.SegmentMerger: int[] delCounts> = $r5;
+
+     label1:
+        $r3 = this.<org.apache.lucene.index.SegmentMerger: int[][] docMaps>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r3, 40, tid_mergeTermInfos, "org.apache.lucene.index.SegmentMerger", 523, i, docMap);
+        $r3[i] = docMap;
+        $r6 = this.<org.apache.lucene.index.SegmentMerger: int[] delCounts>;
+        $r7 = smi.<org.apache.lucene.index.SegmentMergeInfo: org.apache.lucene.index.IndexReader reader>;
+        $i0 = virtualinvoke $r7.<org.apache.lucene.index.IndexReader: int maxDoc()>();
+        $r8 = smi.<org.apache.lucene.index.SegmentMergeInfo: org.apache.lucene.index.IndexReader reader>;
+        $i1 = virtualinvoke $r8.<org.apache.lucene.index.IndexReader: int numDocs()>();
+        $i0 = $i0 - $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r6, 22, tid_mergeTermInfos, "org.apache.lucene.index.SegmentMerger", 524, i, $i0);
+        $r6[i] = $i0;
+
+     label2:
+        $i2 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: int numDocs()>();
+        base = base + $i2;
+        $z0 = virtualinvoke smi.<org.apache.lucene.index.SegmentMergeInfo: boolean next()>();
+        if $z0 == 0 goto label3;
+
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMergeQueue queue>;
+        virtualinvoke $r9.<org.apache.lucene.index.SegmentMergeQueue: void put(java.lang.Object)>(smi);
+        goto label4;
+
+     label3:
+        virtualinvoke smi.<org.apache.lucene.index.SegmentMergeInfo: void close()>();
+
+     label4:
+        i = i + 1;
+        goto label0;
+
+     label5:
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $i3 = interfaceinvoke $r0.<java.util.List: int size()>();
+        match = newarray (org.apache.lucene.index.SegmentMergeInfo)[$i3];
+
+     label6:
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMergeQueue queue>;
+        $i3 = virtualinvoke $r9.<org.apache.lucene.index.SegmentMergeQueue: int size()>();
+        if $i3 <= 0 goto label13;
+
+        matchSize = 0;
+        matchSize = matchSize + 1;
+        $r10 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMergeQueue queue>;
+        $r11 = virtualinvoke $r10.<org.apache.lucene.index.SegmentMergeQueue: java.lang.Object pop()>();
+        $r12 = (org.apache.lucene.index.SegmentMergeInfo) $r11;
+        match[matchSize] = $r12;
+        $r2 = match[0];
+        term = $r2.<org.apache.lucene.index.SegmentMergeInfo: org.apache.lucene.index.Term term>;
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMergeQueue queue>;
+        $r1 = virtualinvoke $r9.<org.apache.lucene.index.SegmentMergeQueue: java.lang.Object top()>();
+        top = (org.apache.lucene.index.SegmentMergeInfo) $r1;
+
+     label7:
+        if top == null goto label8;
+
+        $r13 = top.<org.apache.lucene.index.SegmentMergeInfo: org.apache.lucene.index.Term term>;
+        $i3 = virtualinvoke term.<org.apache.lucene.index.Term: int compareTo(org.apache.lucene.index.Term)>($r13);
+        if $i3 != 0 goto label8;
+
+        $i2 = matchSize;
+        matchSize = matchSize + 1;
+        $r10 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMergeQueue queue>;
+        $r11 = virtualinvoke $r10.<org.apache.lucene.index.SegmentMergeQueue: java.lang.Object pop()>();
+        $r12 = (org.apache.lucene.index.SegmentMergeInfo) $r11;
+        match[$i2] = $r12;
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMergeQueue queue>;
+        $r1 = virtualinvoke $r9.<org.apache.lucene.index.SegmentMergeQueue: java.lang.Object top()>();
+        top = (org.apache.lucene.index.SegmentMergeInfo) $r1;
+        goto label7;
+
+     label8:
+        df = specialinvoke this.<org.apache.lucene.index.SegmentMerger: int mergeTermInfo(org.apache.lucene.index.SegmentMergeInfo[],int)>(match, matchSize);
+        $r14 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort>;
+        if $r14 == null goto label9;
+
+        $r14 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort>;
+        $d0 = (double) df;
+        $d0 = $d0 / 3.0;
+        virtualinvoke $r14.<org.apache.lucene.index.SegmentMerger$CheckAbort: void work(double)>($d0);
+
+     label9:
+        if matchSize <= 0 goto label12;
+
+        matchSize = matchSize + -1;
+        smi = match[matchSize];
+        $z0 = virtualinvoke smi.<org.apache.lucene.index.SegmentMergeInfo: boolean next()>();
+        if $z0 == 0 goto label10;
+
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMergeQueue queue>;
+        virtualinvoke $r9.<org.apache.lucene.index.SegmentMergeQueue: void put(java.lang.Object)>(smi);
+        goto label11;
+
+     label10:
+        virtualinvoke smi.<org.apache.lucene.index.SegmentMergeInfo: void close()>();
+
+     label11:
+        goto label9;
+
+     label12:
+        goto label6;
+
+     label13:
+        return;
+    }
+
+    private final int mergeTermInfo(org.apache.lucene.index.SegmentMergeInfo[], int) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        org.apache.lucene.index.SegmentMergeInfo[] smis;
+        int n, df, $i1;
+        long freqPointer, proxPointer, skipPointer, $l0;
+        org.apache.lucene.store.IndexOutput $r0, $r7;
+        org.apache.lucene.index.FieldInfos $r1;
+        org.apache.lucene.index.SegmentMergeInfo $r2;
+        org.apache.lucene.index.Term $r3;
+        java.lang.String $r4;
+        org.apache.lucene.index.FieldInfo $r5;
+        boolean $z0;
+        org.apache.lucene.index.DefaultSkipListWriter $r6;
+        org.apache.lucene.index.TermInfo $r8, $r10;
+        org.apache.lucene.index.TermInfosWriter $r9;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        smis := @parameter0: org.apache.lucene.index.SegmentMergeInfo[];
+        n := @parameter1: int;
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput freqOutput>;
+        freqPointer = virtualinvoke $r0.<org.apache.lucene.store.IndexOutput: long getFilePointer()>();
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput>;
+        proxPointer = virtualinvoke $r0.<org.apache.lucene.store.IndexOutput: long getFilePointer()>();
+        goto label1;
+
+     label0:
+        proxPointer = 0L;
+
+     label1:
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r2 = smis[0];
+        $r3 = $r2.<org.apache.lucene.index.SegmentMergeInfo: org.apache.lucene.index.Term term>;
+        $r4 = $r3.<org.apache.lucene.index.Term: java.lang.String field>;
+        $r5 = virtualinvoke $r1.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(java.lang.String)>($r4);
+        $z0 = $r5.<org.apache.lucene.index.FieldInfo: boolean omitTf>;
+        if $z0 == 0 goto label2;
+
+        df = specialinvoke this.<org.apache.lucene.index.SegmentMerger: int appendPostingsNoTf(org.apache.lucene.index.SegmentMergeInfo[],int)>(smis, n);
+        goto label3;
+
+     label2:
+        df = specialinvoke this.<org.apache.lucene.index.SegmentMerger: int appendPostings(org.apache.lucene.index.SegmentMergeInfo[],int)>(smis, n);
+
+     label3:
+        $r6 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.DefaultSkipListWriter skipListWriter>;
+        $r7 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput freqOutput>;
+        skipPointer = virtualinvoke $r6.<org.apache.lucene.index.DefaultSkipListWriter: long writeSkip(org.apache.lucene.store.IndexOutput)>($r7);
+        if df <= 0 goto label4;
+
+        $r8 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.TermInfo termInfo>;
+        $l0 = skipPointer - freqPointer;
+        $i1 = (int) $l0;
+        virtualinvoke $r8.<org.apache.lucene.index.TermInfo: void set(int,long,long,int)>(df, freqPointer, proxPointer, $i1);
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.TermInfosWriter termInfosWriter>;
+        $r2 = smis[0];
+        $r3 = $r2.<org.apache.lucene.index.SegmentMergeInfo: org.apache.lucene.index.Term term>;
+        $r10 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.TermInfo termInfo>;
+        virtualinvoke $r9.<org.apache.lucene.index.TermInfosWriter: void add(org.apache.lucene.index.Term,org.apache.lucene.index.TermInfo)>($r3, $r10);
+
+     label4:
+        return df;
+    }
+
+    int[][] getDocMaps()
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        int[][] $r0;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: int[][] docMaps>;
+        return $r0;
+    }
+
+    int[] getDelCounts()
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        int[] $r0;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: int[] delCounts>;
+        return $r0;
+    }
+
+    private final int appendPostings(org.apache.lucene.index.SegmentMergeInfo[], int) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        org.apache.lucene.index.SegmentMergeInfo[] smis;
+        int n, lastDoc, df, lastPayloadLength, i, base, doc, docCode, freq, lastPosition, j, position, delta, payloadLength, $i0, $i1;
+        boolean storePayloads, $z0;
+        org.apache.lucene.index.SegmentMergeInfo smi, $r2;
+        org.apache.lucene.index.TermPositions postings;
+        int[] docMap;
+        org.apache.lucene.index.DefaultSkipListWriter $r0;
+        org.apache.lucene.index.FieldInfos $r1;
+        org.apache.lucene.index.Term $r3;
+        java.lang.String $r4, $r10;
+        org.apache.lucene.index.FieldInfo $r5;
+        java.lang.AssertionError $r6;
+        org.apache.lucene.index.TermEnum $r7;
+        org.apache.lucene.index.CorruptIndexException $r8;
+        java.lang.StringBuffer $r9;
+        org.apache.lucene.store.IndexOutput $r11;
+        byte[] $r12, $r13;
+        long tid_appendPostings;
+        java.lang.Thread thread_appendPostings;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        smis := @parameter0: org.apache.lucene.index.SegmentMergeInfo[];
+        n := @parameter1: int;
+        thread_appendPostings = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_appendPostings = virtualinvoke thread_appendPostings.<java.lang.Thread: long getId()>();
+        lastDoc = 0;
+        df = 0;
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.DefaultSkipListWriter skipListWriter>;
+        virtualinvoke $r0.<org.apache.lucene.index.DefaultSkipListWriter: void resetSkip()>();
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $r2 = smis[0];
+        $r3 = $r2.<org.apache.lucene.index.SegmentMergeInfo: org.apache.lucene.index.Term term>;
+        $r4 = $r3.<org.apache.lucene.index.Term: java.lang.String field>;
+        $r5 = virtualinvoke $r1.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(java.lang.String)>($r4);
+        storePayloads = $r5.<org.apache.lucene.index.FieldInfo: boolean storePayloads>;
+        lastPayloadLength = -1;
+        i = 0;
+
+     label0:
+        if i >= n goto label19;
+
+        smi = smis[i];
+        postings = virtualinvoke smi.<org.apache.lucene.index.SegmentMergeInfo: org.apache.lucene.index.TermPositions getPositions()>();
+        $z0 = <org.apache.lucene.index.SegmentMerger: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label1;
+
+        if postings != null goto label1;
+
+        $r6 = new java.lang.AssertionError;
+        specialinvoke $r6.<java.lang.AssertionError: void <init>()>();
+        throw $r6;
+
+     label1:
+        base = smi.<org.apache.lucene.index.SegmentMergeInfo: int base>;
+        docMap = virtualinvoke smi.<org.apache.lucene.index.SegmentMergeInfo: int[] getDocMap()>();
+        $r7 = smi.<org.apache.lucene.index.SegmentMergeInfo: org.apache.lucene.index.TermEnum termEnum>;
+        interfaceinvoke postings.<org.apache.lucene.index.TermPositions: void seek(org.apache.lucene.index.TermEnum)>($r7);
+
+     label2:
+        $z0 = interfaceinvoke postings.<org.apache.lucene.index.TermPositions: boolean next()>();
+        if $z0 == 0 goto label18;
+
+        doc = interfaceinvoke postings.<org.apache.lucene.index.TermPositions: int doc()>();
+        if docMap == null goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(docMap, 22, tid_appendPostings, "org.apache.lucene.index.SegmentMerger", 637, doc, doc);
+        doc = docMap[doc];
+
+     label3:
+        doc = doc + base;
+        if doc < 0 goto label4;
+
+        if df <= 0 goto label5;
+
+        if doc > lastDoc goto label5;
+
+     label4:
+        $r8 = new org.apache.lucene.index.CorruptIndexException;
+        $r9 = new java.lang.StringBuffer;
+        specialinvoke $r9.<java.lang.StringBuffer: void <init>()>();
+        $r9 = virtualinvoke $r9.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("docs out of order (");
+        $r9 = virtualinvoke $r9.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(doc);
+        $r9 = virtualinvoke $r9.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" <= ");
+        $r9 = virtualinvoke $r9.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(lastDoc);
+        $r9 = virtualinvoke $r9.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" )");
+        $r10 = virtualinvoke $r9.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r8.<org.apache.lucene.index.CorruptIndexException: void <init>(java.lang.String)>($r10);
+        throw $r8;
+
+     label5:
+        df = df + 1;
+        $i0 = this.<org.apache.lucene.index.SegmentMerger: int skipInterval>;
+        $i1 = df % $i0;
+        if $i1 != 0 goto label6;
+
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.DefaultSkipListWriter skipListWriter>;
+        virtualinvoke $r0.<org.apache.lucene.index.DefaultSkipListWriter: void setSkipData(int,boolean,int)>(lastDoc, storePayloads, lastPayloadLength);
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.DefaultSkipListWriter skipListWriter>;
+        virtualinvoke $r0.<org.apache.lucene.index.DefaultSkipListWriter: void bufferSkip(int)>(df);
+
+     label6:
+        $i1 = doc - lastDoc;
+        docCode = $i1 << 1;
+        lastDoc = doc;
+        freq = interfaceinvoke postings.<org.apache.lucene.index.TermPositions: int freq()>();
+        if freq != 1 goto label7;
+
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput freqOutput>;
+        $i0 = docCode | 1;
+        virtualinvoke $r11.<org.apache.lucene.store.IndexOutput: void writeVInt(int)>($i0);
+        goto label8;
+
+     label7:
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput freqOutput>;
+        virtualinvoke $r11.<org.apache.lucene.store.IndexOutput: void writeVInt(int)>(docCode);
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput freqOutput>;
+        virtualinvoke $r11.<org.apache.lucene.store.IndexOutput: void writeVInt(int)>(freq);
+
+     label8:
+        lastPosition = 0;
+        j = 0;
+
+     label9:
+        if j >= freq goto label17;
+
+        position = interfaceinvoke postings.<org.apache.lucene.index.TermPositions: int nextPosition()>();
+        delta = position - lastPosition;
+        if storePayloads == 0 goto label15;
+
+        payloadLength = interfaceinvoke postings.<org.apache.lucene.index.TermPositions: int getPayloadLength()>();
+        if payloadLength != lastPayloadLength goto label10;
+
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput>;
+        $i0 = delta * 2;
+        virtualinvoke $r11.<org.apache.lucene.store.IndexOutput: void writeVInt(int)>($i0);
+        goto label11;
+
+     label10:
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput>;
+        $i0 = delta * 2;
+        $i0 = $i0 + 1;
+        virtualinvoke $r11.<org.apache.lucene.store.IndexOutput: void writeVInt(int)>($i0);
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput>;
+        virtualinvoke $r11.<org.apache.lucene.store.IndexOutput: void writeVInt(int)>(payloadLength);
+        lastPayloadLength = payloadLength;
+
+     label11:
+        if payloadLength <= 0 goto label14;
+
+        $r12 = this.<org.apache.lucene.index.SegmentMerger: byte[] payloadBuffer>;
+        if $r12 == null goto label12;
+
+        $r12 = this.<org.apache.lucene.index.SegmentMerger: byte[] payloadBuffer>;
+        $i1 = lengthof $r12;
+        if $i1 >= payloadLength goto label13;
+
+     label12:
+        $r13 = newarray (byte)[payloadLength];
+        this.<org.apache.lucene.index.SegmentMerger: byte[] payloadBuffer> = $r13;
+
+     label13:
+        $r13 = this.<org.apache.lucene.index.SegmentMerger: byte[] payloadBuffer>;
+        interfaceinvoke postings.<org.apache.lucene.index.TermPositions: byte[] getPayload(byte[],int)>($r13, 0);
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput>;
+        $r13 = this.<org.apache.lucene.index.SegmentMerger: byte[] payloadBuffer>;
+        virtualinvoke $r11.<org.apache.lucene.store.IndexOutput: void writeBytes(byte[],int,int)>($r13, 0, payloadLength);
+
+     label14:
+        goto label16;
+
+     label15:
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput proxOutput>;
+        virtualinvoke $r11.<org.apache.lucene.store.IndexOutput: void writeVInt(int)>(delta);
+
+     label16:
+        lastPosition = position;
+        j = j + 1;
+        goto label9;
+
+     label17:
+        goto label2;
+
+     label18:
+        i = i + 1;
+        goto label0;
+
+     label19:
+        return df;
+    }
+
+    private final int appendPostingsNoTf(org.apache.lucene.index.SegmentMergeInfo[], int) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        org.apache.lucene.index.SegmentMergeInfo[] smis;
+        int n, lastDoc, df, i, base, doc, docCode, $i0, $i1;
+        byte lastPayloadLength;
+        org.apache.lucene.index.SegmentMergeInfo smi;
+        org.apache.lucene.index.TermPositions postings;
+        int[] docMap;
+        java.lang.StringBuffer $r0;
+        org.apache.lucene.index.DefaultSkipListWriter $r1;
+        boolean $z0;
+        java.lang.AssertionError $r2;
+        org.apache.lucene.index.TermEnum $r3;
+        org.apache.lucene.index.CorruptIndexException $r4;
+        java.lang.String $r5;
+        org.apache.lucene.store.IndexOutput $r6;
+        long tid_appendPostingsNoTf;
+        java.lang.Thread thread_appendPostingsNoTf;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        smis := @parameter0: org.apache.lucene.index.SegmentMergeInfo[];
+        n := @parameter1: int;
+        thread_appendPostingsNoTf = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_appendPostingsNoTf = virtualinvoke thread_appendPostingsNoTf.<java.lang.Thread: long getId()>();
+        lastDoc = 0;
+        df = 0;
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.DefaultSkipListWriter skipListWriter>;
+        virtualinvoke $r1.<org.apache.lucene.index.DefaultSkipListWriter: void resetSkip()>();
+        lastPayloadLength = -1;
+        i = 0;
+
+     label0:
+        if i >= n goto label8;
+
+        smi = smis[i];
+        postings = virtualinvoke smi.<org.apache.lucene.index.SegmentMergeInfo: org.apache.lucene.index.TermPositions getPositions()>();
+        $z0 = <org.apache.lucene.index.SegmentMerger: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label1;
+
+        if postings != null goto label1;
+
+        $r2 = new java.lang.AssertionError;
+        specialinvoke $r2.<java.lang.AssertionError: void <init>()>();
+        throw $r2;
+
+     label1:
+        base = smi.<org.apache.lucene.index.SegmentMergeInfo: int base>;
+        docMap = virtualinvoke smi.<org.apache.lucene.index.SegmentMergeInfo: int[] getDocMap()>();
+        $r3 = smi.<org.apache.lucene.index.SegmentMergeInfo: org.apache.lucene.index.TermEnum termEnum>;
+        interfaceinvoke postings.<org.apache.lucene.index.TermPositions: void seek(org.apache.lucene.index.TermEnum)>($r3);
+
+     label2:
+        $z0 = interfaceinvoke postings.<org.apache.lucene.index.TermPositions: boolean next()>();
+        if $z0 == 0 goto label7;
+
+        doc = interfaceinvoke postings.<org.apache.lucene.index.TermPositions: int doc()>();
+        if docMap == null goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(docMap, 22, tid_appendPostingsNoTf, "org.apache.lucene.index.SegmentMerger", 720, doc, doc);
+        doc = docMap[doc];
+
+     label3:
+        doc = doc + base;
+        if doc < 0 goto label4;
+
+        if df <= 0 goto label5;
+
+        if doc > lastDoc goto label5;
+
+     label4:
+        $r4 = new org.apache.lucene.index.CorruptIndexException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("docs out of order (");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(doc);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" <= ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(lastDoc);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" )");
+        $r5 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r4.<org.apache.lucene.index.CorruptIndexException: void <init>(java.lang.String)>($r5);
+        throw $r4;
+
+     label5:
+        df = df + 1;
+        $i0 = this.<org.apache.lucene.index.SegmentMerger: int skipInterval>;
+        $i1 = df % $i0;
+        if $i1 != 0 goto label6;
+
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.DefaultSkipListWriter skipListWriter>;
+        virtualinvoke $r1.<org.apache.lucene.index.DefaultSkipListWriter: void setSkipData(int,boolean,int)>(lastDoc, 0, lastPayloadLength);
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.DefaultSkipListWriter skipListWriter>;
+        virtualinvoke $r1.<org.apache.lucene.index.DefaultSkipListWriter: void bufferSkip(int)>(df);
+
+     label6:
+        docCode = doc - lastDoc;
+        lastDoc = doc;
+        $r6 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.IndexOutput freqOutput>;
+        virtualinvoke $r6.<org.apache.lucene.store.IndexOutput: void writeVInt(int)>(docCode);
+        goto label2;
+
+     label7:
+        i = i + 1;
+        goto label0;
+
+     label8:
+        return df;
+    }
+
+    private void mergeNorms() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentMerger this;
+        byte[] normBuffer, $r6, $r7;
+        org.apache.lucene.store.IndexOutput output;
+        int i, j, maxDoc, k, $i0, $i1, $i2;
+        org.apache.lucene.index.FieldInfo fi;
+        org.apache.lucene.index.IndexReader reader;
+        java.lang.Throwable l9, $r12;
+        org.apache.lucene.index.FieldInfos $r0, $r1;
+        boolean $z0;
+        org.apache.lucene.store.Directory $r2;
+        java.lang.StringBuffer $r3;
+        java.lang.String $r4, $r5;
+        java.util.List $r8, $r9;
+        java.lang.Object $r10;
+        byte $b3;
+        org.apache.lucene.index.SegmentMerger$CheckAbort $r11;
+        double $d0;
+        long tid_mergeNorms;
+        java.lang.Thread thread_mergeNorms;
+
+        this := @this: org.apache.lucene.index.SegmentMerger;
+        thread_mergeNorms = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_mergeNorms = virtualinvoke thread_mergeNorms.<java.lang.Thread: long getId()>();
+        normBuffer = null;
+        output = null;
+
+     label0:
+        i = 0;
+
+     label1:
+        $r0 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.index.FieldInfos: int size()>();
+        if i >= $i0 goto label12;
+
+        $r1 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.FieldInfos fieldInfos>;
+        fi = virtualinvoke $r1.<org.apache.lucene.index.FieldInfos: org.apache.lucene.index.FieldInfo fieldInfo(int)>(i);
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        if $z0 == 0 goto label11;
+
+        $z0 = fi.<org.apache.lucene.index.FieldInfo: boolean omitNorms>;
+        if $z0 != 0 goto label11;
+
+        if output != null goto label2;
+
+        $r2 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.store.Directory directory>;
+        $r3 = new java.lang.StringBuffer;
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>()>();
+        $r4 = this.<org.apache.lucene.index.SegmentMerger: java.lang.String segment>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("nrm");
+        $r5 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+        output = virtualinvoke $r2.<org.apache.lucene.store.Directory: org.apache.lucene.store.IndexOutput createOutput(java.lang.String)>($r5);
+        $r6 = <org.apache.lucene.index.SegmentMerger: byte[] NORMS_HEADER>;
+        $r7 = <org.apache.lucene.index.SegmentMerger: byte[] NORMS_HEADER>;
+        $i1 = lengthof $r7;
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeBytes(byte[],int)>($r6, $i1);
+
+     label2:
+        j = 0;
+
+     label3:
+        $r8 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $i0 = interfaceinvoke $r8.<java.util.List: int size()>();
+        if j >= $i0 goto label11;
+
+        $r9 = this.<org.apache.lucene.index.SegmentMerger: java.util.List readers>;
+        $r10 = interfaceinvoke $r9.<java.util.List: java.lang.Object get(int)>(j);
+        reader = (org.apache.lucene.index.IndexReader) $r10;
+        maxDoc = virtualinvoke reader.<org.apache.lucene.index.IndexReader: int maxDoc()>();
+        if normBuffer == null goto label4;
+
+        $i2 = lengthof normBuffer;
+        if $i2 >= maxDoc goto label5;
+
+     label4:
+        normBuffer = newarray (byte)[maxDoc];
+
+     label5:
+        $r5 = fi.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        virtualinvoke reader.<org.apache.lucene.index.IndexReader: void norms(java.lang.String,byte[],int)>($r5, normBuffer, 0);
+        $z0 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: boolean hasDeletions()>();
+        if $z0 != 0 goto label6;
+
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeBytes(byte[],int)>(normBuffer, maxDoc);
+        goto label9;
+
+     label6:
+        k = 0;
+
+     label7:
+        if k >= maxDoc goto label9;
+
+        $z0 = virtualinvoke reader.<org.apache.lucene.index.IndexReader: boolean isDeleted(int)>(k);
+        if $z0 != 0 goto label8;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(normBuffer, 4, tid_mergeNorms, "org.apache.lucene.index.SegmentMerger", 769, k, $b3);
+        $b3 = normBuffer[k];
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b3);
+
+     label8:
+        k = k + 1;
+        goto label7;
+
+     label9:
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort>;
+        if $r11 == null goto label10;
+
+        $r11 = this.<org.apache.lucene.index.SegmentMerger: org.apache.lucene.index.SegmentMerger$CheckAbort checkAbort>;
+        $d0 = (double) maxDoc;
+        virtualinvoke $r11.<org.apache.lucene.index.SegmentMerger$CheckAbort: void work(double)>($d0);
+
+     label10:
+        j = j + 1;
+        goto label3;
+
+     label11:
+        i = i + 1;
+        goto label1;
+
+     label12:
+        goto label18;
+
+     label13:
+        goto label17;
+
+     label14:
+        $r12 := @caughtexception;
+
+     label15:
+        l9 = $r12;
+        goto label20;
+
+     label16:
+        throw l9;
+
+     label17:
+        return;
+
+     label18:
+        if output == null goto label19;
+
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void close()>();
+
+     label19:
+        goto label13;
+
+     label20:
+        if output == null goto label21;
+
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void close()>();
+
+     label21:
+        goto label16;
+
+        catch java.lang.Throwable from label0 to label13 with label14;
+        catch java.lang.Throwable from label15 to label16 with label14;
+    }
+
+    static java.lang.Class class$(java.lang.String)
+    {
+        java.lang.String x0;
+        java.lang.ClassNotFoundException x1, $r1;
+        java.lang.Class $r0;
+        java.lang.NoClassDefFoundError $r2;
+        java.lang.Throwable $r3;
+
+        x0 := @parameter0: java.lang.String;
+
+     label0:
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(x0);
+
+     label1:
+        return $r0;
+
+     label2:
+        $r1 := @caughtexception;
+        x1 = $r1;
+        $r2 = new java.lang.NoClassDefFoundError;
+        specialinvoke $r2.<java.lang.NoClassDefFoundError: void <init>()>();
+        $r3 = virtualinvoke $r2.<java.lang.NoClassDefFoundError: java.lang.Throwable initCause(java.lang.Throwable)>(x1);
+        throw $r3;
+
+        catch java.lang.ClassNotFoundException from label0 to label1 with label2;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        boolean $z0;
+        byte[] $r1;
+
+        $r0 = <org.apache.lucene.index.SegmentMerger: java.lang.Class class$org$apache$lucene$index$SegmentMerger>;
+        if $r0 != null goto label0;
+
+        $r0 = staticinvoke <org.apache.lucene.index.SegmentMerger: java.lang.Class class$(java.lang.String)>("org.apache.lucene.index.SegmentMerger");
+        <org.apache.lucene.index.SegmentMerger: java.lang.Class class$org$apache$lucene$index$SegmentMerger> = $r0;
+        goto label1;
+
+     label0:
+        $r0 = <org.apache.lucene.index.SegmentMerger: java.lang.Class class$org$apache$lucene$index$SegmentMerger>;
+
+     label1:
+        $z0 = virtualinvoke $r0.<java.lang.Class: boolean desiredAssertionStatus()>();
+        if $z0 != 0 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        <org.apache.lucene.index.SegmentMerger: boolean $assertionsDisabled> = $z0;
+        $r1 = newarray (byte)[4];
+        $r1[0] = 78;
+        $r1[1] = 82;
+        $r1[2] = 77;
+        $r1[3] = -1;
+        <org.apache.lucene.index.SegmentMerger: byte[] NORMS_HEADER> = $r1;
+        return;
+    }
+}

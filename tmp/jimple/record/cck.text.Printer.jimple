@@ -1,0 +1,384 @@
+public class cck.text.Printer extends java.lang.Object
+{
+    private final java.io.PrintStream o;
+    private boolean begLine;
+    private int listdepth;
+    private boolean first;
+    private boolean nlcomma;
+    private int indent;
+    public static final cck.text.Printer STDOUT;
+    public static final cck.text.Printer STDERR;
+
+    public void <init>(java.io.PrintStream)
+    {
+        cck.text.Printer this;
+        java.io.PrintStream o;
+
+        this := @this: cck.text.Printer;
+        o := @parameter0: java.io.PrintStream;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<cck.text.Printer: java.io.PrintStream o> = o;
+        this.<cck.text.Printer: boolean begLine> = 1;
+        return;
+    }
+
+    public void println(java.lang.String)
+    {
+        cck.text.Printer this;
+        java.lang.String s;
+        int $i0;
+        boolean $z0;
+        java.io.PrintStream $r0;
+        long tid_println;
+        java.lang.Thread thread_println;
+
+        this := @this: cck.text.Printer;
+        s := @parameter0: java.lang.String;
+        thread_println = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_println = virtualinvoke thread_println.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<cck.text.Printer: void spaces()>();
+        $i0 = this.<cck.text.Printer: int listdepth>;
+        if $i0 <= 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 227, tid_println, "cck.text.Printer", 57, $z0);
+        $z0 = this.<cck.text.Printer: boolean first>;
+        if $z0 != 0 goto label0;
+
+        $r0 = this.<cck.text.Printer: java.io.PrintStream o>;
+        virtualinvoke $r0.<java.io.PrintStream: void print(java.lang.String)>(", ");
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 227, tid_println, "cck.text.Printer", 59, 0);
+        this.<cck.text.Printer: boolean first> = 0;
+        $r0 = this.<cck.text.Printer: java.io.PrintStream o>;
+        virtualinvoke $r0.<java.io.PrintStream: void println(java.lang.String)>(s);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 228, tid_println, "cck.text.Printer", 61, 1);
+        this.<cck.text.Printer: boolean begLine> = 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 227, tid_println, "cck.text.Printer", 62, 0);
+        this.<cck.text.Printer: boolean first> = 0;
+        return;
+    }
+
+    public void print(java.lang.String)
+    {
+        cck.text.Printer this;
+        java.lang.String s;
+        int $i0;
+        boolean $z0;
+        java.io.PrintStream $r0;
+        long tid_print;
+        java.lang.Thread thread_print;
+
+        this := @this: cck.text.Printer;
+        s := @parameter0: java.lang.String;
+        thread_print = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_print = virtualinvoke thread_print.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<cck.text.Printer: void spaces()>();
+        $i0 = this.<cck.text.Printer: int listdepth>;
+        if $i0 <= 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 227, tid_print, "cck.text.Printer", 68, $z0);
+        $z0 = this.<cck.text.Printer: boolean first>;
+        if $z0 != 0 goto label0;
+
+        $r0 = this.<cck.text.Printer: java.io.PrintStream o>;
+        virtualinvoke $r0.<java.io.PrintStream: void print(java.lang.String)>(", ");
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 227, tid_print, "cck.text.Printer", 70, 0);
+        this.<cck.text.Printer: boolean first> = 0;
+        $r0 = this.<cck.text.Printer: java.io.PrintStream o>;
+        virtualinvoke $r0.<java.io.PrintStream: void print(java.lang.String)>(s);
+        return;
+    }
+
+    public void nextln()
+    {
+        cck.text.Printer this;
+        boolean $z0;
+        java.io.PrintStream $r0;
+        long tid_nextln;
+        java.lang.Thread thread_nextln;
+
+        this := @this: cck.text.Printer;
+        thread_nextln = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_nextln = virtualinvoke thread_nextln.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 228, tid_nextln, "cck.text.Printer", 75, $z0);
+        $z0 = this.<cck.text.Printer: boolean begLine>;
+        if $z0 != 0 goto label0;
+
+        $r0 = this.<cck.text.Printer: java.io.PrintStream o>;
+        virtualinvoke $r0.<java.io.PrintStream: void print(java.lang.String)>("\n");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 228, tid_nextln, "cck.text.Printer", 77, 1);
+        this.<cck.text.Printer: boolean begLine> = 1;
+
+     label0:
+        return;
+    }
+
+    public void indent()
+    {
+        cck.text.Printer this;
+        int $i0;
+
+        this := @this: cck.text.Printer;
+        $i0 = this.<cck.text.Printer: int indent>;
+        $i0 = $i0 + 1;
+        this.<cck.text.Printer: int indent> = $i0;
+        return;
+    }
+
+    public void spaces()
+    {
+        cck.text.Printer this;
+        int cntr, $i0;
+        boolean $z0;
+        java.io.PrintStream $r0;
+        long tid_spaces;
+        java.lang.Thread thread_spaces;
+
+        this := @this: cck.text.Printer;
+        thread_spaces = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_spaces = virtualinvoke thread_spaces.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 228, tid_spaces, "cck.text.Printer", 86, $z0);
+        $z0 = this.<cck.text.Printer: boolean begLine>;
+        if $z0 == 0 goto label2;
+
+        cntr = 0;
+
+     label0:
+        $i0 = this.<cck.text.Printer: int indent>;
+        if cntr >= $i0 goto label1;
+
+        $r0 = this.<cck.text.Printer: java.io.PrintStream o>;
+        virtualinvoke $r0.<java.io.PrintStream: void print(java.lang.String)>("    ");
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 228, tid_spaces, "cck.text.Printer", 89, 0);
+        this.<cck.text.Printer: boolean begLine> = 0;
+
+     label2:
+        return;
+    }
+
+    public void unindent()
+    {
+        cck.text.Printer this;
+        int $i0, $i1;
+
+        this := @this: cck.text.Printer;
+        $i0 = this.<cck.text.Printer: int indent>;
+        $i0 = $i0 - 1;
+        this.<cck.text.Printer: int indent> = $i0;
+        $i1 = this.<cck.text.Printer: int indent>;
+        if $i1 >= 0 goto label0;
+
+        this.<cck.text.Printer: int indent> = 0;
+
+     label0:
+        return;
+    }
+
+    public void startblock()
+    {
+        cck.text.Printer this;
+
+        this := @this: cck.text.Printer;
+        virtualinvoke this.<cck.text.Printer: void println(java.lang.String)>("{");
+        virtualinvoke this.<cck.text.Printer: void indent()>();
+        return;
+    }
+
+    public void startblock(java.lang.String)
+    {
+        cck.text.Printer this;
+        java.lang.String name, $r1;
+        java.lang.StringBuilder $r0;
+
+        this := @this: cck.text.Printer;
+        name := @parameter0: java.lang.String;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(name);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" {");
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke this.<cck.text.Printer: void println(java.lang.String)>($r1);
+        virtualinvoke this.<cck.text.Printer: void indent()>();
+        return;
+    }
+
+    public void endblock()
+    {
+        cck.text.Printer this;
+
+        this := @this: cck.text.Printer;
+        virtualinvoke this.<cck.text.Printer: void unindent()>();
+        virtualinvoke this.<cck.text.Printer: void println(java.lang.String)>("}");
+        return;
+    }
+
+    public void endblock(java.lang.String)
+    {
+        cck.text.Printer this;
+        java.lang.String s, $r1;
+        java.lang.StringBuilder $r0;
+
+        this := @this: cck.text.Printer;
+        s := @parameter0: java.lang.String;
+        virtualinvoke this.<cck.text.Printer: void unindent()>();
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(125);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(s);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke this.<cck.text.Printer: void println(java.lang.String)>($r1);
+        return;
+    }
+
+    public void close()
+    {
+        cck.text.Printer this;
+        java.io.PrintStream $r0;
+
+        this := @this: cck.text.Printer;
+        $r0 = this.<cck.text.Printer: java.io.PrintStream o>;
+        virtualinvoke $r0.<java.io.PrintStream: void close()>();
+        return;
+    }
+
+    public void beginList(java.lang.String)
+    {
+        cck.text.Printer this;
+        java.lang.String beg;
+        int $i0;
+        long tid_beginList;
+        java.lang.Thread thread_beginList;
+
+        this := @this: cck.text.Printer;
+        beg := @parameter0: java.lang.String;
+        thread_beginList = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_beginList = virtualinvoke thread_beginList.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<cck.text.Printer: void print(java.lang.String)>(beg);
+        $i0 = this.<cck.text.Printer: int listdepth>;
+        $i0 = $i0 + 1;
+        this.<cck.text.Printer: int listdepth> = $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 227, tid_beginList, "cck.text.Printer", 125, 1);
+        this.<cck.text.Printer: boolean first> = 1;
+        return;
+    }
+
+    public void beginList()
+    {
+        cck.text.Printer this;
+        int $i0;
+        long tid_beginList;
+        java.lang.Thread thread_beginList;
+
+        this := @this: cck.text.Printer;
+        thread_beginList = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_beginList = virtualinvoke thread_beginList.<java.lang.Thread: long getId()>();
+        $i0 = this.<cck.text.Printer: int listdepth>;
+        $i0 = $i0 + 1;
+        this.<cck.text.Printer: int listdepth> = $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 227, tid_beginList, "cck.text.Printer", 130, 1);
+        this.<cck.text.Printer: boolean first> = 1;
+        return;
+    }
+
+    public void endList(java.lang.String)
+    {
+        cck.text.Printer this;
+        java.lang.String end;
+        int $i0, $i1;
+
+        this := @this: cck.text.Printer;
+        end := @parameter0: java.lang.String;
+        $i0 = this.<cck.text.Printer: int listdepth>;
+        $i0 = $i0 - 1;
+        this.<cck.text.Printer: int listdepth> = $i0;
+        $i1 = this.<cck.text.Printer: int listdepth>;
+        if $i1 >= 0 goto label0;
+
+        this.<cck.text.Printer: int listdepth> = 0;
+
+     label0:
+        virtualinvoke this.<cck.text.Printer: void print(java.lang.String)>(end);
+        return;
+    }
+
+    public void endListln(java.lang.String)
+    {
+        cck.text.Printer this;
+        java.lang.String end;
+        int $i0, $i1;
+
+        this := @this: cck.text.Printer;
+        end := @parameter0: java.lang.String;
+        $i0 = this.<cck.text.Printer: int listdepth>;
+        $i0 = $i0 - 1;
+        this.<cck.text.Printer: int listdepth> = $i0;
+        $i1 = this.<cck.text.Printer: int listdepth>;
+        if $i1 >= 0 goto label0;
+
+        this.<cck.text.Printer: int listdepth> = 0;
+
+     label0:
+        virtualinvoke this.<cck.text.Printer: void println(java.lang.String)>(end);
+        return;
+    }
+
+    public void endList()
+    {
+        cck.text.Printer this;
+        int $i0, $i1;
+
+        this := @this: cck.text.Printer;
+        $i0 = this.<cck.text.Printer: int listdepth>;
+        $i0 = $i0 - 1;
+        this.<cck.text.Printer: int listdepth> = $i0;
+        $i1 = this.<cck.text.Printer: int listdepth>;
+        if $i1 >= 0 goto label0;
+
+        this.<cck.text.Printer: int listdepth> = 0;
+
+     label0:
+        return;
+    }
+
+    public void endListln()
+    {
+        cck.text.Printer this;
+        int $i0, $i1;
+
+        this := @this: cck.text.Printer;
+        $i0 = this.<cck.text.Printer: int listdepth>;
+        $i0 = $i0 - 1;
+        this.<cck.text.Printer: int listdepth> = $i0;
+        $i1 = this.<cck.text.Printer: int listdepth>;
+        if $i1 >= 0 goto label0;
+
+        this.<cck.text.Printer: int listdepth> = 0;
+
+     label0:
+        virtualinvoke this.<cck.text.Printer: void nextln()>();
+        return;
+    }
+
+    static void <clinit>()
+    {
+        cck.text.Printer $r0;
+        java.io.PrintStream $r1;
+
+        $r0 = new cck.text.Printer;
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        specialinvoke $r0.<cck.text.Printer: void <init>(java.io.PrintStream)>($r1);
+        <cck.text.Printer: cck.text.Printer STDOUT> = $r0;
+        $r0 = new cck.text.Printer;
+        $r1 = <java.lang.System: java.io.PrintStream out>;
+        specialinvoke $r0.<cck.text.Printer: void <init>(java.io.PrintStream)>($r1);
+        <cck.text.Printer: cck.text.Printer STDERR> = $r0;
+        return;
+    }
+}

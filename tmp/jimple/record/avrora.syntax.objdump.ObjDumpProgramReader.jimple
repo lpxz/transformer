@@ -1,0 +1,88 @@
+public class avrora.syntax.objdump.ObjDumpProgramReader extends avrora.core.ProgramReader
+{
+    protected final cck.util.Option$List SECTIONS;
+
+    public avrora.core.Program read(java.lang.String[]) throws java.lang.Exception
+    {
+        avrora.syntax.objdump.ObjDumpProgramReader this;
+        java.lang.String[] args;
+        java.io.File f, $r2;
+        avrora.syntax.RawModule module, $r4;
+        java.lang.StringBuffer buf;
+        java.io.StringReader r, $r9;
+        avrora.syntax.objdump.ObjDumpParser parser, $r10;
+        avrora.core.Program p;
+        int $i0;
+        avrora.arch.AbstractArchitecture $r0;
+        avrora.arch.legacy.LegacyArchitecture $r1;
+        java.lang.String $r3, $r8, $r11;
+        avrora.syntax.objdump.ObjDumpReformatter $r5;
+        cck.util.Option$List $r6;
+        java.util.List $r7;
+        long tid_read;
+        java.lang.Thread thread_read;
+
+        this := @this: avrora.syntax.objdump.ObjDumpProgramReader;
+        args := @parameter0: java.lang.String[];
+        thread_read = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_read = virtualinvoke thread_read.<java.lang.Thread: long getId()>();
+        $i0 = lengthof args;
+        if $i0 != 0 goto label0;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String)>("no input files");
+
+     label0:
+        $i0 = lengthof args;
+        if $i0 == 1 goto label1;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String)>("input type \"objdump\" accepts only one file at a time.");
+
+     label1:
+        $r0 = virtualinvoke this.<avrora.syntax.objdump.ObjDumpProgramReader: avrora.arch.AbstractArchitecture getArchitecture()>();
+        $r1 = <avrora.arch.legacy.LegacyArchitecture: avrora.arch.legacy.LegacyArchitecture INSTANCE>;
+        if $r0 == $r1 goto label2;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String)>("input type  \"objdump\" parses only the \"legacy\" architecture.");
+
+     label2:
+        $r2 = new java.io.File;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 18, tid_read, "avrora.syntax.objdump.ObjDumpProgramReader", 70, 0, $r3);
+        $r3 = args[0];
+        specialinvoke $r2.<java.io.File: void <init>(java.lang.String)>($r3);
+        f = $r2;
+        $r4 = new avrora.syntax.RawModule;
+        specialinvoke $r4.<avrora.syntax.RawModule: void <init>(boolean,boolean)>(1, 1);
+        module = $r4;
+        $r5 = new avrora.syntax.objdump.ObjDumpReformatter;
+        $r6 = this.<avrora.syntax.objdump.ObjDumpProgramReader: cck.util.Option$List SECTIONS>;
+        $r7 = virtualinvoke $r6.<cck.util.Option$List: java.util.List get()>();
+        specialinvoke $r5.<avrora.syntax.objdump.ObjDumpReformatter: void <init>(java.util.List)>($r7);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 18, tid_read, "avrora.syntax.objdump.ObjDumpProgramReader", 72, 0, $r8);
+        $r8 = args[0];
+        buf = virtualinvoke $r5.<avrora.syntax.objdump.ObjDumpReformatter: java.lang.StringBuffer cleanCode(java.lang.String)>($r8);
+        $r9 = new java.io.StringReader;
+        $r3 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r9.<java.io.StringReader: void <init>(java.lang.String)>($r3);
+        r = $r9;
+        $r10 = new avrora.syntax.objdump.ObjDumpParser;
+        $r11 = virtualinvoke f.<java.io.File: java.lang.String getName()>();
+        specialinvoke $r10.<avrora.syntax.objdump.ObjDumpParser: void <init>(java.io.Reader,avrora.syntax.RawModule,java.lang.String)>(r, module, $r11);
+        parser = $r10;
+        virtualinvoke parser.<avrora.syntax.objdump.ObjDumpParser: void Module()>();
+        p = virtualinvoke module.<avrora.syntax.RawModule: avrora.core.Program build()>();
+        virtualinvoke this.<avrora.syntax.objdump.ObjDumpProgramReader: void addIndirectEdges(avrora.core.Program)>(p);
+        return p;
+    }
+
+    public void <init>()
+    {
+        avrora.syntax.objdump.ObjDumpProgramReader this;
+        cck.util.Option$List $r0;
+
+        this := @this: avrora.syntax.objdump.ObjDumpProgramReader;
+        specialinvoke this.<avrora.core.ProgramReader: void <init>(java.lang.String)>("The \"objdump\" input format reads programs that are the output of the \"avr-objdump\" utility provided with avr-binutils. For example, an ELF file must first be disassembled with \"avr-objdump -zhD\" to create a text file readable by this input format. The \"-zhD\" options are very important: the output will not be parseable otherwise.");
+        $r0 = virtualinvoke this.<avrora.syntax.objdump.ObjDumpProgramReader: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("sections", ".text,.data", "This option specifies a list of sections that the loader should load from the output.");
+        this.<avrora.syntax.objdump.ObjDumpProgramReader: cck.util.Option$List SECTIONS> = $r0;
+        return;
+    }
+}

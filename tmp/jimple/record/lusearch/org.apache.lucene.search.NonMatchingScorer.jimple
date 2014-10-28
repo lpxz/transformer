@@ -1,0 +1,67 @@
+class org.apache.lucene.search.NonMatchingScorer extends org.apache.lucene.search.Scorer
+{
+
+    public void <init>()
+    {
+        org.apache.lucene.search.NonMatchingScorer this;
+
+        this := @this: org.apache.lucene.search.NonMatchingScorer;
+        specialinvoke this.<org.apache.lucene.search.Scorer: void <init>(org.apache.lucene.search.Similarity)>(null);
+        return;
+    }
+
+    public int doc()
+    {
+        org.apache.lucene.search.NonMatchingScorer this;
+        java.lang.UnsupportedOperationException $r0;
+
+        this := @this: org.apache.lucene.search.NonMatchingScorer;
+        $r0 = new java.lang.UnsupportedOperationException;
+        specialinvoke $r0.<java.lang.UnsupportedOperationException: void <init>()>();
+        throw $r0;
+    }
+
+    public boolean next() throws java.io.IOException
+    {
+        org.apache.lucene.search.NonMatchingScorer this;
+
+        this := @this: org.apache.lucene.search.NonMatchingScorer;
+        return 0;
+    }
+
+    public float score()
+    {
+        org.apache.lucene.search.NonMatchingScorer this;
+        java.lang.UnsupportedOperationException $r0;
+
+        this := @this: org.apache.lucene.search.NonMatchingScorer;
+        $r0 = new java.lang.UnsupportedOperationException;
+        specialinvoke $r0.<java.lang.UnsupportedOperationException: void <init>()>();
+        throw $r0;
+    }
+
+    public boolean skipTo(int)
+    {
+        org.apache.lucene.search.NonMatchingScorer this;
+        int target;
+
+        this := @this: org.apache.lucene.search.NonMatchingScorer;
+        target := @parameter0: int;
+        return 0;
+    }
+
+    public org.apache.lucene.search.Explanation explain(int)
+    {
+        org.apache.lucene.search.NonMatchingScorer this;
+        int doc;
+        org.apache.lucene.search.Explanation $r0, e;
+
+        this := @this: org.apache.lucene.search.NonMatchingScorer;
+        doc := @parameter0: int;
+        $r0 = new org.apache.lucene.search.Explanation;
+        specialinvoke $r0.<org.apache.lucene.search.Explanation: void <init>()>();
+        e = $r0;
+        virtualinvoke e.<org.apache.lucene.search.Explanation: void setDescription(java.lang.String)>("No document matches.");
+        return e;
+    }
+}

@@ -1,0 +1,578 @@
+public class avrora.sim.mcu.RegisterLayout extends java.lang.Object
+{
+    public static final avrora.sim.mcu.RegisterLayout$Field UNUSED;
+    public static final avrora.sim.mcu.RegisterLayout$Field RESERVED;
+    public final int ioreg_size;
+    public final int ioreg_length;
+    protected final java.util.HashMap ioregAssignments;
+    protected final avrora.sim.mcu.RegisterLayout$RegisterInfo[] info;
+    protected final java.util.HashMap fields;
+
+    public void <init>(int, int)
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        int is, rlength;
+        java.util.HashMap $r0;
+        avrora.sim.mcu.RegisterLayout$RegisterInfo[] $r1;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        is := @parameter0: int;
+        rlength := @parameter1: int;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.mcu.RegisterLayout: int ioreg_size> = is;
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        this.<avrora.sim.mcu.RegisterLayout: java.util.HashMap ioregAssignments> = $r0;
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        this.<avrora.sim.mcu.RegisterLayout: java.util.HashMap fields> = $r0;
+        $r1 = newarray (avrora.sim.mcu.RegisterLayout$RegisterInfo)[is];
+        this.<avrora.sim.mcu.RegisterLayout: avrora.sim.mcu.RegisterLayout$RegisterInfo[] info> = $r1;
+        this.<avrora.sim.mcu.RegisterLayout: int ioreg_length> = rlength;
+        return;
+    }
+
+    public void addIOReg(java.lang.String, int)
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        java.lang.String n, $r2, $r3;
+        int ior_num, $i0;
+        java.lang.StringBuilder $r0;
+        avrora.sim.mcu.RegisterLayout$RegisterInfo i, $r4;
+        cck.util.Util$Error $r1;
+        avrora.sim.mcu.RegisterLayout$RegisterInfo[] $r5;
+        java.util.HashMap $r6;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        n := @parameter0: java.lang.String;
+        ior_num := @parameter1: int;
+        $i0 = this.<avrora.sim.mcu.RegisterLayout: int ioreg_size>;
+        if ior_num < $i0 goto label0;
+
+        $r1 = new cck.util.Util$Error;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("invalid register address ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(ior_num);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" for register ");
+        $r2 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>(n);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+        $r3 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke $r1.<cck.util.Util$Error: void <init>(java.lang.String,java.lang.String)>("Layout Error", $r3);
+        throw $r1;
+
+     label0:
+        $r4 = new avrora.sim.mcu.RegisterLayout$RegisterInfo;
+        specialinvoke $r4.<avrora.sim.mcu.RegisterLayout$RegisterInfo: void <init>(java.lang.String,int)>(n, ior_num);
+        i = $r4;
+        $r5 = this.<avrora.sim.mcu.RegisterLayout: avrora.sim.mcu.RegisterLayout$RegisterInfo[] info>;
+        $r5[ior_num] = i;
+        $r6 = this.<avrora.sim.mcu.RegisterLayout: java.util.HashMap ioregAssignments>;
+        virtualinvoke $r6.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(n, i);
+        return;
+    }
+
+    public void addIOReg(java.lang.String, int, java.lang.String)
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        java.lang.String n, format, $r2, $r3;
+        int ior_num, $i0;
+        java.lang.StringBuilder $r0;
+        avrora.sim.mcu.RegisterLayout$RegisterInfo i, $r4;
+        cck.util.Util$Error $r1;
+        avrora.sim.mcu.RegisterLayout$SubField[] $r5;
+        avrora.sim.mcu.RegisterLayout$RegisterInfo[] $r6;
+        java.util.HashMap $r7;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        n := @parameter0: java.lang.String;
+        ior_num := @parameter1: int;
+        format := @parameter2: java.lang.String;
+        $i0 = this.<avrora.sim.mcu.RegisterLayout: int ioreg_size>;
+        if ior_num < $i0 goto label0;
+
+        $r1 = new cck.util.Util$Error;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("invalid register address ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(ior_num);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" for register ");
+        $r2 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>(n);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+        $r3 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke $r1.<cck.util.Util$Error: void <init>(java.lang.String,java.lang.String)>("Layout Error", $r3);
+        throw $r1;
+
+     label0:
+        $r4 = new avrora.sim.mcu.RegisterLayout$RegisterInfo;
+        specialinvoke $r4.<avrora.sim.mcu.RegisterLayout$RegisterInfo: void <init>(java.lang.String,int)>(n, ior_num);
+        i = $r4;
+        $r5 = specialinvoke this.<avrora.sim.mcu.RegisterLayout: avrora.sim.mcu.RegisterLayout$SubField[] parseSubFields(java.lang.String,int,java.lang.String)>(n, ior_num, format);
+        i.<avrora.sim.mcu.RegisterLayout$RegisterInfo: avrora.sim.mcu.RegisterLayout$SubField[] subfields> = $r5;
+        $r6 = this.<avrora.sim.mcu.RegisterLayout: avrora.sim.mcu.RegisterLayout$RegisterInfo[] info>;
+        $r6[ior_num] = i;
+        $r7 = this.<avrora.sim.mcu.RegisterLayout: java.util.HashMap ioregAssignments>;
+        virtualinvoke $r7.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(n, i);
+        return;
+    }
+
+    public int getIOReg(java.lang.String)
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        java.lang.String n, $r4, $r5;
+        avrora.sim.mcu.RegisterLayout$RegisterInfo i;
+        java.lang.StringBuilder $r0;
+        java.util.HashMap $r1;
+        java.lang.Object $r2;
+        java.util.NoSuchElementException $r3;
+        int $i0;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        n := @parameter0: java.lang.String;
+        $r1 = this.<avrora.sim.mcu.RegisterLayout: java.util.HashMap ioregAssignments>;
+        $r2 = virtualinvoke $r1.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(n);
+        i = (avrora.sim.mcu.RegisterLayout$RegisterInfo) $r2;
+        if i != null goto label0;
+
+        $r3 = new java.util.NoSuchElementException;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r4 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>(n);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" IO register not found");
+        $r5 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke $r3.<java.util.NoSuchElementException: void <init>(java.lang.String)>($r5);
+        throw $r3;
+
+     label0:
+        $i0 = i.<avrora.sim.mcu.RegisterLayout$RegisterInfo: int ior_num>;
+        return $i0;
+    }
+
+    public boolean hasIOReg(java.lang.String)
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        java.lang.String n;
+        java.util.HashMap $r0;
+        boolean $z0;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        n := @parameter0: java.lang.String;
+        $r0 = this.<avrora.sim.mcu.RegisterLayout: java.util.HashMap ioregAssignments>;
+        $z0 = virtualinvoke $r0.<java.util.HashMap: boolean containsKey(java.lang.Object)>(n);
+        return $z0;
+    }
+
+    public avrora.sim.mcu.RegisterSet instantiate()
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        avrora.sim.mcu.RegisterSet $r0;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        $r0 = new avrora.sim.mcu.RegisterSet;
+        specialinvoke $r0.<avrora.sim.mcu.RegisterSet: void <init>(avrora.sim.mcu.RegisterLayout)>(this);
+        return $r0;
+    }
+
+    public java.lang.String getRegisterName(int)
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        int ior;
+        avrora.sim.mcu.RegisterLayout$RegisterInfo registerInfo;
+        avrora.sim.mcu.RegisterLayout$RegisterInfo[] $r0;
+        java.lang.String $r1;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        ior := @parameter0: int;
+        $r0 = this.<avrora.sim.mcu.RegisterLayout: avrora.sim.mcu.RegisterLayout$RegisterInfo[] info>;
+        registerInfo = $r0[ior];
+        if registerInfo == null goto label0;
+
+        $r1 = registerInfo.<avrora.sim.mcu.RegisterLayout$RegisterInfo: java.lang.String name>;
+        goto label1;
+
+     label0:
+        $r1 = "";
+
+     label1:
+        return $r1;
+    }
+
+    private avrora.sim.mcu.RegisterLayout$SubField[] parseSubFields(java.lang.String, int, java.lang.String)
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        java.lang.String name, desc, $r4, $r5;
+        int ior, totalbits, count, ior_hbit, cntr, $i1, $i2, $i3;
+        avrora.sim.mcu.RegisterLayout$SubField[] sfs, subFields;
+        java.text.StringCharacterIterator i, $r0;
+        java.util.HashSet fs, $r6;
+        avrora.sim.mcu.RegisterLayout$SubField subField, $r1;
+        char $c0;
+        boolean $z0;
+        cck.util.Util$Error $r2;
+        java.lang.StringBuilder $r3;
+        avrora.sim.mcu.RegisterLayout$Field $r7;
+        long tid_parseSubFields;
+        java.lang.Thread thread_parseSubFields;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        name := @parameter0: java.lang.String;
+        ior := @parameter1: int;
+        desc := @parameter2: java.lang.String;
+        thread_parseSubFields = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_parseSubFields = virtualinvoke thread_parseSubFields.<java.lang.Thread: long getId()>();
+        totalbits = 0;
+        count = 0;
+        sfs = newarray (avrora.sim.mcu.RegisterLayout$SubField)[8];
+        $r0 = new java.text.StringCharacterIterator;
+        specialinvoke $r0.<java.text.StringCharacterIterator: void <init>(java.lang.String)>(desc);
+        i = $r0;
+        ior_hbit = 7;
+
+     label0:
+        if ior_hbit < 0 goto label4;
+
+        $c0 = virtualinvoke i.<java.text.StringCharacterIterator: char current()>();
+        if $c0 == 65535 goto label4;
+
+        $c0 = virtualinvoke i.<java.text.StringCharacterIterator: char current()>();
+        if $c0 != 46 goto label1;
+
+        ior_hbit = specialinvoke this.<avrora.sim.mcu.RegisterLayout: int readUnusedField(java.text.StringCharacterIterator,avrora.sim.mcu.RegisterLayout$SubField[],int,int)>(i, sfs, count, ior_hbit);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(sfs, 22, tid_parseSubFields, "avrora.sim.mcu.RegisterLayout", 223, count, $r1);
+        $r1 = sfs[count];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 23, tid_parseSubFields, "avrora.sim.mcu.RegisterLayout", 223, $i1);
+        $i1 = $r1.<avrora.sim.mcu.RegisterLayout$SubField: int length>;
+        totalbits = totalbits + $i1;
+        goto label3;
+
+     label1:
+        $c0 = virtualinvoke i.<java.text.StringCharacterIterator: char current()>();
+        if $c0 != 120 goto label2;
+
+        ior_hbit = specialinvoke this.<avrora.sim.mcu.RegisterLayout: int readReservedField(java.text.StringCharacterIterator,avrora.sim.mcu.RegisterLayout$SubField[],int,int)>(i, sfs, count, ior_hbit);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(sfs, 22, tid_parseSubFields, "avrora.sim.mcu.RegisterLayout", 226, count, $r1);
+        $r1 = sfs[count];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 23, tid_parseSubFields, "avrora.sim.mcu.RegisterLayout", 226, $i1);
+        $i1 = $r1.<avrora.sim.mcu.RegisterLayout$SubField: int length>;
+        totalbits = totalbits + $i1;
+        goto label3;
+
+     label2:
+        ior_hbit = specialinvoke this.<avrora.sim.mcu.RegisterLayout: int readNamedField(java.text.StringCharacterIterator,int,avrora.sim.mcu.RegisterLayout$SubField[],int,int)>(i, ior, sfs, count, ior_hbit);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(sfs, 22, tid_parseSubFields, "avrora.sim.mcu.RegisterLayout", 229, count, $r1);
+        $r1 = sfs[count];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 23, tid_parseSubFields, "avrora.sim.mcu.RegisterLayout", 229, $i1);
+        $i1 = $r1.<avrora.sim.mcu.RegisterLayout$SubField: int length>;
+        totalbits = totalbits + $i1;
+
+     label3:
+        count = count + 1;
+        staticinvoke <cck.text.StringUtil: boolean peekAndEat(java.text.CharacterIterator,char)>(i, 44);
+        staticinvoke <cck.text.StringUtil: void skipWhiteSpace(java.text.CharacterIterator)>(i);
+        goto label0;
+
+     label4:
+        $i1 = this.<avrora.sim.mcu.RegisterLayout: int ioreg_length>;
+        if totalbits == $i1 goto label5;
+
+        $r2 = new cck.util.Util$Error;
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("expected ");
+        $i2 = this.<avrora.sim.mcu.RegisterLayout: int ioreg_length>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bits, found: ");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(totalbits);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" in ");
+        $r4 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>(name);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke $r2.<cck.util.Util$Error: void <init>(java.lang.String,java.lang.String)>("Layout Error", $r5);
+        throw $r2;
+
+     label5:
+        subFields = newarray (avrora.sim.mcu.RegisterLayout$SubField)[count];
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>(sfs, 0, subFields, 0, count);
+        $r6 = new java.util.HashSet;
+        specialinvoke $r6.<java.util.HashSet: void <init>()>();
+        fs = $r6;
+        $i3 = lengthof subFields;
+        cntr = $i3 - 1;
+
+     label6:
+        if cntr < 0 goto label8;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(subFields, 22, tid_parseSubFields, "avrora.sim.mcu.RegisterLayout", 247, cntr, subField);
+        subField = subFields[cntr];
+        $r7 = subField.<avrora.sim.mcu.RegisterLayout$SubField: avrora.sim.mcu.RegisterLayout$Field field>;
+        $z0 = virtualinvoke fs.<java.util.HashSet: boolean contains(java.lang.Object)>($r7);
+        if $z0 != 0 goto label7;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(subField, 24, tid_parseSubFields, "avrora.sim.mcu.RegisterLayout", 248, 1);
+        subField.<avrora.sim.mcu.RegisterLayout$SubField: boolean commit> = 1;
+
+     label7:
+        $r7 = subField.<avrora.sim.mcu.RegisterLayout$SubField: avrora.sim.mcu.RegisterLayout$Field field>;
+        virtualinvoke fs.<java.util.HashSet: boolean add(java.lang.Object)>($r7);
+        cntr = cntr + -1;
+        goto label6;
+
+     label8:
+        return subFields;
+    }
+
+    private int readNamedField(java.text.StringCharacterIterator, int, avrora.sim.mcu.RegisterLayout$SubField[], int, int)
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        java.text.StringCharacterIterator i;
+        int ior, count, ior_hbit, ior_hbit;
+        avrora.sim.mcu.RegisterLayout$SubField[] sfs;
+        java.lang.String fid;
+        avrora.sim.mcu.RegisterLayout$Field field;
+        avrora.sim.mcu.RegisterLayout$SubField sf, $r0;
+        boolean $z0;
+        long tid_readNamedField;
+        java.lang.Thread thread_readNamedField;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        i := @parameter0: java.text.StringCharacterIterator;
+        ior := @parameter1: int;
+        sfs := @parameter2: avrora.sim.mcu.RegisterLayout$SubField[];
+        count := @parameter3: int;
+        ior_hbit := @parameter4: int;
+        thread_readNamedField = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_readNamedField = virtualinvoke thread_readNamedField.<java.lang.Thread: long getId()>();
+        fid = staticinvoke <cck.text.StringUtil: java.lang.String readIdentifier(java.text.CharacterIterator)>(i);
+        field = specialinvoke this.<avrora.sim.mcu.RegisterLayout: avrora.sim.mcu.RegisterLayout$Field getField(java.lang.String)>(fid);
+        $r0 = new avrora.sim.mcu.RegisterLayout$SubField;
+        specialinvoke $r0.<avrora.sim.mcu.RegisterLayout$SubField: void <init>(avrora.sim.mcu.RegisterLayout$Field,int)>(field, ior);
+        sf = $r0;
+        virtualinvoke field.<avrora.sim.mcu.RegisterLayout$Field: void add(avrora.sim.mcu.RegisterLayout$SubField)>(sf);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(sfs, 22, tid_readNamedField, "avrora.sim.mcu.RegisterLayout", 260, count, sf);
+        sfs[count] = sf;
+        $z0 = staticinvoke <cck.text.StringUtil: boolean peekAndEat(java.text.CharacterIterator,char)>(i, 91);
+        if $z0 == 0 goto label0;
+
+        ior_hbit = specialinvoke this.<avrora.sim.mcu.RegisterLayout: int readBitRange(java.text.StringCharacterIterator,int,avrora.sim.mcu.RegisterLayout$SubField)>(i, ior_hbit, sf);
+        goto label1;
+
+     label0:
+        ior_hbit = specialinvoke this.<avrora.sim.mcu.RegisterLayout: int readBit(int,avrora.sim.mcu.RegisterLayout$SubField)>(ior_hbit, sf);
+
+     label1:
+        return ior_hbit;
+    }
+
+    private int readReservedField(java.text.StringCharacterIterator, avrora.sim.mcu.RegisterLayout$SubField[], int, int)
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        java.text.StringCharacterIterator i;
+        avrora.sim.mcu.RegisterLayout$SubField[] sfs;
+        int count, ior_hbit, ior_hbit;
+        avrora.sim.mcu.RegisterLayout$SubField $r0, sf;
+        avrora.sim.mcu.RegisterLayout$Field $r1;
+        long tid_readReservedField;
+        java.lang.Thread thread_readReservedField;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        i := @parameter0: java.text.StringCharacterIterator;
+        sfs := @parameter1: avrora.sim.mcu.RegisterLayout$SubField[];
+        count := @parameter2: int;
+        ior_hbit := @parameter3: int;
+        thread_readReservedField = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_readReservedField = virtualinvoke thread_readReservedField.<java.lang.Thread: long getId()>();
+        $r0 = new avrora.sim.mcu.RegisterLayout$SubField;
+        $r1 = <avrora.sim.mcu.RegisterLayout: avrora.sim.mcu.RegisterLayout$Field RESERVED>;
+        specialinvoke $r0.<avrora.sim.mcu.RegisterLayout$SubField: void <init>(avrora.sim.mcu.RegisterLayout$Field,int)>($r1, -1);
+        sf = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(sfs, 22, tid_readReservedField, "avrora.sim.mcu.RegisterLayout", 272, count, sf);
+        sfs[count] = sf;
+        ior_hbit = specialinvoke this.<avrora.sim.mcu.RegisterLayout: int eat(int,java.text.StringCharacterIterator,avrora.sim.mcu.RegisterLayout$SubField,char)>(ior_hbit, i, sf, 120);
+        return ior_hbit;
+    }
+
+    private int readUnusedField(java.text.StringCharacterIterator, avrora.sim.mcu.RegisterLayout$SubField[], int, int)
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        java.text.StringCharacterIterator i;
+        avrora.sim.mcu.RegisterLayout$SubField[] sfs;
+        int count, ior_hbit, ior_hbit;
+        avrora.sim.mcu.RegisterLayout$SubField $r0, sf;
+        avrora.sim.mcu.RegisterLayout$Field $r1;
+        long tid_readUnusedField;
+        java.lang.Thread thread_readUnusedField;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        i := @parameter0: java.text.StringCharacterIterator;
+        sfs := @parameter1: avrora.sim.mcu.RegisterLayout$SubField[];
+        count := @parameter2: int;
+        ior_hbit := @parameter3: int;
+        thread_readUnusedField = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_readUnusedField = virtualinvoke thread_readUnusedField.<java.lang.Thread: long getId()>();
+        $r0 = new avrora.sim.mcu.RegisterLayout$SubField;
+        $r1 = <avrora.sim.mcu.RegisterLayout: avrora.sim.mcu.RegisterLayout$Field UNUSED>;
+        specialinvoke $r0.<avrora.sim.mcu.RegisterLayout$SubField: void <init>(avrora.sim.mcu.RegisterLayout$Field,int)>($r1, -1);
+        sf = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(sfs, 22, tid_readUnusedField, "avrora.sim.mcu.RegisterLayout", 280, count, sf);
+        sfs[count] = sf;
+        ior_hbit = specialinvoke this.<avrora.sim.mcu.RegisterLayout: int eat(int,java.text.StringCharacterIterator,avrora.sim.mcu.RegisterLayout$SubField,char)>(ior_hbit, i, sf, 46);
+        return ior_hbit;
+    }
+
+    private int readBit(int, avrora.sim.mcu.RegisterLayout$SubField)
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        int ior_hbit, ior_hbit;
+        avrora.sim.mcu.RegisterLayout$SubField sf;
+        long tid_readBit;
+        java.lang.Thread thread_readBit;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        ior_hbit := @parameter0: int;
+        sf := @parameter1: avrora.sim.mcu.RegisterLayout$SubField;
+        thread_readBit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_readBit = virtualinvoke thread_readBit.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 25, tid_readBit, "avrora.sim.mcu.RegisterLayout", 287, ior_hbit);
+        sf.<avrora.sim.mcu.RegisterLayout$SubField: int ior_low_bit> = ior_hbit;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 26, tid_readBit, "avrora.sim.mcu.RegisterLayout", 288, 0);
+        sf.<avrora.sim.mcu.RegisterLayout$SubField: int field_low_bit> = 0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 27, tid_readBit, "avrora.sim.mcu.RegisterLayout", 289, 1);
+        sf.<avrora.sim.mcu.RegisterLayout$SubField: int mask> = 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 23, tid_readBit, "avrora.sim.mcu.RegisterLayout", 290, 1);
+        sf.<avrora.sim.mcu.RegisterLayout$SubField: int length> = 1;
+        ior_hbit = ior_hbit + -1;
+        return ior_hbit;
+    }
+
+    private int readBitRange(java.text.StringCharacterIterator, int, avrora.sim.mcu.RegisterLayout$SubField)
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        java.text.StringCharacterIterator i;
+        int ior_hbit, fhbit, flbit, length, $i0, $i1, $i2, ior_hbit;
+        avrora.sim.mcu.RegisterLayout$SubField sf;
+        boolean $z0;
+        short $s3;
+        long tid_readBitRange;
+        java.lang.Thread thread_readBitRange;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        i := @parameter0: java.text.StringCharacterIterator;
+        ior_hbit := @parameter1: int;
+        sf := @parameter2: avrora.sim.mcu.RegisterLayout$SubField;
+        thread_readBitRange = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_readBitRange = virtualinvoke thread_readBitRange.<java.lang.Thread: long getId()>();
+        fhbit = staticinvoke <cck.text.StringUtil: int readDecimalValue(java.text.CharacterIterator,int)>(i, 1);
+        flbit = fhbit;
+        $z0 = staticinvoke <cck.text.StringUtil: boolean peekAndEat(java.text.CharacterIterator,char)>(i, 58);
+        if $z0 == 0 goto label0;
+
+        flbit = staticinvoke <cck.text.StringUtil: int readDecimalValue(java.text.CharacterIterator,int)>(i, 1);
+
+     label0:
+        $i0 = fhbit - flbit;
+        length = $i0 + 1;
+        $i1 = ior_hbit - length;
+        $i1 = $i1 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 25, tid_readBitRange, "avrora.sim.mcu.RegisterLayout", 303, $i1);
+        sf.<avrora.sim.mcu.RegisterLayout$SubField: int ior_low_bit> = $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 26, tid_readBitRange, "avrora.sim.mcu.RegisterLayout", 304, flbit);
+        sf.<avrora.sim.mcu.RegisterLayout$SubField: int field_low_bit> = flbit;
+        $i2 = 8 - length;
+        $s3 = 255 >> $i2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(sf, 27, tid_readBitRange, "avrora.sim.mcu.RegisterLayout", 305, $s3);
+        sf.<avrora.sim.mcu.RegisterLayout$SubField: int mask> = $s3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 23, tid_readBitRange, "avrora.sim.mcu.RegisterLayout", 306, length);
+        sf.<avrora.sim.mcu.RegisterLayout$SubField: int length> = length;
+        staticinvoke <cck.text.StringUtil: boolean peekAndEat(java.text.CharacterIterator,char)>(i, 93);
+        ior_hbit = ior_hbit - length;
+        return ior_hbit;
+    }
+
+    private int eat(int, java.text.StringCharacterIterator, avrora.sim.mcu.RegisterLayout$SubField, char)
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        int ior_hbit, hbit, $i1, $i2, ior_hbit;
+        java.text.StringCharacterIterator i;
+        avrora.sim.mcu.RegisterLayout$SubField sf;
+        char c, $c0;
+        long tid_eat;
+        java.lang.Thread thread_eat;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        ior_hbit := @parameter0: int;
+        i := @parameter1: java.text.StringCharacterIterator;
+        sf := @parameter2: avrora.sim.mcu.RegisterLayout$SubField;
+        c := @parameter3: char;
+        thread_eat = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_eat = virtualinvoke thread_eat.<java.lang.Thread: long getId()>();
+        hbit = ior_hbit;
+
+     label0:
+        $c0 = virtualinvoke i.<java.text.StringCharacterIterator: char current()>();
+        if $c0 != c goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 23, tid_eat, "avrora.sim.mcu.RegisterLayout", 315, $i1);
+        $i1 = sf.<avrora.sim.mcu.RegisterLayout$SubField: int length>;
+        $i1 = $i1 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 23, tid_eat, "avrora.sim.mcu.RegisterLayout", 315, $i1);
+        sf.<avrora.sim.mcu.RegisterLayout$SubField: int length> = $i1;
+        virtualinvoke i.<java.text.StringCharacterIterator: char next()>();
+        goto label0;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 23, tid_eat, "avrora.sim.mcu.RegisterLayout", 318, $i2);
+        $i2 = sf.<avrora.sim.mcu.RegisterLayout$SubField: int length>;
+        $i1 = hbit - $i2;
+        $i1 = $i1 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 25, tid_eat, "avrora.sim.mcu.RegisterLayout", 318, $i1);
+        sf.<avrora.sim.mcu.RegisterLayout$SubField: int ior_low_bit> = $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 23, tid_eat, "avrora.sim.mcu.RegisterLayout", 319, $i1);
+        $i1 = sf.<avrora.sim.mcu.RegisterLayout$SubField: int length>;
+        $i1 = staticinvoke <cck.util.Arithmetic: int getBitMask(int)>($i1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 27, tid_eat, "avrora.sim.mcu.RegisterLayout", 319, $i1);
+        sf.<avrora.sim.mcu.RegisterLayout$SubField: int mask> = $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(sf, 23, tid_eat, "avrora.sim.mcu.RegisterLayout", 320, $i1);
+        $i1 = sf.<avrora.sim.mcu.RegisterLayout$SubField: int length>;
+        ior_hbit = ior_hbit - $i1;
+        return ior_hbit;
+    }
+
+    private avrora.sim.mcu.RegisterLayout$Field getField(java.lang.String)
+    {
+        avrora.sim.mcu.RegisterLayout this;
+        java.lang.String name;
+        avrora.sim.mcu.RegisterLayout$Field f, $r2;
+        java.util.HashMap $r0;
+        java.lang.Object $r1;
+
+        this := @this: avrora.sim.mcu.RegisterLayout;
+        name := @parameter0: java.lang.String;
+        $r0 = this.<avrora.sim.mcu.RegisterLayout: java.util.HashMap fields>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(name);
+        f = (avrora.sim.mcu.RegisterLayout$Field) $r1;
+        if f != null goto label0;
+
+        $r2 = new avrora.sim.mcu.RegisterLayout$Field;
+        specialinvoke $r2.<avrora.sim.mcu.RegisterLayout$Field: void <init>(java.lang.String)>(name);
+        f = $r2;
+        $r0 = this.<avrora.sim.mcu.RegisterLayout: java.util.HashMap fields>;
+        virtualinvoke $r0.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(name, f);
+
+     label0:
+        return f;
+    }
+
+    static void <clinit>()
+    {
+        avrora.sim.mcu.RegisterLayout$Field $r0;
+
+        $r0 = new avrora.sim.mcu.RegisterLayout$Field;
+        specialinvoke $r0.<avrora.sim.mcu.RegisterLayout$Field: void <init>(java.lang.String)>("UNUSED");
+        <avrora.sim.mcu.RegisterLayout: avrora.sim.mcu.RegisterLayout$Field UNUSED> = $r0;
+        $r0 = new avrora.sim.mcu.RegisterLayout$Field;
+        specialinvoke $r0.<avrora.sim.mcu.RegisterLayout$Field: void <init>(java.lang.String)>("RESERVED");
+        <avrora.sim.mcu.RegisterLayout: avrora.sim.mcu.RegisterLayout$Field RESERVED> = $r0;
+        return;
+    }
+}

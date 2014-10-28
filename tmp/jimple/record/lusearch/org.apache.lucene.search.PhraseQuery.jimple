@@ -1,0 +1,452 @@
+public class org.apache.lucene.search.PhraseQuery extends org.apache.lucene.search.Query
+{
+    private java.lang.String field;
+    private java.util.ArrayList terms;
+    private java.util.ArrayList positions;
+    private int maxPosition;
+    private int slop;
+
+    public void <init>()
+    {
+        org.apache.lucene.search.PhraseQuery this;
+        java.util.ArrayList $r0;
+
+        this := @this: org.apache.lucene.search.PhraseQuery;
+        specialinvoke this.<org.apache.lucene.search.Query: void <init>()>();
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>(int)>(4);
+        this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList terms> = $r0;
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>(int)>(4);
+        this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList positions> = $r0;
+        this.<org.apache.lucene.search.PhraseQuery: int maxPosition> = 0;
+        this.<org.apache.lucene.search.PhraseQuery: int slop> = 0;
+        return;
+    }
+
+    public void setSlop(int)
+    {
+        org.apache.lucene.search.PhraseQuery this;
+        int s;
+
+        this := @this: org.apache.lucene.search.PhraseQuery;
+        s := @parameter0: int;
+        this.<org.apache.lucene.search.PhraseQuery: int slop> = s;
+        return;
+    }
+
+    public int getSlop()
+    {
+        org.apache.lucene.search.PhraseQuery this;
+        int $i0;
+
+        this := @this: org.apache.lucene.search.PhraseQuery;
+        $i0 = this.<org.apache.lucene.search.PhraseQuery: int slop>;
+        return $i0;
+    }
+
+    public void add(org.apache.lucene.index.Term)
+    {
+        org.apache.lucene.search.PhraseQuery this;
+        org.apache.lucene.index.Term term;
+        int position, $i0, $i1;
+        java.util.ArrayList $r0, $r1;
+        java.lang.Object $r2;
+        java.lang.Integer $r3;
+
+        this := @this: org.apache.lucene.search.PhraseQuery;
+        term := @parameter0: org.apache.lucene.index.Term;
+        position = 0;
+        $r0 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList positions>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        if $i0 <= 0 goto label0;
+
+        $r0 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList positions>;
+        $r1 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList positions>;
+        $i1 = virtualinvoke $r1.<java.util.ArrayList: int size()>();
+        $i1 = $i1 - 1;
+        $r2 = virtualinvoke $r0.<java.util.ArrayList: java.lang.Object get(int)>($i1);
+        $r3 = (java.lang.Integer) $r2;
+        $i0 = virtualinvoke $r3.<java.lang.Integer: int intValue()>();
+        position = $i0 + 1;
+
+     label0:
+        virtualinvoke this.<org.apache.lucene.search.PhraseQuery: void add(org.apache.lucene.index.Term,int)>(term, position);
+        return;
+    }
+
+    public void add(org.apache.lucene.index.Term, int)
+    {
+        org.apache.lucene.search.PhraseQuery this;
+        org.apache.lucene.index.Term term;
+        int position, $i0, $i1;
+        java.lang.StringBuffer $r0;
+        java.util.ArrayList $r1;
+        java.lang.String $r2, $r3, $r5;
+        java.lang.IllegalArgumentException $r4;
+        java.lang.Integer $r6;
+
+        this := @this: org.apache.lucene.search.PhraseQuery;
+        term := @parameter0: org.apache.lucene.index.Term;
+        position := @parameter1: int;
+        $r1 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList terms>;
+        $i0 = virtualinvoke $r1.<java.util.ArrayList: int size()>();
+        if $i0 != 0 goto label0;
+
+        $r2 = virtualinvoke term.<org.apache.lucene.index.Term: java.lang.String field()>();
+        this.<org.apache.lucene.search.PhraseQuery: java.lang.String field> = $r2;
+        goto label1;
+
+     label0:
+        $r3 = virtualinvoke term.<org.apache.lucene.index.Term: java.lang.String field()>();
+        $r2 = this.<org.apache.lucene.search.PhraseQuery: java.lang.String field>;
+        if $r3 == $r2 goto label1;
+
+        $r4 = new java.lang.IllegalArgumentException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("All phrase terms must be in the same field: ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(term);
+        $r5 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r5);
+        throw $r4;
+
+     label1:
+        $r1 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList terms>;
+        virtualinvoke $r1.<java.util.ArrayList: boolean add(java.lang.Object)>(term);
+        $r1 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList positions>;
+        $r6 = new java.lang.Integer;
+        specialinvoke $r6.<java.lang.Integer: void <init>(int)>(position);
+        virtualinvoke $r1.<java.util.ArrayList: boolean add(java.lang.Object)>($r6);
+        $i1 = this.<org.apache.lucene.search.PhraseQuery: int maxPosition>;
+        if position <= $i1 goto label2;
+
+        this.<org.apache.lucene.search.PhraseQuery: int maxPosition> = position;
+
+     label2:
+        return;
+    }
+
+    public org.apache.lucene.index.Term[] getTerms()
+    {
+        org.apache.lucene.search.PhraseQuery this;
+        java.util.ArrayList $r0;
+        org.apache.lucene.index.Term[] $r1, $r3;
+        java.lang.Object[] $r2;
+
+        this := @this: org.apache.lucene.search.PhraseQuery;
+        $r0 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList terms>;
+        $r1 = newarray (org.apache.lucene.index.Term)[0];
+        $r2 = virtualinvoke $r0.<java.util.ArrayList: java.lang.Object[] toArray(java.lang.Object[])>($r1);
+        $r3 = (org.apache.lucene.index.Term[]) $r2;
+        $r3 = (org.apache.lucene.index.Term[]) $r3;
+        return $r3;
+    }
+
+    public int[] getPositions()
+    {
+        org.apache.lucene.search.PhraseQuery this;
+        int[] result;
+        int i, $i0, $i1, $i2;
+        java.util.ArrayList $r0, $r1, $r2;
+        java.lang.Object $r3;
+        java.lang.Integer $r4;
+        long tid_getPositions;
+        java.lang.Thread thread_getPositions;
+
+        this := @this: org.apache.lucene.search.PhraseQuery;
+        thread_getPositions = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getPositions = virtualinvoke thread_getPositions.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList positions>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        result = newarray (int)[$i0];
+        i = 0;
+
+     label0:
+        $r1 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList positions>;
+        $i1 = virtualinvoke $r1.<java.util.ArrayList: int size()>();
+        if i >= $i1 goto label1;
+
+        $r2 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList positions>;
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        $r4 = (java.lang.Integer) $r3;
+        $i2 = virtualinvoke $r4.<java.lang.Integer: int intValue()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(result, 22, tid_getPositions, "org.apache.lucene.search.PhraseQuery", 105, i, $i2);
+        result[i] = $i2;
+        i = i + 1;
+        goto label0;
+
+     label1:
+        return result;
+    }
+
+    protected org.apache.lucene.search.Weight createWeight(org.apache.lucene.search.Searcher) throws java.io.IOException
+    {
+        org.apache.lucene.search.PhraseQuery this;
+        org.apache.lucene.search.Searcher searcher;
+        org.apache.lucene.index.Term term;
+        org.apache.lucene.search.TermQuery termQuery, tmp$552416378;
+        java.util.ArrayList $r0;
+        int $i0;
+        java.lang.Object $r1;
+        float $f0;
+        org.apache.lucene.search.Weight $r3, tmp;
+        org.apache.lucene.search.PhraseQuery$PhraseWeight tmp$552418516;
+
+        this := @this: org.apache.lucene.search.PhraseQuery;
+        searcher := @parameter0: org.apache.lucene.search.Searcher;
+        $r0 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList terms>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        if $i0 != 1 goto label0;
+
+        $r0 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList terms>;
+        $r1 = virtualinvoke $r0.<java.util.ArrayList: java.lang.Object get(int)>(0);
+        term = (org.apache.lucene.index.Term) $r1;
+        tmp$552416378 = new org.apache.lucene.search.TermQuery;
+        specialinvoke tmp$552416378.<org.apache.lucene.search.TermQuery: void <init>(org.apache.lucene.index.Term)>(term);
+        termQuery = tmp$552416378;
+        $f0 = virtualinvoke this.<org.apache.lucene.search.PhraseQuery: float getBoost()>();
+        virtualinvoke termQuery.<org.apache.lucene.search.Query: void setBoost(float)>($f0);
+        $r3 = virtualinvoke termQuery.<org.apache.lucene.search.Query: org.apache.lucene.search.Weight createWeight(org.apache.lucene.search.Searcher)>(searcher);
+        return $r3;
+
+     label0:
+        tmp$552418516 = new org.apache.lucene.search.PhraseQuery$PhraseWeight;
+        specialinvoke tmp$552418516.<org.apache.lucene.search.PhraseQuery$PhraseWeight: void <init>(org.apache.lucene.search.PhraseQuery,org.apache.lucene.search.Searcher)>(this, searcher);
+        tmp = (org.apache.lucene.search.Weight) tmp$552418516;
+        return tmp;
+    }
+
+    public void extractTerms(java.util.Set)
+    {
+        org.apache.lucene.search.PhraseQuery this;
+        java.util.Set queryTerms;
+        java.util.ArrayList $r0;
+
+        this := @this: org.apache.lucene.search.PhraseQuery;
+        queryTerms := @parameter0: java.util.Set;
+        $r0 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList terms>;
+        interfaceinvoke queryTerms.<java.util.Set: boolean addAll(java.util.Collection)>($r0);
+        return;
+    }
+
+    public java.lang.String toString(java.lang.String)
+    {
+        org.apache.lucene.search.PhraseQuery this;
+        java.lang.String f, s, $r1, $r2;
+        java.lang.StringBuffer $r0, buffer;
+        java.lang.String[] pieces;
+        int i, pos, $i0, $i1;
+        boolean $z0;
+        java.util.ArrayList $r3, $r4;
+        java.lang.Object $r5, $r8;
+        java.lang.Integer $r6;
+        org.apache.lucene.index.Term $r7, $r9;
+        float $f0;
+        long tid_toString;
+        java.lang.Thread thread_toString;
+
+        this := @this: org.apache.lucene.search.PhraseQuery;
+        f := @parameter0: java.lang.String;
+        thread_toString = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_toString = virtualinvoke thread_toString.<java.lang.Thread: long getId()>();
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buffer = $r0;
+        $r1 = this.<org.apache.lucene.search.PhraseQuery: java.lang.String field>;
+        if $r1 == null goto label0;
+
+        $r1 = this.<org.apache.lucene.search.PhraseQuery: java.lang.String field>;
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>(f);
+        if $z0 != 0 goto label0;
+
+        $r2 = this.<org.apache.lucene.search.PhraseQuery: java.lang.String field>;
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(":");
+
+     label0:
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\"");
+        $i0 = this.<org.apache.lucene.search.PhraseQuery: int maxPosition>;
+        $i0 = $i0 + 1;
+        pieces = newarray (java.lang.String)[$i0];
+        i = 0;
+
+     label1:
+        $r3 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList terms>;
+        $i1 = virtualinvoke $r3.<java.util.ArrayList: int size()>();
+        if i >= $i1 goto label4;
+
+        $r4 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList positions>;
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        $r6 = (java.lang.Integer) $r5;
+        pos = virtualinvoke $r6.<java.lang.Integer: int intValue()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(pieces, 10, tid_toString, "org.apache.lucene.search.PhraseQuery", 269, pos, s);
+        s = pieces[pos];
+        if s != null goto label2;
+
+        $r4 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList terms>;
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        $r7 = (org.apache.lucene.index.Term) $r5;
+        s = virtualinvoke $r7.<org.apache.lucene.index.Term: java.lang.String text()>();
+        goto label3;
+
+     label2:
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(s);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("|");
+        $r3 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList terms>;
+        $r8 = virtualinvoke $r3.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        $r9 = (org.apache.lucene.index.Term) $r8;
+        $r2 = virtualinvoke $r9.<org.apache.lucene.index.Term: java.lang.String text()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        s = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(pieces, 10, tid_toString, "org.apache.lucene.search.PhraseQuery", 275, pos, s);
+        pieces[pos] = s;
+        i = i + 1;
+        goto label1;
+
+     label4:
+        i = 0;
+
+     label5:
+        $i1 = lengthof pieces;
+        if i >= $i1 goto label9;
+
+        if i <= 0 goto label6;
+
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(32);
+
+     label6:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(pieces, 10, tid_toString, "org.apache.lucene.search.PhraseQuery", 281, i, s);
+        s = pieces[i];
+        if s != null goto label7;
+
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(63);
+        goto label8;
+
+     label7:
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(s);
+
+     label8:
+        i = i + 1;
+        goto label5;
+
+     label9:
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\"");
+        $i0 = this.<org.apache.lucene.search.PhraseQuery: int slop>;
+        if $i0 == 0 goto label10;
+
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("~");
+        $i1 = this.<org.apache.lucene.search.PhraseQuery: int slop>;
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i1);
+
+     label10:
+        $f0 = virtualinvoke this.<org.apache.lucene.search.PhraseQuery: float getBoost()>();
+        $r2 = staticinvoke <org.apache.lucene.util.ToStringUtils: java.lang.String boost(float)>($f0);
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r1 = virtualinvoke buffer.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        org.apache.lucene.search.PhraseQuery this, other;
+        java.lang.Object o;
+        boolean $z0;
+        float $f0, $f1;
+        byte $b0;
+        int $i1, $i2;
+        java.util.ArrayList $r0, $r1;
+
+        this := @this: org.apache.lucene.search.PhraseQuery;
+        o := @parameter0: java.lang.Object;
+        $z0 = o instanceof org.apache.lucene.search.PhraseQuery;
+        if $z0 != 0 goto label0;
+
+        return 0;
+
+     label0:
+        other = (org.apache.lucene.search.PhraseQuery) o;
+        $f0 = virtualinvoke this.<org.apache.lucene.search.PhraseQuery: float getBoost()>();
+        $f1 = virtualinvoke other.<org.apache.lucene.search.PhraseQuery: float getBoost()>();
+        $b0 = $f0 cmpl $f1;
+        if $b0 != 0 goto label1;
+
+        $i1 = this.<org.apache.lucene.search.PhraseQuery: int slop>;
+        $i2 = other.<org.apache.lucene.search.PhraseQuery: int slop>;
+        if $i1 != $i2 goto label1;
+
+        $r0 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList terms>;
+        $r1 = other.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList terms>;
+        $z0 = virtualinvoke $r0.<java.util.ArrayList: boolean equals(java.lang.Object)>($r1);
+        if $z0 == 0 goto label1;
+
+        $r0 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList positions>;
+        $r1 = other.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList positions>;
+        $z0 = virtualinvoke $r0.<java.util.ArrayList: boolean equals(java.lang.Object)>($r1);
+        if $z0 == 0 goto label1;
+
+        $z0 = 1;
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public int hashCode()
+    {
+        org.apache.lucene.search.PhraseQuery this;
+        float $f0;
+        int $i0, $i1;
+        java.util.ArrayList $r0;
+
+        this := @this: org.apache.lucene.search.PhraseQuery;
+        $f0 = virtualinvoke this.<org.apache.lucene.search.PhraseQuery: float getBoost()>();
+        $i0 = staticinvoke <java.lang.Float: int floatToIntBits(float)>($f0);
+        $i1 = this.<org.apache.lucene.search.PhraseQuery: int slop>;
+        $i0 = $i0 ^ $i1;
+        $r0 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList terms>;
+        $i1 = virtualinvoke $r0.<java.util.ArrayList: int hashCode()>();
+        $i0 = $i0 ^ $i1;
+        $r0 = this.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList positions>;
+        $i1 = virtualinvoke $r0.<java.util.ArrayList: int hashCode()>();
+        $i0 = $i0 ^ $i1;
+        return $i0;
+    }
+
+    static java.util.ArrayList access$000(org.apache.lucene.search.PhraseQuery)
+    {
+        org.apache.lucene.search.PhraseQuery x0;
+        java.util.ArrayList $r0;
+
+        x0 := @parameter0: org.apache.lucene.search.PhraseQuery;
+        $r0 = x0.<org.apache.lucene.search.PhraseQuery: java.util.ArrayList terms>;
+        return $r0;
+    }
+
+    static int access$100(org.apache.lucene.search.PhraseQuery)
+    {
+        org.apache.lucene.search.PhraseQuery x0;
+        int $i0;
+
+        x0 := @parameter0: org.apache.lucene.search.PhraseQuery;
+        $i0 = x0.<org.apache.lucene.search.PhraseQuery: int slop>;
+        return $i0;
+    }
+
+    static java.lang.String access$200(org.apache.lucene.search.PhraseQuery)
+    {
+        org.apache.lucene.search.PhraseQuery x0;
+        java.lang.String $r0;
+
+        x0 := @parameter0: org.apache.lucene.search.PhraseQuery;
+        $r0 = x0.<org.apache.lucene.search.PhraseQuery: java.lang.String field>;
+        return $r0;
+    }
+}

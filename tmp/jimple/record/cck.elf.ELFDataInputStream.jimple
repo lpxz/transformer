@@ -1,0 +1,218 @@
+public class cck.elf.ELFDataInputStream extends java.lang.Object
+{
+    final boolean bigEndian;
+    final cck.elf.ELFHeader header;
+    final java.io.RandomAccessFile file;
+
+    public void <init>(cck.elf.ELFHeader, java.io.RandomAccessFile)
+    {
+        cck.elf.ELFDataInputStream this;
+        cck.elf.ELFHeader header;
+        java.io.RandomAccessFile f;
+        boolean $z0;
+
+        this := @this: cck.elf.ELFDataInputStream;
+        header := @parameter0: cck.elf.ELFHeader;
+        f := @parameter1: java.io.RandomAccessFile;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<cck.elf.ELFDataInputStream: cck.elf.ELFHeader header> = header;
+        $z0 = virtualinvoke header.<cck.elf.ELFHeader: boolean isBigEndian()>();
+        this.<cck.elf.ELFDataInputStream: boolean bigEndian> = $z0;
+        this.<cck.elf.ELFDataInputStream: java.io.RandomAccessFile file> = f;
+        return;
+    }
+
+    public byte[] read_section(int, int) throws java.io.IOException
+    {
+        cck.elf.ELFDataInputStream this;
+        int off, length, cntr, $i1, $i2;
+        byte[] buffer;
+        java.io.RandomAccessFile $r0, $r1;
+        long $l0;
+
+        this := @this: cck.elf.ELFDataInputStream;
+        off := @parameter0: int;
+        length := @parameter1: int;
+        buffer = newarray (byte)[length];
+        $r0 = this.<cck.elf.ELFDataInputStream: java.io.RandomAccessFile file>;
+        $l0 = (long) off;
+        virtualinvoke $r0.<java.io.RandomAccessFile: void seek(long)>($l0);
+        cntr = 0;
+
+     label0:
+        if cntr >= length goto label1;
+
+        $r1 = this.<cck.elf.ELFDataInputStream: java.io.RandomAccessFile file>;
+        $i1 = length - cntr;
+        $i2 = virtualinvoke $r1.<java.io.RandomAccessFile: int read(byte[],int,int)>(buffer, cntr, $i1);
+        cntr = cntr + $i2;
+        goto label0;
+
+     label1:
+        return buffer;
+    }
+
+    public byte read_Elf32_byte() throws java.io.IOException
+    {
+        cck.elf.ELFDataInputStream this;
+        int $i0;
+        byte $b1;
+
+        this := @this: cck.elf.ELFDataInputStream;
+        $i0 = specialinvoke this.<cck.elf.ELFDataInputStream: int read_1()>();
+        $b1 = (byte) $i0;
+        return $b1;
+    }
+
+    public int read_Elf32_uchar() throws java.io.IOException
+    {
+        cck.elf.ELFDataInputStream this;
+        int $i0;
+
+        this := @this: cck.elf.ELFDataInputStream;
+        $i0 = specialinvoke this.<cck.elf.ELFDataInputStream: int read_1()>();
+        return $i0;
+    }
+
+    public int read_Elf32_Addr() throws java.io.IOException
+    {
+        cck.elf.ELFDataInputStream this;
+        int $i0;
+
+        this := @this: cck.elf.ELFDataInputStream;
+        $i0 = specialinvoke this.<cck.elf.ELFDataInputStream: int read_4()>();
+        return $i0;
+    }
+
+    public short read_Elf32_Half() throws java.io.IOException
+    {
+        cck.elf.ELFDataInputStream this;
+        int $i0;
+        short $s1;
+
+        this := @this: cck.elf.ELFDataInputStream;
+        $i0 = specialinvoke this.<cck.elf.ELFDataInputStream: int read_2()>();
+        $s1 = (short) $i0;
+        return $s1;
+    }
+
+    public int read_Elf32_Off() throws java.io.IOException
+    {
+        cck.elf.ELFDataInputStream this;
+        int $i0;
+
+        this := @this: cck.elf.ELFDataInputStream;
+        $i0 = specialinvoke this.<cck.elf.ELFDataInputStream: int read_4()>();
+        return $i0;
+    }
+
+    public int read_Elf32_SWord() throws java.io.IOException
+    {
+        cck.elf.ELFDataInputStream this;
+        int $i0;
+
+        this := @this: cck.elf.ELFDataInputStream;
+        $i0 = specialinvoke this.<cck.elf.ELFDataInputStream: int read_4()>();
+        return $i0;
+    }
+
+    public int read_Elf32_Word() throws java.io.IOException
+    {
+        cck.elf.ELFDataInputStream this;
+        int $i0;
+
+        this := @this: cck.elf.ELFDataInputStream;
+        $i0 = specialinvoke this.<cck.elf.ELFDataInputStream: int read_4()>();
+        return $i0;
+    }
+
+    private int read_1() throws java.io.IOException
+    {
+        cck.elf.ELFDataInputStream this;
+        java.io.RandomAccessFile $r0;
+        int $i0;
+
+        this := @this: cck.elf.ELFDataInputStream;
+        $r0 = this.<cck.elf.ELFDataInputStream: java.io.RandomAccessFile file>;
+        $i0 = virtualinvoke $r0.<java.io.RandomAccessFile: int read()>();
+        $i0 = $i0 & 255;
+        return $i0;
+    }
+
+    private int read_2() throws java.io.IOException
+    {
+        cck.elf.ELFDataInputStream this;
+        int b1, b2;
+        boolean $z0;
+        short $s0;
+
+        this := @this: cck.elf.ELFDataInputStream;
+        b1 = specialinvoke this.<cck.elf.ELFDataInputStream: int read_1()>();
+        b2 = specialinvoke this.<cck.elf.ELFDataInputStream: int read_1()>();
+        $z0 = this.<cck.elf.ELFDataInputStream: boolean bigEndian>;
+        if $z0 == 0 goto label0;
+
+        $s0 = specialinvoke this.<cck.elf.ELFDataInputStream: short asShort(int,int)>(b2, b1);
+        return $s0;
+
+     label0:
+        $s0 = specialinvoke this.<cck.elf.ELFDataInputStream: short asShort(int,int)>(b1, b2);
+        return $s0;
+    }
+
+    private int read_4() throws java.io.IOException
+    {
+        cck.elf.ELFDataInputStream this;
+        int b1, b2, b3, b4, $i0;
+        boolean $z0;
+
+        this := @this: cck.elf.ELFDataInputStream;
+        b1 = specialinvoke this.<cck.elf.ELFDataInputStream: int read_1()>();
+        b2 = specialinvoke this.<cck.elf.ELFDataInputStream: int read_1()>();
+        b3 = specialinvoke this.<cck.elf.ELFDataInputStream: int read_1()>();
+        b4 = specialinvoke this.<cck.elf.ELFDataInputStream: int read_1()>();
+        $z0 = this.<cck.elf.ELFDataInputStream: boolean bigEndian>;
+        if $z0 == 0 goto label0;
+
+        $i0 = specialinvoke this.<cck.elf.ELFDataInputStream: int asInt(int,int,int,int)>(b4, b3, b2, b1);
+        return $i0;
+
+     label0:
+        $i0 = specialinvoke this.<cck.elf.ELFDataInputStream: int asInt(int,int,int,int)>(b1, b2, b3, b4);
+        return $i0;
+    }
+
+    private short asShort(int, int)
+    {
+        cck.elf.ELFDataInputStream this;
+        int bl, bh, $i0;
+        short $s1;
+
+        this := @this: cck.elf.ELFDataInputStream;
+        bl := @parameter0: int;
+        bh := @parameter1: int;
+        $i0 = bh << 8;
+        $i0 = $i0 | bl;
+        $s1 = (short) $i0;
+        return $s1;
+    }
+
+    private int asInt(int, int, int, int)
+    {
+        cck.elf.ELFDataInputStream this;
+        int b1, b2, b3, b4, $i0, $i1;
+
+        this := @this: cck.elf.ELFDataInputStream;
+        b1 := @parameter0: int;
+        b2 := @parameter1: int;
+        b3 := @parameter2: int;
+        b4 := @parameter3: int;
+        $i0 = b4 << 24;
+        $i1 = b3 << 16;
+        $i0 = $i0 | $i1;
+        $i1 = b2 << 8;
+        $i0 = $i0 | $i1;
+        $i0 = $i0 | b1;
+        return $i0;
+    }
+}

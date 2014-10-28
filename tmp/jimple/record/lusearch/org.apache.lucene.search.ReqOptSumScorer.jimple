@@ -1,0 +1,159 @@
+public class org.apache.lucene.search.ReqOptSumScorer extends org.apache.lucene.search.Scorer
+{
+    private org.apache.lucene.search.Scorer reqScorer;
+    private org.apache.lucene.search.Scorer optScorer;
+    private boolean firstTimeOptScorer;
+
+    public void <init>(org.apache.lucene.search.Scorer, org.apache.lucene.search.Scorer)
+    {
+        org.apache.lucene.search.ReqOptSumScorer this;
+        org.apache.lucene.search.Scorer reqScorer, optScorer;
+
+        this := @this: org.apache.lucene.search.ReqOptSumScorer;
+        reqScorer := @parameter0: org.apache.lucene.search.Scorer;
+        optScorer := @parameter1: org.apache.lucene.search.Scorer;
+        specialinvoke this.<org.apache.lucene.search.Scorer: void <init>(org.apache.lucene.search.Similarity)>(null);
+        this.<org.apache.lucene.search.ReqOptSumScorer: boolean firstTimeOptScorer> = 1;
+        this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer reqScorer> = reqScorer;
+        this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer optScorer> = optScorer;
+        return;
+    }
+
+    public boolean next() throws java.io.IOException
+    {
+        org.apache.lucene.search.ReqOptSumScorer this;
+        org.apache.lucene.search.Scorer $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.ReqOptSumScorer;
+        $r0 = this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer reqScorer>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: boolean next()>();
+        return $z0;
+    }
+
+    public boolean skipTo(int) throws java.io.IOException
+    {
+        org.apache.lucene.search.ReqOptSumScorer this;
+        int target;
+        org.apache.lucene.search.Scorer $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.ReqOptSumScorer;
+        target := @parameter0: int;
+        $r0 = this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer reqScorer>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: boolean skipTo(int)>(target);
+        return $z0;
+    }
+
+    public int doc()
+    {
+        org.apache.lucene.search.ReqOptSumScorer this;
+        org.apache.lucene.search.Scorer $r0;
+        int $i0;
+
+        this := @this: org.apache.lucene.search.ReqOptSumScorer;
+        $r0 = this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer reqScorer>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: int doc()>();
+        return $i0;
+    }
+
+    public float score() throws java.io.IOException
+    {
+        org.apache.lucene.search.ReqOptSumScorer this;
+        int curDoc, $i0;
+        float reqScore, $f0, $f1;
+        org.apache.lucene.search.Scorer $r0, $r1;
+        boolean $z0;
+        long tid_score;
+        java.lang.Thread thread_score;
+
+        this := @this: org.apache.lucene.search.ReqOptSumScorer;
+        thread_score = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_score = virtualinvoke thread_score.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer reqScorer>;
+        curDoc = virtualinvoke $r0.<org.apache.lucene.search.Scorer: int doc()>();
+        $r0 = this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer reqScorer>;
+        reqScore = virtualinvoke $r0.<org.apache.lucene.search.Scorer: float score()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 93, tid_score, "org.apache.lucene.search.ReqOptSumScorer", 68, $z0);
+        $z0 = this.<org.apache.lucene.search.ReqOptSumScorer: boolean firstTimeOptScorer>;
+        if $z0 == 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 93, tid_score, "org.apache.lucene.search.ReqOptSumScorer", 69, 0);
+        this.<org.apache.lucene.search.ReqOptSumScorer: boolean firstTimeOptScorer> = 0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 94, tid_score, "org.apache.lucene.search.ReqOptSumScorer", 70, $r0);
+        $r0 = this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer optScorer>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: boolean skipTo(int)>(curDoc);
+        if $z0 != 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 94, tid_score, "org.apache.lucene.search.ReqOptSumScorer", 71, null);
+        this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer optScorer> = null;
+        return reqScore;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 94, tid_score, "org.apache.lucene.search.ReqOptSumScorer", 74, $r0);
+        $r0 = this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer optScorer>;
+        if $r0 != null goto label1;
+
+        return reqScore;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 94, tid_score, "org.apache.lucene.search.ReqOptSumScorer", 76, $r0);
+        $r0 = this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer optScorer>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: int doc()>();
+        if $i0 >= curDoc goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 94, tid_score, "org.apache.lucene.search.ReqOptSumScorer", 76, $r0);
+        $r0 = this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer optScorer>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: boolean skipTo(int)>(curDoc);
+        if $z0 != 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 94, tid_score, "org.apache.lucene.search.ReqOptSumScorer", 77, null);
+        this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer optScorer> = null;
+        return reqScore;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 94, tid_score, "org.apache.lucene.search.ReqOptSumScorer", 81, $r0);
+        $r0 = this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer optScorer>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: int doc()>();
+        if $i0 != curDoc goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 94, tid_score, "org.apache.lucene.search.ReqOptSumScorer", 81, $r1);
+        $r1 = this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer optScorer>;
+        $f0 = virtualinvoke $r1.<org.apache.lucene.search.Scorer: float score()>();
+        $f1 = reqScore + $f0;
+        goto label4;
+
+     label3:
+        $f1 = reqScore;
+
+     label4:
+        return $f1;
+    }
+
+    public org.apache.lucene.search.Explanation explain(int) throws java.io.IOException
+    {
+        org.apache.lucene.search.ReqOptSumScorer this;
+        int doc;
+        org.apache.lucene.search.Explanation $r0, res, $r2;
+        org.apache.lucene.search.Scorer $r1;
+        long tid_explain;
+        java.lang.Thread thread_explain;
+
+        this := @this: org.apache.lucene.search.ReqOptSumScorer;
+        doc := @parameter0: int;
+        thread_explain = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_explain = virtualinvoke thread_explain.<java.lang.Thread: long getId()>();
+        $r0 = new org.apache.lucene.search.Explanation;
+        specialinvoke $r0.<org.apache.lucene.search.Explanation: void <init>()>();
+        res = $r0;
+        virtualinvoke res.<org.apache.lucene.search.Explanation: void setDescription(java.lang.String)>("required, optional");
+        $r1 = this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer reqScorer>;
+        $r2 = virtualinvoke $r1.<org.apache.lucene.search.Scorer: org.apache.lucene.search.Explanation explain(int)>(doc);
+        virtualinvoke res.<org.apache.lucene.search.Explanation: void addDetail(org.apache.lucene.search.Explanation)>($r2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 94, tid_explain, "org.apache.lucene.search.ReqOptSumScorer", 94, $r1);
+        $r1 = this.<org.apache.lucene.search.ReqOptSumScorer: org.apache.lucene.search.Scorer optScorer>;
+        $r2 = virtualinvoke $r1.<org.apache.lucene.search.Scorer: org.apache.lucene.search.Explanation explain(int)>(doc);
+        virtualinvoke res.<org.apache.lucene.search.Explanation: void addDetail(org.apache.lucene.search.Explanation)>($r2);
+        return res;
+    }
+}

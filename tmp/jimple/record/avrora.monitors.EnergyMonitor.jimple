@@ -1,0 +1,52 @@
+public class avrora.monitors.EnergyMonitor extends avrora.monitors.MonitorFactory
+{
+    protected final cck.util.Option$Double BATTERY;
+    protected final cck.util.Option$Str LOG;
+
+    public void <init>()
+    {
+        avrora.monitors.EnergyMonitor this;
+        cck.util.Option$Double $r0;
+        cck.util.Option$Str $r1;
+
+        this := @this: avrora.monitors.EnergyMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"energy\" is a monitor to trace energy consumption.");
+        $r0 = virtualinvoke this.<avrora.monitors.EnergyMonitor: cck.util.Option$Double newOption(java.lang.String,double,java.lang.String)>("battery", 0.0, "This option specifies the number of joules in each node\'s battery. During simulation, the energy consumption of each node is tracked, and if the node runs out of battery, it will be shut down and removed from the simulation.");
+        this.<avrora.monitors.EnergyMonitor: cck.util.Option$Double BATTERY> = $r0;
+        $r1 = virtualinvoke this.<avrora.monitors.EnergyMonitor: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("logfile", "", "This option specifies whether the energy monitor should log changes to each node\'s energy state. If this option is specified, then each node\'s energy state transitions will be written to <option>.#, where \'#\' represents the node ID.");
+        this.<avrora.monitors.EnergyMonitor: cck.util.Option$Str LOG> = $r1;
+        return;
+    }
+
+    public void <init>(java.lang.String)
+    {
+        avrora.monitors.EnergyMonitor this;
+        java.lang.String s2;
+        cck.util.Option$Double $r0;
+        cck.util.Option$Str $r1;
+
+        this := @this: avrora.monitors.EnergyMonitor;
+        s2 := @parameter0: java.lang.String;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>(s2);
+        $r0 = virtualinvoke this.<avrora.monitors.EnergyMonitor: cck.util.Option$Double newOption(java.lang.String,double,java.lang.String)>("battery", 0.0, "This option specifies the number of joules in each node\'s battery. During simulation, the energy consumption of each node is tracked, and if the node runs out of battery, it will be shut down and removed from the simulation.");
+        this.<avrora.monitors.EnergyMonitor: cck.util.Option$Double BATTERY> = $r0;
+        $r1 = virtualinvoke this.<avrora.monitors.EnergyMonitor: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("logfile", "", "This option specifies whether the energy monitor should log changes to each node\'s energy state. If this option is specified, then each node\'s energy state transitions will be written to <option>.#, where \'#\' represents the node ID.");
+        this.<avrora.monitors.EnergyMonitor: cck.util.Option$Str LOG> = $r1;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.EnergyMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.EnergyMonitor$Monitor tmp$548268735;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.EnergyMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$548268735 = new avrora.monitors.EnergyMonitor$Monitor;
+        specialinvoke tmp$548268735.<avrora.monitors.EnergyMonitor$Monitor: void <init>(avrora.monitors.EnergyMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$548268735;
+        return tmp;
+    }
+}

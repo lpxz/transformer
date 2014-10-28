@@ -1,0 +1,84 @@
+public class org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor extends java.io.RandomAccessFile
+{
+    protected volatile boolean isOpen;
+    long position;
+    final long length;
+
+    public void <init>(java.io.File, java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor this;
+        java.io.File file;
+        java.lang.String mode;
+        long $l0;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor;
+        file := @parameter0: java.io.File;
+        mode := @parameter1: java.lang.String;
+        specialinvoke this.<java.io.RandomAccessFile: void <init>(java.io.File,java.lang.String)>(file, mode);
+        this.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: boolean isOpen> = 1;
+        $l0 = virtualinvoke this.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: long length()>();
+        this.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: long length> = $l0;
+        return;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor this;
+        boolean $z0;
+        long tid_close;
+        java.lang.Thread thread_close;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor;
+        thread_close = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_close = virtualinvoke thread_close.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 70, tid_close, "org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor", 558, $z0);
+        $z0 = this.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: boolean isOpen>;
+        if $z0 == 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 70, tid_close, "org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor", 559, 0);
+        this.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: boolean isOpen> = 0;
+        specialinvoke this.<java.io.RandomAccessFile: void close()>();
+
+     label0:
+        return;
+    }
+
+    protected void finalize() throws java.lang.Throwable
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor this;
+        java.lang.Throwable l1, $r0;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor;
+
+     label0:
+        virtualinvoke this.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: void close()>();
+        goto label6;
+
+     label1:
+        goto label5;
+
+     label2:
+        $r0 := @caughtexception;
+
+     label3:
+        l1 = $r0;
+        goto label7;
+
+     label4:
+        throw l1;
+
+     label5:
+        return;
+
+     label6:
+        specialinvoke this.<java.lang.Object: void finalize()>();
+        goto label1;
+
+     label7:
+        specialinvoke this.<java.lang.Object: void finalize()>();
+        goto label4;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+}

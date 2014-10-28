@@ -1,0 +1,130 @@
+class org.dacapo.lusearch.Search$QueryThread extends java.lang.Thread
+{
+    org.dacapo.lusearch.Search parent;
+    int id;
+    int threadCount;
+    int totalQueries;
+    java.lang.String name;
+    java.lang.String index;
+    java.lang.String outBase;
+    java.lang.String queryBase;
+    java.lang.String field;
+    java.lang.String normsField;
+    boolean raw;
+    int hitsPerPage;
+    final org.dacapo.lusearch.Search this$0;
+
+    public void <init>(org.dacapo.lusearch.Search, org.dacapo.lusearch.Search, java.lang.String, int, int, int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean, int)
+    {
+        org.dacapo.lusearch.Search$QueryThread this;
+        org.dacapo.lusearch.Search l1, parent;
+        java.lang.String name, index, outBase, queryBase, field, normsField;
+        int id, threadCount, totalQueries, hitsPerPage;
+        boolean raw;
+
+        this := @this: org.dacapo.lusearch.Search$QueryThread;
+        l1 := @parameter0: org.dacapo.lusearch.Search;
+        parent := @parameter1: org.dacapo.lusearch.Search;
+        name := @parameter2: java.lang.String;
+        id := @parameter3: int;
+        threadCount := @parameter4: int;
+        totalQueries := @parameter5: int;
+        index := @parameter6: java.lang.String;
+        outBase := @parameter7: java.lang.String;
+        queryBase := @parameter8: java.lang.String;
+        field := @parameter9: java.lang.String;
+        normsField := @parameter10: java.lang.String;
+        raw := @parameter11: boolean;
+        hitsPerPage := @parameter12: int;
+        this.<org.dacapo.lusearch.Search$QueryThread: org.dacapo.lusearch.Search this$0> = l1;
+        specialinvoke this.<java.lang.Thread: void <init>(java.lang.String)>(name);
+        this.<org.dacapo.lusearch.Search$QueryThread: org.dacapo.lusearch.Search parent> = parent;
+        this.<org.dacapo.lusearch.Search$QueryThread: int id> = id;
+        this.<org.dacapo.lusearch.Search$QueryThread: int threadCount> = threadCount;
+        this.<org.dacapo.lusearch.Search$QueryThread: int totalQueries> = totalQueries;
+        this.<org.dacapo.lusearch.Search$QueryThread: java.lang.String name> = name;
+        this.<org.dacapo.lusearch.Search$QueryThread: java.lang.String index> = index;
+        this.<org.dacapo.lusearch.Search$QueryThread: java.lang.String outBase> = outBase;
+        this.<org.dacapo.lusearch.Search$QueryThread: java.lang.String queryBase> = queryBase;
+        this.<org.dacapo.lusearch.Search$QueryThread: java.lang.String field> = field;
+        this.<org.dacapo.lusearch.Search$QueryThread: java.lang.String normsField> = normsField;
+        this.<org.dacapo.lusearch.Search$QueryThread: boolean raw> = raw;
+        this.<org.dacapo.lusearch.Search$QueryThread: int hitsPerPage> = hitsPerPage;
+        return;
+    }
+
+    public void run()
+    {
+        org.dacapo.lusearch.Search$QueryThread this;
+        int count, i, queryId, $i0, $i1, $i2, $i3, $i5;
+        java.lang.Exception e, $r9;
+        byte $b4;
+        org.dacapo.lusearch.Search$QueryProcessor $r0;
+        org.dacapo.lusearch.Search $r1, $r2;
+        java.lang.String $r3, $r4, $r5, $r6, $r7, $r8;
+        boolean $z0;
+        long tid_run;
+        java.lang.Thread thread_run;
+
+        this := @this: org.dacapo.lusearch.Search$QueryThread;
+        thread_run = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_run = virtualinvoke thread_run.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void threadStartRun(long)>(tid_run);
+
+     label0:
+        $i0 = this.<org.dacapo.lusearch.Search$QueryThread: int totalQueries>;
+        $i1 = this.<org.dacapo.lusearch.Search$QueryThread: int threadCount>;
+        $i0 = $i0 / $i1;
+        $i1 = this.<org.dacapo.lusearch.Search$QueryThread: int id>;
+        $i2 = this.<org.dacapo.lusearch.Search$QueryThread: int totalQueries>;
+        $i3 = this.<org.dacapo.lusearch.Search$QueryThread: int threadCount>;
+        $i2 = $i2 % $i3;
+        if $i1 >= $i2 goto label1;
+
+        $b4 = 1;
+        goto label2;
+
+     label1:
+        $b4 = 0;
+
+     label2:
+        count = $i0 + $b4;
+        i = 0;
+        queryId = this.<org.dacapo.lusearch.Search$QueryThread: int id>;
+
+     label3:
+        if i >= count goto label4;
+
+        $r0 = new org.dacapo.lusearch.Search$QueryProcessor;
+        $r1 = this.<org.dacapo.lusearch.Search$QueryThread: org.dacapo.lusearch.Search this$0>;
+        $r2 = this.<org.dacapo.lusearch.Search$QueryThread: org.dacapo.lusearch.Search parent>;
+        $r3 = this.<org.dacapo.lusearch.Search$QueryThread: java.lang.String name>;
+        $r4 = this.<org.dacapo.lusearch.Search$QueryThread: java.lang.String index>;
+        $r5 = this.<org.dacapo.lusearch.Search$QueryThread: java.lang.String outBase>;
+        $r6 = this.<org.dacapo.lusearch.Search$QueryThread: java.lang.String queryBase>;
+        $r7 = this.<org.dacapo.lusearch.Search$QueryThread: java.lang.String field>;
+        $r8 = this.<org.dacapo.lusearch.Search$QueryThread: java.lang.String normsField>;
+        $z0 = this.<org.dacapo.lusearch.Search$QueryThread: boolean raw>;
+        $i5 = this.<org.dacapo.lusearch.Search$QueryThread: int hitsPerPage>;
+        specialinvoke $r0.<org.dacapo.lusearch.Search$QueryProcessor: void <init>(org.dacapo.lusearch.Search,org.dacapo.lusearch.Search,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,int)>($r1, $r2, $r3, queryId, $r4, $r5, $r6, $r7, $r8, $z0, $i5);
+        virtualinvoke $r0.<org.dacapo.lusearch.Search$QueryProcessor: void run()>();
+        i = i + 1;
+        $i1 = this.<org.dacapo.lusearch.Search$QueryThread: int threadCount>;
+        queryId = queryId + $i1;
+        goto label3;
+
+     label4:
+        goto label6;
+
+     label5:
+        $r9 := @caughtexception;
+        e = $r9;
+        virtualinvoke e.<java.lang.Exception: void printStackTrace()>();
+
+     label6:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void threadExitRun(long)>(tid_run);
+        return;
+
+        catch java.lang.Exception from label0 to label4 with label5;
+    }
+}

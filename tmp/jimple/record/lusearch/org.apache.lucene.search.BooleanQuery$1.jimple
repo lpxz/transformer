@@ -1,0 +1,29 @@
+class org.apache.lucene.search.BooleanQuery$1 extends org.apache.lucene.search.SimilarityDelegator
+{
+    private final org.apache.lucene.search.BooleanQuery this$0;
+
+    void <init>(org.apache.lucene.search.BooleanQuery, org.apache.lucene.search.Similarity)
+    {
+        org.apache.lucene.search.BooleanQuery$1 this;
+        org.apache.lucene.search.BooleanQuery l1;
+        org.apache.lucene.search.Similarity x0;
+
+        this := @this: org.apache.lucene.search.BooleanQuery$1;
+        l1 := @parameter0: org.apache.lucene.search.BooleanQuery;
+        x0 := @parameter1: org.apache.lucene.search.Similarity;
+        this.<org.apache.lucene.search.BooleanQuery$1: org.apache.lucene.search.BooleanQuery this$0> = l1;
+        specialinvoke this.<org.apache.lucene.search.SimilarityDelegator: void <init>(org.apache.lucene.search.Similarity)>(x0);
+        return;
+    }
+
+    public float coord(int, int)
+    {
+        org.apache.lucene.search.BooleanQuery$1 this;
+        int overlap, maxOverlap;
+
+        this := @this: org.apache.lucene.search.BooleanQuery$1;
+        overlap := @parameter0: int;
+        maxOverlap := @parameter1: int;
+        return 1.0F;
+    }
+}

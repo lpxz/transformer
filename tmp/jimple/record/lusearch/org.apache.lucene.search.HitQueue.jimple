@@ -1,0 +1,74 @@
+final class org.apache.lucene.search.HitQueue extends org.apache.lucene.util.PriorityQueue
+{
+
+    void <init>(int)
+    {
+        org.apache.lucene.search.HitQueue this;
+        int size;
+
+        this := @this: org.apache.lucene.search.HitQueue;
+        size := @parameter0: int;
+        specialinvoke this.<org.apache.lucene.util.PriorityQueue: void <init>()>();
+        virtualinvoke this.<org.apache.lucene.search.HitQueue: void initialize(int)>(size);
+        return;
+    }
+
+    protected final boolean lessThan(java.lang.Object, java.lang.Object)
+    {
+        org.apache.lucene.search.HitQueue this;
+        java.lang.Object a, b;
+        org.apache.lucene.search.ScoreDoc hitA, hitB;
+        float $f0, $f1;
+        byte $b0;
+        int $i1, $i2;
+        boolean $z0;
+        long tid_lessThan;
+        java.lang.Thread thread_lessThan;
+
+        this := @this: org.apache.lucene.search.HitQueue;
+        a := @parameter0: java.lang.Object;
+        b := @parameter1: java.lang.Object;
+        thread_lessThan = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_lessThan = virtualinvoke thread_lessThan.<java.lang.Thread: long getId()>();
+        hitA = (org.apache.lucene.search.ScoreDoc) a;
+        hitB = (org.apache.lucene.search.ScoreDoc) b;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(hitA, 114, tid_lessThan, "org.apache.lucene.search.HitQueue", 30, $f0);
+        $f0 = hitA.<org.apache.lucene.search.ScoreDoc: float score>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(hitB, 114, tid_lessThan, "org.apache.lucene.search.HitQueue", 30, $f1);
+        $f1 = hitB.<org.apache.lucene.search.ScoreDoc: float score>;
+        $b0 = $f0 cmpl $f1;
+        if $b0 != 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(hitA, 113, tid_lessThan, "org.apache.lucene.search.HitQueue", 31, $i1);
+        $i1 = hitA.<org.apache.lucene.search.ScoreDoc: int doc>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(hitB, 113, tid_lessThan, "org.apache.lucene.search.HitQueue", 31, $i2);
+        $i2 = hitB.<org.apache.lucene.search.ScoreDoc: int doc>;
+        if $i1 <= $i2 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(hitA, 114, tid_lessThan, "org.apache.lucene.search.HitQueue", 33, $f0);
+        $f0 = hitA.<org.apache.lucene.search.ScoreDoc: float score>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(hitB, 114, tid_lessThan, "org.apache.lucene.search.HitQueue", 33, $f1);
+        $f1 = hitB.<org.apache.lucene.search.ScoreDoc: float score>;
+        $b0 = $f0 cmpg $f1;
+        if $b0 >= 0 goto label3;
+
+        $z0 = 1;
+        goto label4;
+
+     label3:
+        $z0 = 0;
+
+     label4:
+        return $z0;
+    }
+}

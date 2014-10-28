@@ -1,0 +1,27 @@
+public class avrora.monitors.StackMonitor extends avrora.monitors.MonitorFactory
+{
+
+    public void <init>()
+    {
+        avrora.monitors.StackMonitor this;
+
+        this := @this: avrora.monitors.StackMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"stack\" monitor tracks the height of the stack while the program executes, reporting the maximum stack height seen.");
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.StackMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.StackMonitor$Mon tmp$550672450;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.StackMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$550672450 = new avrora.monitors.StackMonitor$Mon;
+        specialinvoke tmp$550672450.<avrora.monitors.StackMonitor$Mon: void <init>(avrora.monitors.StackMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$550672450;
+        return tmp;
+    }
+}

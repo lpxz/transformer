@@ -1,0 +1,31 @@
+public class avrora.monitors.InteractiveMonitor extends avrora.monitors.MonitorFactory
+{
+    protected final cck.util.Option$List BREAKPOINTS;
+
+    public void <init>()
+    {
+        avrora.monitors.InteractiveMonitor this;
+        cck.util.Option$List $r0;
+
+        this := @this: avrora.monitors.InteractiveMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"interactive\" monitor allows the user to interact with the program asit executes, including placing breakpoints, watchpoints, and inspecting the stateof the simulation. Currently, it only supports terminating the simulation at breakpoints.");
+        $r0 = virtualinvoke this.<avrora.monitors.InteractiveMonitor: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("breakpoints", "", "This option selects a list of breakpoints in the program that can be either labels (such as the start of a function) or hexadecimal addresses that begin with \"0x\". Breakpoints will be inserted into the program and the simulation will terminate when any of these locations are reached.");
+        this.<avrora.monitors.InteractiveMonitor: cck.util.Option$List BREAKPOINTS> = $r0;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.InteractiveMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.InteractiveMonitor$Mon tmp$547182989;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.InteractiveMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$547182989 = new avrora.monitors.InteractiveMonitor$Mon;
+        specialinvoke tmp$547182989.<avrora.monitors.InteractiveMonitor$Mon: void <init>(avrora.monitors.InteractiveMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$547182989;
+        return tmp;
+    }
+}

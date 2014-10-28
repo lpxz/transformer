@@ -1,0 +1,187 @@
+public class org.apache.lucene.search.TopDocCollector extends org.apache.lucene.search.HitCollector
+{
+    private org.apache.lucene.search.ScoreDoc reusableSD;
+    protected int totalHits;
+    protected org.apache.lucene.util.PriorityQueue hq;
+
+    public void <init>(int)
+    {
+        org.apache.lucene.search.TopDocCollector this;
+        int numHits;
+        org.apache.lucene.search.HitQueue $r0;
+
+        this := @this: org.apache.lucene.search.TopDocCollector;
+        numHits := @parameter0: int;
+        $r0 = new org.apache.lucene.search.HitQueue;
+        specialinvoke $r0.<org.apache.lucene.search.HitQueue: void <init>(int)>(numHits);
+        specialinvoke this.<org.apache.lucene.search.TopDocCollector: void <init>(org.apache.lucene.util.PriorityQueue)>($r0);
+        return;
+    }
+
+    void <init>(int, org.apache.lucene.util.PriorityQueue)
+    {
+        org.apache.lucene.search.TopDocCollector this;
+        int numHits;
+        org.apache.lucene.util.PriorityQueue hq;
+
+        this := @this: org.apache.lucene.search.TopDocCollector;
+        numHits := @parameter0: int;
+        hq := @parameter1: org.apache.lucene.util.PriorityQueue;
+        specialinvoke this.<org.apache.lucene.search.HitCollector: void <init>()>();
+        this.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.util.PriorityQueue hq> = hq;
+        return;
+    }
+
+    protected void <init>(org.apache.lucene.util.PriorityQueue)
+    {
+        org.apache.lucene.search.TopDocCollector this;
+        org.apache.lucene.util.PriorityQueue hq;
+
+        this := @this: org.apache.lucene.search.TopDocCollector;
+        hq := @parameter0: org.apache.lucene.util.PriorityQueue;
+        specialinvoke this.<org.apache.lucene.search.HitCollector: void <init>()>();
+        this.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.util.PriorityQueue hq> = hq;
+        return;
+    }
+
+    public void collect(int, float)
+    {
+        org.apache.lucene.search.TopDocCollector this;
+        int doc, $i1;
+        float score, $f0;
+        byte $b0;
+        org.apache.lucene.search.ScoreDoc $r1, $r2, $r4;
+        org.apache.lucene.util.PriorityQueue $r3;
+        java.lang.Object $r5;
+        long tid_collect;
+        java.lang.Thread thread_collect;
+
+        this := @this: org.apache.lucene.search.TopDocCollector;
+        doc := @parameter0: int;
+        score := @parameter1: float;
+        thread_collect = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_collect = virtualinvoke thread_collect.<java.lang.Thread: long getId()>();
+        $b0 = score cmpl 0.0F;
+        if $b0 <= 0 goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 116, tid_collect, "org.apache.lucene.search.TopDocCollector", 64, $i1);
+        $i1 = this.<org.apache.lucene.search.TopDocCollector: int totalHits>;
+        $i1 = $i1 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 116, tid_collect, "org.apache.lucene.search.TopDocCollector", 64, $i1);
+        this.<org.apache.lucene.search.TopDocCollector: int totalHits> = $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 117, tid_collect, "org.apache.lucene.search.TopDocCollector", 65, $r1);
+        $r1 = this.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.search.ScoreDoc reusableSD>;
+        if $r1 != null goto label0;
+
+        $r2 = new org.apache.lucene.search.ScoreDoc;
+        specialinvoke $r2.<org.apache.lucene.search.ScoreDoc: void <init>(int,float)>(doc, score);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 117, tid_collect, "org.apache.lucene.search.TopDocCollector", 66, $r2);
+        this.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.search.ScoreDoc reusableSD> = $r2;
+        goto label2;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 117, tid_collect, "org.apache.lucene.search.TopDocCollector", 67, $r2);
+        $r2 = this.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.search.ScoreDoc reusableSD>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>($r2, 114, tid_collect, "org.apache.lucene.search.TopDocCollector", 67, $f0);
+        $f0 = $r2.<org.apache.lucene.search.ScoreDoc: float score>;
+        $b0 = score cmpl $f0;
+        if $b0 < 0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 117, tid_collect, "org.apache.lucene.search.TopDocCollector", 71, $r1);
+        $r1 = this.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.search.ScoreDoc reusableSD>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 113, tid_collect, "org.apache.lucene.search.TopDocCollector", 71, doc);
+        $r1.<org.apache.lucene.search.ScoreDoc: int doc> = doc;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 117, tid_collect, "org.apache.lucene.search.TopDocCollector", 72, $r1);
+        $r1 = this.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.search.ScoreDoc reusableSD>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>($r1, 114, tid_collect, "org.apache.lucene.search.TopDocCollector", 72, score);
+        $r1.<org.apache.lucene.search.ScoreDoc: float score> = score;
+        goto label2;
+
+     label1:
+        return;
+
+     label2:
+        $r3 = this.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.util.PriorityQueue hq>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 117, tid_collect, "org.apache.lucene.search.TopDocCollector", 76, $r4);
+        $r4 = this.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.search.ScoreDoc reusableSD>;
+        $r5 = virtualinvoke $r3.<org.apache.lucene.util.PriorityQueue: java.lang.Object insertWithOverflow(java.lang.Object)>($r4);
+        $r2 = (org.apache.lucene.search.ScoreDoc) $r5;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 117, tid_collect, "org.apache.lucene.search.TopDocCollector", 76, $r2);
+        this.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.search.ScoreDoc reusableSD> = $r2;
+
+     label3:
+        return;
+    }
+
+    public int getTotalHits()
+    {
+        org.apache.lucene.search.TopDocCollector this;
+        int $i0;
+        long tid_getTotalHits;
+        java.lang.Thread thread_getTotalHits;
+
+        this := @this: org.apache.lucene.search.TopDocCollector;
+        thread_getTotalHits = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getTotalHits = virtualinvoke thread_getTotalHits.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 116, tid_getTotalHits, "org.apache.lucene.search.TopDocCollector", 81, $i0);
+        $i0 = this.<org.apache.lucene.search.TopDocCollector: int totalHits>;
+        return $i0;
+    }
+
+    public org.apache.lucene.search.TopDocs topDocs()
+    {
+        org.apache.lucene.search.TopDocCollector this;
+        org.apache.lucene.search.ScoreDoc[] scoreDocs;
+        int i, $i0, $i1;
+        float maxScore, $f0;
+        org.apache.lucene.util.PriorityQueue $r0, $r1;
+        java.lang.Object $r2;
+        org.apache.lucene.search.ScoreDoc $r3, $r4;
+        org.apache.lucene.search.TopDocs $r5;
+        long tid_topDocs;
+        java.lang.Thread thread_topDocs;
+
+        this := @this: org.apache.lucene.search.TopDocCollector;
+        thread_topDocs = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_topDocs = virtualinvoke thread_topDocs.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.util.PriorityQueue hq>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.util.PriorityQueue: int size()>();
+        scoreDocs = newarray (org.apache.lucene.search.ScoreDoc)[$i0];
+        $r0 = this.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.util.PriorityQueue hq>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.util.PriorityQueue: int size()>();
+        i = $i0 - 1;
+
+     label0:
+        if i < 0 goto label1;
+
+        $r1 = this.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.util.PriorityQueue hq>;
+        $r2 = virtualinvoke $r1.<org.apache.lucene.util.PriorityQueue: java.lang.Object pop()>();
+        $r3 = (org.apache.lucene.search.ScoreDoc) $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(scoreDocs, 112, tid_topDocs, "org.apache.lucene.search.TopDocCollector", 87, i, $r3);
+        scoreDocs[i] = $r3;
+        i = i + -1;
+        goto label0;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 116, tid_topDocs, "org.apache.lucene.search.TopDocCollector", 89, $i0);
+        $i0 = this.<org.apache.lucene.search.TopDocCollector: int totalHits>;
+        if $i0 != 0 goto label2;
+
+        $f0 = #-InfinityF;
+        goto label3;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(scoreDocs, 112, tid_topDocs, "org.apache.lucene.search.TopDocCollector", 89, 0, $r4);
+        $r4 = scoreDocs[0];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>($r4, 114, tid_topDocs, "org.apache.lucene.search.TopDocCollector", 89, $f0);
+        $f0 = $r4.<org.apache.lucene.search.ScoreDoc: float score>;
+
+     label3:
+        maxScore = $f0;
+        $r5 = new org.apache.lucene.search.TopDocs;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 116, tid_topDocs, "org.apache.lucene.search.TopDocCollector", 93, $i1);
+        $i1 = this.<org.apache.lucene.search.TopDocCollector: int totalHits>;
+        specialinvoke $r5.<org.apache.lucene.search.TopDocs: void <init>(int,org.apache.lucene.search.ScoreDoc[],float)>($i1, scoreDocs, maxScore);
+        return $r5;
+    }
+}

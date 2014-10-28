@@ -1,0 +1,49 @@
+public abstract class org.apache.lucene.store.LockFactory extends java.lang.Object
+{
+    protected java.lang.String lockPrefix;
+
+    public void <init>()
+    {
+        org.apache.lucene.store.LockFactory this;
+
+        this := @this: org.apache.lucene.store.LockFactory;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.store.LockFactory: java.lang.String lockPrefix> = "";
+        return;
+    }
+
+    public void setLockPrefix(java.lang.String)
+    {
+        org.apache.lucene.store.LockFactory this;
+        java.lang.String lockPrefix;
+        long tid_setLockPrefix;
+        java.lang.Thread thread_setLockPrefix;
+
+        this := @this: org.apache.lucene.store.LockFactory;
+        lockPrefix := @parameter0: java.lang.String;
+        thread_setLockPrefix = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setLockPrefix = virtualinvoke thread_setLockPrefix.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 53, tid_setLockPrefix, "org.apache.lucene.store.LockFactory", 51, lockPrefix);
+        this.<org.apache.lucene.store.LockFactory: java.lang.String lockPrefix> = lockPrefix;
+        return;
+    }
+
+    public java.lang.String getLockPrefix()
+    {
+        org.apache.lucene.store.LockFactory this;
+        java.lang.String $r0;
+        long tid_getLockPrefix;
+        java.lang.Thread thread_getLockPrefix;
+
+        this := @this: org.apache.lucene.store.LockFactory;
+        thread_getLockPrefix = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getLockPrefix = virtualinvoke thread_getLockPrefix.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 53, tid_getLockPrefix, "org.apache.lucene.store.LockFactory", 58, $r0);
+        $r0 = this.<org.apache.lucene.store.LockFactory: java.lang.String lockPrefix>;
+        return $r0;
+    }
+
+    public abstract org.apache.lucene.store.Lock makeLock(java.lang.String);
+
+    public abstract void clearLock(java.lang.String) throws java.io.IOException;
+}

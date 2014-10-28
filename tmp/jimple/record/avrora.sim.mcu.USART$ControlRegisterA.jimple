@@ -1,0 +1,148 @@
+public class avrora.sim.mcu.USART$ControlRegisterA extends avrora.sim.RWRegister
+{
+    final avrora.sim.mcu.ATMegaFamily$InterruptFlag UDRE_flag;
+    final avrora.sim.mcu.ATMegaFamily$InterruptFlag TXC_flag;
+    final avrora.sim.mcu.ATMegaFamily$InterruptFlag RXC_flag;
+    final avrora.sim.state.BooleanView _dor;
+    final avrora.sim.state.BooleanView _u2xn;
+    final avrora.sim.mcu.USART this$0;
+
+    public void <init>(avrora.sim.mcu.USART)
+    {
+        avrora.sim.mcu.USART$ControlRegisterA this;
+        avrora.sim.mcu.USART l1;
+        avrora.sim.state.BooleanView $r0, $r4;
+        avrora.sim.mcu.ATMegaFamily$InterruptFlag $r1, $r5;
+        avrora.sim.AtmelInterpreter $r2;
+        avrora.sim.mcu.USART$USARTProperties $r3;
+        int $i0;
+
+        this := @this: avrora.sim.mcu.USART$ControlRegisterA;
+        l1 := @parameter0: avrora.sim.mcu.USART;
+        this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.USART this$0> = l1;
+        specialinvoke this.<avrora.sim.RWRegister: void <init>()>();
+        $r0 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.BooleanView booleanView(avrora.sim.state.RegisterView,int)>(this, 3);
+        this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.state.BooleanView _dor> = $r0;
+        $r0 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.BooleanView booleanView(avrora.sim.state.RegisterView,int)>(this, 1);
+        this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.state.BooleanView _u2xn> = $r0;
+        $r1 = new avrora.sim.mcu.ATMegaFamily$InterruptFlag;
+        $r2 = l1.<avrora.sim.mcu.USART: avrora.sim.AtmelInterpreter interpreter>;
+        $r3 = l1.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTProperties properties>;
+        $i0 = $r3.<avrora.sim.mcu.USART$USARTProperties: int USART_UDRE_inum>;
+        $r4 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.BooleanView booleanView(avrora.sim.state.RegisterView,int)>(this, 5);
+        specialinvoke $r1.<avrora.sim.mcu.ATMegaFamily$InterruptFlag: void <init>(avrora.sim.AtmelInterpreter,boolean,int,avrora.sim.state.BooleanView)>($r2, 0, $i0, $r4);
+        this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.ATMegaFamily$InterruptFlag UDRE_flag> = $r1;
+        $r1 = new avrora.sim.mcu.ATMegaFamily$InterruptFlag;
+        $r2 = l1.<avrora.sim.mcu.USART: avrora.sim.AtmelInterpreter interpreter>;
+        $r3 = l1.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTProperties properties>;
+        $i0 = $r3.<avrora.sim.mcu.USART$USARTProperties: int USART_TX_inum>;
+        $r4 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.BooleanView booleanView(avrora.sim.state.RegisterView,int)>(this, 6);
+        specialinvoke $r1.<avrora.sim.mcu.ATMegaFamily$InterruptFlag: void <init>(avrora.sim.AtmelInterpreter,boolean,int,avrora.sim.state.BooleanView)>($r2, 1, $i0, $r4);
+        this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.ATMegaFamily$InterruptFlag TXC_flag> = $r1;
+        $r1 = new avrora.sim.mcu.ATMegaFamily$InterruptFlag;
+        $r2 = l1.<avrora.sim.mcu.USART: avrora.sim.AtmelInterpreter interpreter>;
+        $r3 = l1.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTProperties properties>;
+        $i0 = $r3.<avrora.sim.mcu.USART$USARTProperties: int USART_RX_inum>;
+        $r4 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.BooleanView booleanView(avrora.sim.state.RegisterView,int)>(this, 7);
+        specialinvoke $r1.<avrora.sim.mcu.ATMegaFamily$InterruptFlag: void <init>(avrora.sim.AtmelInterpreter,boolean,int,avrora.sim.state.BooleanView)>($r2, 0, $i0, $r4);
+        this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.ATMegaFamily$InterruptFlag RXC_flag> = $r1;
+        $r5 = this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.ATMegaFamily$InterruptFlag UDRE_flag>;
+        virtualinvoke $r5.<avrora.sim.mcu.ATMegaFamily$InterruptFlag: void flag(boolean)>(1);
+        return;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.mcu.USART$ControlRegisterA this;
+        byte val, $b0, $b1, $b3;
+        short $s2;
+        avrora.sim.mcu.ATMegaFamily$InterruptFlag $r1;
+        avrora.sim.mcu.USART $r2, $r8;
+        avrora.sim.mcu.USART$ControlRegisterC $r3;
+        avrora.sim.state.RegisterView $r4;
+        int $i4, $i5;
+        avrora.sim.state.BooleanView $r5;
+        boolean $z0;
+        avrora.sim.output.SimPrinter $r6;
+        java.lang.StringBuilder $r7;
+        avrora.sim.mcu.USART$USARTProperties $r9;
+        java.lang.String $r10, $r11;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.mcu.USART$ControlRegisterA;
+        val := @parameter0: byte;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        $b0 = val & 64;
+        if $b0 != 1 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.mcu.USART$ControlRegisterA", 422, $b1);
+        $b1 = this.<avrora.sim.mcu.USART$ControlRegisterA: byte value>;
+        $s2 = $b1 & 191;
+        $b1 = (byte) $s2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.mcu.USART$ControlRegisterA", 422, $b1);
+        this.<avrora.sim.mcu.USART$ControlRegisterA: byte value> = $b1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.mcu.USART$ControlRegisterA", 423, $b1);
+        $b1 = this.<avrora.sim.mcu.USART$ControlRegisterA: byte value>;
+        $s2 = $b1 & 252;
+        $b3 = val & 3;
+        $s2 = $s2 | $b3;
+        $b1 = (byte) $s2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.mcu.USART$ControlRegisterA", 423, $b1);
+        this.<avrora.sim.mcu.USART$ControlRegisterA: byte value> = $b1;
+        $r1 = this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.ATMegaFamily$InterruptFlag TXC_flag>;
+        virtualinvoke $r1.<avrora.sim.mcu.ATMegaFamily$InterruptFlag: void sync()>();
+        $r2 = this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.USART this$0>;
+        $r3 = $r2.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$ControlRegisterC UCSRnC_reg>;
+        $r4 = $r3.<avrora.sim.mcu.USART$ControlRegisterC: avrora.sim.state.RegisterView _umsel>;
+        $i4 = interfaceinvoke $r4.<avrora.sim.state.RegisterView: int getValue()>();
+        if $i4 != 1 goto label1;
+
+        $r2 = this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.USART this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r2, 33, tid_write, "avrora.sim.mcu.USART$ControlRegisterA", 429, 2);
+        $r2.<avrora.sim.mcu.USART: int UBRRMultiplier> = 2;
+        goto label3;
+
+     label1:
+        $r5 = this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.state.BooleanView _u2xn>;
+        $z0 = interfaceinvoke $r5.<avrora.sim.state.BooleanView: boolean getValue()>();
+        if $z0 == 0 goto label2;
+
+        $r2 = this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.USART this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r2, 33, tid_write, "avrora.sim.mcu.USART$ControlRegisterA", 430, 8);
+        $r2.<avrora.sim.mcu.USART: int UBRRMultiplier> = 8;
+        goto label3;
+
+     label2:
+        $r2 = this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.USART this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r2, 33, tid_write, "avrora.sim.mcu.USART$ControlRegisterA", 431, 16);
+        $r2.<avrora.sim.mcu.USART: int UBRRMultiplier> = 16;
+
+     label3:
+        $r2 = this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.USART this$0>;
+        $r6 = $r2.<avrora.sim.mcu.USART: avrora.sim.output.SimPrinter devicePrinter>;
+        if $r6 == null goto label4;
+
+        $r2 = this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.USART this$0>;
+        $r6 = $r2.<avrora.sim.mcu.USART: avrora.sim.output.SimPrinter devicePrinter>;
+        $r7 = new java.lang.StringBuilder;
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+        $r8 = this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.USART this$0>;
+        $r9 = $r8.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTProperties properties>;
+        $r10 = $r9.<avrora.sim.mcu.USART$USARTProperties: java.lang.String USART_name>;
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": multiplier set to ");
+        $r8 = this.<avrora.sim.mcu.USART$ControlRegisterA: avrora.sim.mcu.USART this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r8, 33, tid_write, "avrora.sim.mcu.USART$ControlRegisterA", 434, $i5);
+        $i5 = $r8.<avrora.sim.mcu.USART: int UBRRMultiplier>;
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i5);
+        $r11 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r6.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r11);
+
+     label4:
+        return;
+    }
+}

@@ -18,7 +18,7 @@ public class EntryPoints4Dacapo {
 
 	public static String[] dacapoBenchmarks = {"avrora", "batik", "eclipse", "fop", "h2", "jython",
 		                                         "luindex", "lusearch", "pmd",  "sunflow",  "tomcat", "xalan"};
-	public static boolean contains(String subjectname)
+	public static boolean containsDacapo(String subjectname)
 	{
 		for(String str : dacapoBenchmarks)
 		{
@@ -46,7 +46,7 @@ public class EntryPoints4Dacapo {
 //		# if the above fails, try this: org.dacapo.tomcat.Control                     exec
 //		org.dacapo.xalan.XSLTBench        createWorkers # create
 //		org.dacapo.xalan.XSLTBench        doWork # use threads		
-		if(dacapoBenchmarkName!=null&& contains(dacapoBenchmarkName))
+		if(dacapoBenchmarkName!=null&& containsDacapo(dacapoBenchmarkName))
 		{
 			if(dacapoBenchmarkName.equals("avrora"))
 			{

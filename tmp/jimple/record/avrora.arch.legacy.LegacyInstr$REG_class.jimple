@@ -1,0 +1,90 @@
+public abstract class avrora.arch.legacy.LegacyInstr$REG_class extends avrora.arch.legacy.LegacyInstr
+{
+    public final avrora.arch.legacy.LegacyRegister r1;
+
+    void <init>(avrora.arch.legacy.LegacyInstrProperties, avrora.arch.legacy.LegacyRegister)
+    {
+        avrora.arch.legacy.LegacyInstr$REG_class this;
+        avrora.arch.legacy.LegacyInstrProperties p;
+        avrora.arch.legacy.LegacyRegister r;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$REG_class;
+        p := @parameter0: avrora.arch.legacy.LegacyInstrProperties;
+        r := @parameter1: avrora.arch.legacy.LegacyRegister;
+        specialinvoke this.<avrora.arch.legacy.LegacyInstr: void <init>(avrora.arch.legacy.LegacyInstrProperties)>(p);
+        this.<avrora.arch.legacy.LegacyInstr$REG_class: avrora.arch.legacy.LegacyRegister r1> = r;
+        return;
+    }
+
+    public java.lang.String getOperands()
+    {
+        avrora.arch.legacy.LegacyInstr$REG_class this;
+        avrora.arch.legacy.LegacyRegister $r0;
+        java.lang.String $r1;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$REG_class;
+        $r0 = this.<avrora.arch.legacy.LegacyInstr$REG_class: avrora.arch.legacy.LegacyRegister r1>;
+        $r1 = virtualinvoke $r0.<avrora.arch.legacy.LegacyRegister: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public avrora.arch.legacy.LegacyInstr build(int, avrora.arch.legacy.LegacyOperand[])
+    {
+        avrora.arch.legacy.LegacyInstr$REG_class this;
+        int pc;
+        avrora.arch.legacy.LegacyOperand[] ops;
+        avrora.arch.legacy.LegacyOperand $r0;
+        avrora.arch.legacy.LegacyRegister $r1;
+        avrora.arch.legacy.LegacyInstr $r2;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$REG_class;
+        pc := @parameter0: int;
+        ops := @parameter1: avrora.arch.legacy.LegacyOperand[];
+        staticinvoke <avrora.arch.legacy.LegacyInstr: void access$000(int,avrora.arch.legacy.LegacyOperand[])>(1, ops);
+        $r0 = ops[0];
+        $r1 = staticinvoke <avrora.arch.legacy.LegacyInstr: avrora.arch.legacy.LegacyRegister access$100(avrora.arch.legacy.LegacyOperand)>($r0);
+        $r2 = virtualinvoke this.<avrora.arch.legacy.LegacyInstr$REG_class: avrora.arch.legacy.LegacyInstr allocate(int,avrora.arch.legacy.LegacyRegister)>(pc, $r1);
+        return $r2;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        avrora.arch.legacy.LegacyInstr$REG_class this, i;
+        java.lang.Object o;
+        boolean $z0;
+        avrora.arch.legacy.LegacyInstrProperties $r0, $r1;
+        avrora.arch.legacy.LegacyRegister $r2, $r3;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$REG_class;
+        o := @parameter0: java.lang.Object;
+        if o != this goto label0;
+
+        return 1;
+
+     label0:
+        $z0 = o instanceof avrora.arch.legacy.LegacyInstr$REG_class;
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        i = (avrora.arch.legacy.LegacyInstr$REG_class) o;
+        $r0 = i.<avrora.arch.legacy.LegacyInstr$REG_class: avrora.arch.legacy.LegacyInstrProperties properties>;
+        $r1 = this.<avrora.arch.legacy.LegacyInstr$REG_class: avrora.arch.legacy.LegacyInstrProperties properties>;
+        if $r0 == $r1 goto label2;
+
+        return 0;
+
+     label2:
+        $r2 = i.<avrora.arch.legacy.LegacyInstr$REG_class: avrora.arch.legacy.LegacyRegister r1>;
+        $r3 = this.<avrora.arch.legacy.LegacyInstr$REG_class: avrora.arch.legacy.LegacyRegister r1>;
+        if $r2 == $r3 goto label3;
+
+        return 0;
+
+     label3:
+        return 1;
+    }
+
+    abstract avrora.arch.legacy.LegacyInstr allocate(int, avrora.arch.legacy.LegacyRegister);
+}

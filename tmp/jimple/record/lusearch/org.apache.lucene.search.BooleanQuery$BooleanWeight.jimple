@@ -1,0 +1,393 @@
+class org.apache.lucene.search.BooleanQuery$BooleanWeight extends java.lang.Object implements org.apache.lucene.search.Weight
+{
+    protected org.apache.lucene.search.Similarity similarity;
+    protected java.util.ArrayList weights;
+    private final org.apache.lucene.search.BooleanQuery this$0;
+
+    public void <init>(org.apache.lucene.search.BooleanQuery, org.apache.lucene.search.Searcher) throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanQuery$BooleanWeight this;
+        org.apache.lucene.search.BooleanQuery l1;
+        org.apache.lucene.search.Searcher searcher;
+        int i, $i0;
+        org.apache.lucene.search.BooleanClause c;
+        java.util.ArrayList $r0, $r2;
+        org.apache.lucene.search.Similarity $r1;
+        java.lang.Object $r3;
+        org.apache.lucene.search.Query $r4;
+        org.apache.lucene.search.Weight $r5;
+
+        this := @this: org.apache.lucene.search.BooleanQuery$BooleanWeight;
+        l1 := @parameter0: org.apache.lucene.search.BooleanQuery;
+        searcher := @parameter1: org.apache.lucene.search.Searcher;
+        this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: org.apache.lucene.search.BooleanQuery this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+        this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: java.util.ArrayList weights> = $r0;
+        $r1 = virtualinvoke l1.<org.apache.lucene.search.BooleanQuery: org.apache.lucene.search.Similarity getSimilarity(org.apache.lucene.search.Searcher)>(searcher);
+        this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: org.apache.lucene.search.Similarity similarity> = $r1;
+        i = 0;
+
+     label0:
+        $r0 = staticinvoke <org.apache.lucene.search.BooleanQuery: java.util.ArrayList access$100(org.apache.lucene.search.BooleanQuery)>(l1);
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        if i >= $i0 goto label1;
+
+        $r2 = staticinvoke <org.apache.lucene.search.BooleanQuery: java.util.ArrayList access$100(org.apache.lucene.search.BooleanQuery)>(l1);
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        c = (org.apache.lucene.search.BooleanClause) $r3;
+        $r2 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: java.util.ArrayList weights>;
+        $r4 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query getQuery()>();
+        $r5 = virtualinvoke $r4.<org.apache.lucene.search.Query: org.apache.lucene.search.Weight createWeight(org.apache.lucene.search.Searcher)>(searcher);
+        virtualinvoke $r2.<java.util.ArrayList: boolean add(java.lang.Object)>($r5);
+        i = i + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    public org.apache.lucene.search.Query getQuery()
+    {
+        org.apache.lucene.search.BooleanQuery$BooleanWeight this;
+        org.apache.lucene.search.BooleanQuery $r0;
+
+        this := @this: org.apache.lucene.search.BooleanQuery$BooleanWeight;
+        $r0 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: org.apache.lucene.search.BooleanQuery this$0>;
+        return $r0;
+    }
+
+    public float getValue()
+    {
+        org.apache.lucene.search.BooleanQuery$BooleanWeight this;
+        org.apache.lucene.search.BooleanQuery $r0;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.BooleanQuery$BooleanWeight;
+        $r0 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: org.apache.lucene.search.BooleanQuery this$0>;
+        $f0 = virtualinvoke $r0.<org.apache.lucene.search.BooleanQuery: float getBoost()>();
+        return $f0;
+    }
+
+    public float sumOfSquaredWeights() throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanQuery$BooleanWeight this;
+        float sum, s, $f0, $f1;
+        int i, $i0;
+        org.apache.lucene.search.BooleanClause c;
+        org.apache.lucene.search.Weight w;
+        java.util.ArrayList $r0, $r2;
+        org.apache.lucene.search.BooleanQuery $r1, $r4, $r5;
+        java.lang.Object $r3;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.BooleanQuery$BooleanWeight;
+        sum = 0.0F;
+        i = 0;
+
+     label0:
+        $r0 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: java.util.ArrayList weights>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        if i >= $i0 goto label2;
+
+        $r1 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: org.apache.lucene.search.BooleanQuery this$0>;
+        $r2 = staticinvoke <org.apache.lucene.search.BooleanQuery: java.util.ArrayList access$100(org.apache.lucene.search.BooleanQuery)>($r1);
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        c = (org.apache.lucene.search.BooleanClause) $r3;
+        $r2 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: java.util.ArrayList weights>;
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        w = (org.apache.lucene.search.Weight) $r3;
+        s = interfaceinvoke w.<org.apache.lucene.search.Weight: float sumOfSquaredWeights()>();
+        $z0 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: boolean isProhibited()>();
+        if $z0 != 0 goto label1;
+
+        sum = sum + s;
+
+     label1:
+        i = i + 1;
+        goto label0;
+
+     label2:
+        $r4 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: org.apache.lucene.search.BooleanQuery this$0>;
+        $f0 = virtualinvoke $r4.<org.apache.lucene.search.BooleanQuery: float getBoost()>();
+        $r5 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: org.apache.lucene.search.BooleanQuery this$0>;
+        $f1 = virtualinvoke $r5.<org.apache.lucene.search.BooleanQuery: float getBoost()>();
+        $f0 = $f0 * $f1;
+        sum = sum * $f0;
+        return sum;
+    }
+
+    public void normalize(float)
+    {
+        org.apache.lucene.search.BooleanQuery$BooleanWeight this;
+        float norm, $f0, norm;
+        int i, $i0;
+        org.apache.lucene.search.Weight w;
+        org.apache.lucene.search.BooleanQuery $r0;
+        java.util.ArrayList $r1, $r2;
+        java.lang.Object $r3;
+
+        this := @this: org.apache.lucene.search.BooleanQuery$BooleanWeight;
+        norm := @parameter0: float;
+        $r0 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: org.apache.lucene.search.BooleanQuery this$0>;
+        $f0 = virtualinvoke $r0.<org.apache.lucene.search.BooleanQuery: float getBoost()>();
+        norm = norm * $f0;
+        i = 0;
+
+     label0:
+        $r1 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: java.util.ArrayList weights>;
+        $i0 = virtualinvoke $r1.<java.util.ArrayList: int size()>();
+        if i >= $i0 goto label1;
+
+        $r2 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: java.util.ArrayList weights>;
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        w = (org.apache.lucene.search.Weight) $r3;
+        interfaceinvoke w.<org.apache.lucene.search.Weight: void normalize(float)>(norm);
+        i = i + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    public org.apache.lucene.search.Scorer scorer(org.apache.lucene.index.IndexReader) throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanQuery$BooleanWeight this;
+        org.apache.lucene.index.IndexReader reader;
+        org.apache.lucene.search.BooleanScorer2 $r0, result;
+        boolean $z0, $z1, $z2, $z3;
+        int i, $i0, $i1;
+        org.apache.lucene.search.BooleanClause c;
+        org.apache.lucene.search.Weight w;
+        org.apache.lucene.search.Scorer subScorer;
+        org.apache.lucene.search.Similarity $r1;
+        org.apache.lucene.search.BooleanQuery $r2, $r4;
+        java.util.ArrayList $r3, $r5;
+        java.lang.Object $r6;
+
+        this := @this: org.apache.lucene.search.BooleanQuery$BooleanWeight;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        $r0 = new org.apache.lucene.search.BooleanScorer2;
+        $r1 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: org.apache.lucene.search.Similarity similarity>;
+        $r2 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: org.apache.lucene.search.BooleanQuery this$0>;
+        $i0 = $r2.<org.apache.lucene.search.BooleanQuery: int minNrShouldMatch>;
+        $z0 = staticinvoke <org.apache.lucene.search.BooleanQuery: boolean access$200()>();
+        specialinvoke $r0.<org.apache.lucene.search.BooleanScorer2: void <init>(org.apache.lucene.search.Similarity,int,boolean)>($r1, $i0, $z0);
+        result = $r0;
+        i = 0;
+
+     label0:
+        $r3 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: java.util.ArrayList weights>;
+        $i1 = virtualinvoke $r3.<java.util.ArrayList: int size()>();
+        if i >= $i1 goto label3;
+
+        $r4 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: org.apache.lucene.search.BooleanQuery this$0>;
+        $r5 = staticinvoke <org.apache.lucene.search.BooleanQuery: java.util.ArrayList access$100(org.apache.lucene.search.BooleanQuery)>($r4);
+        $r6 = virtualinvoke $r5.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        c = (org.apache.lucene.search.BooleanClause) $r6;
+        $r5 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: java.util.ArrayList weights>;
+        $r6 = virtualinvoke $r5.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        w = (org.apache.lucene.search.Weight) $r6;
+        subScorer = interfaceinvoke w.<org.apache.lucene.search.Weight: org.apache.lucene.search.Scorer scorer(org.apache.lucene.index.IndexReader)>(reader);
+        if subScorer == null goto label1;
+
+        $z1 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: boolean isRequired()>();
+        $z2 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: boolean isProhibited()>();
+        virtualinvoke result.<org.apache.lucene.search.BooleanScorer2: void add(org.apache.lucene.search.Scorer,boolean,boolean)>(subScorer, $z1, $z2);
+        goto label2;
+
+     label1:
+        $z3 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: boolean isRequired()>();
+        if $z3 == 0 goto label2;
+
+        return null;
+
+     label2:
+        i = i + 1;
+        goto label0;
+
+     label3:
+        return result;
+    }
+
+    public org.apache.lucene.search.Explanation explain(org.apache.lucene.index.IndexReader, int) throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanQuery$BooleanWeight this;
+        org.apache.lucene.index.IndexReader reader;
+        int doc, minShouldMatch, coord, maxCoord, shouldMatchCount, i, $i0;
+        org.apache.lucene.search.ComplexExplanation sumExpl, result, $r2;
+        float sum, coordFactor, $f0, $f1;
+        boolean fail, $z0, $z1;
+        org.apache.lucene.search.BooleanClause c;
+        org.apache.lucene.search.Weight w;
+        org.apache.lucene.search.Explanation e, r, $r6, $r16;
+        java.lang.StringBuffer $r0, $r13, $r17;
+        org.apache.lucene.search.BooleanQuery $r1;
+        java.util.ArrayList $r3, $r4;
+        java.lang.Object $r5;
+        org.apache.lucene.search.Query $r7;
+        java.lang.String $r8, $r9, $r14;
+        org.apache.lucene.search.BooleanClause$Occur $r10, $r11;
+        java.lang.Boolean $r12;
+        org.apache.lucene.search.Similarity $r15;
+        byte $b1;
+
+        this := @this: org.apache.lucene.search.BooleanQuery$BooleanWeight;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        doc := @parameter1: int;
+        $r1 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: org.apache.lucene.search.BooleanQuery this$0>;
+        minShouldMatch = virtualinvoke $r1.<org.apache.lucene.search.BooleanQuery: int getMinimumNumberShouldMatch()>();
+        $r2 = new org.apache.lucene.search.ComplexExplanation;
+        specialinvoke $r2.<org.apache.lucene.search.ComplexExplanation: void <init>()>();
+        sumExpl = $r2;
+        virtualinvoke sumExpl.<org.apache.lucene.search.ComplexExplanation: void setDescription(java.lang.String)>("sum of:");
+        coord = 0;
+        maxCoord = 0;
+        sum = 0.0F;
+        fail = 0;
+        shouldMatchCount = 0;
+        i = 0;
+
+     label0:
+        $r3 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: java.util.ArrayList weights>;
+        $i0 = virtualinvoke $r3.<java.util.ArrayList: int size()>();
+        if i >= $i0 goto label6;
+
+        $r1 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: org.apache.lucene.search.BooleanQuery this$0>;
+        $r4 = staticinvoke <org.apache.lucene.search.BooleanQuery: java.util.ArrayList access$100(org.apache.lucene.search.BooleanQuery)>($r1);
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        c = (org.apache.lucene.search.BooleanClause) $r5;
+        $r4 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: java.util.ArrayList weights>;
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        w = (org.apache.lucene.search.Weight) $r5;
+        e = interfaceinvoke w.<org.apache.lucene.search.Weight: org.apache.lucene.search.Explanation explain(org.apache.lucene.index.IndexReader,int)>(reader, doc);
+        $z0 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: boolean isProhibited()>();
+        if $z0 != 0 goto label1;
+
+        maxCoord = maxCoord + 1;
+
+     label1:
+        $z0 = virtualinvoke e.<org.apache.lucene.search.Explanation: boolean isMatch()>();
+        if $z0 == 0 goto label4;
+
+        $z0 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: boolean isProhibited()>();
+        if $z0 != 0 goto label2;
+
+        virtualinvoke sumExpl.<org.apache.lucene.search.ComplexExplanation: void addDetail(org.apache.lucene.search.Explanation)>(e);
+        $f0 = virtualinvoke e.<org.apache.lucene.search.Explanation: float getValue()>();
+        sum = sum + $f0;
+        coord = coord + 1;
+        goto label3;
+
+     label2:
+        $r6 = new org.apache.lucene.search.Explanation;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("match on prohibited clause (");
+        $r7 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query getQuery()>();
+        $r8 = virtualinvoke $r7.<org.apache.lucene.search.Query: java.lang.String toString()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r8);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(")");
+        $r9 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r6.<org.apache.lucene.search.Explanation: void <init>(float,java.lang.String)>(0.0F, $r9);
+        r = $r6;
+        virtualinvoke r.<org.apache.lucene.search.Explanation: void addDetail(org.apache.lucene.search.Explanation)>(e);
+        virtualinvoke sumExpl.<org.apache.lucene.search.ComplexExplanation: void addDetail(org.apache.lucene.search.Explanation)>(r);
+        fail = 1;
+
+     label3:
+        $r10 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.BooleanClause$Occur getOccur()>();
+        $r11 = <org.apache.lucene.search.BooleanClause$Occur: org.apache.lucene.search.BooleanClause$Occur SHOULD>;
+        $z0 = virtualinvoke $r10.<java.lang.Object: boolean equals(java.lang.Object)>($r11);
+        if $z0 == 0 goto label5;
+
+        shouldMatchCount = shouldMatchCount + 1;
+        goto label5;
+
+     label4:
+        $z0 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: boolean isRequired()>();
+        if $z0 == 0 goto label5;
+
+        $r6 = new org.apache.lucene.search.Explanation;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("no match on required clause (");
+        $r7 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query getQuery()>();
+        $r8 = virtualinvoke $r7.<org.apache.lucene.search.Query: java.lang.String toString()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r8);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(")");
+        $r9 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r6.<org.apache.lucene.search.Explanation: void <init>(float,java.lang.String)>(0.0F, $r9);
+        r = $r6;
+        virtualinvoke r.<org.apache.lucene.search.Explanation: void addDetail(org.apache.lucene.search.Explanation)>(e);
+        virtualinvoke sumExpl.<org.apache.lucene.search.ComplexExplanation: void addDetail(org.apache.lucene.search.Explanation)>(r);
+        fail = 1;
+
+     label5:
+        i = i + 1;
+        goto label0;
+
+     label6:
+        if fail == 0 goto label7;
+
+        $r12 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+        virtualinvoke sumExpl.<org.apache.lucene.search.ComplexExplanation: void setMatch(java.lang.Boolean)>($r12);
+        virtualinvoke sumExpl.<org.apache.lucene.search.ComplexExplanation: void setValue(float)>(0.0F);
+        virtualinvoke sumExpl.<org.apache.lucene.search.ComplexExplanation: void setDescription(java.lang.String)>("Failure to meet condition(s) of required/prohibited clause(s)");
+        return sumExpl;
+
+     label7:
+        if shouldMatchCount >= minShouldMatch goto label8;
+
+        $r12 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+        virtualinvoke sumExpl.<org.apache.lucene.search.ComplexExplanation: void setMatch(java.lang.Boolean)>($r12);
+        virtualinvoke sumExpl.<org.apache.lucene.search.ComplexExplanation: void setValue(float)>(0.0F);
+        $r13 = new java.lang.StringBuffer;
+        specialinvoke $r13.<java.lang.StringBuffer: void <init>()>();
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Failure to match minimum number of optional clauses: ");
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(minShouldMatch);
+        $r14 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke sumExpl.<org.apache.lucene.search.ComplexExplanation: void setDescription(java.lang.String)>($r14);
+        return sumExpl;
+
+     label8:
+        if 0 >= coord goto label9;
+
+        $r12 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+        goto label10;
+
+     label9:
+        $r12 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+     label10:
+        virtualinvoke sumExpl.<org.apache.lucene.search.ComplexExplanation: void setMatch(java.lang.Boolean)>($r12);
+        virtualinvoke sumExpl.<org.apache.lucene.search.ComplexExplanation: void setValue(float)>(sum);
+        $r15 = this.<org.apache.lucene.search.BooleanQuery$BooleanWeight: org.apache.lucene.search.Similarity similarity>;
+        coordFactor = virtualinvoke $r15.<org.apache.lucene.search.Similarity: float coord(int,int)>(coord, maxCoord);
+        $b1 = coordFactor cmpl 1.0F;
+        if $b1 != 0 goto label11;
+
+        return sumExpl;
+
+     label11:
+        $r2 = new org.apache.lucene.search.ComplexExplanation;
+        $z1 = virtualinvoke sumExpl.<org.apache.lucene.search.ComplexExplanation: boolean isMatch()>();
+        $f1 = sum * coordFactor;
+        specialinvoke $r2.<org.apache.lucene.search.ComplexExplanation: void <init>(boolean,float,java.lang.String)>($z1, $f1, "product of:");
+        result = $r2;
+        virtualinvoke result.<org.apache.lucene.search.ComplexExplanation: void addDetail(org.apache.lucene.search.Explanation)>(sumExpl);
+        $r16 = new org.apache.lucene.search.Explanation;
+        $r17 = new java.lang.StringBuffer;
+        specialinvoke $r17.<java.lang.StringBuffer: void <init>()>();
+        $r17 = virtualinvoke $r17.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("coord(");
+        $r17 = virtualinvoke $r17.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(coord);
+        $r17 = virtualinvoke $r17.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("/");
+        $r17 = virtualinvoke $r17.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(maxCoord);
+        $r17 = virtualinvoke $r17.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(")");
+        $r8 = virtualinvoke $r17.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r16.<org.apache.lucene.search.Explanation: void <init>(float,java.lang.String)>(coordFactor, $r8);
+        virtualinvoke result.<org.apache.lucene.search.ComplexExplanation: void addDetail(org.apache.lucene.search.Explanation)>($r16);
+        return result;
+    }
+}

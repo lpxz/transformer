@@ -1,0 +1,813 @@
+public final class org.apache.lucene.util.UnicodeUtil extends java.lang.Object
+{
+    public static final int UNI_SUR_HIGH_START;
+    public static final int UNI_SUR_HIGH_END;
+    public static final int UNI_SUR_LOW_START;
+    public static final int UNI_SUR_LOW_END;
+    public static final int UNI_REPLACEMENT_CHAR;
+    private static final long UNI_MAX_BMP;
+    private static final int HALF_BASE;
+    private static final long HALF_SHIFT;
+    private static final long HALF_MASK;
+    static final boolean $assertionsDisabled;
+    static java.lang.Class class$org$apache$lucene$util$UnicodeUtil;
+
+    public void <init>()
+    {
+        org.apache.lucene.util.UnicodeUtil this;
+
+        this := @this: org.apache.lucene.util.UnicodeUtil;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public static void UTF16toUTF8(char[], int, org.apache.lucene.util.UnicodeUtil$UTF8Result)
+    {
+        char[] source;
+        int offset, upto, i, $i0, $i1, upto, upto, utf32, $i7, $i8;
+        org.apache.lucene.util.UnicodeUtil$UTF8Result result;
+        byte[] out, newOut;
+        char code, utf32, $c3, $c4, $c5, $c6;
+        boolean $z0;
+        java.lang.AssertionError $r0;
+        byte $b2;
+        long tid_UTF16toUTF8;
+        java.lang.Thread thread_UTF16toUTF8;
+
+        source := @parameter0: char[];
+        offset := @parameter1: int;
+        result := @parameter2: org.apache.lucene.util.UnicodeUtil$UTF8Result;
+        thread_UTF16toUTF8 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_UTF16toUTF8 = virtualinvoke thread_UTF16toUTF8.<java.lang.Thread: long getId()>();
+        upto = 0;
+        i = offset;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(result, 52, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 116, out);
+        out = result.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result>;
+
+     label0:
+        $i0 = i;
+        i = i + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(source, 25, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 120, $i0, code);
+        code = source[$i0];
+        $i1 = upto + 4;
+        $i0 = lengthof out;
+        if $i1 <= $i0 goto label2;
+
+        $i0 = lengthof out;
+        $i1 = 2 * $i0;
+        newOut = newarray (byte)[$i1];
+        $z0 = <org.apache.lucene.util.UnicodeUtil: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label1;
+
+        $i1 = lengthof newOut;
+        $i0 = upto + 4;
+        if $i1 >= $i0 goto label1;
+
+        $r0 = new java.lang.AssertionError;
+        specialinvoke $r0.<java.lang.AssertionError: void <init>()>();
+        throw $r0;
+
+     label1:
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>(out, 0, newOut, 0, upto);
+        out = newOut;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(result, 52, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 126, newOut);
+        result.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result> = newOut;
+
+     label2:
+        if code >= 128 goto label3;
+
+        $i0 = upto;
+        upto = upto + 1;
+        $b2 = (byte) code;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 129, $i0, $b2);
+        out[$i0] = $b2;
+        goto label9;
+
+     label3:
+        if code >= 2048 goto label4;
+
+        upto = upto + 1;
+        $c3 = code >> 6;
+        $c4 = 192 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 131, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $c3 = code & 63;
+        $c4 = 128 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 132, upto, $b2);
+        out[upto] = $b2;
+        goto label9;
+
+     label4:
+        if code < 55296 goto label5;
+
+        if code <= 57343 goto label7;
+
+     label5:
+        if code != 65535 goto label6;
+
+        goto label10;
+
+     label6:
+        upto = upto + 1;
+        $c3 = code >> 12;
+        $c4 = 224 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 137, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $c3 = code >> 6;
+        $c3 = $c3 & 63;
+        $c4 = 128 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 138, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $c3 = code & 63;
+        $c4 = 128 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 139, upto, $b2);
+        out[upto] = $b2;
+        goto label9;
+
+     label7:
+        if code >= 56320 goto label8;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(source, 25, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 143, i, $c5);
+        $c5 = source[i];
+        if $c5 == 65535 goto label8;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(source, 25, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 144, i, utf32);
+        utf32 = source[i];
+        if utf32 < 56320 goto label8;
+
+        if utf32 > 57343 goto label8;
+
+        $i1 = code - 55232;
+        $i1 = $i1 << 10;
+        $c6 = utf32 & 1023;
+        utf32 = $i1 + $c6;
+        i = i + 1;
+        upto = upto + 1;
+        $i7 = utf32 >> 18;
+        $i8 = 240 | $i7;
+        $b2 = (byte) $i8;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 149, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $i7 = utf32 >> 12;
+        $i7 = $i7 & 63;
+        $i8 = 128 | $i7;
+        $b2 = (byte) $i8;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 150, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $i7 = utf32 >> 6;
+        $i7 = $i7 & 63;
+        $i8 = 128 | $i7;
+        $b2 = (byte) $i8;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 151, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $i7 = utf32 & 63;
+        $i8 = 128 | $i7;
+        $b2 = (byte) $i8;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 152, upto, $b2);
+        out[upto] = $b2;
+        goto label0;
+
+     label8:
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 158, upto, -17);
+        out[upto] = -17;
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 159, upto, -65);
+        out[upto] = -65;
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 160, upto, -67);
+        out[upto] = -67;
+
+     label9:
+        goto label0;
+
+     label10:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(result, 51, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 164, upto);
+        result.<org.apache.lucene.util.UnicodeUtil$UTF8Result: int length> = upto;
+        return;
+    }
+
+    public static void UTF16toUTF8(char[], int, int, org.apache.lucene.util.UnicodeUtil$UTF8Result)
+    {
+        char[] source;
+        int offset, length, upto, i, end, $i0, $i1, upto, upto, utf32, $i7, $i8;
+        org.apache.lucene.util.UnicodeUtil$UTF8Result result;
+        byte[] out, newOut;
+        char code, utf32, $c3, $c4, $c5, $c6;
+        boolean $z0;
+        java.lang.AssertionError $r0;
+        byte $b2;
+        long tid_UTF16toUTF8;
+        java.lang.Thread thread_UTF16toUTF8;
+
+        source := @parameter0: char[];
+        offset := @parameter1: int;
+        length := @parameter2: int;
+        result := @parameter3: org.apache.lucene.util.UnicodeUtil$UTF8Result;
+        thread_UTF16toUTF8 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_UTF16toUTF8 = virtualinvoke thread_UTF16toUTF8.<java.lang.Thread: long getId()>();
+        upto = 0;
+        i = offset;
+        end = offset + length;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(result, 52, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 175, out);
+        out = result.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result>;
+
+     label0:
+        if i >= end goto label9;
+
+        $i0 = i;
+        i = i + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(source, 25, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 179, $i0, code);
+        code = source[$i0];
+        $i1 = upto + 4;
+        $i0 = lengthof out;
+        if $i1 <= $i0 goto label2;
+
+        $i0 = lengthof out;
+        $i1 = 2 * $i0;
+        newOut = newarray (byte)[$i1];
+        $z0 = <org.apache.lucene.util.UnicodeUtil: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label1;
+
+        $i1 = lengthof newOut;
+        $i0 = upto + 4;
+        if $i1 >= $i0 goto label1;
+
+        $r0 = new java.lang.AssertionError;
+        specialinvoke $r0.<java.lang.AssertionError: void <init>()>();
+        throw $r0;
+
+     label1:
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>(out, 0, newOut, 0, upto);
+        out = newOut;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(result, 52, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 185, newOut);
+        result.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result> = newOut;
+
+     label2:
+        if code >= 128 goto label3;
+
+        $i0 = upto;
+        upto = upto + 1;
+        $b2 = (byte) code;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 188, $i0, $b2);
+        out[$i0] = $b2;
+        goto label8;
+
+     label3:
+        if code >= 2048 goto label4;
+
+        upto = upto + 1;
+        $c3 = code >> 6;
+        $c4 = 192 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 190, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $c3 = code & 63;
+        $c4 = 128 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 191, upto, $b2);
+        out[upto] = $b2;
+        goto label8;
+
+     label4:
+        if code < 55296 goto label5;
+
+        if code <= 57343 goto label6;
+
+     label5:
+        upto = upto + 1;
+        $c3 = code >> 12;
+        $c4 = 224 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 193, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $c3 = code >> 6;
+        $c3 = $c3 & 63;
+        $c4 = 128 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 194, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $c3 = code & 63;
+        $c4 = 128 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 195, upto, $b2);
+        out[upto] = $b2;
+        goto label8;
+
+     label6:
+        if code >= 56320 goto label7;
+
+        if i >= end goto label7;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(source, 25, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 199, i, $c5);
+        $c5 = source[i];
+        if $c5 == 65535 goto label7;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(source, 25, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 200, i, utf32);
+        utf32 = source[i];
+        if utf32 < 56320 goto label7;
+
+        if utf32 > 57343 goto label7;
+
+        $i1 = code - 55232;
+        $i1 = $i1 << 10;
+        $c6 = utf32 & 1023;
+        utf32 = $i1 + $c6;
+        i = i + 1;
+        upto = upto + 1;
+        $i7 = utf32 >> 18;
+        $i8 = 240 | $i7;
+        $b2 = (byte) $i8;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 205, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $i7 = utf32 >> 12;
+        $i7 = $i7 & 63;
+        $i8 = 128 | $i7;
+        $b2 = (byte) $i8;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 206, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $i7 = utf32 >> 6;
+        $i7 = $i7 & 63;
+        $i8 = 128 | $i7;
+        $b2 = (byte) $i8;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 207, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $i7 = utf32 & 63;
+        $i8 = 128 | $i7;
+        $b2 = (byte) $i8;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 208, upto, $b2);
+        out[upto] = $b2;
+        goto label0;
+
+     label7:
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 214, upto, -17);
+        out[upto] = -17;
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 215, upto, -65);
+        out[upto] = -65;
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 216, upto, -67);
+        out[upto] = -67;
+
+     label8:
+        goto label0;
+
+     label9:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(result, 51, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 220, upto);
+        result.<org.apache.lucene.util.UnicodeUtil$UTF8Result: int length> = upto;
+        return;
+    }
+
+    public static void UTF16toUTF8(java.lang.String, int, int, org.apache.lucene.util.UnicodeUtil$UTF8Result)
+    {
+        java.lang.String s;
+        int offset, length, end, upto, i, $i0, $i1, upto, upto, utf32, $i6, $i7;
+        org.apache.lucene.util.UnicodeUtil$UTF8Result result;
+        byte[] out, newOut;
+        char code, utf32, $c3, $c4, $c5;
+        boolean $z0;
+        java.lang.AssertionError $r0;
+        byte $b2;
+        long tid_UTF16toUTF8;
+        java.lang.Thread thread_UTF16toUTF8;
+
+        s := @parameter0: java.lang.String;
+        offset := @parameter1: int;
+        length := @parameter2: int;
+        result := @parameter3: org.apache.lucene.util.UnicodeUtil$UTF8Result;
+        thread_UTF16toUTF8 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_UTF16toUTF8 = virtualinvoke thread_UTF16toUTF8.<java.lang.Thread: long getId()>();
+        end = offset + length;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(result, 52, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 229, out);
+        out = result.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result>;
+        upto = 0;
+        i = offset;
+
+     label0:
+        if i >= end goto label9;
+
+        code = virtualinvoke s.<java.lang.String: char charAt(int)>(i);
+        $i0 = upto + 4;
+        $i1 = lengthof out;
+        if $i0 <= $i1 goto label2;
+
+        $i1 = lengthof out;
+        $i0 = 2 * $i1;
+        newOut = newarray (byte)[$i0];
+        $z0 = <org.apache.lucene.util.UnicodeUtil: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label1;
+
+        $i0 = lengthof newOut;
+        $i1 = upto + 4;
+        if $i0 >= $i1 goto label1;
+
+        $r0 = new java.lang.AssertionError;
+        specialinvoke $r0.<java.lang.AssertionError: void <init>()>();
+        throw $r0;
+
+     label1:
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>(out, 0, newOut, 0, upto);
+        out = newOut;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(result, 52, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 239, newOut);
+        result.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result> = newOut;
+
+     label2:
+        if code >= 128 goto label3;
+
+        $i1 = upto;
+        upto = upto + 1;
+        $b2 = (byte) code;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 242, $i1, $b2);
+        out[$i1] = $b2;
+        goto label8;
+
+     label3:
+        if code >= 2048 goto label4;
+
+        upto = upto + 1;
+        $c3 = code >> 6;
+        $c4 = 192 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 244, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $c3 = code & 63;
+        $c4 = 128 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 245, upto, $b2);
+        out[upto] = $b2;
+        goto label8;
+
+     label4:
+        if code < 55296 goto label5;
+
+        if code <= 57343 goto label6;
+
+     label5:
+        upto = upto + 1;
+        $c3 = code >> 12;
+        $c4 = 224 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 247, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $c3 = code >> 6;
+        $c3 = $c3 & 63;
+        $c4 = 128 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 248, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $c3 = code & 63;
+        $c4 = 128 | $c3;
+        $b2 = (byte) $c4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 249, upto, $b2);
+        out[upto] = $b2;
+        goto label8;
+
+     label6:
+        if code >= 56320 goto label7;
+
+        $i1 = end - 1;
+        if i >= $i1 goto label7;
+
+        $i1 = i + 1;
+        utf32 = virtualinvoke s.<java.lang.String: char charAt(int)>($i1);
+        if utf32 < 56320 goto label7;
+
+        if utf32 > 57343 goto label7;
+
+        $i0 = code - 55232;
+        $i0 = $i0 << 10;
+        $c5 = utf32 & 1023;
+        utf32 = $i0 + $c5;
+        i = i + 1;
+        upto = upto + 1;
+        $i6 = utf32 >> 18;
+        $i7 = 240 | $i6;
+        $b2 = (byte) $i7;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 259, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $i6 = utf32 >> 12;
+        $i6 = $i6 & 63;
+        $i7 = 128 | $i6;
+        $b2 = (byte) $i7;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 260, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $i6 = utf32 >> 6;
+        $i6 = $i6 & 63;
+        $i7 = 128 | $i6;
+        $b2 = (byte) $i7;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 261, upto, $b2);
+        out[upto] = $b2;
+        upto = upto + 1;
+        $i6 = utf32 & 63;
+        $i7 = 128 | $i6;
+        $b2 = (byte) $i7;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 262, upto, $b2);
+        out[upto] = $b2;
+        goto label8;
+
+     label7:
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 268, upto, -17);
+        out[upto] = -17;
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 269, upto, -65);
+        out[upto] = -65;
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(out, 4, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 270, upto, -67);
+        out[upto] = -67;
+
+     label8:
+        i = i + 1;
+        goto label0;
+
+     label9:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(result, 51, tid_UTF16toUTF8, "org.apache.lucene.util.UnicodeUtil", 274, upto);
+        result.<org.apache.lucene.util.UnicodeUtil$UTF8Result: int length> = upto;
+        return;
+    }
+
+    public static void UTF8toUTF16(byte[], int, int, org.apache.lucene.util.UnicodeUtil$UTF16Result)
+    {
+        byte[] utf8;
+        int offset, length, end, upto, outUpto, ch, chHalf, $i0, $i1, $i2, $i6, upto, upto, outUpto;
+        org.apache.lucene.util.UnicodeUtil$UTF16Result result;
+        char[] out, newOut;
+        int[] newOffsets, offsets, $r0, $r1;
+        short b, $s4;
+        byte $b3, $b5;
+        boolean $z0;
+        java.lang.AssertionError $r3;
+        long $l7, $l9, tid_UTF8toUTF16;
+        char $c8;
+        java.lang.Thread thread_UTF8toUTF16;
+
+        utf8 := @parameter0: byte[];
+        offset := @parameter1: int;
+        length := @parameter2: int;
+        result := @parameter3: org.apache.lucene.util.UnicodeUtil$UTF16Result;
+        thread_UTF8toUTF16 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_UTF8toUTF16 = virtualinvoke thread_UTF8toUTF16.<java.lang.Thread: long getId()>();
+        end = offset + length;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(result, 58, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 284, out);
+        out = result.<org.apache.lucene.util.UnicodeUtil$UTF16Result: char[] result>;
+        $r0 = result.<org.apache.lucene.util.UnicodeUtil$UTF16Result: int[] offsets>;
+        $i0 = lengthof $r0;
+        if $i0 > end goto label0;
+
+        $i0 = 2 * end;
+        newOffsets = newarray (int)[$i0];
+        $r0 = result.<org.apache.lucene.util.UnicodeUtil$UTF16Result: int[] offsets>;
+        $r1 = result.<org.apache.lucene.util.UnicodeUtil$UTF16Result: int[] offsets>;
+        $i1 = lengthof $r1;
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r0, 0, newOffsets, 0, $i1);
+        result.<org.apache.lucene.util.UnicodeUtil$UTF16Result: int[] offsets> = newOffsets;
+
+     label0:
+        offsets = result.<org.apache.lucene.util.UnicodeUtil$UTF16Result: int[] offsets>;
+        upto = offset;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(offsets, 22, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 295, upto, $i0);
+        $i0 = offsets[upto];
+        if $i0 != -1 goto label2;
+
+        upto = upto + -1;
+        goto label1;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(offsets, 22, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 298, upto, outUpto);
+        outUpto = offsets[upto];
+        $i0 = outUpto + length;
+        $i2 = lengthof out;
+        if $i0 < $i2 goto label3;
+
+        $i2 = outUpto + length;
+        $i0 = 2 * $i2;
+        newOut = newarray (char)[$i0];
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>(out, 0, newOut, 0, outUpto);
+        out = newOut;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(result, 58, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 304, newOut);
+        result.<org.apache.lucene.util.UnicodeUtil$UTF16Result: char[] result> = newOut;
+
+     label3:
+        if upto >= end goto label12;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(utf8, 4, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 309, upto, $b3);
+        $b3 = utf8[upto];
+        b = $b3 & 255;
+        $i2 = upto;
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(offsets, 22, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 312, $i2, outUpto);
+        offsets[$i2] = outUpto;
+        if b >= 192 goto label5;
+
+        $z0 = <org.apache.lucene.util.UnicodeUtil: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label4;
+
+        if b < 128 goto label4;
+
+        $r3 = new java.lang.AssertionError;
+        specialinvoke $r3.<java.lang.AssertionError: void <init>()>();
+        throw $r3;
+
+     label4:
+        ch = b;
+        goto label9;
+
+     label5:
+        if b >= 224 goto label6;
+
+        $s4 = b & 31;
+        $i0 = $s4 << 6;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(utf8, 4, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 318, upto, $b5);
+        $b5 = utf8[upto];
+        $b5 = $b5 & 63;
+        ch = $i0 + $b5;
+        $i2 = upto;
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(offsets, 22, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 319, $i2, -1);
+        offsets[$i2] = -1;
+        goto label9;
+
+     label6:
+        if b >= 240 goto label7;
+
+        $s4 = b & 15;
+        $i0 = $s4 << 12;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(utf8, 4, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 321, upto, $b5);
+        $b5 = utf8[upto];
+        $b5 = $b5 & 63;
+        $i2 = $b5 << 6;
+        $i0 = $i0 + $i2;
+        $i6 = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(utf8, 4, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 321, $i6, $b5);
+        $b5 = utf8[$i6];
+        $b5 = $b5 & 63;
+        ch = $i0 + $b5;
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(offsets, 22, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 322, upto, -1);
+        offsets[upto] = -1;
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(offsets, 22, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 323, upto, -1);
+        offsets[upto] = -1;
+        goto label9;
+
+     label7:
+        $z0 = <org.apache.lucene.util.UnicodeUtil: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label8;
+
+        if b < 248 goto label8;
+
+        $r3 = new java.lang.AssertionError;
+        specialinvoke $r3.<java.lang.AssertionError: void <init>()>();
+        throw $r3;
+
+     label8:
+        $s4 = b & 7;
+        $i0 = $s4 << 18;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(utf8, 4, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 326, upto, $b5);
+        $b5 = utf8[upto];
+        $b5 = $b5 & 63;
+        $i2 = $b5 << 12;
+        $i0 = $i0 + $i2;
+        $i6 = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(utf8, 4, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 326, $i6, $b5);
+        $b5 = utf8[$i6];
+        $b5 = $b5 & 63;
+        $i2 = $b5 << 6;
+        $i0 = $i0 + $i2;
+        $i6 = upto + 2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(utf8, 4, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 326, $i6, $b5);
+        $b5 = utf8[$i6];
+        $b5 = $b5 & 63;
+        ch = $i0 + $b5;
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(offsets, 22, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 327, upto, -1);
+        offsets[upto] = -1;
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(offsets, 22, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 328, upto, -1);
+        offsets[upto] = -1;
+        upto = upto + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(offsets, 22, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 329, upto, -1);
+        offsets[upto] = -1;
+
+     label9:
+        $l7 = (long) ch;
+        $b3 = $l7 cmp 65535L;
+        if $b3 > 0 goto label10;
+
+        $i2 = outUpto;
+        outUpto = outUpto + 1;
+        $c8 = (char) ch;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(out, 25, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 334, $i2, $c8);
+        out[$i2] = $c8;
+        goto label11;
+
+     label10:
+        chHalf = ch - 65536;
+        outUpto = outUpto + 1;
+        $i6 = chHalf >> 10;
+        $i6 = $i6 + 55296;
+        $c8 = (char) $i6;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(out, 25, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 338, outUpto, $c8);
+        out[outUpto] = $c8;
+        outUpto = outUpto + 1;
+        $l9 = (long) chHalf;
+        $l9 = $l9 & 1023L;
+        $l9 = $l9 + 56320L;
+        $i6 = (int) $l9;
+        $c8 = (char) $i6;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(out, 25, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 339, outUpto, $c8);
+        out[outUpto] = $c8;
+
+     label11:
+        goto label3;
+
+     label12:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>(offsets, 22, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 343, upto, outUpto);
+        offsets[upto] = outUpto;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(result, 59, tid_UTF8toUTF16, "org.apache.lucene.util.UnicodeUtil", 344, outUpto);
+        result.<org.apache.lucene.util.UnicodeUtil$UTF16Result: int length> = outUpto;
+        return;
+    }
+
+    static java.lang.Class class$(java.lang.String)
+    {
+        java.lang.String x0;
+        java.lang.ClassNotFoundException x1, $r1;
+        java.lang.Class $r0;
+        java.lang.NoClassDefFoundError $r2;
+        java.lang.Throwable $r3;
+
+        x0 := @parameter0: java.lang.String;
+
+     label0:
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(x0);
+
+     label1:
+        return $r0;
+
+     label2:
+        $r1 := @caughtexception;
+        x1 = $r1;
+        $r2 = new java.lang.NoClassDefFoundError;
+        specialinvoke $r2.<java.lang.NoClassDefFoundError: void <init>()>();
+        $r3 = virtualinvoke $r2.<java.lang.NoClassDefFoundError: java.lang.Throwable initCause(java.lang.Throwable)>(x1);
+        throw $r3;
+
+        catch java.lang.ClassNotFoundException from label0 to label1 with label2;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        boolean $z0;
+
+        $r0 = <org.apache.lucene.util.UnicodeUtil: java.lang.Class class$org$apache$lucene$util$UnicodeUtil>;
+        if $r0 != null goto label0;
+
+        $r0 = staticinvoke <org.apache.lucene.util.UnicodeUtil: java.lang.Class class$(java.lang.String)>("org.apache.lucene.util.UnicodeUtil");
+        <org.apache.lucene.util.UnicodeUtil: java.lang.Class class$org$apache$lucene$util$UnicodeUtil> = $r0;
+        goto label1;
+
+     label0:
+        $r0 = <org.apache.lucene.util.UnicodeUtil: java.lang.Class class$org$apache$lucene$util$UnicodeUtil>;
+
+     label1:
+        $z0 = virtualinvoke $r0.<java.lang.Class: boolean desiredAssertionStatus()>();
+        if $z0 != 0 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        <org.apache.lucene.util.UnicodeUtil: boolean $assertionsDisabled> = $z0;
+        return;
+    }
+}

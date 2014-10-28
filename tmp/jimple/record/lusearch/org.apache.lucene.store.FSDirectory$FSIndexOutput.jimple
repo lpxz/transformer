@@ -1,0 +1,170 @@
+public class org.apache.lucene.store.FSDirectory$FSIndexOutput extends org.apache.lucene.store.BufferedIndexOutput
+{
+    java.io.RandomAccessFile file;
+    private volatile boolean isOpen;
+
+    public void <init>(java.io.File) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexOutput this;
+        java.io.File path;
+        java.io.RandomAccessFile $r0;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexOutput;
+        path := @parameter0: java.io.File;
+        specialinvoke this.<org.apache.lucene.store.BufferedIndexOutput: void <init>()>();
+        this.<org.apache.lucene.store.FSDirectory$FSIndexOutput: java.io.RandomAccessFile file> = null;
+        $r0 = new java.io.RandomAccessFile;
+        specialinvoke $r0.<java.io.RandomAccessFile: void <init>(java.io.File,java.lang.String)>(path, "rw");
+        this.<org.apache.lucene.store.FSDirectory$FSIndexOutput: java.io.RandomAccessFile file> = $r0;
+        this.<org.apache.lucene.store.FSDirectory$FSIndexOutput: boolean isOpen> = 1;
+        return;
+    }
+
+    public void flushBuffer(byte[], int, int) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexOutput this;
+        byte[] b;
+        int offset, size;
+        java.io.RandomAccessFile $r0;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexOutput;
+        b := @parameter0: byte[];
+        offset := @parameter1: int;
+        size := @parameter2: int;
+        $r0 = this.<org.apache.lucene.store.FSDirectory$FSIndexOutput: java.io.RandomAccessFile file>;
+        virtualinvoke $r0.<java.io.RandomAccessFile: void write(byte[],int,int)>(b, offset, size);
+        return;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexOutput this;
+        boolean success, $z0;
+        java.lang.Throwable l2, t, $r0, $r1, $r3, $r4;
+        java.io.RandomAccessFile $r2;
+        long tid_close;
+        java.lang.Thread thread_close;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexOutput;
+        thread_close = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_close = virtualinvoke thread_close.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 64, tid_close, "org.apache.lucene.store.FSDirectory$FSIndexOutput", 649, $z0);
+        $z0 = this.<org.apache.lucene.store.FSDirectory$FSIndexOutput: boolean isOpen>;
+        if $z0 == 0 goto label5;
+
+        success = 0;
+
+     label0:
+        specialinvoke this.<org.apache.lucene.store.BufferedIndexOutput: void close()>();
+        success = 1;
+        goto label6;
+
+     label1:
+        goto label5;
+
+     label2:
+        $r0 := @caughtexception;
+
+     label3:
+        l2 = $r0;
+        goto label12;
+
+     label4:
+        throw l2;
+
+     label5:
+        return;
+
+     label6:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 64, tid_close, "org.apache.lucene.store.FSDirectory$FSIndexOutput", 666, 0);
+        this.<org.apache.lucene.store.FSDirectory$FSIndexOutput: boolean isOpen> = 0;
+        if success != 0 goto label10;
+
+     label7:
+        $r2 = this.<org.apache.lucene.store.FSDirectory$FSIndexOutput: java.io.RandomAccessFile file>;
+        virtualinvoke $r2.<java.io.RandomAccessFile: void close()>();
+
+     label8:
+        goto label11;
+
+     label9:
+        $r3 := @caughtexception;
+        t = $r3;
+        goto label11;
+
+     label10:
+        $r2 = this.<org.apache.lucene.store.FSDirectory$FSIndexOutput: java.io.RandomAccessFile file>;
+        virtualinvoke $r2.<java.io.RandomAccessFile: void close()>();
+
+     label11:
+        goto label1;
+
+     label12:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 64, tid_close, "org.apache.lucene.store.FSDirectory$FSIndexOutput", 666, 0);
+        this.<org.apache.lucene.store.FSDirectory$FSIndexOutput: boolean isOpen> = 0;
+        if success != 0 goto label16;
+
+     label13:
+        $r2 = this.<org.apache.lucene.store.FSDirectory$FSIndexOutput: java.io.RandomAccessFile file>;
+        virtualinvoke $r2.<java.io.RandomAccessFile: void close()>();
+
+     label14:
+        goto label17;
+
+     label15:
+        $r4 := @caughtexception;
+        t = $r4;
+        goto label17;
+
+     label16:
+        $r2 = this.<org.apache.lucene.store.FSDirectory$FSIndexOutput: java.io.RandomAccessFile file>;
+        virtualinvoke $r2.<java.io.RandomAccessFile: void close()>();
+
+     label17:
+        goto label4;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+        catch java.lang.Throwable from label7 to label8 with label9;
+        catch java.lang.Throwable from label13 to label14 with label15;
+    }
+
+    public void seek(long) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexOutput this;
+        long pos;
+        java.io.RandomAccessFile $r0;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexOutput;
+        pos := @parameter0: long;
+        specialinvoke this.<org.apache.lucene.store.BufferedIndexOutput: void seek(long)>(pos);
+        $r0 = this.<org.apache.lucene.store.FSDirectory$FSIndexOutput: java.io.RandomAccessFile file>;
+        virtualinvoke $r0.<java.io.RandomAccessFile: void seek(long)>(pos);
+        return;
+    }
+
+    public long length() throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexOutput this;
+        java.io.RandomAccessFile $r0;
+        long $l0;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexOutput;
+        $r0 = this.<org.apache.lucene.store.FSDirectory$FSIndexOutput: java.io.RandomAccessFile file>;
+        $l0 = virtualinvoke $r0.<java.io.RandomAccessFile: long length()>();
+        return $l0;
+    }
+
+    public void setLength(long) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexOutput this;
+        long length;
+        java.io.RandomAccessFile $r0;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexOutput;
+        length := @parameter0: long;
+        $r0 = this.<org.apache.lucene.store.FSDirectory$FSIndexOutput: java.io.RandomAccessFile file>;
+        virtualinvoke $r0.<java.io.RandomAccessFile: void setLength(long)>(length);
+        return;
+    }
+}

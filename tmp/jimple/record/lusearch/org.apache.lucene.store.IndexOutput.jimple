@@ -1,0 +1,378 @@
+public abstract class org.apache.lucene.store.IndexOutput extends java.lang.Object
+{
+    private org.apache.lucene.util.UnicodeUtil$UTF8Result utf8Result;
+    private static int COPY_BUFFER_SIZE;
+    private byte[] copyBuffer;
+
+    public void <init>()
+    {
+        org.apache.lucene.store.IndexOutput this;
+        org.apache.lucene.util.UnicodeUtil$UTF8Result $r0;
+
+        this := @this: org.apache.lucene.store.IndexOutput;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new org.apache.lucene.util.UnicodeUtil$UTF8Result;
+        specialinvoke $r0.<org.apache.lucene.util.UnicodeUtil$UTF8Result: void <init>()>();
+        this.<org.apache.lucene.store.IndexOutput: org.apache.lucene.util.UnicodeUtil$UTF8Result utf8Result> = $r0;
+        return;
+    }
+
+    public abstract void writeByte(byte) throws java.io.IOException;
+
+    public void writeBytes(byte[], int) throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexOutput this;
+        byte[] b;
+        int length;
+
+        this := @this: org.apache.lucene.store.IndexOutput;
+        b := @parameter0: byte[];
+        length := @parameter1: int;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeBytes(byte[],int,int)>(b, 0, length);
+        return;
+    }
+
+    public abstract void writeBytes(byte[], int, int) throws java.io.IOException;
+
+    public void writeInt(int) throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexOutput this;
+        int i, $i0;
+        byte $b1;
+
+        this := @this: org.apache.lucene.store.IndexOutput;
+        i := @parameter0: int;
+        $i0 = i >> 24;
+        $b1 = (byte) $i0;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b1);
+        $i0 = i >> 16;
+        $b1 = (byte) $i0;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b1);
+        $i0 = i >> 8;
+        $b1 = (byte) $i0;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b1);
+        $b1 = (byte) i;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b1);
+        return;
+    }
+
+    public void writeVInt(int) throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexOutput this;
+        int i, $i0, $i1;
+        byte $b2;
+
+        this := @this: org.apache.lucene.store.IndexOutput;
+        i := @parameter0: int;
+
+     label0:
+        $i0 = i & -128;
+        if $i0 == 0 goto label1;
+
+        $i1 = i & 127;
+        $i1 = $i1 | 128;
+        $b2 = (byte) $i1;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b2);
+        i = i >>> 7;
+        goto label0;
+
+     label1:
+        $b2 = (byte) i;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b2);
+        return;
+    }
+
+    public void writeLong(long) throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexOutput this;
+        long i, $l0;
+        int $i1;
+
+        this := @this: org.apache.lucene.store.IndexOutput;
+        i := @parameter0: long;
+        $l0 = i >> 32;
+        $i1 = (int) $l0;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeInt(int)>($i1);
+        $i1 = (int) i;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeInt(int)>($i1);
+        return;
+    }
+
+    public void writeVLong(long) throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexOutput this;
+        long i, $l0, $l2;
+        byte $b1, $b4;
+        int $i3;
+
+        this := @this: org.apache.lucene.store.IndexOutput;
+        i := @parameter0: long;
+
+     label0:
+        $l0 = i & -128L;
+        $b1 = $l0 cmp 0L;
+        if $b1 == 0 goto label1;
+
+        $l2 = i & 127L;
+        $l2 = $l2 | 128L;
+        $i3 = (int) $l2;
+        $b4 = (byte) $i3;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b4);
+        i = i >>> 7;
+        goto label0;
+
+     label1:
+        $i3 = (int) i;
+        $b4 = (byte) $i3;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b4);
+        return;
+    }
+
+    public void writeString(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexOutput this;
+        java.lang.String s;
+        int $i0, $i1, $i2;
+        org.apache.lucene.util.UnicodeUtil$UTF8Result $r0, $r1;
+        byte[] $r2;
+        long tid_writeString;
+        java.lang.Thread thread_writeString;
+
+        this := @this: org.apache.lucene.store.IndexOutput;
+        s := @parameter0: java.lang.String;
+        thread_writeString = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_writeString = virtualinvoke thread_writeString.<java.lang.Thread: long getId()>();
+        $i0 = virtualinvoke s.<java.lang.String: int length()>();
+        $r0 = this.<org.apache.lucene.store.IndexOutput: org.apache.lucene.util.UnicodeUtil$UTF8Result utf8Result>;
+        staticinvoke <org.apache.lucene.util.UnicodeUtil: void UTF16toUTF8(java.lang.String,int,int,org.apache.lucene.util.UnicodeUtil$UTF8Result)>(s, 0, $i0, $r0);
+        $r1 = this.<org.apache.lucene.store.IndexOutput: org.apache.lucene.util.UnicodeUtil$UTF8Result utf8Result>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 51, tid_writeString, "org.apache.lucene.store.IndexOutput", 103, $i1);
+        $i1 = $r1.<org.apache.lucene.util.UnicodeUtil$UTF8Result: int length>;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeVInt(int)>($i1);
+        $r1 = this.<org.apache.lucene.store.IndexOutput: org.apache.lucene.util.UnicodeUtil$UTF8Result utf8Result>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r1, 52, tid_writeString, "org.apache.lucene.store.IndexOutput", 104, $r2);
+        $r2 = $r1.<org.apache.lucene.util.UnicodeUtil$UTF8Result: byte[] result>;
+        $r0 = this.<org.apache.lucene.store.IndexOutput: org.apache.lucene.util.UnicodeUtil$UTF8Result utf8Result>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r0, 51, tid_writeString, "org.apache.lucene.store.IndexOutput", 104, $i2);
+        $i2 = $r0.<org.apache.lucene.util.UnicodeUtil$UTF8Result: int length>;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeBytes(byte[],int,int)>($r2, 0, $i2);
+        return;
+    }
+
+    public void writeChars(java.lang.String, int, int) throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexOutput this;
+        java.lang.String s;
+        int start, length, end, i;
+        char code, $c1, $c2;
+        byte $b0;
+
+        this := @this: org.apache.lucene.store.IndexOutput;
+        s := @parameter0: java.lang.String;
+        start := @parameter1: int;
+        length := @parameter2: int;
+        end = start + length;
+        i = start;
+
+     label0:
+        if i >= end goto label6;
+
+        code = virtualinvoke s.<java.lang.String: char charAt(int)>(i);
+        if code < 1 goto label1;
+
+        if code > 127 goto label1;
+
+        $b0 = (byte) code;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b0);
+        goto label5;
+
+     label1:
+        if code < 128 goto label2;
+
+        if code <= 2047 goto label3;
+
+     label2:
+        if code != 0 goto label4;
+
+     label3:
+        $c1 = code >> 6;
+        $c2 = 192 | $c1;
+        $b0 = (byte) $c2;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b0);
+        $c1 = code & 63;
+        $c2 = 128 | $c1;
+        $b0 = (byte) $c2;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b0);
+        goto label5;
+
+     label4:
+        $c1 = code >>> 12;
+        $c2 = 224 | $c1;
+        $b0 = (byte) $c2;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b0);
+        $c1 = code >> 6;
+        $c1 = $c1 & 63;
+        $c2 = 128 | $c1;
+        $b0 = (byte) $c2;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b0);
+        $c1 = code & 63;
+        $c2 = 128 | $c1;
+        $b0 = (byte) $c2;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b0);
+
+     label5:
+        i = i + 1;
+        goto label0;
+
+     label6:
+        return;
+    }
+
+    public void writeChars(char[], int, int) throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexOutput this;
+        char[] s;
+        int start, length, end, i;
+        char code, $c1, $c2;
+        byte $b0;
+        long tid_writeChars;
+        java.lang.Thread thread_writeChars;
+
+        this := @this: org.apache.lucene.store.IndexOutput;
+        s := @parameter0: char[];
+        start := @parameter1: int;
+        length := @parameter2: int;
+        thread_writeChars = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_writeChars = virtualinvoke thread_writeChars.<java.lang.Thread: long getId()>();
+        end = start + length;
+        i = start;
+
+     label0:
+        if i >= end goto label6;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(s, 25, tid_writeChars, "org.apache.lucene.store.IndexOutput", 144, i, code);
+        code = s[i];
+        if code < 1 goto label1;
+
+        if code > 127 goto label1;
+
+        $b0 = (byte) code;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b0);
+        goto label5;
+
+     label1:
+        if code < 128 goto label2;
+
+        if code <= 2047 goto label3;
+
+     label2:
+        if code != 0 goto label4;
+
+     label3:
+        $c1 = code >> 6;
+        $c2 = 192 | $c1;
+        $b0 = (byte) $c2;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b0);
+        $c1 = code & 63;
+        $c2 = 128 | $c1;
+        $b0 = (byte) $c2;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b0);
+        goto label5;
+
+     label4:
+        $c1 = code >>> 12;
+        $c2 = 224 | $c1;
+        $b0 = (byte) $c2;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b0);
+        $c1 = code >> 6;
+        $c1 = $c1 & 63;
+        $c2 = 128 | $c1;
+        $b0 = (byte) $c2;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b0);
+        $c1 = code & 63;
+        $c2 = 128 | $c1;
+        $b0 = (byte) $c2;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b0);
+
+     label5:
+        i = i + 1;
+        goto label0;
+
+     label6:
+        return;
+    }
+
+    public void copyBytes(org.apache.lucene.store.IndexInput, long) throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexOutput this;
+        org.apache.lucene.store.IndexInput input;
+        long numBytes, left, $l3;
+        int $i0, toCopy, $i2;
+        byte[] $r0, $r1;
+        byte $b1;
+
+        this := @this: org.apache.lucene.store.IndexOutput;
+        input := @parameter0: org.apache.lucene.store.IndexInput;
+        numBytes := @parameter1: long;
+        left = numBytes;
+        $r0 = this.<org.apache.lucene.store.IndexOutput: byte[] copyBuffer>;
+        if $r0 != null goto label0;
+
+        $i0 = <org.apache.lucene.store.IndexOutput: int COPY_BUFFER_SIZE>;
+        $r1 = newarray (byte)[$i0];
+        this.<org.apache.lucene.store.IndexOutput: byte[] copyBuffer> = $r1;
+
+     label0:
+        $b1 = left cmp 0L;
+        if $b1 <= 0 goto label3;
+
+        $i2 = <org.apache.lucene.store.IndexOutput: int COPY_BUFFER_SIZE>;
+        $l3 = (long) $i2;
+        $b1 = left cmp $l3;
+        if $b1 <= 0 goto label1;
+
+        toCopy = <org.apache.lucene.store.IndexOutput: int COPY_BUFFER_SIZE>;
+        goto label2;
+
+     label1:
+        toCopy = (int) left;
+
+     label2:
+        $r1 = this.<org.apache.lucene.store.IndexOutput: byte[] copyBuffer>;
+        virtualinvoke input.<org.apache.lucene.store.IndexInput: void readBytes(byte[],int,int)>($r1, 0, toCopy);
+        $r1 = this.<org.apache.lucene.store.IndexOutput: byte[] copyBuffer>;
+        virtualinvoke this.<org.apache.lucene.store.IndexOutput: void writeBytes(byte[],int,int)>($r1, 0, toCopy);
+        $l3 = (long) toCopy;
+        left = left - $l3;
+        goto label0;
+
+     label3:
+        return;
+    }
+
+    public abstract void flush() throws java.io.IOException;
+
+    public abstract void close() throws java.io.IOException;
+
+    public abstract long getFilePointer();
+
+    public abstract void seek(long) throws java.io.IOException;
+
+    public abstract long length() throws java.io.IOException;
+
+    public void setLength(long) throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexOutput this;
+        long length;
+
+        this := @this: org.apache.lucene.store.IndexOutput;
+        length := @parameter0: long;
+        return;
+    }
+
+    static void <clinit>()
+    {
+        <org.apache.lucene.store.IndexOutput: int COPY_BUFFER_SIZE> = 16384;
+        return;
+    }
+}

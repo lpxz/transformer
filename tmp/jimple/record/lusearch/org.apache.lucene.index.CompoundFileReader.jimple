@@ -1,0 +1,506 @@
+class org.apache.lucene.index.CompoundFileReader extends org.apache.lucene.store.Directory
+{
+    private int readBufferSize;
+    private org.apache.lucene.store.Directory directory;
+    private java.lang.String fileName;
+    private org.apache.lucene.store.IndexInput stream;
+    private java.util.HashMap entries;
+
+    public void <init>(org.apache.lucene.store.Directory, java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        org.apache.lucene.store.Directory dir;
+        java.lang.String name;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        dir := @parameter0: org.apache.lucene.store.Directory;
+        name := @parameter1: java.lang.String;
+        specialinvoke this.<org.apache.lucene.index.CompoundFileReader: void <init>(org.apache.lucene.store.Directory,java.lang.String,int)>(dir, name, 1024);
+        return;
+    }
+
+    public void <init>(org.apache.lucene.store.Directory, java.lang.String, int) throws java.io.IOException
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        org.apache.lucene.store.Directory dir;
+        java.lang.String name, id;
+        int readBufferSize, count, i;
+        java.util.HashMap $r0, $r4;
+        boolean success;
+        org.apache.lucene.index.CompoundFileReader$FileEntry entry, $r3;
+        long offset, $l0, $l1;
+        java.lang.Throwable l11, e, $r6, $r8, $r9;
+        org.apache.lucene.store.IndexInput $r1, $r2;
+        java.io.IOException $r7;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        dir := @parameter0: org.apache.lucene.store.Directory;
+        name := @parameter1: java.lang.String;
+        readBufferSize := @parameter2: int;
+        specialinvoke this.<org.apache.lucene.store.Directory: void <init>()>();
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        this.<org.apache.lucene.index.CompoundFileReader: java.util.HashMap entries> = $r0;
+        this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.Directory directory> = dir;
+        this.<org.apache.lucene.index.CompoundFileReader: java.lang.String fileName> = name;
+        this.<org.apache.lucene.index.CompoundFileReader: int readBufferSize> = readBufferSize;
+        success = 0;
+
+     label0:
+        $r1 = virtualinvoke dir.<org.apache.lucene.store.Directory: org.apache.lucene.store.IndexInput openInput(java.lang.String,int)>(name, readBufferSize);
+        this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput stream> = $r1;
+        $r2 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput stream>;
+        count = virtualinvoke $r2.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        entry = null;
+        i = 0;
+
+     label1:
+        if i >= count goto label3;
+
+        $r2 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput stream>;
+        offset = virtualinvoke $r2.<org.apache.lucene.store.IndexInput: long readLong()>();
+        $r2 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput stream>;
+        id = virtualinvoke $r2.<org.apache.lucene.store.IndexInput: java.lang.String readString()>();
+        if entry == null goto label2;
+
+        $l0 = entry.<org.apache.lucene.index.CompoundFileReader$FileEntry: long offset>;
+        $l1 = offset - $l0;
+        entry.<org.apache.lucene.index.CompoundFileReader$FileEntry: long length> = $l1;
+
+     label2:
+        $r3 = new org.apache.lucene.index.CompoundFileReader$FileEntry;
+        specialinvoke $r3.<org.apache.lucene.index.CompoundFileReader$FileEntry: void <init>(org.apache.lucene.index.CompoundFileReader$1)>(null);
+        entry = $r3;
+        entry.<org.apache.lucene.index.CompoundFileReader$FileEntry: long offset> = offset;
+        $r4 = this.<org.apache.lucene.index.CompoundFileReader: java.util.HashMap entries>;
+        virtualinvoke $r4.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(id, entry);
+        i = i + 1;
+        goto label1;
+
+     label3:
+        if entry == null goto label4;
+
+        $r1 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput stream>;
+        $l1 = virtualinvoke $r1.<org.apache.lucene.store.IndexInput: long length()>();
+        $l0 = entry.<org.apache.lucene.index.CompoundFileReader$FileEntry: long offset>;
+        $l1 = $l1 - $l0;
+        entry.<org.apache.lucene.index.CompoundFileReader$FileEntry: long length> = $l1;
+
+     label4:
+        success = 1;
+        goto label10;
+
+     label5:
+        goto label9;
+
+     label6:
+        $r6 := @caughtexception;
+
+     label7:
+        l11 = $r6;
+        goto label15;
+
+     label8:
+        throw l11;
+
+     label9:
+        return;
+
+     label10:
+        if success != 0 goto label14;
+
+        $r2 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput stream>;
+        if $r2 == null goto label14;
+
+     label11:
+        $r2 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput stream>;
+        virtualinvoke $r2.<org.apache.lucene.store.IndexInput: void close()>();
+
+     label12:
+        goto label14;
+
+     label13:
+        $r8 := @caughtexception;
+        e = $r8;
+
+     label14:
+        goto label5;
+
+     label15:
+        if success != 0 goto label19;
+
+        $r2 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput stream>;
+        if $r2 == null goto label19;
+
+     label16:
+        $r2 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput stream>;
+        virtualinvoke $r2.<org.apache.lucene.store.IndexInput: void close()>();
+
+     label17:
+        goto label19;
+
+     label18:
+        $r9 := @caughtexception;
+        e = $r9;
+
+     label19:
+        goto label8;
+
+        catch java.lang.Throwable from label0 to label5 with label6;
+        catch java.lang.Throwable from label7 to label8 with label6;
+        catch java.lang.Throwable from label11 to label12 with label13;
+        catch java.lang.Throwable from label16 to label17 with label18;
+    }
+
+    public org.apache.lucene.store.Directory getDirectory()
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        org.apache.lucene.store.Directory $r0;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        $r0 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.Directory directory>;
+        return $r0;
+    }
+
+    public java.lang.String getName()
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        $r0 = this.<org.apache.lucene.index.CompoundFileReader: java.lang.String fileName>;
+        return $r0;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        org.apache.lucene.store.IndexInput $r0;
+        java.io.IOException $r1;
+        java.util.HashMap $r2;
+        java.lang.Object localthislockclose;
+        java.lang.Throwable throwableLocal24;
+        long tid_close;
+        java.lang.Thread thread_close;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        thread_close = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_close = virtualinvoke thread_close.<java.lang.Thread: long getId()>();
+        localthislockclose = this;
+
+     label0:
+        entermonitor localthislockclose;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockclose, 0, tid_close);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 26, tid_close, "org.apache.lucene.index.CompoundFileReader", 114, $r0);
+        $r0 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput stream>;
+        if $r0 != null goto label1;
+
+        $r1 = new java.io.IOException;
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>("Already closed");
+        throw $r1;
+
+     label1:
+        $r2 = this.<org.apache.lucene.index.CompoundFileReader: java.util.HashMap entries>;
+        virtualinvoke $r2.<java.util.HashMap: void clear()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 26, tid_close, "org.apache.lucene.index.CompoundFileReader", 118, $r0);
+        $r0 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput stream>;
+        virtualinvoke $r0.<org.apache.lucene.store.IndexInput: void close()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 26, tid_close, "org.apache.lucene.index.CompoundFileReader", 119, null);
+        this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput stream> = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockclose, 0, tid_close);
+        exitmonitor localthislockclose;
+        goto label2;
+
+     label2:
+        return;
+
+     label3:
+        throwableLocal24 := @caughtexception;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockclose, 0, tid_close);
+        exitmonitor localthislockclose;
+
+     label5:
+        throw throwableLocal24;
+
+        catch java.lang.Throwable from label0 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    public org.apache.lucene.store.IndexInput openInput(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        java.lang.String id;
+        int $i0;
+        org.apache.lucene.store.IndexInput $r0;
+        java.lang.Object localthislockopenInput;
+        java.lang.Throwable throwableLocal25;
+        long tid_openInput;
+        java.lang.Thread thread_openInput;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        id := @parameter0: java.lang.String;
+        thread_openInput = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_openInput = virtualinvoke thread_openInput.<java.lang.Thread: long getId()>();
+        localthislockopenInput = this;
+
+     label0:
+        entermonitor localthislockopenInput;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockopenInput, 0, tid_openInput);
+        $i0 = this.<org.apache.lucene.index.CompoundFileReader: int readBufferSize>;
+        $r0 = virtualinvoke this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput openInput(java.lang.String,int)>(id, $i0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockopenInput, 0, tid_openInput);
+        exitmonitor localthislockopenInput;
+        goto label1;
+
+     label1:
+        return $r0;
+
+     label2:
+        throwableLocal25 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockopenInput, 0, tid_openInput);
+        exitmonitor localthislockopenInput;
+
+     label4:
+        throw throwableLocal25;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public org.apache.lucene.store.IndexInput openInput(java.lang.String, int) throws java.io.IOException
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        java.lang.String id, $r5;
+        int readBufferSize;
+        org.apache.lucene.index.CompoundFileReader$FileEntry entry;
+        org.apache.lucene.store.IndexInput $r0, $r7;
+        java.io.IOException $r1;
+        java.util.HashMap $r2;
+        java.lang.Object $r3, localthislockopenInput;
+        java.lang.StringBuffer $r4;
+        org.apache.lucene.index.CompoundFileReader$CSIndexInput $r6;
+        long $l0, $l1, tid_openInput;
+        java.lang.Throwable throwableLocal26;
+        java.lang.Thread thread_openInput;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        id := @parameter0: java.lang.String;
+        readBufferSize := @parameter1: int;
+        thread_openInput = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_openInput = virtualinvoke thread_openInput.<java.lang.Thread: long getId()>();
+        localthislockopenInput = this;
+
+     label0:
+        entermonitor localthislockopenInput;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockopenInput, 0, tid_openInput);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 26, tid_openInput, "org.apache.lucene.index.CompoundFileReader", 132, $r0);
+        $r0 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput stream>;
+        if $r0 != null goto label1;
+
+        $r1 = new java.io.IOException;
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>("Stream closed");
+        throw $r1;
+
+     label1:
+        $r2 = this.<org.apache.lucene.index.CompoundFileReader: java.util.HashMap entries>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeDSElem(java.lang.Object,int,long,java.lang.String,int,java.lang.Object,java.lang.Object)>($r2, 21, tid_openInput, "org.apache.lucene.index.CompoundFileReader", 135, id, $r3);
+        $r3 = virtualinvoke $r2.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(id);
+        entry = (org.apache.lucene.index.CompoundFileReader$FileEntry) $r3;
+        if entry != null goto label2;
+
+        $r1 = new java.io.IOException;
+        $r4 = new java.lang.StringBuffer;
+        specialinvoke $r4.<java.lang.StringBuffer: void <init>()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("No sub-file with id ");
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(id);
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" found");
+        $r5 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>($r5);
+        throw $r1;
+
+     label2:
+        $r6 = new org.apache.lucene.index.CompoundFileReader$CSIndexInput;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 26, tid_openInput, "org.apache.lucene.index.CompoundFileReader", 139, $r7);
+        $r7 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.IndexInput stream>;
+        $l0 = entry.<org.apache.lucene.index.CompoundFileReader$FileEntry: long offset>;
+        $l1 = entry.<org.apache.lucene.index.CompoundFileReader$FileEntry: long length>;
+        specialinvoke $r6.<org.apache.lucene.index.CompoundFileReader$CSIndexInput: void <init>(org.apache.lucene.store.IndexInput,long,long,int)>($r7, $l0, $l1, readBufferSize);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockopenInput, 0, tid_openInput);
+        exitmonitor localthislockopenInput;
+        goto label3;
+
+     label3:
+        return $r6;
+
+     label4:
+        throwableLocal26 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockopenInput, 0, tid_openInput);
+        exitmonitor localthislockopenInput;
+
+     label6:
+        throw throwableLocal26;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public java.lang.String[] list()
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        java.lang.String[] res, $r3;
+        java.util.HashMap $r0;
+        int $i0;
+        java.util.Set $r1;
+        java.lang.Object[] $r2;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        $r0 = this.<org.apache.lucene.index.CompoundFileReader: java.util.HashMap entries>;
+        $i0 = virtualinvoke $r0.<java.util.HashMap: int size()>();
+        res = newarray (java.lang.String)[$i0];
+        $r0 = this.<org.apache.lucene.index.CompoundFileReader: java.util.HashMap entries>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.util.Set keySet()>();
+        $r2 = interfaceinvoke $r1.<java.util.Set: java.lang.Object[] toArray(java.lang.Object[])>(res);
+        $r3 = (java.lang.String[]) $r2;
+        $r3 = (java.lang.String[]) $r3;
+        return $r3;
+    }
+
+    public boolean fileExists(java.lang.String)
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        java.lang.String name;
+        java.util.HashMap $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        name := @parameter0: java.lang.String;
+        $r0 = this.<org.apache.lucene.index.CompoundFileReader: java.util.HashMap entries>;
+        $z0 = virtualinvoke $r0.<java.util.HashMap: boolean containsKey(java.lang.Object)>(name);
+        return $z0;
+    }
+
+    public long fileModified(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        java.lang.String name, $r1;
+        org.apache.lucene.store.Directory $r0;
+        long $l0;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        name := @parameter0: java.lang.String;
+        $r0 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.Directory directory>;
+        $r1 = this.<org.apache.lucene.index.CompoundFileReader: java.lang.String fileName>;
+        $l0 = virtualinvoke $r0.<org.apache.lucene.store.Directory: long fileModified(java.lang.String)>($r1);
+        return $l0;
+    }
+
+    public void touchFile(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        java.lang.String name, $r1;
+        org.apache.lucene.store.Directory $r0;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        name := @parameter0: java.lang.String;
+        $r0 = this.<org.apache.lucene.index.CompoundFileReader: org.apache.lucene.store.Directory directory>;
+        $r1 = this.<org.apache.lucene.index.CompoundFileReader: java.lang.String fileName>;
+        virtualinvoke $r0.<org.apache.lucene.store.Directory: void touchFile(java.lang.String)>($r1);
+        return;
+    }
+
+    public void deleteFile(java.lang.String)
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        java.lang.String name;
+        java.lang.UnsupportedOperationException $r0;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        name := @parameter0: java.lang.String;
+        $r0 = new java.lang.UnsupportedOperationException;
+        specialinvoke $r0.<java.lang.UnsupportedOperationException: void <init>()>();
+        throw $r0;
+    }
+
+    public void renameFile(java.lang.String, java.lang.String)
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        java.lang.String 'from', 'to';
+        java.lang.UnsupportedOperationException $r0;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        'from' := @parameter0: java.lang.String;
+        'to' := @parameter1: java.lang.String;
+        $r0 = new java.lang.UnsupportedOperationException;
+        specialinvoke $r0.<java.lang.UnsupportedOperationException: void <init>()>();
+        throw $r0;
+    }
+
+    public long fileLength(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        java.lang.String name, $r4;
+        org.apache.lucene.index.CompoundFileReader$FileEntry e;
+        java.lang.StringBuffer $r0;
+        java.util.HashMap $r1;
+        java.lang.Object $r2;
+        java.io.IOException $r3;
+        long $l0, tid_fileLength;
+        java.lang.Thread thread_fileLength;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        name := @parameter0: java.lang.String;
+        thread_fileLength = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_fileLength = virtualinvoke thread_fileLength.<java.lang.Thread: long getId()>();
+        $r1 = this.<org.apache.lucene.index.CompoundFileReader: java.util.HashMap entries>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeDSElem(java.lang.Object,int,long,java.lang.String,int,java.lang.Object,java.lang.Object)>($r1, 21, tid_fileLength, "org.apache.lucene.index.CompoundFileReader", 182, name, $r2);
+        $r2 = virtualinvoke $r1.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(name);
+        e = (org.apache.lucene.index.CompoundFileReader$FileEntry) $r2;
+        if e != null goto label0;
+
+        $r3 = new java.io.IOException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("File ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(name);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" does not exist");
+        $r4 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+        throw $r3;
+
+     label0:
+        $l0 = e.<org.apache.lucene.index.CompoundFileReader$FileEntry: long length>;
+        return $l0;
+    }
+
+    public org.apache.lucene.store.IndexOutput createOutput(java.lang.String)
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        java.lang.String name;
+        java.lang.UnsupportedOperationException $r0;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        name := @parameter0: java.lang.String;
+        $r0 = new java.lang.UnsupportedOperationException;
+        specialinvoke $r0.<java.lang.UnsupportedOperationException: void <init>()>();
+        throw $r0;
+    }
+
+    public org.apache.lucene.store.Lock makeLock(java.lang.String)
+    {
+        org.apache.lucene.index.CompoundFileReader this;
+        java.lang.String name;
+        java.lang.UnsupportedOperationException $r0;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader;
+        name := @parameter0: java.lang.String;
+        $r0 = new java.lang.UnsupportedOperationException;
+        specialinvoke $r0.<java.lang.UnsupportedOperationException: void <init>()>();
+        throw $r0;
+    }
+}

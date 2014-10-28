@@ -1,0 +1,945 @@
+public class avrora.Defaults extends java.lang.Object
+{
+    private static final java.util.HashMap mainCategories;
+    private static cck.util.ClassMap microcontrollers;
+    private static cck.util.ClassMap platforms;
+    private static cck.util.ClassMap actions;
+    private static cck.util.ClassMap inputs;
+    private static cck.util.ClassMap harnessMap;
+    private static cck.util.ClassMap monitorMap;
+    private static cck.util.ClassMap simMap;
+
+    public void <init>()
+    {
+        avrora.Defaults this;
+
+        this := @this: avrora.Defaults;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    private static void addAll()
+    {
+        java.lang.Class locallockaddAll;
+        java.lang.Throwable throwableLocal10;
+        long tid_addAll;
+        java.lang.Thread thread_addAll;
+
+        thread_addAll = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addAll = virtualinvoke thread_addAll.<java.lang.Thread: long getId()>();
+        nop;
+        locallockaddAll = class "avrora/Defaults";
+
+     label0:
+        entermonitor locallockaddAll;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(locallockaddAll, 1, tid_addAll);
+        staticinvoke <avrora.Defaults: void addMicrocontrollers()>();
+        staticinvoke <avrora.Defaults: void addPlatforms()>();
+        staticinvoke <avrora.Defaults: void addActions()>();
+        staticinvoke <avrora.Defaults: void addInputFormats()>();
+        staticinvoke <avrora.Defaults: void addTestHarnesses()>();
+        staticinvoke <avrora.Defaults: void addMonitors()>();
+        staticinvoke <avrora.Defaults: void addSimulations()>();
+        staticinvoke <avrora.arch.ArchitectureRegistry: void addArchitectures()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddAll, 1, tid_addAll);
+        exitmonitor locallockaddAll;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        throwableLocal10 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddAll, 1, tid_addAll);
+        exitmonitor locallockaddAll;
+
+     label4:
+        throw throwableLocal10;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    private static void addMonitors()
+    {
+        cck.util.ClassMap $r0, $r1;
+        cck.help.HelpCategory hc, $r2;
+        java.lang.Class locallockaddMonitors;
+        java.lang.Throwable throwableLocal11;
+        long tid_addMonitors;
+        java.lang.Thread thread_addMonitors;
+
+        thread_addMonitors = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addMonitors = virtualinvoke thread_addMonitors.<java.lang.Thread: long getId()>();
+        nop;
+        locallockaddMonitors = class "avrora/Defaults";
+
+     label0:
+        entermonitor locallockaddMonitors;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(locallockaddMonitors, 1, tid_addMonitors);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 88, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        if $r0 != null goto label1;
+
+        $r0 = new cck.util.ClassMap;
+        specialinvoke $r0.<cck.util.ClassMap: void <init>(java.lang.String,java.lang.Class)>("Monitor", class "avrora/monitors/MonitorFactory");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 89, $r0);
+        <avrora.Defaults: cck.util.ClassMap monitorMap> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 91, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("calls", class "avrora/monitors/CallMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 92, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("break", class "avrora/monitors/BreakMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 93, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("c-print", class "avrora/monitors/PrintMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 94, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("c-timer", class "avrora/monitors/TimerMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 95, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("profile", class "avrora/monitors/ProfileMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 96, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("memory", class "avrora/monitors/MemoryMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 97, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("sleep", class "avrora/monitors/SleepMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 98, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("leds", class "avrora/monitors/LEDMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 99, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("stack", class "avrora/monitors/StackMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 100, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("energy", class "avrora/monitors/EnergyMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 101, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("interrupts", class "avrora/monitors/InterruptMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 102, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("interactive", class "avrora/monitors/InteractiveMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 103, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("trace", class "avrora/monitors/TraceMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 104, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("energy-profile", class "avrora/monitors/EnergyProfiler");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 105, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("packet", class "avrora/monitors/PacketMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 106, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("gdb", class "avrora/monitors/GDBServer");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 107, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("simperf", class "avrora/monitors/SimPerfMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 108, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("serial", class "avrora/monitors/SerialMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 109, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("spi", class "avrora/monitors/SPIMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 110, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("call-time", class "avrora/monitors/CallTimeMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 111, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("call-profile", class "avrora/monitors/CallTreeProfiler");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 112, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("trip-time", class "avrora/monitors/TripTimeMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 113, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("ioregs", class "avrora/monitors/IORegMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 114, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("virgil", class "avrora/monitors/VirgilMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 115, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("real-time", class "avrora/monitors/RealTimeMonitor");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 116, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("sniffer", class "avrora/monitors/SnifferMonitor");
+        $r2 = new cck.help.HelpCategory;
+        specialinvoke $r2.<cck.help.HelpCategory: void <init>(java.lang.String,java.lang.String)>("monitors", "Help for the supported simulation monitors.");
+        hc = $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 119, $r1);
+        $r1 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        virtualinvoke hc.<cck.help.HelpCategory: void addOptionValueSection(java.lang.String,java.lang.String,java.lang.String,cck.util.ClassMap)>("SIMULATION MONITORS", "Avrora\'s simulator offers the ability to install execution monitors that instrument the program in order to study and analyze its behavior. The \"simulate\" action supports this option that allows a monitor class to be loaded which will instrument the program before it is run and then generate a report after the program has completed execution.", "-monitors", $r1);
+        staticinvoke <avrora.Defaults: void addMainCategory(cck.help.HelpCategory)>(hc);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_addMonitors, "avroraavrora.Defaults", 125, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        staticinvoke <avrora.Defaults: void addSubCategories(cck.util.ClassMap)>($r0);
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddMonitors, 1, tid_addMonitors);
+        exitmonitor locallockaddMonitors;
+        goto label2;
+
+     label2:
+        return;
+
+     label3:
+        throwableLocal11 := @caughtexception;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddMonitors, 1, tid_addMonitors);
+        exitmonitor locallockaddMonitors;
+
+     label5:
+        throw throwableLocal11;
+
+        catch java.lang.Throwable from label0 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    private static void addTestHarnesses()
+    {
+        cck.util.ClassMap $r0;
+        java.lang.Class locallockaddTestHarnesses;
+        java.lang.Throwable throwableLocal12;
+        long tid_addTestHarnesses;
+        java.lang.Thread thread_addTestHarnesses;
+
+        thread_addTestHarnesses = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addTestHarnesses = virtualinvoke thread_addTestHarnesses.<java.lang.Thread: long getId()>();
+        nop;
+        locallockaddTestHarnesses = class "avrora/Defaults";
+
+     label0:
+        entermonitor locallockaddTestHarnesses;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(locallockaddTestHarnesses, 1, tid_addTestHarnesses);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(71, tid_addTestHarnesses, "avroraavrora.Defaults", 130, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap harnessMap>;
+        if $r0 != null goto label1;
+
+        $r0 = new cck.util.ClassMap;
+        specialinvoke $r0.<cck.util.ClassMap: void <init>(java.lang.String,java.lang.Class)>("Test Harness", class "cck/test/TestEngine$Harness");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(71, tid_addTestHarnesses, "avroraavrora.Defaults", 131, $r0);
+        <avrora.Defaults: cck.util.ClassMap harnessMap> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(71, tid_addTestHarnesses, "avroraavrora.Defaults", 133, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap harnessMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("simulator", class "avrora/test/sim/SimTestHarness");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(71, tid_addTestHarnesses, "avroraavrora.Defaults", 134, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap harnessMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("simplifier", class "avrora/test/SimplifierTestHarness");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(71, tid_addTestHarnesses, "avroraavrora.Defaults", 135, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap harnessMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("probes", class "avrora/test/ProbeTestHarness");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(71, tid_addTestHarnesses, "avroraavrora.Defaults", 136, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap harnessMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("disassembler", class "avrora/test/DisassemblerTestHarness");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(71, tid_addTestHarnesses, "avroraavrora.Defaults", 137, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap harnessMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("interrupt", class "avrora/test/InterruptTestHarness");
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddTestHarnesses, 1, tid_addTestHarnesses);
+        exitmonitor locallockaddTestHarnesses;
+        goto label2;
+
+     label2:
+        return;
+
+     label3:
+        throwableLocal12 := @caughtexception;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddTestHarnesses, 1, tid_addTestHarnesses);
+        exitmonitor locallockaddTestHarnesses;
+
+     label5:
+        throw throwableLocal12;
+
+        catch java.lang.Throwable from label0 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    private static void addInputFormats()
+    {
+        cck.util.ClassMap $r0, $r1;
+        cck.help.HelpCategory hc, $r2;
+        java.lang.Class locallockaddInputFormats;
+        java.lang.Throwable throwableLocal13;
+        long tid_addInputFormats;
+        java.lang.Thread thread_addInputFormats;
+
+        thread_addInputFormats = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addInputFormats = virtualinvoke thread_addInputFormats.<java.lang.Thread: long getId()>();
+        nop;
+        locallockaddInputFormats = class "avrora/Defaults";
+
+     label0:
+        entermonitor locallockaddInputFormats;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(locallockaddInputFormats, 1, tid_addInputFormats);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(72, tid_addInputFormats, "avroraavrora.Defaults", 142, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap inputs>;
+        if $r0 != null goto label1;
+
+        $r0 = new cck.util.ClassMap;
+        specialinvoke $r0.<cck.util.ClassMap: void <init>(java.lang.String,java.lang.Class)>("Input Format", class "avrora/core/ProgramReader");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(72, tid_addInputFormats, "avroraavrora.Defaults", 143, $r0);
+        <avrora.Defaults: cck.util.ClassMap inputs> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(72, tid_addInputFormats, "avroraavrora.Defaults", 145, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap inputs>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("auto", class "avrora/Defaults$AutoProgramReader");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(72, tid_addInputFormats, "avroraavrora.Defaults", 146, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap inputs>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("raw", class "avrora/syntax/raw/RAWReader");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(72, tid_addInputFormats, "avroraavrora.Defaults", 147, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap inputs>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("atmel", class "avrora/syntax/atmel/AtmelProgramReader");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(72, tid_addInputFormats, "avroraavrora.Defaults", 148, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap inputs>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("objdump", class "avrora/syntax/objdump/ObjDumpProgramReader");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(72, tid_addInputFormats, "avroraavrora.Defaults", 149, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap inputs>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("odpp", class "avrora/syntax/objdump/ObjDump2ProgramReader");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(72, tid_addInputFormats, "avroraavrora.Defaults", 150, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap inputs>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("elf", class "avrora/syntax/elf/ELFParser");
+        $r2 = new cck.help.HelpCategory;
+        specialinvoke $r2.<cck.help.HelpCategory: void <init>(java.lang.String,java.lang.String)>("inputs", "Help for the supported program input formats.");
+        hc = $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(72, tid_addInputFormats, "avroraavrora.Defaults", 153, $r1);
+        $r1 = <avrora.Defaults: cck.util.ClassMap inputs>;
+        virtualinvoke hc.<cck.help.HelpCategory: void addOptionValueSection(java.lang.String,java.lang.String,java.lang.String,cck.util.ClassMap)>("INPUT FORMATS", "The input format of the program is specified with the \"-input\" option supplied at the command line. This input format is used by actions that operate on programs to determine how to interpret the input and build a program from the files specified. For example, the input format might be Atmel syntax, GAS syntax, or the output of a disassembler such as avr-objdump. Currently no binary formats are supported.", "-input", $r1);
+        staticinvoke <avrora.Defaults: void addMainCategory(cck.help.HelpCategory)>(hc);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(72, tid_addInputFormats, "avroraavrora.Defaults", 160, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap inputs>;
+        staticinvoke <avrora.Defaults: void addSubCategories(cck.util.ClassMap)>($r0);
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddInputFormats, 1, tid_addInputFormats);
+        exitmonitor locallockaddInputFormats;
+        goto label2;
+
+     label2:
+        return;
+
+     label3:
+        throwableLocal13 := @caughtexception;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddInputFormats, 1, tid_addInputFormats);
+        exitmonitor locallockaddInputFormats;
+
+     label5:
+        throw throwableLocal13;
+
+        catch java.lang.Throwable from label0 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    private static void addActions()
+    {
+        cck.util.ClassMap $r0, $r1;
+        cck.help.HelpCategory hc, $r2;
+        java.lang.Class locallockaddActions;
+        java.lang.Throwable throwableLocal14;
+        long tid_addActions;
+        java.lang.Thread thread_addActions;
+
+        thread_addActions = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addActions = virtualinvoke thread_addActions.<java.lang.Thread: long getId()>();
+        nop;
+        locallockaddActions = class "avrora/Defaults";
+
+     label0:
+        entermonitor locallockaddActions;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(locallockaddActions, 1, tid_addActions);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(73, tid_addActions, "avroraavrora.Defaults", 165, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap actions>;
+        if $r0 != null goto label1;
+
+        $r0 = new cck.util.ClassMap;
+        specialinvoke $r0.<cck.util.ClassMap: void <init>(java.lang.String,java.lang.Class)>("Action", class "avrora/actions/Action");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(73, tid_addActions, "avroraavrora.Defaults", 166, $r0);
+        <avrora.Defaults: cck.util.ClassMap actions> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(73, tid_addActions, "avroraavrora.Defaults", 168, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap actions>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("disassemble", class "avrora/actions/DisassembleAction");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(73, tid_addActions, "avroraavrora.Defaults", 169, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap actions>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("simulate", class "avrora/actions/SimAction");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(73, tid_addActions, "avroraavrora.Defaults", 170, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap actions>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("analyze-stack", class "avrora/actions/AnalyzeStackAction");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(73, tid_addActions, "avroraavrora.Defaults", 171, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap actions>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("test", class "avrora/actions/TestAction");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(73, tid_addActions, "avroraavrora.Defaults", 172, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap actions>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("cfg", class "avrora/actions/CFGAction");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(73, tid_addActions, "avroraavrora.Defaults", 173, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap actions>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("isea", class "avrora/actions/ISEAAction");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(73, tid_addActions, "avroraavrora.Defaults", 174, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap actions>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("odpp", class "avrora/syntax/objdump/ODPPAction");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(73, tid_addActions, "avroraavrora.Defaults", 175, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap actions>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("elf-dump", class "avrora/actions/ELFDumpAction");
+        $r2 = new cck.help.HelpCategory;
+        specialinvoke $r2.<cck.help.HelpCategory: void <init>(java.lang.String,java.lang.String)>("actions", "Help for Avrora actions.");
+        hc = $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(73, tid_addActions, "avroraavrora.Defaults", 179, $r1);
+        $r1 = <avrora.Defaults: cck.util.ClassMap actions>;
+        virtualinvoke hc.<cck.help.HelpCategory: void addOptionValueSection(java.lang.String,java.lang.String,java.lang.String,cck.util.ClassMap)>("ACTIONS", "Avrora accepts the \"-action\" command line option that you can use to select from the available functionality that Avrora provides. This action might be to assemble the file, print a listing, perform a simulation, or run an analysis tool. This flexibility allows this single frontend to select from multiple useful tools. The currently supported actions are given below.", "-action", $r1);
+        staticinvoke <avrora.Defaults: void addMainCategory(cck.help.HelpCategory)>(hc);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(73, tid_addActions, "avroraavrora.Defaults", 186, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap actions>;
+        staticinvoke <avrora.Defaults: void addSubCategories(cck.util.ClassMap)>($r0);
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddActions, 1, tid_addActions);
+        exitmonitor locallockaddActions;
+        goto label2;
+
+     label2:
+        return;
+
+     label3:
+        throwableLocal14 := @caughtexception;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddActions, 1, tid_addActions);
+        exitmonitor locallockaddActions;
+
+     label5:
+        throw throwableLocal14;
+
+        catch java.lang.Throwable from label0 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    private static void addSimulations()
+    {
+        cck.util.ClassMap $r0, $r1;
+        cck.help.HelpCategory hc, $r2;
+        java.lang.Class locallockaddSimulations;
+        java.lang.Throwable throwableLocal15;
+        long tid_addSimulations;
+        java.lang.Thread thread_addSimulations;
+
+        thread_addSimulations = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addSimulations = virtualinvoke thread_addSimulations.<java.lang.Thread: long getId()>();
+        nop;
+        locallockaddSimulations = class "avrora/Defaults";
+
+     label0:
+        entermonitor locallockaddSimulations;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(locallockaddSimulations, 1, tid_addSimulations);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(74, tid_addSimulations, "avroraavrora.Defaults", 191, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap simMap>;
+        if $r0 != null goto label1;
+
+        $r0 = new cck.util.ClassMap;
+        specialinvoke $r0.<cck.util.ClassMap: void <init>(java.lang.String,java.lang.Class)>("Simulation", class "avrora/sim/Simulation");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(74, tid_addSimulations, "avroraavrora.Defaults", 192, $r0);
+        <avrora.Defaults: cck.util.ClassMap simMap> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(74, tid_addSimulations, "avroraavrora.Defaults", 194, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap simMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("single", class "avrora/sim/types/SingleSimulation");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(74, tid_addSimulations, "avroraavrora.Defaults", 195, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap simMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("sensor-network", class "avrora/sim/types/SensorSimulation");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(74, tid_addSimulations, "avroraavrora.Defaults", 196, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap simMap>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("wired", class "avrora/sim/types/WiredSimulation");
+        $r2 = new cck.help.HelpCategory;
+        specialinvoke $r2.<cck.help.HelpCategory: void <init>(java.lang.String,java.lang.String)>("simulations", "Help for supported simulation types.");
+        hc = $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(74, tid_addSimulations, "avroraavrora.Defaults", 200, $r1);
+        $r1 = <avrora.Defaults: cck.util.ClassMap simMap>;
+        virtualinvoke hc.<cck.help.HelpCategory: void addOptionValueSection(java.lang.String,java.lang.String,java.lang.String,cck.util.ClassMap)>("SIMULATION TYPES", "When running a simulation, Avrora accepts the \"-simulation\" command line option that selects the simulation type from multiple different types provided, or a user-supplied Java class of your own. For example, a simulation might be for a sensor network application, a single node simulation, or a robotics simulation. ", "-simulation", $r1);
+        staticinvoke <avrora.Defaults: void addMainCategory(cck.help.HelpCategory)>(hc);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(74, tid_addSimulations, "avroraavrora.Defaults", 207, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap simMap>;
+        staticinvoke <avrora.Defaults: void addSubCategories(cck.util.ClassMap)>($r0);
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddSimulations, 1, tid_addSimulations);
+        exitmonitor locallockaddSimulations;
+        goto label2;
+
+     label2:
+        return;
+
+     label3:
+        throwableLocal15 := @caughtexception;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddSimulations, 1, tid_addSimulations);
+        exitmonitor locallockaddSimulations;
+
+     label5:
+        throw throwableLocal15;
+
+        catch java.lang.Throwable from label0 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    private static void addPlatforms()
+    {
+        cck.util.ClassMap $r0;
+        java.lang.Class locallockaddPlatforms;
+        java.lang.Throwable throwableLocal16;
+        long tid_addPlatforms;
+        java.lang.Thread thread_addPlatforms;
+
+        thread_addPlatforms = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addPlatforms = virtualinvoke thread_addPlatforms.<java.lang.Thread: long getId()>();
+        nop;
+        locallockaddPlatforms = class "avrora/Defaults";
+
+     label0:
+        entermonitor locallockaddPlatforms;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(locallockaddPlatforms, 1, tid_addPlatforms);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(75, tid_addPlatforms, "avroraavrora.Defaults", 212, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap platforms>;
+        if $r0 != null goto label1;
+
+        $r0 = new cck.util.ClassMap;
+        specialinvoke $r0.<cck.util.ClassMap: void <init>(java.lang.String,java.lang.Class)>("Platform", class "avrora/sim/platform/PlatformFactory");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(75, tid_addPlatforms, "avroraavrora.Defaults", 213, $r0);
+        <avrora.Defaults: cck.util.ClassMap platforms> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(75, tid_addPlatforms, "avroraavrora.Defaults", 215, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap platforms>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("mica2", class "avrora/sim/platform/Mica2$Factory");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(75, tid_addPlatforms, "avroraavrora.Defaults", 216, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap platforms>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("micaz", class "avrora/sim/platform/MicaZ$Factory");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(75, tid_addPlatforms, "avroraavrora.Defaults", 217, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap platforms>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("seres", class "avrora/sim/platform/Seres$Factory");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(75, tid_addPlatforms, "avroraavrora.Defaults", 218, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap platforms>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("superbot", class "avrora/sim/platform/Superbot$Factory");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(75, tid_addPlatforms, "avroraavrora.Defaults", 219, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap platforms>;
+        virtualinvoke $r0.<cck.util.ClassMap: void addClass(java.lang.String,java.lang.Class)>("telos", class "avrora/sim/platform/Telos$Factory");
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddPlatforms, 1, tid_addPlatforms);
+        exitmonitor locallockaddPlatforms;
+        goto label2;
+
+     label2:
+        return;
+
+     label3:
+        throwableLocal16 := @caughtexception;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddPlatforms, 1, tid_addPlatforms);
+        exitmonitor locallockaddPlatforms;
+
+     label5:
+        throw throwableLocal16;
+
+        catch java.lang.Throwable from label0 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    private static void addMicrocontrollers()
+    {
+        cck.util.ClassMap $r0;
+        avrora.sim.mcu.ATMega128$Factory $r1;
+        avrora.sim.mcu.ATMega32$Factory $r2;
+        avrora.sim.mcu.ATMega16$Factory $r3;
+        java.lang.Class locallockaddMicrocontrollers;
+        java.lang.Throwable throwableLocal17;
+        long tid_addMicrocontrollers;
+        java.lang.Thread thread_addMicrocontrollers;
+
+        thread_addMicrocontrollers = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addMicrocontrollers = virtualinvoke thread_addMicrocontrollers.<java.lang.Thread: long getId()>();
+        nop;
+        locallockaddMicrocontrollers = class "avrora/Defaults";
+
+     label0:
+        entermonitor locallockaddMicrocontrollers;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(locallockaddMicrocontrollers, 1, tid_addMicrocontrollers);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(76, tid_addMicrocontrollers, "avroraavrora.Defaults", 224, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap microcontrollers>;
+        if $r0 != null goto label1;
+
+        $r0 = new cck.util.ClassMap;
+        specialinvoke $r0.<cck.util.ClassMap: void <init>(java.lang.String,java.lang.Class)>("Microcontroller", class "avrora/sim/mcu/MicrocontrollerFactory");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(76, tid_addMicrocontrollers, "avroraavrora.Defaults", 225, $r0);
+        <avrora.Defaults: cck.util.ClassMap microcontrollers> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(76, tid_addMicrocontrollers, "avroraavrora.Defaults", 227, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap microcontrollers>;
+        $r1 = new avrora.sim.mcu.ATMega128$Factory;
+        specialinvoke $r1.<avrora.sim.mcu.ATMega128$Factory: void <init>()>();
+        virtualinvoke $r0.<cck.util.ClassMap: void addInstance(java.lang.String,java.lang.Object)>("atmega128", $r1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(76, tid_addMicrocontrollers, "avroraavrora.Defaults", 228, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap microcontrollers>;
+        $r2 = new avrora.sim.mcu.ATMega32$Factory;
+        specialinvoke $r2.<avrora.sim.mcu.ATMega32$Factory: void <init>()>();
+        virtualinvoke $r0.<cck.util.ClassMap: void addInstance(java.lang.String,java.lang.Object)>("atmega32", $r2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(76, tid_addMicrocontrollers, "avroraavrora.Defaults", 229, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap microcontrollers>;
+        $r3 = new avrora.sim.mcu.ATMega16$Factory;
+        specialinvoke $r3.<avrora.sim.mcu.ATMega16$Factory: void <init>()>();
+        virtualinvoke $r0.<cck.util.ClassMap: void addInstance(java.lang.String,java.lang.Object)>("atmega16", $r3);
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddMicrocontrollers, 1, tid_addMicrocontrollers);
+        exitmonitor locallockaddMicrocontrollers;
+        goto label2;
+
+     label2:
+        return;
+
+     label3:
+        throwableLocal17 := @caughtexception;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(locallockaddMicrocontrollers, 1, tid_addMicrocontrollers);
+        exitmonitor locallockaddMicrocontrollers;
+
+     label5:
+        throw throwableLocal17;
+
+        catch java.lang.Throwable from label0 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    public static avrora.sim.mcu.MicrocontrollerFactory getMicrocontroller(java.lang.String)
+    {
+        java.lang.String s;
+        cck.util.ClassMap $r0;
+        java.lang.Object $r1;
+        avrora.sim.mcu.MicrocontrollerFactory $r2;
+        long tid_getMicrocontroller;
+        java.lang.Thread thread_getMicrocontroller;
+
+        s := @parameter0: java.lang.String;
+        thread_getMicrocontroller = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getMicrocontroller = virtualinvoke thread_getMicrocontroller.<java.lang.Thread: long getId()>();
+        staticinvoke <avrora.Defaults: void addMicrocontrollers()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(76, tid_getMicrocontroller, "avroraavrora.Defaults", 244, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap microcontrollers>;
+        $r1 = virtualinvoke $r0.<cck.util.ClassMap: java.lang.Object getObjectOfClass(java.lang.String)>(s);
+        $r2 = (avrora.sim.mcu.MicrocontrollerFactory) $r1;
+        return $r2;
+    }
+
+    public static avrora.sim.platform.PlatformFactory getPlatform(java.lang.String)
+    {
+        java.lang.String s;
+        cck.util.ClassMap $r0;
+        java.lang.Object $r1;
+        avrora.sim.platform.PlatformFactory $r2;
+        long tid_getPlatform;
+        java.lang.Thread thread_getPlatform;
+
+        s := @parameter0: java.lang.String;
+        thread_getPlatform = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getPlatform = virtualinvoke thread_getPlatform.<java.lang.Thread: long getId()>();
+        staticinvoke <avrora.Defaults: void addPlatforms()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(75, tid_getPlatform, "avroraavrora.Defaults", 258, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap platforms>;
+        $r1 = virtualinvoke $r0.<cck.util.ClassMap: java.lang.Object getObjectOfClass(java.lang.String)>(s);
+        $r2 = (avrora.sim.platform.PlatformFactory) $r1;
+        return $r2;
+    }
+
+    public static avrora.core.ProgramReader getProgramReader(java.lang.String)
+    {
+        java.lang.String s;
+        cck.util.ClassMap $r0;
+        java.lang.Object $r1;
+        avrora.core.ProgramReader $r2;
+        long tid_getProgramReader;
+        java.lang.Thread thread_getProgramReader;
+
+        s := @parameter0: java.lang.String;
+        thread_getProgramReader = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getProgramReader = virtualinvoke thread_getProgramReader.<java.lang.Thread: long getId()>();
+        staticinvoke <avrora.Defaults: void addInputFormats()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(72, tid_getProgramReader, "avroraavrora.Defaults", 272, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap inputs>;
+        $r1 = virtualinvoke $r0.<cck.util.ClassMap: java.lang.Object getObjectOfClass(java.lang.String)>(s);
+        $r2 = (avrora.core.ProgramReader) $r1;
+        return $r2;
+    }
+
+    public static avrora.actions.Action getAction(java.lang.String)
+    {
+        java.lang.String s;
+        cck.util.ClassMap $r0;
+        java.lang.Object $r1;
+        avrora.actions.Action $r2;
+        long tid_getAction;
+        java.lang.Thread thread_getAction;
+
+        s := @parameter0: java.lang.String;
+        thread_getAction = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getAction = virtualinvoke thread_getAction.<java.lang.Thread: long getId()>();
+        staticinvoke <avrora.Defaults: void addActions()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(73, tid_getAction, "avroraavrora.Defaults", 286, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap actions>;
+        $r1 = virtualinvoke $r0.<cck.util.ClassMap: java.lang.Object getObjectOfClass(java.lang.String)>(s);
+        $r2 = (avrora.actions.Action) $r1;
+        return $r2;
+    }
+
+    public static avrora.monitors.MonitorFactory getMonitor(java.lang.String)
+    {
+        java.lang.String s;
+        cck.util.ClassMap $r0;
+        java.lang.Object $r1;
+        avrora.monitors.MonitorFactory $r2;
+        long tid_getMonitor;
+        java.lang.Thread thread_getMonitor;
+
+        s := @parameter0: java.lang.String;
+        thread_getMonitor = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getMonitor = virtualinvoke thread_getMonitor.<java.lang.Thread: long getId()>();
+        staticinvoke <avrora.Defaults: void addMonitors()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(70, tid_getMonitor, "avroraavrora.Defaults", 300, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap monitorMap>;
+        $r1 = virtualinvoke $r0.<cck.util.ClassMap: java.lang.Object getObjectOfClass(java.lang.String)>(s);
+        $r2 = (avrora.monitors.MonitorFactory) $r1;
+        return $r2;
+    }
+
+    public static avrora.sim.Simulation getSimulation(java.lang.String)
+    {
+        java.lang.String s;
+        cck.util.ClassMap $r0;
+        java.lang.Object $r1;
+        avrora.sim.Simulation $r2;
+        long tid_getSimulation;
+        java.lang.Thread thread_getSimulation;
+
+        s := @parameter0: java.lang.String;
+        thread_getSimulation = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getSimulation = virtualinvoke thread_getSimulation.<java.lang.Thread: long getId()>();
+        staticinvoke <avrora.Defaults: void addSimulations()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(74, tid_getSimulation, "avroraavrora.Defaults", 306, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap simMap>;
+        $r1 = virtualinvoke $r0.<cck.util.ClassMap: java.lang.Object getObjectOfClass(java.lang.String)>(s);
+        $r2 = (avrora.sim.Simulation) $r1;
+        return $r2;
+    }
+
+    public static cck.util.ClassMap getTestHarnessMap()
+    {
+        cck.util.ClassMap $r0;
+        long tid_getTestHarnessMap;
+        java.lang.Thread thread_getTestHarnessMap;
+
+        thread_getTestHarnessMap = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getTestHarnessMap = virtualinvoke thread_getTestHarnessMap.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <avrora.Defaults: void addTestHarnesses()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(71, tid_getTestHarnessMap, "avroraavrora.Defaults", 317, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap harnessMap>;
+        return $r0;
+    }
+
+    public static java.util.List getActionList()
+    {
+        cck.util.ClassMap $r0;
+        java.util.List $r1;
+        long tid_getActionList;
+        java.lang.Thread thread_getActionList;
+
+        thread_getActionList = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getActionList = virtualinvoke thread_getActionList.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <avrora.Defaults: void addActions()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(73, tid_getActionList, "avroraavrora.Defaults", 328, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap actions>;
+        $r1 = virtualinvoke $r0.<cck.util.ClassMap: java.util.List getSortedList()>();
+        return $r1;
+    }
+
+    public static java.util.List getProgramReaderList()
+    {
+        cck.util.ClassMap $r0;
+        java.util.List $r1;
+        long tid_getProgramReaderList;
+        java.lang.Thread thread_getProgramReaderList;
+
+        thread_getProgramReaderList = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getProgramReaderList = virtualinvoke thread_getProgramReaderList.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <avrora.Defaults: void addInputFormats()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(72, tid_getProgramReaderList, "avroraavrora.Defaults", 339, $r0);
+        $r0 = <avrora.Defaults: cck.util.ClassMap inputs>;
+        $r1 = virtualinvoke $r0.<cck.util.ClassMap: java.util.List getSortedList()>();
+        return $r1;
+    }
+
+    public static void addSubCategories(cck.util.ClassMap)
+    {
+        cck.util.ClassMap vals;
+        java.util.List l;
+        java.util.Iterator i;
+        java.lang.String val;
+        java.lang.Class cz, $r1;
+        boolean $z0;
+        java.lang.Object $r0;
+
+        vals := @parameter0: cck.util.ClassMap;
+        l = virtualinvoke vals.<cck.util.ClassMap: java.util.List getSortedList()>();
+        i = interfaceinvoke l.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r0 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        val = (java.lang.String) $r0;
+        cz = virtualinvoke vals.<cck.util.ClassMap: java.lang.Class getClass(java.lang.String)>(val);
+        $r1 = class "cck/help/HelpCategory";
+        $z0 = virtualinvoke $r1.<java.lang.Class: boolean isAssignableFrom(java.lang.Class)>(cz);
+        if $z0 == 0 goto label1;
+
+        staticinvoke <cck.help.HelpSystem: void addCategory(java.lang.String,java.lang.Class)>(val, cz);
+
+     label1:
+        goto label0;
+
+     label2:
+        return;
+    }
+
+    public static void addMainCategory(cck.help.HelpCategory)
+    {
+        cck.help.HelpCategory cat;
+        java.lang.String $r0, $r2;
+        java.util.HashMap $r1;
+
+        cat := @parameter0: cck.help.HelpCategory;
+        $r0 = cat.<cck.help.HelpCategory: java.lang.String name>;
+        staticinvoke <cck.help.HelpSystem: void addCategory(java.lang.String,cck.help.HelpCategory)>($r0, cat);
+        $r1 = <avrora.Defaults: java.util.HashMap mainCategories>;
+        $r2 = cat.<cck.help.HelpCategory: java.lang.String name>;
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r2, cat);
+        return;
+    }
+
+    public static cck.help.HelpCategory getHelpCategory(java.lang.String)
+    {
+        java.lang.String name;
+        cck.help.HelpCategory $r0;
+
+        name := @parameter0: java.lang.String;
+        staticinvoke <avrora.Defaults: void addAll()>();
+        $r0 = staticinvoke <cck.help.HelpSystem: cck.help.HelpCategory getCategory(java.lang.String)>(name);
+        return $r0;
+    }
+
+    public static java.util.List getMainCategories()
+    {
+        java.util.HashMap $r0;
+        java.util.ArrayList list;
+        java.util.Comparator $r1;
+        java.util.Collection $r2;
+        java.util.Enumeration $r3;
+
+        nop;
+        staticinvoke <avrora.Defaults: void addAll()>();
+        $r0 = <avrora.Defaults: java.util.HashMap mainCategories>;
+        $r2 = virtualinvoke $r0.<java.util.HashMap: java.util.Collection values()>();
+        $r3 = staticinvoke <java.util.Collections: java.util.Enumeration enumeration(java.util.Collection)>($r2);
+        list = staticinvoke <java.util.Collections: java.util.ArrayList list(java.util.Enumeration)>($r3);
+        $r1 = <cck.help.HelpCategory: java.util.Comparator COMPARATOR>;
+        staticinvoke <java.util.Collections: void sort(java.util.List,java.util.Comparator)>(list, $r1);
+        return list;
+    }
+
+    public static java.util.List getAllCategories()
+    {
+        java.util.List l;
+        java.util.LinkedList nl, $r0;
+        java.util.Iterator i;
+        java.lang.String s;
+        boolean $z0;
+        java.lang.Object $r1;
+        cck.help.HelpCategory $r2;
+
+        nop;
+        staticinvoke <avrora.Defaults: void addAll()>();
+        l = staticinvoke <cck.help.HelpSystem: java.util.List getSortedList()>();
+        $r0 = new java.util.LinkedList;
+        specialinvoke $r0.<java.util.LinkedList: void <init>()>();
+        nl = $r0;
+        i = interfaceinvoke l.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r1 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        s = (java.lang.String) $r1;
+        $r2 = staticinvoke <cck.help.HelpSystem: cck.help.HelpCategory getCategory(java.lang.String)>(s);
+        virtualinvoke nl.<java.util.LinkedList: void addLast(java.lang.Object)>($r2);
+        goto label0;
+
+     label1:
+        return nl;
+    }
+
+    public static avrora.sim.Simulator newSimulator(int, avrora.core.Program)
+    {
+        int id;
+        avrora.core.Program p;
+        avrora.sim.Simulator $r0;
+
+        id := @parameter0: int;
+        p := @parameter1: avrora.core.Program;
+        $r0 = staticinvoke <avrora.Defaults: avrora.sim.Simulator newSimulator(int,java.lang.String,long,long,avrora.core.Program)>(id, "atmega128", 8000000L, 8000000L, p);
+        return $r0;
+    }
+
+    public static avrora.sim.Simulator newSimulator(int, java.lang.String, long, long, avrora.core.Program)
+    {
+        int id;
+        java.lang.String mcu;
+        long hz, exthz;
+        avrora.core.Program p;
+        avrora.sim.mcu.MicrocontrollerFactory f;
+        avrora.sim.clock.ClockDomain cd, $r0;
+        avrora.sim.types.SingleSimulation $r2;
+        avrora.sim.mcu.Microcontroller $r3;
+        avrora.sim.Simulator $r4;
+
+        id := @parameter0: int;
+        mcu := @parameter1: java.lang.String;
+        hz := @parameter2: long;
+        exthz := @parameter3: long;
+        p := @parameter4: avrora.core.Program;
+        f = staticinvoke <avrora.Defaults: avrora.sim.mcu.MicrocontrollerFactory getMicrocontroller(java.lang.String)>(mcu);
+        $r0 = new avrora.sim.clock.ClockDomain;
+        specialinvoke $r0.<avrora.sim.clock.ClockDomain: void <init>(long)>(hz);
+        cd = $r0;
+        virtualinvoke cd.<avrora.sim.clock.ClockDomain: avrora.sim.clock.Clock newClock(java.lang.String,long)>("external", exthz);
+        $r2 = new avrora.sim.types.SingleSimulation;
+        specialinvoke $r2.<avrora.sim.types.SingleSimulation: void <init>()>();
+        $r3 = interfaceinvoke f.<avrora.sim.mcu.MicrocontrollerFactory: avrora.sim.mcu.Microcontroller newMicrocontroller(int,avrora.sim.Simulation,avrora.sim.clock.ClockDomain,avrora.core.Program)>(id, $r2, cd, p);
+        $r4 = interfaceinvoke $r3.<avrora.sim.mcu.Microcontroller: avrora.sim.Simulator getSimulator()>();
+        return $r4;
+    }
+
+    static void <clinit>()
+    {
+        java.util.HashMap $r0;
+
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        <avrora.Defaults: java.util.HashMap mainCategories> = $r0;
+        return;
+    }
+}

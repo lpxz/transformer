@@ -1,0 +1,47 @@
+class org.apache.lucene.util.cache.SimpleLRUCache$1 extends java.util.LinkedHashMap
+{
+    private final org.apache.lucene.util.cache.SimpleLRUCache this$0;
+
+    void <init>(org.apache.lucene.util.cache.SimpleLRUCache, int, float, boolean)
+    {
+        org.apache.lucene.util.cache.SimpleLRUCache$1 this;
+        org.apache.lucene.util.cache.SimpleLRUCache l1;
+        int x0;
+        float x1;
+        boolean x2;
+
+        this := @this: org.apache.lucene.util.cache.SimpleLRUCache$1;
+        l1 := @parameter0: org.apache.lucene.util.cache.SimpleLRUCache;
+        x0 := @parameter1: int;
+        x1 := @parameter2: float;
+        x2 := @parameter3: boolean;
+        this.<org.apache.lucene.util.cache.SimpleLRUCache$1: org.apache.lucene.util.cache.SimpleLRUCache this$0> = l1;
+        specialinvoke this.<java.util.LinkedHashMap: void <init>(int,float,boolean)>(x0, x1, x2);
+        return;
+    }
+
+    protected boolean removeEldestEntry(java.util.Map$Entry)
+    {
+        org.apache.lucene.util.cache.SimpleLRUCache$1 this;
+        java.util.Map$Entry eldest;
+        int $i0, $i1;
+        org.apache.lucene.util.cache.SimpleLRUCache $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.util.cache.SimpleLRUCache$1;
+        eldest := @parameter0: java.util.Map$Entry;
+        $i0 = virtualinvoke this.<org.apache.lucene.util.cache.SimpleLRUCache$1: int size()>();
+        $r0 = this.<org.apache.lucene.util.cache.SimpleLRUCache$1: org.apache.lucene.util.cache.SimpleLRUCache this$0>;
+        $i1 = staticinvoke <org.apache.lucene.util.cache.SimpleLRUCache: int access$000(org.apache.lucene.util.cache.SimpleLRUCache)>($r0);
+        if $i0 <= $i1 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+}

@@ -1,0 +1,87 @@
+public class avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF extends java.lang.Object implements avrora.sim.Simulator$Event
+{
+    protected byte increment;
+    protected final avrora.sim.RWRegister compareRegHigh;
+    protected final avrora.sim.RWRegister compareRegLow;
+    final avrora.sim.mcu.Timer16Bit this$0;
+
+    protected void <init>(avrora.sim.mcu.Timer16Bit, avrora.sim.RWRegister, avrora.sim.RWRegister)
+    {
+        avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF this;
+        avrora.sim.mcu.Timer16Bit l1;
+        avrora.sim.RWRegister compareRegH, compareRegL;
+
+        this := @this: avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF;
+        l1 := @parameter0: avrora.sim.mcu.Timer16Bit;
+        compareRegH := @parameter1: avrora.sim.RWRegister;
+        compareRegL := @parameter2: avrora.sim.RWRegister;
+        this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: avrora.sim.mcu.Timer16Bit this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: byte increment> = 1;
+        this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: avrora.sim.RWRegister compareRegHigh> = compareRegH;
+        this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: avrora.sim.RWRegister compareRegLow> = compareRegL;
+        return;
+    }
+
+    public void fire()
+    {
+        avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF this;
+        int ncount, compare;
+        avrora.sim.mcu.Timer16Bit $r0, $r2;
+        avrora.sim.RWRegister $r1, $r4;
+        avrora.sim.mcu.Timer16Bit$TCNTnRegister $r3;
+        byte $b0;
+        long tid_fire;
+        java.lang.Thread thread_fire;
+
+        this := @this: avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF;
+        thread_fire = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_fire = virtualinvoke thread_fire.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: avrora.sim.mcu.Timer16Bit this$0>;
+        $r1 = $r0.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister TCNTnH_reg>;
+        $r2 = this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: avrora.sim.mcu.Timer16Bit this$0>;
+        $r3 = $r2.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$TCNTnRegister TCNTnL_reg>;
+        ncount = staticinvoke <avrora.sim.mcu.AtmelInternalDevice: int read16(avrora.sim.RWRegister,avrora.sim.RWRegister)>($r1, $r3);
+        $r0 = this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: avrora.sim.mcu.Timer16Bit this$0>;
+        staticinvoke <avrora.sim.mcu.Timer16Bit: void access$200(avrora.sim.mcu.Timer16Bit,int)>($r0, ncount);
+        compare = 65535;
+        $r1 = this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: avrora.sim.RWRegister compareRegHigh>;
+        if $r1 == null goto label0;
+
+        $r1 = this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: avrora.sim.RWRegister compareRegHigh>;
+        $r4 = this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: avrora.sim.RWRegister compareRegLow>;
+        compare = staticinvoke <avrora.sim.mcu.AtmelInternalDevice: int read16(avrora.sim.RWRegister,avrora.sim.RWRegister)>($r1, $r4);
+
+     label0:
+        if ncount != compare goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 209, tid_fire, "avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF", 569, -1);
+        this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: byte increment> = -1;
+        goto label3;
+
+     label1:
+        if ncount > 0 goto label2;
+
+        $r0 = this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: avrora.sim.mcu.Timer16Bit this$0>;
+        virtualinvoke $r0.<avrora.sim.mcu.Timer16Bit: void overflow()>();
+        $r0 = this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: avrora.sim.mcu.Timer16Bit this$0>;
+        staticinvoke <avrora.sim.mcu.Timer16Bit: void access$400(avrora.sim.mcu.Timer16Bit)>($r0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 209, tid_fire, "avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF", 574, 1);
+        this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: byte increment> = 1;
+        ncount = 0;
+        goto label3;
+
+     label2:
+        if ncount < 65535 goto label3;
+
+        ncount = -1;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 209, tid_fire, "avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF", 580, $b0);
+        $b0 = this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: byte increment>;
+        ncount = ncount + $b0;
+        $r0 = this.<avrora.sim.mcu.Timer16Bit$Mode_PWM_PNF: avrora.sim.mcu.Timer16Bit this$0>;
+        staticinvoke <avrora.sim.mcu.Timer16Bit: void access$300(avrora.sim.mcu.Timer16Bit,avrora.sim.Simulator$Event,int)>($r0, this, ncount);
+        return;
+    }
+}

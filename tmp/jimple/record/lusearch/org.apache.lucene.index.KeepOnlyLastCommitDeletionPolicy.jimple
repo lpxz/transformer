@@ -1,0 +1,50 @@
+public final class org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy extends java.lang.Object implements org.apache.lucene.index.IndexDeletionPolicy
+{
+
+    public void <init>()
+    {
+        org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy this;
+
+        this := @this: org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public void onInit(java.util.List)
+    {
+        org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy this;
+        java.util.List commits;
+
+        this := @this: org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy;
+        commits := @parameter0: java.util.List;
+        virtualinvoke this.<org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy: void onCommit(java.util.List)>(commits);
+        return;
+    }
+
+    public void onCommit(java.util.List)
+    {
+        org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy this;
+        java.util.List commits;
+        int size, i, $i0;
+        java.lang.Object $r0;
+        org.apache.lucene.index.IndexCommit $r1;
+
+        this := @this: org.apache.lucene.index.KeepOnlyLastCommitDeletionPolicy;
+        commits := @parameter0: java.util.List;
+        size = interfaceinvoke commits.<java.util.List: int size()>();
+        i = 0;
+
+     label0:
+        $i0 = size - 1;
+        if i >= $i0 goto label1;
+
+        $r0 = interfaceinvoke commits.<java.util.List: java.lang.Object get(int)>(i);
+        $r1 = (org.apache.lucene.index.IndexCommit) $r0;
+        virtualinvoke $r1.<org.apache.lucene.index.IndexCommit: void delete()>();
+        i = i + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+}

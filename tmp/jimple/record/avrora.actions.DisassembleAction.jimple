@@ -1,0 +1,285 @@
+public class avrora.actions.DisassembleAction extends avrora.actions.Action
+{
+    cck.util.Option$Str ARCH;
+    cck.util.Option$Long MAX_LENGTH;
+    cck.util.Option$Bool EXHAUSTIVE;
+    cck.util.Option$Str FILE;
+
+    public void <init>()
+    {
+        avrora.actions.DisassembleAction this;
+        cck.util.Option$Str $r0;
+        cck.util.Option$Long $r1;
+        cck.util.Option$Bool $r2;
+
+        this := @this: avrora.actions.DisassembleAction;
+        specialinvoke this.<avrora.actions.Action: void <init>(java.lang.String)>("The \"disassemble\" action disassembles a binary file into source level instructions.");
+        $r0 = virtualinvoke this.<avrora.actions.DisassembleAction: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("arch", "avr", "This option selects the architecture for the disassembler.");
+        this.<avrora.actions.DisassembleAction: cck.util.Option$Str ARCH> = $r0;
+        $r1 = virtualinvoke this.<avrora.actions.DisassembleAction: cck.util.Option$Long newOption(java.lang.String,long,java.lang.String)>("max-length", 16L, "This option specifies the maximum length of an instruction in bytes.");
+        this.<avrora.actions.DisassembleAction: cck.util.Option$Long MAX_LENGTH> = $r1;
+        $r2 = virtualinvoke this.<avrora.actions.DisassembleAction: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("exhaustive", 0, "When this option is specified, this action will test the disassembler exhaustively by trying bit patterns systematically.");
+        this.<avrora.actions.DisassembleAction: cck.util.Option$Bool EXHAUSTIVE> = $r2;
+        $r0 = virtualinvoke this.<avrora.actions.DisassembleAction: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("file", "", "When this option is specified, this action will test the disassembler by loading the specified file and disassembling the data contained inside.");
+        this.<avrora.actions.DisassembleAction: cck.util.Option$Str FILE> = $r0;
+        return;
+    }
+
+    public void run(java.lang.String[]) throws java.lang.Exception
+    {
+        avrora.actions.DisassembleAction this;
+        java.lang.String[] args;
+        byte[] buf;
+        avrora.arch.AbstractArchitecture arch;
+        avrora.arch.AbstractDisassembler da;
+        cck.util.Option$Str $r0;
+        java.lang.String $r1;
+        cck.util.Option$Bool $r2;
+        boolean $z0;
+
+        this := @this: avrora.actions.DisassembleAction;
+        args := @parameter0: java.lang.String[];
+        buf = newarray (byte)[128];
+        $r0 = this.<avrora.actions.DisassembleAction: cck.util.Option$Str ARCH>;
+        $r1 = virtualinvoke $r0.<cck.util.Option$Str: java.lang.String get()>();
+        arch = staticinvoke <avrora.arch.ArchitectureRegistry: avrora.arch.AbstractArchitecture getArchitecture(java.lang.String)>($r1);
+        da = interfaceinvoke arch.<avrora.arch.AbstractArchitecture: avrora.arch.AbstractDisassembler getDisassembler()>();
+        $r2 = this.<avrora.actions.DisassembleAction: cck.util.Option$Bool EXHAUSTIVE>;
+        $z0 = virtualinvoke $r2.<cck.util.Option$Bool: boolean get()>();
+        if $z0 == 0 goto label0;
+
+        virtualinvoke this.<avrora.actions.DisassembleAction: void exhaustive(avrora.arch.AbstractDisassembler)>(da);
+        goto label2;
+
+     label0:
+        $r0 = this.<avrora.actions.DisassembleAction: cck.util.Option$Str FILE>;
+        $z0 = virtualinvoke $r0.<cck.util.Option$Str: boolean isBlank()>();
+        if $z0 != 0 goto label1;
+
+        specialinvoke this.<avrora.actions.DisassembleAction: void disassembleFile(avrora.arch.AbstractDisassembler)>(da);
+        goto label2;
+
+     label1:
+        specialinvoke this.<avrora.actions.DisassembleAction: void disassembleArguments(java.lang.String[],byte[],avrora.arch.AbstractDisassembler)>(args, buf, da);
+
+     label2:
+        return;
+    }
+
+    private void disassembleArguments(java.lang.String[], byte[], avrora.arch.AbstractDisassembler)
+    {
+        avrora.actions.DisassembleAction this;
+        java.lang.String[] args;
+        byte[] buf;
+        avrora.arch.AbstractDisassembler da;
+        int cntr, $i0, $i1, $i2;
+        java.lang.String $r0;
+        byte $b3;
+        long tid_disassembleArguments;
+        java.lang.Thread thread_disassembleArguments;
+
+        this := @this: avrora.actions.DisassembleAction;
+        args := @parameter0: java.lang.String[];
+        buf := @parameter1: byte[];
+        da := @parameter2: avrora.arch.AbstractDisassembler;
+        thread_disassembleArguments = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_disassembleArguments = virtualinvoke thread_disassembleArguments.<java.lang.Thread: long getId()>();
+        $i0 = lengthof args;
+        if $i0 >= 1 goto label0;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String)>("no input data");
+
+     label0:
+        cntr = 0;
+
+     label1:
+        $i1 = lengthof args;
+        if cntr >= $i1 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 18, tid_disassembleArguments, "avrora.actions.DisassembleAction", 97, cntr, $r0);
+        $r0 = args[cntr];
+        $i2 = staticinvoke <cck.text.StringUtil: int evaluateIntegerLiteral(java.lang.String)>($r0);
+        $b3 = (byte) $i2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(buf, 0, tid_disassembleArguments, "avrora.actions.DisassembleAction", 97, cntr, $b3);
+        buf[cntr] = $b3;
+        cntr = cntr + 1;
+        goto label1;
+
+     label2:
+        specialinvoke this.<avrora.actions.DisassembleAction: int disassembleAndPrint(byte[],int,avrora.arch.AbstractDisassembler)>(buf, 0, da);
+        return;
+    }
+
+    private void disassembleFile(avrora.arch.AbstractDisassembler) throws java.io.IOException
+    {
+        avrora.actions.DisassembleAction this;
+        avrora.arch.AbstractDisassembler da;
+        java.lang.String fname;
+        java.io.FileInputStream fis, $r1;
+        byte[] buf;
+        int cntr, $i0, $i1;
+        cck.util.Option$Str $r0;
+
+        this := @this: avrora.actions.DisassembleAction;
+        da := @parameter0: avrora.arch.AbstractDisassembler;
+        $r0 = this.<avrora.actions.DisassembleAction: cck.util.Option$Str FILE>;
+        fname = virtualinvoke $r0.<cck.util.Option$Str: java.lang.String get()>();
+        staticinvoke <avrora.Main: void checkFileExists(java.lang.String)>(fname);
+        $r1 = new java.io.FileInputStream;
+        specialinvoke $r1.<java.io.FileInputStream: void <init>(java.lang.String)>(fname);
+        fis = $r1;
+        $i0 = virtualinvoke fis.<java.io.FileInputStream: int available()>();
+        buf = newarray (byte)[$i0];
+        virtualinvoke fis.<java.io.FileInputStream: int read(byte[])>(buf);
+        cntr = 0;
+
+     label0:
+        $i1 = lengthof buf;
+        if cntr >= $i1 goto label1;
+
+        $i1 = specialinvoke this.<avrora.actions.DisassembleAction: int disassembleAndPrint(byte[],int,avrora.arch.AbstractDisassembler)>(buf, cntr, da);
+        cntr = cntr + $i1;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    void exhaustive(avrora.arch.AbstractDisassembler)
+    {
+        avrora.actions.DisassembleAction this;
+        avrora.arch.AbstractDisassembler da;
+        byte[] buf;
+        int cntr, $i1, $i3;
+        java.lang.Exception e, $r1;
+        cck.util.Option$Long $r0;
+        long $l0, tid_exhaustive;
+        byte $b2;
+        java.lang.Thread thread_exhaustive;
+
+        this := @this: avrora.actions.DisassembleAction;
+        da := @parameter0: avrora.arch.AbstractDisassembler;
+        thread_exhaustive = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_exhaustive = virtualinvoke thread_exhaustive.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.actions.DisassembleAction: cck.util.Option$Long MAX_LENGTH>;
+        $l0 = virtualinvoke $r0.<cck.util.Option$Long: long get()>();
+        $i1 = (int) $l0;
+        buf = newarray (byte)[$i1];
+        cntr = 0;
+
+     label0:
+        if cntr >= 65536 goto label5;
+
+        $b2 = (byte) cntr;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(buf, 0, tid_exhaustive, "avrora.actions.DisassembleAction", 117, 0, $b2);
+        buf[0] = $b2;
+        $i3 = cntr >> 8;
+        $b2 = (byte) $i3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(buf, 0, tid_exhaustive, "avrora.actions.DisassembleAction", 118, 1, $b2);
+        buf[1] = $b2;
+
+     label1:
+        specialinvoke this.<avrora.actions.DisassembleAction: int disassembleAndPrint(byte[],int,avrora.arch.AbstractDisassembler)>(buf, 0, da);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r1 := @caughtexception;
+        e = $r1;
+        virtualinvoke e.<java.lang.Exception: void printStackTrace()>();
+
+     label4:
+        cntr = cntr + 1;
+        goto label0;
+
+     label5:
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    private int disassembleAndPrint(byte[], int, avrora.arch.AbstractDisassembler)
+    {
+        avrora.actions.DisassembleAction this;
+        byte[] buf;
+        int off, len;
+        avrora.arch.AbstractDisassembler da;
+        avrora.arch.AbstractInstr instr;
+        java.lang.String result;
+
+        this := @this: avrora.actions.DisassembleAction;
+        buf := @parameter0: byte[];
+        off := @parameter1: int;
+        da := @parameter2: avrora.arch.AbstractDisassembler;
+        len = 2;
+        instr = interfaceinvoke da.<avrora.arch.AbstractDisassembler: avrora.arch.AbstractInstr disassemble(int,int,byte[])>(0, off, buf);
+        if instr != null goto label0;
+
+        result = "null";
+        goto label1;
+
+     label0:
+        result = virtualinvoke instr.<java.lang.Object: java.lang.String toString()>();
+        len = interfaceinvoke instr.<avrora.arch.AbstractInstr: int getSize()>();
+
+     label1:
+        specialinvoke this.<avrora.actions.DisassembleAction: void print(byte[],int,int,java.lang.String)>(buf, off, len, result);
+        return len;
+    }
+
+    private void print(byte[], int, int, java.lang.String)
+    {
+        avrora.actions.DisassembleAction this;
+        byte[] buf;
+        int off, len, cntr, $i0;
+        java.lang.String str, $r1, $r2;
+        java.lang.StringBuffer $r0, sbuf;
+        byte $b1;
+        long $l2, tid_print;
+        java.lang.Thread thread_print;
+
+        this := @this: avrora.actions.DisassembleAction;
+        buf := @parameter0: byte[];
+        off := @parameter1: int;
+        len := @parameter2: int;
+        str := @parameter3: java.lang.String;
+        thread_print = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_print = virtualinvoke thread_print.<java.lang.Thread: long getId()>();
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        sbuf = $r0;
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String addrToString(int)>(off);
+        virtualinvoke sbuf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        virtualinvoke sbuf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(": ");
+        cntr = 0;
+
+     label0:
+        if cntr >= len goto label1;
+
+        $i0 = off + cntr;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(buf, 0, tid_print, "avrora.actions.DisassembleAction", 145, $i0, $b1);
+        $b1 = buf[$i0];
+        $l2 = (long) $b1;
+        staticinvoke <cck.text.StringUtil: void toHex(java.lang.StringBuffer,long,int)>(sbuf, $l2, 2);
+        virtualinvoke sbuf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(32);
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        cntr = virtualinvoke sbuf.<java.lang.StringBuffer: int length()>();
+
+     label2:
+        if cntr >= 30 goto label3;
+
+        virtualinvoke sbuf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(32);
+        cntr = cntr + 1;
+        goto label2;
+
+     label3:
+        virtualinvoke sbuf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(str);
+        $r2 = virtualinvoke sbuf.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>($r2);
+        return;
+    }
+}

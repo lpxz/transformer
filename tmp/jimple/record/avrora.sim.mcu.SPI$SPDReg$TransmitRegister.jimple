@@ -1,0 +1,34 @@
+public class avrora.sim.mcu.SPI$SPDReg$TransmitRegister extends avrora.sim.RWRegister
+{
+    final avrora.sim.mcu.SPI$SPDReg this$1;
+
+    protected void <init>(avrora.sim.mcu.SPI$SPDReg)
+    {
+        avrora.sim.mcu.SPI$SPDReg$TransmitRegister this;
+        avrora.sim.mcu.SPI$SPDReg l1;
+
+        this := @this: avrora.sim.mcu.SPI$SPDReg$TransmitRegister;
+        l1 := @parameter0: avrora.sim.mcu.SPI$SPDReg;
+        this.<avrora.sim.mcu.SPI$SPDReg$TransmitRegister: avrora.sim.mcu.SPI$SPDReg this$1> = l1;
+        specialinvoke this.<avrora.sim.RWRegister: void <init>()>();
+        return;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.mcu.SPI$SPDReg$TransmitRegister this;
+        byte val;
+        avrora.sim.mcu.SPI$SPDReg $r0;
+        avrora.sim.mcu.SPI $r1;
+        avrora.sim.mcu.SPI$TransferEvent $r2;
+
+        this := @this: avrora.sim.mcu.SPI$SPDReg$TransmitRegister;
+        val := @parameter0: byte;
+        specialinvoke this.<avrora.sim.RWRegister: void write(byte)>(val);
+        $r0 = this.<avrora.sim.mcu.SPI$SPDReg$TransmitRegister: avrora.sim.mcu.SPI$SPDReg this$1>;
+        $r1 = $r0.<avrora.sim.mcu.SPI$SPDReg: avrora.sim.mcu.SPI this$0>;
+        $r2 = $r1.<avrora.sim.mcu.SPI: avrora.sim.mcu.SPI$TransferEvent transferEvent>;
+        virtualinvoke $r2.<avrora.sim.mcu.SPI$TransferEvent: void enableTransfer()>();
+        return;
+    }
+}

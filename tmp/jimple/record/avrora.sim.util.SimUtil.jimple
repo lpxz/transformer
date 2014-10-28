@@ -1,0 +1,211 @@
+public class avrora.sim.util.SimUtil extends java.lang.Object
+{
+    public static int ID_LENGTH;
+    public static int TIME_LENGTH;
+    public static int SECONDS_PRECISION;
+    public static boolean REPORT_SECONDS;
+
+    public void <init>()
+    {
+        avrora.sim.util.SimUtil this;
+
+        this := @this: avrora.sim.util.SimUtil;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public static void readError(avrora.sim.Simulator, java.lang.String, int)
+    {
+        avrora.sim.Simulator sim;
+        java.lang.String segment, msg, $r1;
+        int address, npc;
+        java.lang.StringBuilder $r0;
+        avrora.sim.State $r2;
+        long $l0;
+
+        sim := @parameter0: avrora.sim.Simulator;
+        segment := @parameter1: java.lang.String;
+        address := @parameter2: int;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("illegal read from ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(segment);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" at address ");
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String addrToString(int)>(address);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        msg = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r2 = virtualinvoke sim.<avrora.sim.Simulator: avrora.sim.State getState()>();
+        npc = interfaceinvoke $r2.<avrora.sim.State: int getPC()>();
+        $l0 = (long) npc;
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String to0xHex(long,int)>($l0, 4);
+        staticinvoke <avrora.sim.util.SimUtil: void warning(avrora.sim.Simulator,java.lang.String,java.lang.String)>(sim, $r1, msg);
+        return;
+    }
+
+    public static void writeError(avrora.sim.Simulator, java.lang.String, int, byte)
+    {
+        avrora.sim.Simulator sim;
+        java.lang.String segment, msg, $r1;
+        int address, npc;
+        byte value;
+        java.lang.StringBuilder $r0;
+        avrora.sim.State $r2;
+        long $l0;
+
+        sim := @parameter0: avrora.sim.Simulator;
+        segment := @parameter1: java.lang.String;
+        address := @parameter2: int;
+        value := @parameter3: byte;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("illegal write to ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(segment);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" at address ");
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String addrToString(int)>(address);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        msg = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r2 = virtualinvoke sim.<avrora.sim.Simulator: avrora.sim.State getState()>();
+        npc = interfaceinvoke $r2.<avrora.sim.State: int getPC()>();
+        $l0 = (long) npc;
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String to0xHex(long,int)>($l0, 4);
+        staticinvoke <avrora.sim.util.SimUtil: void warning(avrora.sim.Simulator,java.lang.String,java.lang.String)>(sim, $r1, msg);
+        return;
+    }
+
+    private static void toIDTimeString(java.lang.StringBuffer, int, avrora.sim.clock.Clock)
+    {
+        java.lang.StringBuffer buf, buf2, $r0;
+        int id, $i0, $i2, $i3;
+        avrora.sim.clock.Clock clk;
+        boolean R, $z0;
+        long hz, count, seconds, fract, $l1, tid_toIDTimeString;
+        double f, $d0, $d1;
+        java.lang.String $r1;
+        java.lang.Thread thread_toIDTimeString;
+
+        buf := @parameter0: java.lang.StringBuffer;
+        id := @parameter1: int;
+        clk := @parameter2: avrora.sim.clock.Clock;
+        thread_toIDTimeString = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_toIDTimeString = virtualinvoke thread_toIDTimeString.<java.lang.Thread: long getId()>();
+        R = 1;
+        $l1 = (long) id;
+        $i0 = <avrora.sim.util.SimUtil: int ID_LENGTH>;
+        staticinvoke <cck.text.StringUtil: void justify(boolean,java.lang.StringBuffer,long,int)>(R, buf, $l1, $i0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(188, tid_toIDTimeString, "avrora.sim.utilavrora.sim.util.SimUtil", 73, $z0);
+        $z0 = <avrora.sim.util.SimUtil: boolean REPORT_SECONDS>;
+        if $z0 == 0 goto label0;
+
+        $r0 = new java.lang.StringBuffer;
+        $i2 = <avrora.sim.util.SimUtil: int TIME_LENGTH>;
+        $i2 = $i2 + 1;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>($i2);
+        buf2 = $r0;
+        hz = virtualinvoke clk.<avrora.sim.clock.Clock: long getHZ()>();
+        count = virtualinvoke clk.<avrora.sim.clock.Clock: long getCount()>();
+        seconds = count / hz;
+        fract = count % hz;
+        $d0 = (double) fract;
+        $d1 = (double) hz;
+        f = $d0 / $d1;
+        staticinvoke <cck.util.TimeUtil: void appendSecs(java.lang.StringBuffer,long)>(buf2, seconds);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(189, tid_toIDTimeString, "avrora.sim.utilavrora.sim.util.SimUtil", 81, $i3);
+        $i3 = <avrora.sim.util.SimUtil: int SECONDS_PRECISION>;
+        staticinvoke <cck.text.StringUtil: void appendFract(java.lang.StringBuffer,double,int)>(buf2, f, $i3);
+        $r1 = virtualinvoke buf2.<java.lang.StringBuffer: java.lang.String toString()>();
+        $i3 = <avrora.sim.util.SimUtil: int TIME_LENGTH>;
+        staticinvoke <cck.text.StringUtil: void justify(boolean,java.lang.StringBuffer,java.lang.String,int)>(R, buf, $r1, $i3);
+        goto label1;
+
+     label0:
+        $l1 = virtualinvoke clk.<avrora.sim.clock.Clock: long getCount()>();
+        $i0 = <avrora.sim.util.SimUtil: int TIME_LENGTH>;
+        staticinvoke <cck.text.StringUtil: void justify(boolean,java.lang.StringBuffer,long,int)>(R, buf, $l1, $i0);
+
+     label1:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("  ");
+        return;
+    }
+
+    public static java.lang.String toIDTimeString(int, avrora.sim.clock.Clock)
+    {
+        int id;
+        avrora.sim.clock.Clock clk;
+        java.lang.StringBuffer $r0, buf;
+        java.lang.String $r1;
+
+        id := @parameter0: int;
+        clk := @parameter1: avrora.sim.clock.Clock;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>(40);
+        buf = $r0;
+        staticinvoke <avrora.sim.util.SimUtil: void toIDTimeString(java.lang.StringBuffer,int,avrora.sim.clock.Clock)>(buf, id, clk);
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public static java.lang.String getIDTimeString(avrora.sim.Simulator)
+    {
+        avrora.sim.Simulator s;
+        int $i0;
+        avrora.sim.clock.MainClock $r0;
+        java.lang.String $r1;
+
+        s := @parameter0: avrora.sim.Simulator;
+        $i0 = virtualinvoke s.<avrora.sim.Simulator: int getID()>();
+        $r0 = virtualinvoke s.<avrora.sim.Simulator: avrora.sim.clock.MainClock getClock()>();
+        $r1 = staticinvoke <avrora.sim.util.SimUtil: java.lang.String toIDTimeString(int,avrora.sim.clock.Clock)>($i0, $r0);
+        return $r1;
+    }
+
+    public static void getIDTimeString(java.lang.StringBuffer, avrora.sim.Simulator)
+    {
+        java.lang.StringBuffer buf;
+        avrora.sim.Simulator s;
+        int $i0;
+        avrora.sim.clock.MainClock $r0;
+
+        buf := @parameter0: java.lang.StringBuffer;
+        s := @parameter1: avrora.sim.Simulator;
+        $i0 = virtualinvoke s.<avrora.sim.Simulator: int getID()>();
+        $r0 = virtualinvoke s.<avrora.sim.Simulator: avrora.sim.clock.MainClock getClock()>();
+        staticinvoke <avrora.sim.util.SimUtil: void toIDTimeString(java.lang.StringBuffer,int,avrora.sim.clock.Clock)>(buf, $i0, $r0);
+        return;
+    }
+
+    public static void warning(avrora.sim.Simulator, java.lang.String, java.lang.String)
+    {
+        avrora.sim.Simulator s;
+        java.lang.String w, m, $r1;
+        java.lang.StringBuffer $r0, buf;
+        int $i0, $i1;
+
+        s := @parameter0: avrora.sim.Simulator;
+        w := @parameter1: java.lang.String;
+        m := @parameter2: java.lang.String;
+        $r0 = new java.lang.StringBuffer;
+        $i0 = virtualinvoke w.<java.lang.String: int length()>();
+        $i1 = 40 + $i0;
+        $i0 = virtualinvoke m.<java.lang.String: int length()>();
+        $i1 = $i1 + $i0;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>($i1);
+        buf = $r0;
+        staticinvoke <avrora.sim.util.SimUtil: void getIDTimeString(java.lang.StringBuffer,avrora.sim.Simulator)>(buf, s);
+        staticinvoke <cck.text.Terminal: void append(int,java.lang.StringBuffer,java.lang.String)>(11, buf, w);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(": ");
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(m);
+        $r1 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>($r1);
+        return;
+    }
+
+    static void <clinit>()
+    {
+        <avrora.sim.util.SimUtil: int ID_LENGTH> = 4;
+        <avrora.sim.util.SimUtil: int TIME_LENGTH> = 12;
+        <avrora.sim.util.SimUtil: int SECONDS_PRECISION> = 6;
+        <avrora.sim.util.SimUtil: boolean REPORT_SECONDS> = 0;
+        return;
+    }
+}

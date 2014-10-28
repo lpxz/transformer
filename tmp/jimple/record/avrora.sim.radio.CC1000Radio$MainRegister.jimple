@@ -1,0 +1,382 @@
+public class avrora.sim.radio.CC1000Radio$MainRegister extends avrora.sim.radio.CC1000Radio$RadioRegister
+{
+    public static final int RXTX;
+    public static final int F_REG;
+    public static final int RX_PD;
+    public static final int TX_PD;
+    public static final int FS_PD;
+    public static final int CORE_PD;
+    public static final int BIAS_PD;
+    public static final int RESET_N;
+    boolean rxtx;
+    boolean fReg;
+    boolean rxPd;
+    boolean txPd;
+    boolean fsPd;
+    boolean corePd;
+    boolean biasPd;
+    boolean resetN;
+    byte oldVal;
+    boolean transmit_activated;
+    boolean receive_activated;
+    final avrora.sim.radio.CC1000Radio this$0;
+
+    void <init>(avrora.sim.radio.CC1000Radio)
+    {
+        avrora.sim.radio.CC1000Radio$MainRegister this;
+        avrora.sim.radio.CC1000Radio l1;
+
+        this := @this: avrora.sim.radio.CC1000Radio$MainRegister;
+        l1 := @parameter0: avrora.sim.radio.CC1000Radio;
+        this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0> = l1;
+        specialinvoke this.<avrora.sim.radio.CC1000Radio$RadioRegister: void <init>(avrora.sim.radio.CC1000Radio,java.lang.String,byte)>(l1, "MAIN", 62);
+        return;
+    }
+
+    protected void decode(byte)
+    {
+        avrora.sim.radio.CC1000Radio$MainRegister this;
+        byte val, $b0, $b1;
+        boolean oldrxtx, $z0, $z1;
+        int state, $i2;
+        avrora.sim.radio.CC1000Radio $r0, $r3, $r4;
+        avrora.sim.radio.CC1000Radio$Receiver $r1;
+        avrora.sim.radio.CC1000Radio$Transmitter $r2;
+        double $d0, $d1;
+        avrora.sim.radio.CC1000Radio$SPITicker $r5;
+        avrora.sim.output.SimPrinter $r6;
+        avrora.sim.radio.CC1000Radio$FrequencyRegister $r7;
+        avrora.sim.radio.CC1000Radio$PA_POWRegister $r8;
+        avrora.sim.FiniteStateMachine $r9;
+        long tid_decode;
+        java.lang.Thread thread_decode;
+
+        this := @this: avrora.sim.radio.CC1000Radio$MainRegister;
+        val := @parameter0: byte;
+        thread_decode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_decode = virtualinvoke thread_decode.<java.lang.Thread: long getId()>();
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 7);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 114, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 276, $z0);
+        this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean rxtx> = $z0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 6);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 37, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 277, $z0);
+        this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean fReg> = $z0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 5);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 115, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 278, $z0);
+        this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean rxPd> = $z0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 4);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 116, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 279, $z0);
+        this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean txPd> = $z0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 117, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 280, $z0);
+        this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean fsPd> = $z0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 118, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 281, $z0);
+        this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean corePd> = $z0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 119, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 282, $z0);
+        this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean biasPd> = $z0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 120, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 283, $z0);
+        this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean resetN> = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 115, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 285, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean rxPd>;
+        if $z1 == 0 goto label0;
+
+        $r0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r1 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$Receiver receiver>;
+        virtualinvoke $r1.<avrora.sim.radio.CC1000Radio$Receiver: void endReceive()>();
+        goto label1;
+
+     label0:
+        $r0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r1 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$Receiver receiver>;
+        virtualinvoke $r1.<avrora.sim.radio.CC1000Radio$Receiver: void beginReceive(double)>(2.4);
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 116, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 288, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean txPd>;
+        if $z1 == 0 goto label2;
+
+        $r0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r2 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$Transmitter transmitter>;
+        virtualinvoke $r2.<avrora.sim.radio.CC1000Radio$Transmitter: void endTransmit()>();
+        goto label3;
+
+     label2:
+        $r0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r2 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$Transmitter transmitter>;
+        $r3 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $d0 = virtualinvoke $r3.<avrora.sim.radio.CC1000Radio: double getPower()>();
+        $r4 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $d1 = virtualinvoke $r4.<avrora.sim.radio.CC1000Radio: double getFrequency()>();
+        virtualinvoke $r2.<avrora.sim.radio.CC1000Radio$Transmitter: void beginTransmit(double,double)>($d0, $d1);
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 115, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 291, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean rxPd>;
+        if $z1 == 0 goto label4;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 116, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 291, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean txPd>;
+        if $z1 != 0 goto label5;
+
+     label4:
+        $r0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r5 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$SPITicker ticker>;
+        virtualinvoke $r5.<avrora.sim.radio.CC1000Radio$SPITicker: void activate()>();
+        goto label6;
+
+     label5:
+        $r0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r5 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$SPITicker ticker>;
+        virtualinvoke $r5.<avrora.sim.radio.CC1000Radio$SPITicker: void deactivate()>();
+
+     label6:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 121, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 297, $b0);
+        $b0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: byte oldVal>;
+        oldrxtx = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>($b0, 7);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 114, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 298, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean rxtx>;
+        if $z1 == 0 goto label7;
+
+        if oldrxtx != 0 goto label7;
+
+        $r0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r6 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.output.SimPrinter radioPrinter>;
+        if $r6 == null goto label8;
+
+        $r0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r6 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.output.SimPrinter radioPrinter>;
+        virtualinvoke $r6.<avrora.sim.output.SimPrinter: void println(java.lang.String)>("CC1000: RX end receiving -> begin transmitting");
+        goto label8;
+
+     label7:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 114, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 303, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean rxtx>;
+        if $z1 != 0 goto label8;
+
+        if oldrxtx == 0 goto label8;
+
+        $r0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r6 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.output.SimPrinter radioPrinter>;
+        if $r6 == null goto label8;
+
+        $r0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r6 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.output.SimPrinter radioPrinter>;
+        virtualinvoke $r6.<avrora.sim.output.SimPrinter: void println(java.lang.String)>("CC1000: TX end transmitting -> begin receiving");
+
+     label8:
+        $r0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 37, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 310, $z0);
+        $z0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean fReg>;
+        if $z0 == 0 goto label9;
+
+        $r3 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r7 = $r3.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$FrequencyRegister FREQ_B_reg>;
+        goto label10;
+
+     label9:
+        $r3 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r7 = $r3.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$FrequencyRegister FREQ_A_reg>;
+
+     label10:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r0, 122, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 310, $r7);
+        $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$FrequencyRegister currentFrequencyRegister> = $r7;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 120, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 312, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean resetN>;
+        if $z1 == 0 goto label11;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 121, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 312, $b0);
+        $b0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: byte oldVal>;
+        $z1 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>($b0, 0);
+        if $z1 != 0 goto label11;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 121, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 313, val);
+        this.<avrora.sim.radio.CC1000Radio$MainRegister: byte oldVal> = val;
+        return;
+
+     label11:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 121, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 318, $b1);
+        $b1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: byte oldVal>;
+        if val == $b1 goto label18;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 118, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 321, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean corePd>;
+        if $z1 == 0 goto label12;
+
+        state = 1;
+        goto label13;
+
+     label12:
+        state = 2;
+
+     label13:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 118, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 323, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean corePd>;
+        if $z1 != 0 goto label14;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 119, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 323, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean biasPd>;
+        if $z1 != 0 goto label14;
+
+        state = 3;
+
+     label14:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 118, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 324, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean corePd>;
+        if $z1 != 0 goto label15;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 119, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 324, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean biasPd>;
+        if $z1 != 0 goto label15;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 117, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 324, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean fsPd>;
+        if $z1 != 0 goto label15;
+
+        state = 4;
+
+     label15:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 118, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 325, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean corePd>;
+        if $z1 != 0 goto label16;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 119, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 325, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean biasPd>;
+        if $z1 != 0 goto label16;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 117, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 325, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean fsPd>;
+        if $z1 != 0 goto label16;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 114, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 325, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean rxtx>;
+        if $z1 != 0 goto label16;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 115, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 325, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean rxPd>;
+        if $z1 != 0 goto label16;
+
+        state = 5;
+
+     label16:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 118, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 326, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean corePd>;
+        if $z1 != 0 goto label17;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 119, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 326, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean biasPd>;
+        if $z1 != 0 goto label17;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 117, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 326, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean fsPd>;
+        if $z1 != 0 goto label17;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 114, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 326, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean rxtx>;
+        if $z1 == 0 goto label17;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 116, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 326, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean txPd>;
+        if $z1 != 0 goto label17;
+
+        $r0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r8 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$PA_POWRegister PA_POW_reg>;
+        $i2 = virtualinvoke $r8.<avrora.sim.radio.CC1000Radio$PA_POWRegister: int getPower()>();
+        state = $i2 + 6;
+
+     label17:
+        $r0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r9 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.FiniteStateMachine stateMachine>;
+        virtualinvoke $r9.<avrora.sim.FiniteStateMachine: void transition(int)>(state);
+
+     label18:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 121, tid_decode, "avrora.sim.radio.CC1000Radio$MainRegister", 330, val);
+        this.<avrora.sim.radio.CC1000Radio$MainRegister: byte oldVal> = val;
+        return;
+    }
+
+    protected void printStatus()
+    {
+        avrora.sim.radio.CC1000Radio$MainRegister this;
+        java.lang.String rxtxS, fRegS, $r0, $r4;
+        java.lang.StringBuffer buf, $r1;
+        boolean $z0, $z1;
+        char $c0;
+        avrora.sim.radio.CC1000Radio $r2;
+        avrora.sim.output.SimPrinter $r3;
+        long tid_printStatus;
+        java.lang.Thread thread_printStatus;
+
+        this := @this: avrora.sim.radio.CC1000Radio$MainRegister;
+        thread_printStatus = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_printStatus = virtualinvoke thread_printStatus.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 114, tid_printStatus, "avrora.sim.radio.CC1000Radio$MainRegister", 334, $z0);
+        $z0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean rxtx>;
+        if $z0 == 0 goto label0;
+
+        $r0 = "TX";
+        goto label1;
+
+     label0:
+        $r0 = "RX";
+
+     label1:
+        rxtxS = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 37, tid_printStatus, "avrora.sim.radio.CC1000Radio$MainRegister", 335, $z0);
+        $z0 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean fReg>;
+        if $z0 == 0 goto label2;
+
+        $r0 = "B";
+        goto label3;
+
+     label2:
+        $r0 = "A";
+
+     label3:
+        fRegS = $r0;
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>(int)>(100);
+        buf = $r1;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("CC1000[MAIN]: ");
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(rxtxS);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", freg: ");
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(fRegS);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", rx pd: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 115, tid_printStatus, "avrora.sim.radio.CC1000Radio$MainRegister", 343, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean rxPd>;
+        $c0 = staticinvoke <cck.text.StringUtil: char toBit(boolean)>($z1);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", tx pd: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 116, tid_printStatus, "avrora.sim.radio.CC1000Radio$MainRegister", 345, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean txPd>;
+        $c0 = staticinvoke <cck.text.StringUtil: char toBit(boolean)>($z1);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", fs pd: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 117, tid_printStatus, "avrora.sim.radio.CC1000Radio$MainRegister", 347, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean fsPd>;
+        $c0 = staticinvoke <cck.text.StringUtil: char toBit(boolean)>($z1);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", core pd: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 118, tid_printStatus, "avrora.sim.radio.CC1000Radio$MainRegister", 349, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean corePd>;
+        $c0 = staticinvoke <cck.text.StringUtil: char toBit(boolean)>($z1);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", bias pd: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 119, tid_printStatus, "avrora.sim.radio.CC1000Radio$MainRegister", 351, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean biasPd>;
+        $c0 = staticinvoke <cck.text.StringUtil: char toBit(boolean)>($z1);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", reset: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 120, tid_printStatus, "avrora.sim.radio.CC1000Radio$MainRegister", 353, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$MainRegister: boolean resetN>;
+        $c0 = staticinvoke <cck.text.StringUtil: char toBit(boolean)>($z1);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+        $r2 = this.<avrora.sim.radio.CC1000Radio$MainRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r3 = $r2.<avrora.sim.radio.CC1000Radio: avrora.sim.output.SimPrinter radioPrinter>;
+        $r4 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke $r3.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r4);
+        return;
+    }
+}

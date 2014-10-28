@@ -1,0 +1,63 @@
+public class avrora.sim.radio.CC1000Radio$FrontEndRegister extends avrora.sim.radio.CC1000Radio$RadioRegister
+{
+    int bufCurrent;
+    double lnaCurrent;
+    static final int IF_RSSI_INACTIVE;
+    static final int IF_RSSI_ACTIVE;
+    static final int IF_RSSI_MIXER;
+    int ifRSSI;
+    boolean xoscBypassExternal;
+    final avrora.sim.radio.CC1000Radio this$0;
+
+    void <init>(avrora.sim.radio.CC1000Radio)
+    {
+        avrora.sim.radio.CC1000Radio$FrontEndRegister this;
+        avrora.sim.radio.CC1000Radio l1;
+
+        this := @this: avrora.sim.radio.CC1000Radio$FrontEndRegister;
+        l1 := @parameter0: avrora.sim.radio.CC1000Radio;
+        this.<avrora.sim.radio.CC1000Radio$FrontEndRegister: avrora.sim.radio.CC1000Radio this$0> = l1;
+        specialinvoke this.<avrora.sim.radio.CC1000Radio$RadioRegister: void <init>(avrora.sim.radio.CC1000Radio,java.lang.String,byte)>(l1, "FRONT_END", 0);
+        this.<avrora.sim.radio.CC1000Radio$FrontEndRegister: int bufCurrent> = 520;
+        this.<avrora.sim.radio.CC1000Radio$FrontEndRegister: double lnaCurrent> = 0.8;
+        return;
+    }
+
+    protected void decode(byte)
+    {
+        avrora.sim.radio.CC1000Radio$FrontEndRegister this;
+        byte val, $b0, $b2;
+        int[] $r0;
+        int $i1;
+        double[] $r1;
+        double $d0;
+        boolean $z0;
+        long tid_decode;
+        java.lang.Thread thread_decode;
+
+        this := @this: avrora.sim.radio.CC1000Radio$FrontEndRegister;
+        val := @parameter0: byte;
+        thread_decode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_decode = virtualinvoke thread_decode.<java.lang.Thread: long getId()>();
+        $r0 = <avrora.sim.radio.CC1000Radio: int[] BUF_CURRENT>;
+        $b0 = val & 32;
+        $b0 = $b0 >> 5;
+        $i1 = $r0[$b0];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 127, tid_decode, "avrora.sim.radio.CC1000Radio$FrontEndRegister", 501, $i1);
+        this.<avrora.sim.radio.CC1000Radio$FrontEndRegister: int bufCurrent> = $i1;
+        $r1 = <avrora.sim.radio.CC1000Radio: double[] LNA_CURRENT>;
+        $b0 = val & 24;
+        $b0 = $b0 >> 3;
+        $d0 = $r1[$b0];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,double)>(this, 128, tid_decode, "avrora.sim.radio.CC1000Radio$FrontEndRegister", 502, $d0);
+        this.<avrora.sim.radio.CC1000Radio$FrontEndRegister: double lnaCurrent> = $d0;
+        $b2 = val & 6;
+        $b2 = $b2 >> 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 129, tid_decode, "avrora.sim.radio.CC1000Radio$FrontEndRegister", 503, $b2);
+        this.<avrora.sim.radio.CC1000Radio$FrontEndRegister: int ifRSSI> = $b2;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 130, tid_decode, "avrora.sim.radio.CC1000Radio$FrontEndRegister", 505, $z0);
+        this.<avrora.sim.radio.CC1000Radio$FrontEndRegister: boolean xoscBypassExternal> = $z0;
+        return;
+    }
+}

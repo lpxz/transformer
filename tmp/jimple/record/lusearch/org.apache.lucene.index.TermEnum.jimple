@@ -1,0 +1,44 @@
+public abstract class org.apache.lucene.index.TermEnum extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        org.apache.lucene.index.TermEnum this;
+
+        this := @this: org.apache.lucene.index.TermEnum;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public abstract boolean next() throws java.io.IOException;
+
+    public abstract org.apache.lucene.index.Term term();
+
+    public abstract int docFreq();
+
+    public abstract void close() throws java.io.IOException;
+
+    public boolean skipTo(org.apache.lucene.index.Term) throws java.io.IOException
+    {
+        org.apache.lucene.index.TermEnum this;
+        org.apache.lucene.index.Term target, $r0;
+        boolean $z0;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.TermEnum;
+        target := @parameter0: org.apache.lucene.index.Term;
+
+     label0:
+        $z0 = virtualinvoke this.<org.apache.lucene.index.TermEnum: boolean next()>();
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $r0 = virtualinvoke this.<org.apache.lucene.index.TermEnum: org.apache.lucene.index.Term term()>();
+        $i0 = virtualinvoke target.<org.apache.lucene.index.Term: int compareTo(org.apache.lucene.index.Term)>($r0);
+        if $i0 > 0 goto label0;
+
+        return 1;
+    }
+}

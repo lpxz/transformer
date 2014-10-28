@@ -1,0 +1,125 @@
+public abstract class org.apache.lucene.analysis.Analyzer extends java.lang.Object
+{
+    private org.apache.lucene.util.CloseableThreadLocal tokenStreams;
+
+    public void <init>()
+    {
+        org.apache.lucene.analysis.Analyzer this;
+        org.apache.lucene.util.CloseableThreadLocal $r0;
+
+        this := @this: org.apache.lucene.analysis.Analyzer;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new org.apache.lucene.util.CloseableThreadLocal;
+        specialinvoke $r0.<org.apache.lucene.util.CloseableThreadLocal: void <init>()>();
+        this.<org.apache.lucene.analysis.Analyzer: org.apache.lucene.util.CloseableThreadLocal tokenStreams> = $r0;
+        return;
+    }
+
+    public abstract org.apache.lucene.analysis.TokenStream tokenStream(java.lang.String, java.io.Reader);
+
+    public org.apache.lucene.analysis.TokenStream reusableTokenStream(java.lang.String, java.io.Reader) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.Analyzer this;
+        java.lang.String fieldName;
+        java.io.Reader reader;
+        org.apache.lucene.analysis.TokenStream $r0;
+
+        this := @this: org.apache.lucene.analysis.Analyzer;
+        fieldName := @parameter0: java.lang.String;
+        reader := @parameter1: java.io.Reader;
+        $r0 = virtualinvoke this.<org.apache.lucene.analysis.Analyzer: org.apache.lucene.analysis.TokenStream tokenStream(java.lang.String,java.io.Reader)>(fieldName, reader);
+        return $r0;
+    }
+
+    protected java.lang.Object getPreviousTokenStream()
+    {
+        org.apache.lucene.analysis.Analyzer this;
+        java.lang.NullPointerException npe, $r2;
+        org.apache.lucene.util.CloseableThreadLocal $r0;
+        java.lang.Object $r1;
+        org.apache.lucene.store.AlreadyClosedException $r3;
+
+        this := @this: org.apache.lucene.analysis.Analyzer;
+
+     label0:
+        $r0 = this.<org.apache.lucene.analysis.Analyzer: org.apache.lucene.util.CloseableThreadLocal tokenStreams>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.util.CloseableThreadLocal: java.lang.Object get()>();
+
+     label1:
+        return $r1;
+
+     label2:
+        $r2 := @caughtexception;
+        npe = $r2;
+        $r0 = this.<org.apache.lucene.analysis.Analyzer: org.apache.lucene.util.CloseableThreadLocal tokenStreams>;
+        if $r0 != null goto label3;
+
+        $r3 = new org.apache.lucene.store.AlreadyClosedException;
+        specialinvoke $r3.<org.apache.lucene.store.AlreadyClosedException: void <init>(java.lang.String)>("this Analyzer is closed");
+        throw $r3;
+
+     label3:
+        throw npe;
+
+        catch java.lang.NullPointerException from label0 to label1 with label2;
+    }
+
+    protected void setPreviousTokenStream(java.lang.Object)
+    {
+        org.apache.lucene.analysis.Analyzer this;
+        java.lang.Object obj;
+        java.lang.NullPointerException npe, $r1;
+        org.apache.lucene.util.CloseableThreadLocal $r0;
+        org.apache.lucene.store.AlreadyClosedException $r2;
+
+        this := @this: org.apache.lucene.analysis.Analyzer;
+        obj := @parameter0: java.lang.Object;
+
+     label0:
+        $r0 = this.<org.apache.lucene.analysis.Analyzer: org.apache.lucene.util.CloseableThreadLocal tokenStreams>;
+        virtualinvoke $r0.<org.apache.lucene.util.CloseableThreadLocal: void set(java.lang.Object)>(obj);
+
+     label1:
+        goto label4;
+
+     label2:
+        $r1 := @caughtexception;
+        npe = $r1;
+        $r0 = this.<org.apache.lucene.analysis.Analyzer: org.apache.lucene.util.CloseableThreadLocal tokenStreams>;
+        if $r0 != null goto label3;
+
+        $r2 = new org.apache.lucene.store.AlreadyClosedException;
+        specialinvoke $r2.<org.apache.lucene.store.AlreadyClosedException: void <init>(java.lang.String)>("this Analyzer is closed");
+        throw $r2;
+
+     label3:
+        throw npe;
+
+     label4:
+        return;
+
+        catch java.lang.NullPointerException from label0 to label1 with label2;
+    }
+
+    public int getPositionIncrementGap(java.lang.String)
+    {
+        org.apache.lucene.analysis.Analyzer this;
+        java.lang.String fieldName;
+
+        this := @this: org.apache.lucene.analysis.Analyzer;
+        fieldName := @parameter0: java.lang.String;
+        return 0;
+    }
+
+    public void close()
+    {
+        org.apache.lucene.analysis.Analyzer this;
+        org.apache.lucene.util.CloseableThreadLocal $r0;
+
+        this := @this: org.apache.lucene.analysis.Analyzer;
+        $r0 = this.<org.apache.lucene.analysis.Analyzer: org.apache.lucene.util.CloseableThreadLocal tokenStreams>;
+        virtualinvoke $r0.<org.apache.lucene.util.CloseableThreadLocal: void close()>();
+        this.<org.apache.lucene.analysis.Analyzer: org.apache.lucene.util.CloseableThreadLocal tokenStreams> = null;
+        return;
+    }
+}

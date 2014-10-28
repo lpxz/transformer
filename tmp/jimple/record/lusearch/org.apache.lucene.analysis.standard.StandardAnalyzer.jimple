@@ -1,0 +1,350 @@
+public class org.apache.lucene.analysis.standard.StandardAnalyzer extends org.apache.lucene.analysis.Analyzer
+{
+    private java.util.Set stopSet;
+    private boolean replaceInvalidAcronym;
+    private static boolean defaultReplaceInvalidAcronym;
+    public static final java.lang.String[] STOP_WORDS;
+    public static final int DEFAULT_MAX_TOKEN_LENGTH;
+    private int maxTokenLength;
+
+    public static boolean getDefaultReplaceInvalidAcronym()
+    {
+        boolean $z0;
+        long tid_getDefaultReplaceInvalidAcronym;
+        java.lang.Thread thread_getDefaultReplaceInvalidAcronym;
+
+        thread_getDefaultReplaceInvalidAcronym = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getDefaultReplaceInvalidAcronym = virtualinvoke thread_getDefaultReplaceInvalidAcronym.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(115, tid_getDefaultReplaceInvalidAcronym, "org.apache.lucene.analysis.standardorg.apache.lucene.analysis.standard.StandardAnalyzer", 66, $z0);
+        $z0 = <org.apache.lucene.analysis.standard.StandardAnalyzer: boolean defaultReplaceInvalidAcronym>;
+        return $z0;
+    }
+
+    public static void setDefaultReplaceInvalidAcronym(boolean)
+    {
+        boolean replaceInvalidAcronym;
+        long tid_setDefaultReplaceInvalidAcronym;
+        java.lang.Thread thread_setDefaultReplaceInvalidAcronym;
+
+        replaceInvalidAcronym := @parameter0: boolean;
+        thread_setDefaultReplaceInvalidAcronym = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setDefaultReplaceInvalidAcronym = virtualinvoke thread_setDefaultReplaceInvalidAcronym.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,boolean)>(115, tid_setDefaultReplaceInvalidAcronym, "org.apache.lucene.analysis.standardorg.apache.lucene.analysis.standard.StandardAnalyzer", 83, replaceInvalidAcronym);
+        <org.apache.lucene.analysis.standard.StandardAnalyzer: boolean defaultReplaceInvalidAcronym> = replaceInvalidAcronym;
+        return;
+    }
+
+    public void <init>()
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        java.lang.String[] $r0;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        $r0 = <org.apache.lucene.analysis.standard.StandardAnalyzer: java.lang.String[] STOP_WORDS>;
+        specialinvoke this.<org.apache.lucene.analysis.standard.StandardAnalyzer: void <init>(java.lang.String[])>($r0);
+        return;
+    }
+
+    public void <init>(java.util.Set)
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        java.util.Set stopWords;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        stopWords := @parameter0: java.util.Set;
+        specialinvoke this.<org.apache.lucene.analysis.Analyzer: void <init>()>();
+        $z0 = <org.apache.lucene.analysis.standard.StandardAnalyzer: boolean defaultReplaceInvalidAcronym>;
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: boolean replaceInvalidAcronym> = $z0;
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: int maxTokenLength> = 255;
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: java.util.Set stopSet> = stopWords;
+        return;
+    }
+
+    public void <init>(java.lang.String[])
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        java.lang.String[] stopWords;
+        boolean $z0;
+        java.util.Set $r0;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        stopWords := @parameter0: java.lang.String[];
+        specialinvoke this.<org.apache.lucene.analysis.Analyzer: void <init>()>();
+        $z0 = <org.apache.lucene.analysis.standard.StandardAnalyzer: boolean defaultReplaceInvalidAcronym>;
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: boolean replaceInvalidAcronym> = $z0;
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: int maxTokenLength> = 255;
+        $r0 = staticinvoke <org.apache.lucene.analysis.StopFilter: java.util.Set makeStopSet(java.lang.String[])>(stopWords);
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: java.util.Set stopSet> = $r0;
+        return;
+    }
+
+    public void <init>(java.io.File) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        java.io.File stopwords;
+        boolean $z0;
+        java.util.HashSet $r0;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        stopwords := @parameter0: java.io.File;
+        specialinvoke this.<org.apache.lucene.analysis.Analyzer: void <init>()>();
+        $z0 = <org.apache.lucene.analysis.standard.StandardAnalyzer: boolean defaultReplaceInvalidAcronym>;
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: boolean replaceInvalidAcronym> = $z0;
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: int maxTokenLength> = 255;
+        $r0 = staticinvoke <org.apache.lucene.analysis.WordlistLoader: java.util.HashSet getWordSet(java.io.File)>(stopwords);
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: java.util.Set stopSet> = $r0;
+        return;
+    }
+
+    public void <init>(java.io.Reader) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        java.io.Reader stopwords;
+        boolean $z0;
+        java.util.HashSet $r0;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        stopwords := @parameter0: java.io.Reader;
+        specialinvoke this.<org.apache.lucene.analysis.Analyzer: void <init>()>();
+        $z0 = <org.apache.lucene.analysis.standard.StandardAnalyzer: boolean defaultReplaceInvalidAcronym>;
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: boolean replaceInvalidAcronym> = $z0;
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: int maxTokenLength> = 255;
+        $r0 = staticinvoke <org.apache.lucene.analysis.WordlistLoader: java.util.HashSet getWordSet(java.io.Reader)>(stopwords);
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: java.util.Set stopSet> = $r0;
+        return;
+    }
+
+    public void <init>(boolean)
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        boolean replaceInvalidAcronym;
+        java.lang.String[] $r0;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        replaceInvalidAcronym := @parameter0: boolean;
+        $r0 = <org.apache.lucene.analysis.standard.StandardAnalyzer: java.lang.String[] STOP_WORDS>;
+        specialinvoke this.<org.apache.lucene.analysis.standard.StandardAnalyzer: void <init>(java.lang.String[])>($r0);
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: boolean replaceInvalidAcronym> = replaceInvalidAcronym;
+        return;
+    }
+
+    public void <init>(java.io.Reader, boolean) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        java.io.Reader stopwords;
+        boolean replaceInvalidAcronym;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        stopwords := @parameter0: java.io.Reader;
+        replaceInvalidAcronym := @parameter1: boolean;
+        specialinvoke this.<org.apache.lucene.analysis.standard.StandardAnalyzer: void <init>(java.io.Reader)>(stopwords);
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: boolean replaceInvalidAcronym> = replaceInvalidAcronym;
+        return;
+    }
+
+    public void <init>(java.io.File, boolean) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        java.io.File stopwords;
+        boolean replaceInvalidAcronym;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        stopwords := @parameter0: java.io.File;
+        replaceInvalidAcronym := @parameter1: boolean;
+        specialinvoke this.<org.apache.lucene.analysis.standard.StandardAnalyzer: void <init>(java.io.File)>(stopwords);
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: boolean replaceInvalidAcronym> = replaceInvalidAcronym;
+        return;
+    }
+
+    public void <init>(java.lang.String[], boolean) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        java.lang.String[] stopwords;
+        boolean replaceInvalidAcronym;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        stopwords := @parameter0: java.lang.String[];
+        replaceInvalidAcronym := @parameter1: boolean;
+        specialinvoke this.<org.apache.lucene.analysis.standard.StandardAnalyzer: void <init>(java.lang.String[])>(stopwords);
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: boolean replaceInvalidAcronym> = replaceInvalidAcronym;
+        return;
+    }
+
+    public void <init>(java.util.Set, boolean) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        java.util.Set stopwords;
+        boolean replaceInvalidAcronym;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        stopwords := @parameter0: java.util.Set;
+        replaceInvalidAcronym := @parameter1: boolean;
+        specialinvoke this.<org.apache.lucene.analysis.standard.StandardAnalyzer: void <init>(java.util.Set)>(stopwords);
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: boolean replaceInvalidAcronym> = replaceInvalidAcronym;
+        return;
+    }
+
+    public org.apache.lucene.analysis.TokenStream tokenStream(java.lang.String, java.io.Reader)
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        java.lang.String fieldName;
+        java.io.Reader reader;
+        org.apache.lucene.analysis.standard.StandardTokenizer $r0, tokenStream;
+        org.apache.lucene.analysis.standard.StandardFilter result, $r1;
+        boolean $z0;
+        int $i0;
+        org.apache.lucene.analysis.LowerCaseFilter $r2, result;
+        org.apache.lucene.analysis.StopFilter $r3, result;
+        java.util.Set $r4;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        fieldName := @parameter0: java.lang.String;
+        reader := @parameter1: java.io.Reader;
+        $r0 = new org.apache.lucene.analysis.standard.StandardTokenizer;
+        $z0 = this.<org.apache.lucene.analysis.standard.StandardAnalyzer: boolean replaceInvalidAcronym>;
+        specialinvoke $r0.<org.apache.lucene.analysis.standard.StandardTokenizer: void <init>(java.io.Reader,boolean)>(reader, $z0);
+        tokenStream = $r0;
+        $i0 = this.<org.apache.lucene.analysis.standard.StandardAnalyzer: int maxTokenLength>;
+        virtualinvoke tokenStream.<org.apache.lucene.analysis.standard.StandardTokenizer: void setMaxTokenLength(int)>($i0);
+        $r1 = new org.apache.lucene.analysis.standard.StandardFilter;
+        specialinvoke $r1.<org.apache.lucene.analysis.standard.StandardFilter: void <init>(org.apache.lucene.analysis.TokenStream)>(tokenStream);
+        result = $r1;
+        $r2 = new org.apache.lucene.analysis.LowerCaseFilter;
+        specialinvoke $r2.<org.apache.lucene.analysis.LowerCaseFilter: void <init>(org.apache.lucene.analysis.TokenStream)>(result);
+        result = $r2;
+        $r3 = new org.apache.lucene.analysis.StopFilter;
+        $r4 = this.<org.apache.lucene.analysis.standard.StandardAnalyzer: java.util.Set stopSet>;
+        specialinvoke $r3.<org.apache.lucene.analysis.StopFilter: void <init>(org.apache.lucene.analysis.TokenStream,java.util.Set)>(result, $r4);
+        result = $r3;
+        return result;
+    }
+
+    public void setMaxTokenLength(int)
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        int length;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        length := @parameter0: int;
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: int maxTokenLength> = length;
+        return;
+    }
+
+    public int getMaxTokenLength()
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        int $i0;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        $i0 = this.<org.apache.lucene.analysis.standard.StandardAnalyzer: int maxTokenLength>;
+        return $i0;
+    }
+
+    public org.apache.lucene.analysis.TokenStream reusableTokenStream(java.lang.String, java.io.Reader) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        java.lang.String fieldName;
+        java.io.Reader reader;
+        org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams streams, $r1;
+        java.lang.Object $r0;
+        org.apache.lucene.analysis.standard.StandardTokenizer $r2, $r4, $r9;
+        org.apache.lucene.analysis.standard.StandardFilter $r3;
+        org.apache.lucene.analysis.LowerCaseFilter $r5;
+        org.apache.lucene.analysis.TokenStream $r6, $r10;
+        org.apache.lucene.analysis.StopFilter $r7;
+        java.util.Set $r8;
+        int $i0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        fieldName := @parameter0: java.lang.String;
+        reader := @parameter1: java.io.Reader;
+        $r0 = virtualinvoke this.<org.apache.lucene.analysis.standard.StandardAnalyzer: java.lang.Object getPreviousTokenStream()>();
+        streams = (org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams) $r0;
+        if streams != null goto label0;
+
+        $r1 = new org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams;
+        specialinvoke $r1.<org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams: void <init>(org.apache.lucene.analysis.standard.StandardAnalyzer$1)>(null);
+        streams = $r1;
+        virtualinvoke this.<org.apache.lucene.analysis.standard.StandardAnalyzer: void setPreviousTokenStream(java.lang.Object)>(streams);
+        $r2 = new org.apache.lucene.analysis.standard.StandardTokenizer;
+        specialinvoke $r2.<org.apache.lucene.analysis.standard.StandardTokenizer: void <init>(java.io.Reader)>(reader);
+        streams.<org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams: org.apache.lucene.analysis.standard.StandardTokenizer tokenStream> = $r2;
+        $r3 = new org.apache.lucene.analysis.standard.StandardFilter;
+        $r4 = streams.<org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams: org.apache.lucene.analysis.standard.StandardTokenizer tokenStream>;
+        specialinvoke $r3.<org.apache.lucene.analysis.standard.StandardFilter: void <init>(org.apache.lucene.analysis.TokenStream)>($r4);
+        streams.<org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams: org.apache.lucene.analysis.TokenStream filteredTokenStream> = $r3;
+        $r5 = new org.apache.lucene.analysis.LowerCaseFilter;
+        $r6 = streams.<org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams: org.apache.lucene.analysis.TokenStream filteredTokenStream>;
+        specialinvoke $r5.<org.apache.lucene.analysis.LowerCaseFilter: void <init>(org.apache.lucene.analysis.TokenStream)>($r6);
+        streams.<org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams: org.apache.lucene.analysis.TokenStream filteredTokenStream> = $r5;
+        $r7 = new org.apache.lucene.analysis.StopFilter;
+        $r6 = streams.<org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams: org.apache.lucene.analysis.TokenStream filteredTokenStream>;
+        $r8 = this.<org.apache.lucene.analysis.standard.StandardAnalyzer: java.util.Set stopSet>;
+        specialinvoke $r7.<org.apache.lucene.analysis.StopFilter: void <init>(org.apache.lucene.analysis.TokenStream,java.util.Set)>($r6, $r8);
+        streams.<org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams: org.apache.lucene.analysis.TokenStream filteredTokenStream> = $r7;
+        goto label1;
+
+     label0:
+        $r9 = streams.<org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams: org.apache.lucene.analysis.standard.StandardTokenizer tokenStream>;
+        virtualinvoke $r9.<org.apache.lucene.analysis.standard.StandardTokenizer: void reset(java.io.Reader)>(reader);
+
+     label1:
+        $r9 = streams.<org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams: org.apache.lucene.analysis.standard.StandardTokenizer tokenStream>;
+        $i0 = this.<org.apache.lucene.analysis.standard.StandardAnalyzer: int maxTokenLength>;
+        virtualinvoke $r9.<org.apache.lucene.analysis.standard.StandardTokenizer: void setMaxTokenLength(int)>($i0);
+        $r9 = streams.<org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams: org.apache.lucene.analysis.standard.StandardTokenizer tokenStream>;
+        $z0 = this.<org.apache.lucene.analysis.standard.StandardAnalyzer: boolean replaceInvalidAcronym>;
+        virtualinvoke $r9.<org.apache.lucene.analysis.standard.StandardTokenizer: void setReplaceInvalidAcronym(boolean)>($z0);
+        $r10 = streams.<org.apache.lucene.analysis.standard.StandardAnalyzer$SavedStreams: org.apache.lucene.analysis.TokenStream filteredTokenStream>;
+        return $r10;
+    }
+
+    public boolean isReplaceInvalidAcronym()
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        $z0 = this.<org.apache.lucene.analysis.standard.StandardAnalyzer: boolean replaceInvalidAcronym>;
+        return $z0;
+    }
+
+    public void setReplaceInvalidAcronym(boolean)
+    {
+        org.apache.lucene.analysis.standard.StandardAnalyzer this;
+        boolean replaceInvalidAcronym;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardAnalyzer;
+        replaceInvalidAcronym := @parameter0: boolean;
+        this.<org.apache.lucene.analysis.standard.StandardAnalyzer: boolean replaceInvalidAcronym> = replaceInvalidAcronym;
+        return;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String v;
+        boolean $z0;
+        java.lang.String[] $r0;
+
+        v = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("org.apache.lucene.analysis.standard.StandardAnalyzer.replaceInvalidAcronym");
+        if v == null goto label0;
+
+        $z0 = virtualinvoke v.<java.lang.String: boolean equals(java.lang.Object)>("true");
+        if $z0 == 0 goto label1;
+
+     label0:
+        <org.apache.lucene.analysis.standard.StandardAnalyzer: boolean defaultReplaceInvalidAcronym> = 1;
+        goto label2;
+
+     label1:
+        <org.apache.lucene.analysis.standard.StandardAnalyzer: boolean defaultReplaceInvalidAcronym> = 0;
+
+     label2:
+        $r0 = <org.apache.lucene.analysis.StopAnalyzer: java.lang.String[] ENGLISH_STOP_WORDS>;
+        <org.apache.lucene.analysis.standard.StandardAnalyzer: java.lang.String[] STOP_WORDS> = $r0;
+        return;
+    }
+}

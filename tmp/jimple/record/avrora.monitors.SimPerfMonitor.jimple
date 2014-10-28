@@ -1,0 +1,31 @@
+public class avrora.monitors.SimPerfMonitor extends avrora.monitors.MonitorFactory
+{
+    public final cck.util.Option$Double FREQUENCY;
+
+    public void <init>()
+    {
+        avrora.monitors.SimPerfMonitor this;
+        cck.util.Option$Double $r0;
+
+        this := @this: avrora.monitors.SimPerfMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"simperf\" monitor profiles the performance of the simulator itself by periodically recording the cycles executed and total time consumed by simulation and generates a report.");
+        $r0 = virtualinvoke this.<avrora.monitors.SimPerfMonitor: cck.util.Option$Double newOption(java.lang.String,double,java.lang.String)>("frequency", 100.0, "This option is used in the simulator profiling monitor to determine how many times per simulated second to sample the simulator\'s performance.");
+        this.<avrora.monitors.SimPerfMonitor: cck.util.Option$Double FREQUENCY> = $r0;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.SimPerfMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.SimPerfMonitor$Mon tmp$549324250;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.SimPerfMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$549324250 = new avrora.monitors.SimPerfMonitor$Mon;
+        specialinvoke tmp$549324250.<avrora.monitors.SimPerfMonitor$Mon: void <init>(avrora.monitors.SimPerfMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$549324250;
+        return tmp;
+    }
+}

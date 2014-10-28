@@ -1,0 +1,358 @@
+public final class org.apache.lucene.queryParser.FastCharStream extends java.lang.Object implements org.apache.lucene.queryParser.CharStream
+{
+    char[] buffer;
+    int bufferLength;
+    int bufferPosition;
+    int tokenStart;
+    int bufferStart;
+    java.io.Reader input;
+
+    public void <init>(java.io.Reader)
+    {
+        org.apache.lucene.queryParser.FastCharStream this;
+        java.io.Reader r;
+
+        this := @this: org.apache.lucene.queryParser.FastCharStream;
+        r := @parameter0: java.io.Reader;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.queryParser.FastCharStream: char[] buffer> = null;
+        this.<org.apache.lucene.queryParser.FastCharStream: int bufferLength> = 0;
+        this.<org.apache.lucene.queryParser.FastCharStream: int bufferPosition> = 0;
+        this.<org.apache.lucene.queryParser.FastCharStream: int tokenStart> = 0;
+        this.<org.apache.lucene.queryParser.FastCharStream: int bufferStart> = 0;
+        this.<org.apache.lucene.queryParser.FastCharStream: java.io.Reader input> = r;
+        return;
+    }
+
+    public final char readChar() throws java.io.IOException
+    {
+        org.apache.lucene.queryParser.FastCharStream this;
+        int $i0, $i1, $i2, $i3;
+        char[] $r0;
+        char $c4;
+        long tid_readChar;
+        java.lang.Thread thread_readChar;
+
+        this := @this: org.apache.lucene.queryParser.FastCharStream;
+        thread_readChar = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_readChar = virtualinvoke thread_readChar.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 155, tid_readChar, "org.apache.lucene.queryParser.FastCharStream", 44, $i1);
+        $i1 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferPosition>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 156, tid_readChar, "org.apache.lucene.queryParser.FastCharStream", 44, $i2);
+        $i2 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferLength>;
+        if $i1 < $i2 goto label0;
+
+        specialinvoke this.<org.apache.lucene.queryParser.FastCharStream: void refill()>();
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 157, tid_readChar, "org.apache.lucene.queryParser.FastCharStream", 46, $r0);
+        $r0 = this.<org.apache.lucene.queryParser.FastCharStream: char[] buffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 155, tid_readChar, "org.apache.lucene.queryParser.FastCharStream", 46, $i0);
+        $i0 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferPosition>;
+        $i3 = $i0 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 155, tid_readChar, "org.apache.lucene.queryParser.FastCharStream", 46, $i3);
+        this.<org.apache.lucene.queryParser.FastCharStream: int bufferPosition> = $i3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>($r0, 25, tid_readChar, "org.apache.lucene.queryParser.FastCharStream", 46, $i0, $c4);
+        $c4 = $r0[$i0];
+        return $c4;
+    }
+
+    private final void refill() throws java.io.IOException
+    {
+        org.apache.lucene.queryParser.FastCharStream this;
+        int newPosition, charsRead, $i0, $i1, $i2, $i3, $i4;
+        char[] newBuffer, $r0, $r1, $r2, $r5;
+        java.io.Reader $r4;
+        java.io.IOException $r6;
+        long tid_refill;
+        java.lang.Thread thread_refill;
+
+        this := @this: org.apache.lucene.queryParser.FastCharStream;
+        thread_refill = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_refill = virtualinvoke thread_refill.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 156, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 50, $i0);
+        $i0 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferLength>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 158, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 50, $i1);
+        $i1 = this.<org.apache.lucene.queryParser.FastCharStream: int tokenStart>;
+        newPosition = $i0 - $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 158, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 52, $i0);
+        $i0 = this.<org.apache.lucene.queryParser.FastCharStream: int tokenStart>;
+        if $i0 != 0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 157, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 53, $r0);
+        $r0 = this.<org.apache.lucene.queryParser.FastCharStream: char[] buffer>;
+        if $r0 != null goto label0;
+
+        $r1 = newarray (char)[2048];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 157, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 54, $r1);
+        this.<org.apache.lucene.queryParser.FastCharStream: char[] buffer> = $r1;
+        goto label2;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 156, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 55, $i0);
+        $i0 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferLength>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 157, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 55, $r1);
+        $r1 = this.<org.apache.lucene.queryParser.FastCharStream: char[] buffer>;
+        $i1 = lengthof $r1;
+        if $i0 != $i1 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 157, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 56, $r0);
+        $r0 = this.<org.apache.lucene.queryParser.FastCharStream: char[] buffer>;
+        $i0 = lengthof $r0;
+        $i0 = $i0 * 2;
+        newBuffer = newarray (char)[$i0];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 157, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 57, $r0);
+        $r0 = this.<org.apache.lucene.queryParser.FastCharStream: char[] buffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 156, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 57, $i2);
+        $i2 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferLength>;
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r0, 0, newBuffer, 0, $i2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 157, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 58, newBuffer);
+        this.<org.apache.lucene.queryParser.FastCharStream: char[] buffer> = newBuffer;
+        goto label2;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 157, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 61, $r0);
+        $r0 = this.<org.apache.lucene.queryParser.FastCharStream: char[] buffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 158, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 61, $i1);
+        $i1 = this.<org.apache.lucene.queryParser.FastCharStream: int tokenStart>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 157, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 61, $r2);
+        $r2 = this.<org.apache.lucene.queryParser.FastCharStream: char[] buffer>;
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r0, $i1, $r2, 0, newPosition);
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 156, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 64, newPosition);
+        this.<org.apache.lucene.queryParser.FastCharStream: int bufferLength> = newPosition;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 155, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 65, newPosition);
+        this.<org.apache.lucene.queryParser.FastCharStream: int bufferPosition> = newPosition;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 159, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 66, $i1);
+        $i1 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferStart>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 158, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 66, $i3);
+        $i3 = this.<org.apache.lucene.queryParser.FastCharStream: int tokenStart>;
+        $i1 = $i1 + $i3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 159, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 66, $i1);
+        this.<org.apache.lucene.queryParser.FastCharStream: int bufferStart> = $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 158, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 67, 0);
+        this.<org.apache.lucene.queryParser.FastCharStream: int tokenStart> = 0;
+        $r4 = this.<org.apache.lucene.queryParser.FastCharStream: java.io.Reader input>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 157, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 69, $r1);
+        $r1 = this.<org.apache.lucene.queryParser.FastCharStream: char[] buffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 157, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 69, $r5);
+        $r5 = this.<org.apache.lucene.queryParser.FastCharStream: char[] buffer>;
+        $i4 = lengthof $r5;
+        $i4 = $i4 - newPosition;
+        charsRead = virtualinvoke $r4.<java.io.Reader: int read(char[],int,int)>($r1, newPosition, $i4);
+        if charsRead != -1 goto label3;
+
+        $r6 = new java.io.IOException;
+        specialinvoke $r6.<java.io.IOException: void <init>(java.lang.String)>("read past eof");
+        throw $r6;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 156, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 74, $i1);
+        $i1 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferLength>;
+        $i1 = $i1 + charsRead;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 156, tid_refill, "org.apache.lucene.queryParser.FastCharStream", 74, $i1);
+        this.<org.apache.lucene.queryParser.FastCharStream: int bufferLength> = $i1;
+        return;
+    }
+
+    public final char BeginToken() throws java.io.IOException
+    {
+        org.apache.lucene.queryParser.FastCharStream this;
+        int $i0;
+        char $c1;
+        long tid_BeginToken;
+        java.lang.Thread thread_BeginToken;
+
+        this := @this: org.apache.lucene.queryParser.FastCharStream;
+        thread_BeginToken = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_BeginToken = virtualinvoke thread_BeginToken.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 155, tid_BeginToken, "org.apache.lucene.queryParser.FastCharStream", 78, $i0);
+        $i0 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferPosition>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 158, tid_BeginToken, "org.apache.lucene.queryParser.FastCharStream", 78, $i0);
+        this.<org.apache.lucene.queryParser.FastCharStream: int tokenStart> = $i0;
+        $c1 = virtualinvoke this.<org.apache.lucene.queryParser.FastCharStream: char readChar()>();
+        return $c1;
+    }
+
+    public final void backup(int)
+    {
+        org.apache.lucene.queryParser.FastCharStream this;
+        int amount, $i0;
+        long tid_backup;
+        java.lang.Thread thread_backup;
+
+        this := @this: org.apache.lucene.queryParser.FastCharStream;
+        amount := @parameter0: int;
+        thread_backup = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_backup = virtualinvoke thread_backup.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 155, tid_backup, "org.apache.lucene.queryParser.FastCharStream", 83, $i0);
+        $i0 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferPosition>;
+        $i0 = $i0 - amount;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 155, tid_backup, "org.apache.lucene.queryParser.FastCharStream", 83, $i0);
+        this.<org.apache.lucene.queryParser.FastCharStream: int bufferPosition> = $i0;
+        return;
+    }
+
+    public final java.lang.String GetImage()
+    {
+        org.apache.lucene.queryParser.FastCharStream this;
+        java.lang.String $r0;
+        char[] $r1;
+        int $i0, $i1, $i2;
+        long tid_GetImage;
+        java.lang.Thread thread_GetImage;
+
+        this := @this: org.apache.lucene.queryParser.FastCharStream;
+        thread_GetImage = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_GetImage = virtualinvoke thread_GetImage.<java.lang.Thread: long getId()>();
+        $r0 = new java.lang.String;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 157, tid_GetImage, "org.apache.lucene.queryParser.FastCharStream", 87, $r1);
+        $r1 = this.<org.apache.lucene.queryParser.FastCharStream: char[] buffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 158, tid_GetImage, "org.apache.lucene.queryParser.FastCharStream", 87, $i0);
+        $i0 = this.<org.apache.lucene.queryParser.FastCharStream: int tokenStart>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 155, tid_GetImage, "org.apache.lucene.queryParser.FastCharStream", 87, $i1);
+        $i1 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferPosition>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 158, tid_GetImage, "org.apache.lucene.queryParser.FastCharStream", 87, $i2);
+        $i2 = this.<org.apache.lucene.queryParser.FastCharStream: int tokenStart>;
+        $i1 = $i1 - $i2;
+        specialinvoke $r0.<java.lang.String: void <init>(char[],int,int)>($r1, $i0, $i1);
+        return $r0;
+    }
+
+    public final char[] GetSuffix(int)
+    {
+        org.apache.lucene.queryParser.FastCharStream this;
+        int len, $i0;
+        char[] value, $r0;
+        long tid_GetSuffix;
+        java.lang.Thread thread_GetSuffix;
+
+        this := @this: org.apache.lucene.queryParser.FastCharStream;
+        len := @parameter0: int;
+        thread_GetSuffix = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_GetSuffix = virtualinvoke thread_GetSuffix.<java.lang.Thread: long getId()>();
+        value = newarray (char)[len];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 157, tid_GetSuffix, "org.apache.lucene.queryParser.FastCharStream", 92, $r0);
+        $r0 = this.<org.apache.lucene.queryParser.FastCharStream: char[] buffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 155, tid_GetSuffix, "org.apache.lucene.queryParser.FastCharStream", 92, $i0);
+        $i0 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferPosition>;
+        $i0 = $i0 - len;
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r0, $i0, value, 0, len);
+        return value;
+    }
+
+    public final void Done()
+    {
+        org.apache.lucene.queryParser.FastCharStream this;
+        java.io.IOException e, $r2;
+        java.lang.StringBuffer $r0;
+        java.io.Reader $r1;
+        java.io.PrintStream $r3;
+        java.lang.String $r4;
+
+        this := @this: org.apache.lucene.queryParser.FastCharStream;
+
+     label0:
+        $r1 = this.<org.apache.lucene.queryParser.FastCharStream: java.io.Reader input>;
+        virtualinvoke $r1.<java.io.Reader: void close()>();
+
+     label1:
+        goto label3;
+
+     label2:
+        $r2 := @caughtexception;
+        e = $r2;
+        $r3 = <java.lang.System: java.io.PrintStream err>;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Caught: ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(e);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("; ignoring.");
+        $r4 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r4);
+
+     label3:
+        return;
+
+        catch java.io.IOException from label0 to label1 with label2;
+    }
+
+    public final int getColumn()
+    {
+        org.apache.lucene.queryParser.FastCharStream this;
+        int $i0, $i1;
+        long tid_getColumn;
+        java.lang.Thread thread_getColumn;
+
+        this := @this: org.apache.lucene.queryParser.FastCharStream;
+        thread_getColumn = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getColumn = virtualinvoke thread_getColumn.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 159, tid_getColumn, "org.apache.lucene.queryParser.FastCharStream", 105, $i0);
+        $i0 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferStart>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 155, tid_getColumn, "org.apache.lucene.queryParser.FastCharStream", 105, $i1);
+        $i1 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferPosition>;
+        $i0 = $i0 + $i1;
+        return $i0;
+    }
+
+    public final int getLine()
+    {
+        org.apache.lucene.queryParser.FastCharStream this;
+
+        this := @this: org.apache.lucene.queryParser.FastCharStream;
+        return 1;
+    }
+
+    public final int getEndColumn()
+    {
+        org.apache.lucene.queryParser.FastCharStream this;
+        int $i0, $i1;
+        long tid_getEndColumn;
+        java.lang.Thread thread_getEndColumn;
+
+        this := @this: org.apache.lucene.queryParser.FastCharStream;
+        thread_getEndColumn = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getEndColumn = virtualinvoke thread_getEndColumn.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 159, tid_getEndColumn, "org.apache.lucene.queryParser.FastCharStream", 111, $i0);
+        $i0 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferStart>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 155, tid_getEndColumn, "org.apache.lucene.queryParser.FastCharStream", 111, $i1);
+        $i1 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferPosition>;
+        $i0 = $i0 + $i1;
+        return $i0;
+    }
+
+    public final int getEndLine()
+    {
+        org.apache.lucene.queryParser.FastCharStream this;
+
+        this := @this: org.apache.lucene.queryParser.FastCharStream;
+        return 1;
+    }
+
+    public final int getBeginColumn()
+    {
+        org.apache.lucene.queryParser.FastCharStream this;
+        int $i0, $i1;
+        long tid_getBeginColumn;
+        java.lang.Thread thread_getBeginColumn;
+
+        this := @this: org.apache.lucene.queryParser.FastCharStream;
+        thread_getBeginColumn = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getBeginColumn = virtualinvoke thread_getBeginColumn.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 159, tid_getBeginColumn, "org.apache.lucene.queryParser.FastCharStream", 117, $i0);
+        $i0 = this.<org.apache.lucene.queryParser.FastCharStream: int bufferStart>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 158, tid_getBeginColumn, "org.apache.lucene.queryParser.FastCharStream", 117, $i1);
+        $i1 = this.<org.apache.lucene.queryParser.FastCharStream: int tokenStart>;
+        $i0 = $i0 + $i1;
+        return $i0;
+    }
+
+    public final int getBeginLine()
+    {
+        org.apache.lucene.queryParser.FastCharStream this;
+
+        this := @this: org.apache.lucene.queryParser.FastCharStream;
+        return 1;
+    }
+}

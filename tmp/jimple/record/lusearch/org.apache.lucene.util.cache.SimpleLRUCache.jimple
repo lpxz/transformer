@@ -1,0 +1,39 @@
+public class org.apache.lucene.util.cache.SimpleLRUCache extends org.apache.lucene.util.cache.SimpleMapCache
+{
+    private static final float LOADFACTOR;
+    private int cacheSize;
+
+    public void <init>(int)
+    {
+        org.apache.lucene.util.cache.SimpleLRUCache this;
+        int cacheSize, capacity, $i0;
+        float $f0;
+        double $d0;
+        org.apache.lucene.util.cache.SimpleLRUCache$1 $r0;
+
+        this := @this: org.apache.lucene.util.cache.SimpleLRUCache;
+        cacheSize := @parameter0: int;
+        specialinvoke this.<org.apache.lucene.util.cache.SimpleMapCache: void <init>(java.util.Map)>(null);
+        this.<org.apache.lucene.util.cache.SimpleLRUCache: int cacheSize> = cacheSize;
+        $f0 = (float) cacheSize;
+        $f0 = $f0 / 0.75F;
+        $d0 = (double) $f0;
+        $d0 = staticinvoke <java.lang.Math: double ceil(double)>($d0);
+        $i0 = (int) $d0;
+        capacity = $i0 + 1;
+        $r0 = new org.apache.lucene.util.cache.SimpleLRUCache$1;
+        specialinvoke $r0.<org.apache.lucene.util.cache.SimpleLRUCache$1: void <init>(org.apache.lucene.util.cache.SimpleLRUCache,int,float,boolean)>(this, capacity, 0.75F, 1);
+        this.<org.apache.lucene.util.cache.SimpleMapCache: java.util.Map map> = $r0;
+        return;
+    }
+
+    static int access$000(org.apache.lucene.util.cache.SimpleLRUCache)
+    {
+        org.apache.lucene.util.cache.SimpleLRUCache x0;
+        int $i0;
+
+        x0 := @parameter0: org.apache.lucene.util.cache.SimpleLRUCache;
+        $i0 = x0.<org.apache.lucene.util.cache.SimpleLRUCache: int cacheSize>;
+        return $i0;
+    }
+}

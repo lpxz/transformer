@@ -1,0 +1,1441 @@
+public class org.apache.lucene.analysis.Token extends java.lang.Object implements java.lang.Cloneable
+{
+    public static final java.lang.String DEFAULT_TYPE;
+    private static int MIN_BUFFER_SIZE;
+    private java.lang.String termText;
+    char[] termBuffer;
+    int termLength;
+    int startOffset;
+    int endOffset;
+    java.lang.String type;
+    private int flags;
+    org.apache.lucene.index.Payload payload;
+    int positionIncrement;
+    static final boolean $assertionsDisabled;
+    static java.lang.Class class$org$apache$lucene$analysis$Token;
+
+    public void <init>()
+    {
+        org.apache.lucene.analysis.Token this;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = "word";
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = 1;
+        return;
+    }
+
+    public void <init>(int, int)
+    {
+        org.apache.lucene.analysis.Token this;
+        int start, end;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        start := @parameter0: int;
+        end := @parameter1: int;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = "word";
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = 1;
+        this.<org.apache.lucene.analysis.Token: int startOffset> = start;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = end;
+        return;
+    }
+
+    public void <init>(int, int, java.lang.String)
+    {
+        org.apache.lucene.analysis.Token this;
+        int start, end;
+        java.lang.String typ;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        start := @parameter0: int;
+        end := @parameter1: int;
+        typ := @parameter2: java.lang.String;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = "word";
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = 1;
+        this.<org.apache.lucene.analysis.Token: int startOffset> = start;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = end;
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = typ;
+        return;
+    }
+
+    public void <init>(int, int, int)
+    {
+        org.apache.lucene.analysis.Token this;
+        int start, end, flags;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        start := @parameter0: int;
+        end := @parameter1: int;
+        flags := @parameter2: int;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = "word";
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = 1;
+        this.<org.apache.lucene.analysis.Token: int startOffset> = start;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = end;
+        this.<org.apache.lucene.analysis.Token: int flags> = flags;
+        return;
+    }
+
+    public void <init>(java.lang.String, int, int)
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.String text;
+        int start, end;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        text := @parameter0: java.lang.String;
+        start := @parameter1: int;
+        end := @parameter2: int;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = "word";
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = 1;
+        this.<org.apache.lucene.analysis.Token: java.lang.String termText> = text;
+        this.<org.apache.lucene.analysis.Token: int startOffset> = start;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = end;
+        return;
+    }
+
+    public void <init>(java.lang.String, int, int, java.lang.String)
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.String text, typ;
+        int start, end;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        text := @parameter0: java.lang.String;
+        start := @parameter1: int;
+        end := @parameter2: int;
+        typ := @parameter3: java.lang.String;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = "word";
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = 1;
+        this.<org.apache.lucene.analysis.Token: java.lang.String termText> = text;
+        this.<org.apache.lucene.analysis.Token: int startOffset> = start;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = end;
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = typ;
+        return;
+    }
+
+    public void <init>(java.lang.String, int, int, int)
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.String text;
+        int start, end, flags;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        text := @parameter0: java.lang.String;
+        start := @parameter1: int;
+        end := @parameter2: int;
+        flags := @parameter3: int;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = "word";
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = 1;
+        this.<org.apache.lucene.analysis.Token: java.lang.String termText> = text;
+        this.<org.apache.lucene.analysis.Token: int startOffset> = start;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = end;
+        this.<org.apache.lucene.analysis.Token: int flags> = flags;
+        return;
+    }
+
+    public void <init>(char[], int, int, int, int)
+    {
+        org.apache.lucene.analysis.Token this;
+        char[] startTermBuffer;
+        int termBufferOffset, termBufferLength, start, end;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        startTermBuffer := @parameter0: char[];
+        termBufferOffset := @parameter1: int;
+        termBufferLength := @parameter2: int;
+        start := @parameter3: int;
+        end := @parameter4: int;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = "word";
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = 1;
+        virtualinvoke this.<org.apache.lucene.analysis.Token: void setTermBuffer(char[],int,int)>(startTermBuffer, termBufferOffset, termBufferLength);
+        this.<org.apache.lucene.analysis.Token: int startOffset> = start;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = end;
+        return;
+    }
+
+    public void setPositionIncrement(int)
+    {
+        org.apache.lucene.analysis.Token this;
+        int positionIncrement;
+        java.lang.StringBuffer $r0;
+        java.lang.IllegalArgumentException $r1;
+        java.lang.String $r2;
+        long tid_setPositionIncrement;
+        java.lang.Thread thread_setPositionIncrement;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        positionIncrement := @parameter0: int;
+        thread_setPositionIncrement = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setPositionIncrement = virtualinvoke thread_setPositionIncrement.<java.lang.Thread: long getId()>();
+        if positionIncrement >= 0 goto label0;
+
+        $r1 = new java.lang.IllegalArgumentException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Increment must be zero or greater: ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(positionIncrement);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r2);
+        throw $r1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 74, tid_setPositionIncrement, "org.apache.lucene.analysis.Token", 314, positionIncrement);
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = positionIncrement;
+        return;
+    }
+
+    public int getPositionIncrement()
+    {
+        org.apache.lucene.analysis.Token this;
+        int $i0;
+        long tid_getPositionIncrement;
+        java.lang.Thread thread_getPositionIncrement;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        thread_getPositionIncrement = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getPositionIncrement = virtualinvoke thread_getPositionIncrement.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 74, tid_getPositionIncrement, "org.apache.lucene.analysis.Token", 321, $i0);
+        $i0 = this.<org.apache.lucene.analysis.Token: int positionIncrement>;
+        return $i0;
+    }
+
+    public void setTermText(java.lang.String)
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.String text;
+        long tid_setTermText;
+        java.lang.Thread thread_setTermText;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        text := @parameter0: java.lang.String;
+        thread_setTermText = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setTermText = virtualinvoke thread_setTermText.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_setTermText, "org.apache.lucene.analysis.Token", 332, text);
+        this.<org.apache.lucene.analysis.Token: java.lang.String termText> = text;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_setTermText, "org.apache.lucene.analysis.Token", 333, null);
+        this.<org.apache.lucene.analysis.Token: char[] termBuffer> = null;
+        return;
+    }
+
+    public final java.lang.String termText()
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.String $r0, $r1;
+        char[] $r2, $r3;
+        int $i0;
+        long tid_termText;
+        java.lang.Thread thread_termText;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        thread_termText = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_termText = virtualinvoke thread_termText.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_termText, "org.apache.lucene.analysis.Token", 345, $r1);
+        $r1 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        if $r1 != null goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_termText, "org.apache.lucene.analysis.Token", 345, $r2);
+        $r2 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        if $r2 == null goto label0;
+
+        $r0 = new java.lang.String;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_termText, "org.apache.lucene.analysis.Token", 346, $r3);
+        $r3 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 77, tid_termText, "org.apache.lucene.analysis.Token", 346, $i0);
+        $i0 = this.<org.apache.lucene.analysis.Token: int termLength>;
+        specialinvoke $r0.<java.lang.String: void <init>(char[],int,int)>($r3, 0, $i0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_termText, "org.apache.lucene.analysis.Token", 346, $r0);
+        this.<org.apache.lucene.analysis.Token: java.lang.String termText> = $r0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_termText, "org.apache.lucene.analysis.Token", 347, $r1);
+        $r1 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        return $r1;
+    }
+
+    public final java.lang.String term()
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.String $r0;
+        char[] $r1;
+        int $i0;
+        long tid_term;
+        java.lang.Thread thread_term;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        thread_term = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_term = virtualinvoke thread_term.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_term, "org.apache.lucene.analysis.Token", 360, $r0);
+        $r0 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        if $r0 == null goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_term, "org.apache.lucene.analysis.Token", 361, $r0);
+        $r0 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        return $r0;
+
+     label0:
+        specialinvoke this.<org.apache.lucene.analysis.Token: void initTermBuffer()>();
+        $r0 = new java.lang.String;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_term, "org.apache.lucene.analysis.Token", 363, $r1);
+        $r1 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 77, tid_term, "org.apache.lucene.analysis.Token", 363, $i0);
+        $i0 = this.<org.apache.lucene.analysis.Token: int termLength>;
+        specialinvoke $r0.<java.lang.String: void <init>(char[],int,int)>($r1, 0, $i0);
+        return $r0;
+    }
+
+    public final void setTermBuffer(char[], int, int)
+    {
+        org.apache.lucene.analysis.Token this;
+        char[] buffer, newCharBuffer, $r0;
+        int offset, length;
+        long tid_setTermBuffer;
+        java.lang.Thread thread_setTermBuffer;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        buffer := @parameter0: char[];
+        offset := @parameter1: int;
+        length := @parameter2: int;
+        thread_setTermBuffer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setTermBuffer = virtualinvoke thread_setTermBuffer.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_setTermBuffer, "org.apache.lucene.analysis.Token", 373, null);
+        this.<org.apache.lucene.analysis.Token: java.lang.String termText> = null;
+        newCharBuffer = specialinvoke this.<org.apache.lucene.analysis.Token: char[] growTermBuffer(int)>(length);
+        if newCharBuffer == null goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_setTermBuffer, "org.apache.lucene.analysis.Token", 376, newCharBuffer);
+        this.<org.apache.lucene.analysis.Token: char[] termBuffer> = newCharBuffer;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_setTermBuffer, "org.apache.lucene.analysis.Token", 378, $r0);
+        $r0 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>(buffer, offset, $r0, 0, length);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 77, tid_setTermBuffer, "org.apache.lucene.analysis.Token", 379, length);
+        this.<org.apache.lucene.analysis.Token: int termLength> = length;
+        return;
+    }
+
+    public final void setTermBuffer(java.lang.String)
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.String buffer;
+        int length;
+        char[] newCharBuffer, $r0;
+        long tid_setTermBuffer;
+        java.lang.Thread thread_setTermBuffer;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        buffer := @parameter0: java.lang.String;
+        thread_setTermBuffer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setTermBuffer = virtualinvoke thread_setTermBuffer.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_setTermBuffer, "org.apache.lucene.analysis.Token", 386, null);
+        this.<org.apache.lucene.analysis.Token: java.lang.String termText> = null;
+        length = virtualinvoke buffer.<java.lang.String: int length()>();
+        newCharBuffer = specialinvoke this.<org.apache.lucene.analysis.Token: char[] growTermBuffer(int)>(length);
+        if newCharBuffer == null goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_setTermBuffer, "org.apache.lucene.analysis.Token", 390, newCharBuffer);
+        this.<org.apache.lucene.analysis.Token: char[] termBuffer> = newCharBuffer;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_setTermBuffer, "org.apache.lucene.analysis.Token", 392, $r0);
+        $r0 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        virtualinvoke buffer.<java.lang.String: void getChars(int,int,char[],int)>(0, length, $r0, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 77, tid_setTermBuffer, "org.apache.lucene.analysis.Token", 393, length);
+        this.<org.apache.lucene.analysis.Token: int termLength> = length;
+        return;
+    }
+
+    public final void setTermBuffer(java.lang.String, int, int)
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.String buffer;
+        int offset, length, $i0, $i1, $i2;
+        boolean $z0;
+        char[] newCharBuffer, $r1;
+        java.lang.AssertionError $r0;
+        long tid_setTermBuffer;
+        java.lang.Thread thread_setTermBuffer;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        buffer := @parameter0: java.lang.String;
+        offset := @parameter1: int;
+        length := @parameter2: int;
+        thread_setTermBuffer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setTermBuffer = virtualinvoke thread_setTermBuffer.<java.lang.Thread: long getId()>();
+        $z0 = <org.apache.lucene.analysis.Token: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label0;
+
+        $i0 = virtualinvoke buffer.<java.lang.String: int length()>();
+        if offset <= $i0 goto label0;
+
+        $r0 = new java.lang.AssertionError;
+        specialinvoke $r0.<java.lang.AssertionError: void <init>()>();
+        throw $r0;
+
+     label0:
+        $z0 = <org.apache.lucene.analysis.Token: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label1;
+
+        $i1 = offset + length;
+        $i0 = virtualinvoke buffer.<java.lang.String: int length()>();
+        if $i1 <= $i0 goto label1;
+
+        $r0 = new java.lang.AssertionError;
+        specialinvoke $r0.<java.lang.AssertionError: void <init>()>();
+        throw $r0;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_setTermBuffer, "org.apache.lucene.analysis.Token", 405, null);
+        this.<org.apache.lucene.analysis.Token: java.lang.String termText> = null;
+        newCharBuffer = specialinvoke this.<org.apache.lucene.analysis.Token: char[] growTermBuffer(int)>(length);
+        if newCharBuffer == null goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_setTermBuffer, "org.apache.lucene.analysis.Token", 408, newCharBuffer);
+        this.<org.apache.lucene.analysis.Token: char[] termBuffer> = newCharBuffer;
+
+     label2:
+        $i2 = offset + length;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_setTermBuffer, "org.apache.lucene.analysis.Token", 410, $r1);
+        $r1 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        virtualinvoke buffer.<java.lang.String: void getChars(int,int,char[],int)>(offset, $i2, $r1, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 77, tid_setTermBuffer, "org.apache.lucene.analysis.Token", 411, length);
+        this.<org.apache.lucene.analysis.Token: int termLength> = length;
+        return;
+    }
+
+    public final char[] termBuffer()
+    {
+        org.apache.lucene.analysis.Token this;
+        char[] $r0;
+        long tid_termBuffer;
+        java.lang.Thread thread_termBuffer;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        thread_termBuffer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_termBuffer = virtualinvoke thread_termBuffer.<java.lang.Thread: long getId()>();
+        specialinvoke this.<org.apache.lucene.analysis.Token: void initTermBuffer()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_termBuffer, "org.apache.lucene.analysis.Token", 423, $r0);
+        $r0 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        return $r0;
+    }
+
+    public char[] resizeTermBuffer(int)
+    {
+        org.apache.lucene.analysis.Token this;
+        int newSize, $i0, $i1;
+        char[] newCharBuffer, $r0, $r4;
+        boolean $z0;
+        java.lang.AssertionError $r1;
+        java.lang.String $r2, $r3;
+        long tid_resizeTermBuffer;
+        java.lang.Thread thread_resizeTermBuffer;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        newSize := @parameter0: int;
+        thread_resizeTermBuffer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_resizeTermBuffer = virtualinvoke thread_resizeTermBuffer.<java.lang.Thread: long getId()>();
+        newCharBuffer = specialinvoke this.<org.apache.lucene.analysis.Token: char[] growTermBuffer(int)>(newSize);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_resizeTermBuffer, "org.apache.lucene.analysis.Token", 438, $r0);
+        $r0 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        if $r0 != null goto label2;
+
+        $z0 = <org.apache.lucene.analysis.Token: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label0;
+
+        if newCharBuffer != null goto label0;
+
+        $r1 = new java.lang.AssertionError;
+        specialinvoke $r1.<java.lang.AssertionError: void <init>()>();
+        throw $r1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_resizeTermBuffer, "org.apache.lucene.analysis.Token", 442, $r2);
+        $r2 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        if $r2 == null goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_resizeTermBuffer, "org.apache.lucene.analysis.Token", 443, $r2);
+        $r2 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_resizeTermBuffer, "org.apache.lucene.analysis.Token", 443, $r3);
+        $r3 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        $i0 = virtualinvoke $r3.<java.lang.String: int length()>();
+        virtualinvoke $r2.<java.lang.String: void getChars(int,int,char[],int)>(0, $i0, newCharBuffer, 0);
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_resizeTermBuffer, "org.apache.lucene.analysis.Token", 445, newCharBuffer);
+        this.<org.apache.lucene.analysis.Token: char[] termBuffer> = newCharBuffer;
+        goto label3;
+
+     label2:
+        if newCharBuffer == null goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_resizeTermBuffer, "org.apache.lucene.analysis.Token", 449, $r0);
+        $r0 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_resizeTermBuffer, "org.apache.lucene.analysis.Token", 449, $r4);
+        $r4 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        $i1 = lengthof $r4;
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r0, 0, newCharBuffer, 0, $i1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_resizeTermBuffer, "org.apache.lucene.analysis.Token", 450, newCharBuffer);
+        this.<org.apache.lucene.analysis.Token: char[] termBuffer> = newCharBuffer;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_resizeTermBuffer, "org.apache.lucene.analysis.Token", 452, null);
+        this.<org.apache.lucene.analysis.Token: java.lang.String termText> = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_resizeTermBuffer, "org.apache.lucene.analysis.Token", 453, $r0);
+        $r0 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        return $r0;
+    }
+
+    private char[] growTermBuffer(int)
+    {
+        org.apache.lucene.analysis.Token this;
+        int newSize, ttLength, $i0, $i1;
+        char[] $r0;
+        java.lang.String $r1;
+        long tid_growTermBuffer;
+        java.lang.Thread thread_growTermBuffer;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        newSize := @parameter0: int;
+        thread_growTermBuffer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_growTermBuffer = virtualinvoke thread_growTermBuffer.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_growTermBuffer, "org.apache.lucene.analysis.Token", 461, $r0);
+        $r0 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        if $r0 == null goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_growTermBuffer, "org.apache.lucene.analysis.Token", 462, $r0);
+        $r0 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        $i0 = lengthof $r0;
+        if $i0 < newSize goto label0;
+
+        return null;
+
+     label0:
+        $i0 = staticinvoke <org.apache.lucene.util.ArrayUtil: int getNextSize(int)>(newSize);
+        $r0 = newarray (char)[$i0];
+        return $r0;
+
+     label1:
+        $i1 = <org.apache.lucene.analysis.Token: int MIN_BUFFER_SIZE>;
+        if newSize >= $i1 goto label2;
+
+        newSize = <org.apache.lucene.analysis.Token: int MIN_BUFFER_SIZE>;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_growTermBuffer, "org.apache.lucene.analysis.Token", 478, $r1);
+        $r1 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        if $r1 == null goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_growTermBuffer, "org.apache.lucene.analysis.Token", 479, $r1);
+        $r1 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        ttLength = virtualinvoke $r1.<java.lang.String: int length()>();
+        if newSize >= ttLength goto label3;
+
+        newSize = ttLength;
+
+     label3:
+        $r0 = newarray (char)[newSize];
+        return $r0;
+    }
+
+    private void initTermBuffer()
+    {
+        org.apache.lucene.analysis.Token this;
+        int $i0, length, $i1;
+        char[] $r0, $r2, $r5;
+        java.lang.String $r1, $r3, $r4;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        $r0 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        if $r0 != null goto label2;
+
+        $r1 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        if $r1 != null goto label0;
+
+        $i0 = <org.apache.lucene.analysis.Token: int MIN_BUFFER_SIZE>;
+        $r2 = newarray (char)[$i0];
+        this.<org.apache.lucene.analysis.Token: char[] termBuffer> = $r2;
+        this.<org.apache.lucene.analysis.Token: int termLength> = 0;
+        goto label3;
+
+     label0:
+        $r1 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        length = virtualinvoke $r1.<java.lang.String: int length()>();
+        $i0 = <org.apache.lucene.analysis.Token: int MIN_BUFFER_SIZE>;
+        if length >= $i0 goto label1;
+
+        length = <org.apache.lucene.analysis.Token: int MIN_BUFFER_SIZE>;
+
+     label1:
+        $r2 = newarray (char)[length];
+        this.<org.apache.lucene.analysis.Token: char[] termBuffer> = $r2;
+        $r3 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        $i0 = virtualinvoke $r3.<java.lang.String: int length()>();
+        this.<org.apache.lucene.analysis.Token: int termLength> = $i0;
+        $r1 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        $r4 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        $i1 = virtualinvoke $r4.<java.lang.String: int length()>();
+        $r5 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        virtualinvoke $r1.<java.lang.String: void getChars(int,int,char[],int)>(0, $i1, $r5, 0);
+        this.<org.apache.lucene.analysis.Token: java.lang.String termText> = null;
+        goto label3;
+
+     label2:
+        $r1 = this.<org.apache.lucene.analysis.Token: java.lang.String termText>;
+        if $r1 == null goto label3;
+
+        this.<org.apache.lucene.analysis.Token: java.lang.String termText> = null;
+
+     label3:
+        return;
+    }
+
+    public final int termLength()
+    {
+        org.apache.lucene.analysis.Token this;
+        int $i0;
+        long tid_termLength;
+        java.lang.Thread thread_termLength;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        thread_termLength = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_termLength = virtualinvoke thread_termLength.<java.lang.Thread: long getId()>();
+        specialinvoke this.<org.apache.lucene.analysis.Token: void initTermBuffer()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 77, tid_termLength, "org.apache.lucene.analysis.Token", 513, $i0);
+        $i0 = this.<org.apache.lucene.analysis.Token: int termLength>;
+        return $i0;
+    }
+
+    public final void setTermLength(int)
+    {
+        org.apache.lucene.analysis.Token this;
+        int length, $i0, $i1;
+        java.lang.StringBuffer $r0;
+        char[] $r1, $r3;
+        java.lang.IllegalArgumentException $r2;
+        java.lang.String $r4;
+        long tid_setTermLength;
+        java.lang.Thread thread_setTermLength;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        length := @parameter0: int;
+        thread_setTermLength = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setTermLength = virtualinvoke thread_setTermLength.<java.lang.Thread: long getId()>();
+        specialinvoke this.<org.apache.lucene.analysis.Token: void initTermBuffer()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_setTermLength, "org.apache.lucene.analysis.Token", 525, $r1);
+        $r1 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        $i0 = lengthof $r1;
+        if length <= $i0 goto label0;
+
+        $r2 = new java.lang.IllegalArgumentException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("length ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(length);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" exceeds the size of the termBuffer (");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_setTermLength, "org.apache.lucene.analysis.Token", 526, $r3);
+        $r3 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        $i1 = lengthof $r3;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(")");
+        $r4 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r2.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r4);
+        throw $r2;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 77, tid_setTermLength, "org.apache.lucene.analysis.Token", 527, length);
+        this.<org.apache.lucene.analysis.Token: int termLength> = length;
+        return;
+    }
+
+    public final int startOffset()
+    {
+        org.apache.lucene.analysis.Token this;
+        int $i0;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        $i0 = this.<org.apache.lucene.analysis.Token: int startOffset>;
+        return $i0;
+    }
+
+    public void setStartOffset(int)
+    {
+        org.apache.lucene.analysis.Token this;
+        int offset;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        offset := @parameter0: int;
+        this.<org.apache.lucene.analysis.Token: int startOffset> = offset;
+        return;
+    }
+
+    public final int endOffset()
+    {
+        org.apache.lucene.analysis.Token this;
+        int $i0;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        $i0 = this.<org.apache.lucene.analysis.Token: int endOffset>;
+        return $i0;
+    }
+
+    public void setEndOffset(int)
+    {
+        org.apache.lucene.analysis.Token this;
+        int offset;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        offset := @parameter0: int;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = offset;
+        return;
+    }
+
+    public final java.lang.String type()
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        $r0 = this.<org.apache.lucene.analysis.Token: java.lang.String type>;
+        return $r0;
+    }
+
+    public final void setType(java.lang.String)
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.String type;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        type := @parameter0: java.lang.String;
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = type;
+        return;
+    }
+
+    public int getFlags()
+    {
+        org.apache.lucene.analysis.Token this;
+        int $i0;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        $i0 = this.<org.apache.lucene.analysis.Token: int flags>;
+        return $i0;
+    }
+
+    public void setFlags(int)
+    {
+        org.apache.lucene.analysis.Token this;
+        int flags;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        flags := @parameter0: int;
+        this.<org.apache.lucene.analysis.Token: int flags> = flags;
+        return;
+    }
+
+    public org.apache.lucene.index.Payload getPayload()
+    {
+        org.apache.lucene.analysis.Token this;
+        org.apache.lucene.index.Payload $r0;
+        long tid_getPayload;
+        java.lang.Thread thread_getPayload;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        thread_getPayload = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getPayload = virtualinvoke thread_getPayload.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_getPayload, "org.apache.lucene.analysis.Token", 595, $r0);
+        $r0 = this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload>;
+        return $r0;
+    }
+
+    public void setPayload(org.apache.lucene.index.Payload)
+    {
+        org.apache.lucene.analysis.Token this;
+        org.apache.lucene.index.Payload payload;
+        long tid_setPayload;
+        java.lang.Thread thread_setPayload;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        payload := @parameter0: org.apache.lucene.index.Payload;
+        thread_setPayload = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setPayload = virtualinvoke thread_setPayload.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_setPayload, "org.apache.lucene.analysis.Token", 602, payload);
+        this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload> = payload;
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.StringBuffer $r0, sb;
+        char[] $r1, $r2;
+        int $i0, $i1, $i2;
+        java.lang.String $r3, $r4;
+        boolean $z0;
+        long tid_toString;
+        java.lang.Thread thread_toString;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        thread_toString = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_toString = virtualinvoke thread_toString.<java.lang.Thread: long getId()>();
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        sb = $r0;
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(40);
+        specialinvoke this.<org.apache.lucene.analysis.Token: void initTermBuffer()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_toString, "org.apache.lucene.analysis.Token", 609, $r1);
+        $r1 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        if $r1 != null goto label0;
+
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("null");
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_toString, "org.apache.lucene.analysis.Token", 612, $r2);
+        $r2 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 77, tid_toString, "org.apache.lucene.analysis.Token", 612, $i0);
+        $i0 = this.<org.apache.lucene.analysis.Token: int termLength>;
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(char[],int,int)>($r2, 0, $i0);
+
+     label1:
+        $r0 = virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(44);
+        $i1 = this.<org.apache.lucene.analysis.Token: int startOffset>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(44);
+        $i1 = this.<org.apache.lucene.analysis.Token: int endOffset>;
+        virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i1);
+        $r3 = this.<org.apache.lucene.analysis.Token: java.lang.String type>;
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("word");
+        if $z0 != 0 goto label2;
+
+        $r0 = virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(",type=");
+        $r4 = this.<org.apache.lucene.analysis.Token: java.lang.String type>;
+        virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 74, tid_toString, "org.apache.lucene.analysis.Token", 616, $i2);
+        $i2 = this.<org.apache.lucene.analysis.Token: int positionIncrement>;
+        if $i2 == 1 goto label3;
+
+        $r0 = virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(",posIncr=");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 74, tid_toString, "org.apache.lucene.analysis.Token", 617, $i1);
+        $i1 = this.<org.apache.lucene.analysis.Token: int positionIncrement>;
+        virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i1);
+
+     label3:
+        virtualinvoke sb.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(41);
+        $r3 = virtualinvoke sb.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r3;
+    }
+
+    public void clear()
+    {
+        org.apache.lucene.analysis.Token this;
+        long tid_clear;
+        java.lang.Thread thread_clear;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        thread_clear = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clear = virtualinvoke thread_clear.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_clear, "org.apache.lucene.analysis.Token", 626, null);
+        this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload> = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 77, tid_clear, "org.apache.lucene.analysis.Token", 628, 0);
+        this.<org.apache.lucene.analysis.Token: int termLength> = 0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 75, tid_clear, "org.apache.lucene.analysis.Token", 629, null);
+        this.<org.apache.lucene.analysis.Token: java.lang.String termText> = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 74, tid_clear, "org.apache.lucene.analysis.Token", 630, 1);
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = 1;
+        this.<org.apache.lucene.analysis.Token: int flags> = 0;
+        return;
+    }
+
+    public java.lang.Object clone()
+    {
+        org.apache.lucene.analysis.Token this, t;
+        java.lang.CloneNotSupportedException e, $r7;
+        java.lang.Object $r0, $r3;
+        char[] $r1, $r2;
+        org.apache.lucene.index.Payload $r4, $r5;
+        java.lang.RuntimeException $r8;
+        long tid_clone;
+        java.lang.Thread thread_clone;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        thread_clone = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clone = virtualinvoke thread_clone.<java.lang.Thread: long getId()>();
+
+     label0:
+        $r0 = specialinvoke this.<java.lang.Object: java.lang.Object clone()>();
+        t = (org.apache.lucene.analysis.Token) $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_clone, "org.apache.lucene.analysis.Token", 640, $r1);
+        $r1 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        if $r1 == null goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_clone, "org.apache.lucene.analysis.Token", 641, $r2);
+        $r2 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        $r3 = virtualinvoke $r2.<java.lang.Object: java.lang.Object clone()>();
+        $r2 = (char[]) $r3;
+        $r2 = (char[]) $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(t, 76, tid_clone, "org.apache.lucene.analysis.Token", 641, $r2);
+        t.<org.apache.lucene.analysis.Token: char[] termBuffer> = $r2;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_clone, "org.apache.lucene.analysis.Token", 643, $r4);
+        $r4 = this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload>;
+        if $r4 == null goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_clone, "org.apache.lucene.analysis.Token", 644, $r5);
+        $r5 = this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload>;
+        $r3 = virtualinvoke $r5.<org.apache.lucene.index.Payload: java.lang.Object clone()>();
+        $r5 = (org.apache.lucene.index.Payload) $r3;
+        virtualinvoke t.<org.apache.lucene.analysis.Token: void setPayload(org.apache.lucene.index.Payload)>($r5);
+
+     label2:
+        return t;
+
+     label3:
+        $r7 := @caughtexception;
+        e = $r7;
+        $r8 = new java.lang.RuntimeException;
+        specialinvoke $r8.<java.lang.RuntimeException: void <init>(java.lang.Throwable)>(e);
+        throw $r8;
+
+        catch java.lang.CloneNotSupportedException from label0 to label2 with label3;
+    }
+
+    public org.apache.lucene.analysis.Token clone(char[], int, int, int, int)
+    {
+        org.apache.lucene.analysis.Token this, $r0, t;
+        char[] newTermBuffer;
+        int newTermOffset, newTermLength, newStartOffset, newEndOffset, $i0;
+        java.lang.String $r1;
+        org.apache.lucene.index.Payload $r2, $r3;
+        java.lang.Object $r4;
+        long tid_clone;
+        java.lang.Thread thread_clone;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        newTermBuffer := @parameter0: char[];
+        newTermOffset := @parameter1: int;
+        newTermLength := @parameter2: int;
+        newStartOffset := @parameter3: int;
+        newEndOffset := @parameter4: int;
+        thread_clone = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clone = virtualinvoke thread_clone.<java.lang.Thread: long getId()>();
+        $r0 = new org.apache.lucene.analysis.Token;
+        specialinvoke $r0.<org.apache.lucene.analysis.Token: void <init>(char[],int,int,int,int)>(newTermBuffer, newTermOffset, newTermLength, newStartOffset, newEndOffset);
+        t = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 74, tid_clone, "org.apache.lucene.analysis.Token", 659, $i0);
+        $i0 = this.<org.apache.lucene.analysis.Token: int positionIncrement>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(t, 74, tid_clone, "org.apache.lucene.analysis.Token", 659, $i0);
+        t.<org.apache.lucene.analysis.Token: int positionIncrement> = $i0;
+        $i0 = this.<org.apache.lucene.analysis.Token: int flags>;
+        t.<org.apache.lucene.analysis.Token: int flags> = $i0;
+        $r1 = this.<org.apache.lucene.analysis.Token: java.lang.String type>;
+        t.<org.apache.lucene.analysis.Token: java.lang.String type> = $r1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_clone, "org.apache.lucene.analysis.Token", 662, $r2);
+        $r2 = this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload>;
+        if $r2 == null goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_clone, "org.apache.lucene.analysis.Token", 663, $r3);
+        $r3 = this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload>;
+        $r4 = virtualinvoke $r3.<org.apache.lucene.index.Payload: java.lang.Object clone()>();
+        $r3 = (org.apache.lucene.index.Payload) $r4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(t, 78, tid_clone, "org.apache.lucene.analysis.Token", 663, $r3);
+        t.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload> = $r3;
+
+     label0:
+        return t;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        org.apache.lucene.analysis.Token this, other;
+        java.lang.Object obj;
+        int i, $i0, $i1;
+        boolean $z0;
+        java.lang.String $r0, $r1;
+        org.apache.lucene.index.Payload $r2, $r3;
+        char[] $r4, $r5;
+        char $c2, $c3;
+        long tid_equals;
+        java.lang.Thread thread_equals;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        obj := @parameter0: java.lang.Object;
+        thread_equals = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_equals = virtualinvoke thread_equals.<java.lang.Thread: long getId()>();
+        if obj != this goto label0;
+
+        return 1;
+
+     label0:
+        $z0 = obj instanceof org.apache.lucene.analysis.Token;
+        if $z0 == 0 goto label5;
+
+        other = (org.apache.lucene.analysis.Token) obj;
+        specialinvoke this.<org.apache.lucene.analysis.Token: void initTermBuffer()>();
+        specialinvoke other.<org.apache.lucene.analysis.Token: void initTermBuffer()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 77, tid_equals, "org.apache.lucene.analysis.Token", 677, $i0);
+        $i0 = this.<org.apache.lucene.analysis.Token: int termLength>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(other, 77, tid_equals, "org.apache.lucene.analysis.Token", 677, $i1);
+        $i1 = other.<org.apache.lucene.analysis.Token: int termLength>;
+        if $i0 != $i1 goto label4;
+
+        $i0 = this.<org.apache.lucene.analysis.Token: int startOffset>;
+        $i1 = other.<org.apache.lucene.analysis.Token: int startOffset>;
+        if $i0 != $i1 goto label4;
+
+        $i0 = this.<org.apache.lucene.analysis.Token: int endOffset>;
+        $i1 = other.<org.apache.lucene.analysis.Token: int endOffset>;
+        if $i0 != $i1 goto label4;
+
+        $i0 = this.<org.apache.lucene.analysis.Token: int flags>;
+        $i1 = other.<org.apache.lucene.analysis.Token: int flags>;
+        if $i0 != $i1 goto label4;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 74, tid_equals, "org.apache.lucene.analysis.Token", 677, $i0);
+        $i0 = this.<org.apache.lucene.analysis.Token: int positionIncrement>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(other, 74, tid_equals, "org.apache.lucene.analysis.Token", 677, $i1);
+        $i1 = other.<org.apache.lucene.analysis.Token: int positionIncrement>;
+        if $i0 != $i1 goto label4;
+
+        $r0 = this.<org.apache.lucene.analysis.Token: java.lang.String type>;
+        $r1 = other.<org.apache.lucene.analysis.Token: java.lang.String type>;
+        $z0 = specialinvoke this.<org.apache.lucene.analysis.Token: boolean subEqual(java.lang.Object,java.lang.Object)>($r0, $r1);
+        if $z0 == 0 goto label4;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_equals, "org.apache.lucene.analysis.Token", 677, $r2);
+        $r2 = this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(other, 78, tid_equals, "org.apache.lucene.analysis.Token", 677, $r3);
+        $r3 = other.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload>;
+        $z0 = specialinvoke this.<org.apache.lucene.analysis.Token: boolean subEqual(java.lang.Object,java.lang.Object)>($r2, $r3);
+        if $z0 == 0 goto label4;
+
+        i = 0;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 77, tid_equals, "org.apache.lucene.analysis.Token", 684, $i1);
+        $i1 = this.<org.apache.lucene.analysis.Token: int termLength>;
+        if i >= $i1 goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 76, tid_equals, "org.apache.lucene.analysis.Token", 685, $r4);
+        $r4 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>($r4, 25, tid_equals, "org.apache.lucene.analysis.Token", 685, i, $c2);
+        $c2 = $r4[i];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(other, 76, tid_equals, "org.apache.lucene.analysis.Token", 685, $r5);
+        $r5 = other.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>($r5, 25, tid_equals, "org.apache.lucene.analysis.Token", 685, i, $c3);
+        $c3 = $r5[i];
+        if $c2 == $c3 goto label2;
+
+        return 0;
+
+     label2:
+        i = i + 1;
+        goto label1;
+
+     label3:
+        return 1;
+
+     label4:
+        return 0;
+
+     label5:
+        return 0;
+    }
+
+    private boolean subEqual(java.lang.Object, java.lang.Object)
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.Object o1, o2;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        o1 := @parameter0: java.lang.Object;
+        o2 := @parameter1: java.lang.Object;
+        if o1 != null goto label2;
+
+        if o2 != null goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+
+     label2:
+        $z0 = virtualinvoke o1.<java.lang.Object: boolean equals(java.lang.Object)>(o2);
+        return $z0;
+    }
+
+    public int hashCode()
+    {
+        org.apache.lucene.analysis.Token this;
+        int code, $i0, $i1, $i2;
+        java.lang.String $r0;
+        org.apache.lucene.index.Payload $r1, $r2;
+        char[] $r3;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        specialinvoke this.<org.apache.lucene.analysis.Token: void initTermBuffer()>();
+        code = this.<org.apache.lucene.analysis.Token: int termLength>;
+        $i0 = code * 31;
+        $i1 = this.<org.apache.lucene.analysis.Token: int startOffset>;
+        code = $i0 + $i1;
+        $i0 = code * 31;
+        $i1 = this.<org.apache.lucene.analysis.Token: int endOffset>;
+        code = $i0 + $i1;
+        $i0 = code * 31;
+        $i1 = this.<org.apache.lucene.analysis.Token: int flags>;
+        code = $i0 + $i1;
+        $i0 = code * 31;
+        $i1 = this.<org.apache.lucene.analysis.Token: int positionIncrement>;
+        code = $i0 + $i1;
+        $i0 = code * 31;
+        $r0 = this.<org.apache.lucene.analysis.Token: java.lang.String type>;
+        $i1 = virtualinvoke $r0.<java.lang.String: int hashCode()>();
+        code = $i0 + $i1;
+        $r1 = this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload>;
+        if $r1 != null goto label0;
+
+        $i0 = code;
+        goto label1;
+
+     label0:
+        $i0 = code * 31;
+        $r2 = this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload>;
+        $i1 = virtualinvoke $r2.<org.apache.lucene.index.Payload: int hashCode()>();
+        $i0 = $i0 + $i1;
+
+     label1:
+        code = $i0;
+        $i0 = code * 31;
+        $r3 = this.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        $i2 = this.<org.apache.lucene.analysis.Token: int termLength>;
+        $i1 = staticinvoke <org.apache.lucene.util.ArrayUtil: int hashCode(char[],int,int)>($r3, 0, $i2);
+        code = $i0 + $i1;
+        return code;
+    }
+
+    private void clearNoTermBuffer()
+    {
+        org.apache.lucene.analysis.Token this;
+        long tid_clearNoTermBuffer;
+        java.lang.Thread thread_clearNoTermBuffer;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        thread_clearNoTermBuffer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clearNoTermBuffer = virtualinvoke thread_clearNoTermBuffer.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_clearNoTermBuffer, "org.apache.lucene.analysis.Token", 716, null);
+        this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload> = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 74, tid_clearNoTermBuffer, "org.apache.lucene.analysis.Token", 717, 1);
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = 1;
+        this.<org.apache.lucene.analysis.Token: int flags> = 0;
+        return;
+    }
+
+    public org.apache.lucene.analysis.Token reinit(char[], int, int, int, int, java.lang.String)
+    {
+        org.apache.lucene.analysis.Token this;
+        char[] newTermBuffer;
+        int newTermOffset, newTermLength, newStartOffset, newEndOffset;
+        java.lang.String newType;
+        long tid_reinit;
+        java.lang.Thread thread_reinit;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        newTermBuffer := @parameter0: char[];
+        newTermOffset := @parameter1: int;
+        newTermLength := @parameter2: int;
+        newStartOffset := @parameter3: int;
+        newEndOffset := @parameter4: int;
+        newType := @parameter5: java.lang.String;
+        thread_reinit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_reinit = virtualinvoke thread_reinit.<java.lang.Thread: long getId()>();
+        specialinvoke this.<org.apache.lucene.analysis.Token: void clearNoTermBuffer()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_reinit, "org.apache.lucene.analysis.Token", 729, null);
+        this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload> = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 74, tid_reinit, "org.apache.lucene.analysis.Token", 730, 1);
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = 1;
+        virtualinvoke this.<org.apache.lucene.analysis.Token: void setTermBuffer(char[],int,int)>(newTermBuffer, newTermOffset, newTermLength);
+        this.<org.apache.lucene.analysis.Token: int startOffset> = newStartOffset;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = newEndOffset;
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = newType;
+        return this;
+    }
+
+    public org.apache.lucene.analysis.Token reinit(char[], int, int, int, int)
+    {
+        org.apache.lucene.analysis.Token this;
+        char[] newTermBuffer;
+        int newTermOffset, newTermLength, newStartOffset, newEndOffset;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        newTermBuffer := @parameter0: char[];
+        newTermOffset := @parameter1: int;
+        newTermLength := @parameter2: int;
+        newStartOffset := @parameter3: int;
+        newEndOffset := @parameter4: int;
+        specialinvoke this.<org.apache.lucene.analysis.Token: void clearNoTermBuffer()>();
+        virtualinvoke this.<org.apache.lucene.analysis.Token: void setTermBuffer(char[],int,int)>(newTermBuffer, newTermOffset, newTermLength);
+        this.<org.apache.lucene.analysis.Token: int startOffset> = newStartOffset;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = newEndOffset;
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = "word";
+        return this;
+    }
+
+    public org.apache.lucene.analysis.Token reinit(java.lang.String, int, int, java.lang.String)
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.String newTerm, newType;
+        int newStartOffset, newEndOffset;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        newTerm := @parameter0: java.lang.String;
+        newStartOffset := @parameter1: int;
+        newEndOffset := @parameter2: int;
+        newType := @parameter3: java.lang.String;
+        specialinvoke this.<org.apache.lucene.analysis.Token: void clearNoTermBuffer()>();
+        virtualinvoke this.<org.apache.lucene.analysis.Token: void setTermBuffer(java.lang.String)>(newTerm);
+        this.<org.apache.lucene.analysis.Token: int startOffset> = newStartOffset;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = newEndOffset;
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = newType;
+        return this;
+    }
+
+    public org.apache.lucene.analysis.Token reinit(java.lang.String, int, int, int, int, java.lang.String)
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.String newTerm, newType;
+        int newTermOffset, newTermLength, newStartOffset, newEndOffset;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        newTerm := @parameter0: java.lang.String;
+        newTermOffset := @parameter1: int;
+        newTermLength := @parameter2: int;
+        newStartOffset := @parameter3: int;
+        newEndOffset := @parameter4: int;
+        newType := @parameter5: java.lang.String;
+        specialinvoke this.<org.apache.lucene.analysis.Token: void clearNoTermBuffer()>();
+        virtualinvoke this.<org.apache.lucene.analysis.Token: void setTermBuffer(java.lang.String,int,int)>(newTerm, newTermOffset, newTermLength);
+        this.<org.apache.lucene.analysis.Token: int startOffset> = newStartOffset;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = newEndOffset;
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = newType;
+        return this;
+    }
+
+    public org.apache.lucene.analysis.Token reinit(java.lang.String, int, int)
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.String newTerm;
+        int newStartOffset, newEndOffset;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        newTerm := @parameter0: java.lang.String;
+        newStartOffset := @parameter1: int;
+        newEndOffset := @parameter2: int;
+        specialinvoke this.<org.apache.lucene.analysis.Token: void clearNoTermBuffer()>();
+        virtualinvoke this.<org.apache.lucene.analysis.Token: void setTermBuffer(java.lang.String)>(newTerm);
+        this.<org.apache.lucene.analysis.Token: int startOffset> = newStartOffset;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = newEndOffset;
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = "word";
+        return this;
+    }
+
+    public org.apache.lucene.analysis.Token reinit(java.lang.String, int, int, int, int)
+    {
+        org.apache.lucene.analysis.Token this;
+        java.lang.String newTerm;
+        int newTermOffset, newTermLength, newStartOffset, newEndOffset;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        newTerm := @parameter0: java.lang.String;
+        newTermOffset := @parameter1: int;
+        newTermLength := @parameter2: int;
+        newStartOffset := @parameter3: int;
+        newEndOffset := @parameter4: int;
+        specialinvoke this.<org.apache.lucene.analysis.Token: void clearNoTermBuffer()>();
+        virtualinvoke this.<org.apache.lucene.analysis.Token: void setTermBuffer(java.lang.String,int,int)>(newTerm, newTermOffset, newTermLength);
+        this.<org.apache.lucene.analysis.Token: int startOffset> = newStartOffset;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = newEndOffset;
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = "word";
+        return this;
+    }
+
+    public void reinit(org.apache.lucene.analysis.Token)
+    {
+        org.apache.lucene.analysis.Token this, prototype;
+        char[] $r0;
+        int $i0, $i1;
+        java.lang.String $r1;
+        org.apache.lucene.index.Payload $r2;
+        long tid_reinit;
+        java.lang.Thread thread_reinit;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        prototype := @parameter0: org.apache.lucene.analysis.Token;
+        thread_reinit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_reinit = virtualinvoke thread_reinit.<java.lang.Thread: long getId()>();
+        specialinvoke prototype.<org.apache.lucene.analysis.Token: void initTermBuffer()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(prototype, 76, tid_reinit, "org.apache.lucene.analysis.Token", 819, $r0);
+        $r0 = prototype.<org.apache.lucene.analysis.Token: char[] termBuffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(prototype, 77, tid_reinit, "org.apache.lucene.analysis.Token", 819, $i0);
+        $i0 = prototype.<org.apache.lucene.analysis.Token: int termLength>;
+        virtualinvoke this.<org.apache.lucene.analysis.Token: void setTermBuffer(char[],int,int)>($r0, 0, $i0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(prototype, 74, tid_reinit, "org.apache.lucene.analysis.Token", 820, $i1);
+        $i1 = prototype.<org.apache.lucene.analysis.Token: int positionIncrement>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 74, tid_reinit, "org.apache.lucene.analysis.Token", 820, $i1);
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = $i1;
+        $i1 = prototype.<org.apache.lucene.analysis.Token: int flags>;
+        this.<org.apache.lucene.analysis.Token: int flags> = $i1;
+        $i1 = prototype.<org.apache.lucene.analysis.Token: int startOffset>;
+        this.<org.apache.lucene.analysis.Token: int startOffset> = $i1;
+        $i1 = prototype.<org.apache.lucene.analysis.Token: int endOffset>;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = $i1;
+        $r1 = prototype.<org.apache.lucene.analysis.Token: java.lang.String type>;
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = $r1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(prototype, 78, tid_reinit, "org.apache.lucene.analysis.Token", 825, $r2);
+        $r2 = prototype.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_reinit, "org.apache.lucene.analysis.Token", 825, $r2);
+        this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload> = $r2;
+        return;
+    }
+
+    public void reinit(org.apache.lucene.analysis.Token, java.lang.String)
+    {
+        org.apache.lucene.analysis.Token this, prototype;
+        java.lang.String newTerm, $r0;
+        int $i0;
+        org.apache.lucene.index.Payload $r1;
+        long tid_reinit;
+        java.lang.Thread thread_reinit;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        prototype := @parameter0: org.apache.lucene.analysis.Token;
+        newTerm := @parameter1: java.lang.String;
+        thread_reinit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_reinit = virtualinvoke thread_reinit.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<org.apache.lucene.analysis.Token: void setTermBuffer(java.lang.String)>(newTerm);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(prototype, 74, tid_reinit, "org.apache.lucene.analysis.Token", 835, $i0);
+        $i0 = prototype.<org.apache.lucene.analysis.Token: int positionIncrement>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 74, tid_reinit, "org.apache.lucene.analysis.Token", 835, $i0);
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = $i0;
+        $i0 = prototype.<org.apache.lucene.analysis.Token: int flags>;
+        this.<org.apache.lucene.analysis.Token: int flags> = $i0;
+        $i0 = prototype.<org.apache.lucene.analysis.Token: int startOffset>;
+        this.<org.apache.lucene.analysis.Token: int startOffset> = $i0;
+        $i0 = prototype.<org.apache.lucene.analysis.Token: int endOffset>;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = $i0;
+        $r0 = prototype.<org.apache.lucene.analysis.Token: java.lang.String type>;
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(prototype, 78, tid_reinit, "org.apache.lucene.analysis.Token", 840, $r1);
+        $r1 = prototype.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_reinit, "org.apache.lucene.analysis.Token", 840, $r1);
+        this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload> = $r1;
+        return;
+    }
+
+    public void reinit(org.apache.lucene.analysis.Token, char[], int, int)
+    {
+        org.apache.lucene.analysis.Token this, prototype;
+        char[] newTermBuffer;
+        int offset, length, $i0;
+        java.lang.String $r0;
+        org.apache.lucene.index.Payload $r1;
+        long tid_reinit;
+        java.lang.Thread thread_reinit;
+
+        this := @this: org.apache.lucene.analysis.Token;
+        prototype := @parameter0: org.apache.lucene.analysis.Token;
+        newTermBuffer := @parameter1: char[];
+        offset := @parameter2: int;
+        length := @parameter3: int;
+        thread_reinit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_reinit = virtualinvoke thread_reinit.<java.lang.Thread: long getId()>();
+        virtualinvoke this.<org.apache.lucene.analysis.Token: void setTermBuffer(char[],int,int)>(newTermBuffer, offset, length);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(prototype, 74, tid_reinit, "org.apache.lucene.analysis.Token", 852, $i0);
+        $i0 = prototype.<org.apache.lucene.analysis.Token: int positionIncrement>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 74, tid_reinit, "org.apache.lucene.analysis.Token", 852, $i0);
+        this.<org.apache.lucene.analysis.Token: int positionIncrement> = $i0;
+        $i0 = prototype.<org.apache.lucene.analysis.Token: int flags>;
+        this.<org.apache.lucene.analysis.Token: int flags> = $i0;
+        $i0 = prototype.<org.apache.lucene.analysis.Token: int startOffset>;
+        this.<org.apache.lucene.analysis.Token: int startOffset> = $i0;
+        $i0 = prototype.<org.apache.lucene.analysis.Token: int endOffset>;
+        this.<org.apache.lucene.analysis.Token: int endOffset> = $i0;
+        $r0 = prototype.<org.apache.lucene.analysis.Token: java.lang.String type>;
+        this.<org.apache.lucene.analysis.Token: java.lang.String type> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(prototype, 78, tid_reinit, "org.apache.lucene.analysis.Token", 857, $r1);
+        $r1 = prototype.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_reinit, "org.apache.lucene.analysis.Token", 857, $r1);
+        this.<org.apache.lucene.analysis.Token: org.apache.lucene.index.Payload payload> = $r1;
+        return;
+    }
+
+    static java.lang.Class class$(java.lang.String)
+    {
+        java.lang.String x0;
+        java.lang.ClassNotFoundException x1, $r1;
+        java.lang.Class $r0;
+        java.lang.NoClassDefFoundError $r2;
+        java.lang.Throwable $r3;
+
+        x0 := @parameter0: java.lang.String;
+
+     label0:
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(x0);
+
+     label1:
+        return $r0;
+
+     label2:
+        $r1 := @caughtexception;
+        x1 = $r1;
+        $r2 = new java.lang.NoClassDefFoundError;
+        specialinvoke $r2.<java.lang.NoClassDefFoundError: void <init>()>();
+        $r3 = virtualinvoke $r2.<java.lang.NoClassDefFoundError: java.lang.Throwable initCause(java.lang.Throwable)>(x1);
+        throw $r3;
+
+        catch java.lang.ClassNotFoundException from label0 to label1 with label2;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        boolean $z0;
+
+        $r0 = <org.apache.lucene.analysis.Token: java.lang.Class class$org$apache$lucene$analysis$Token>;
+        if $r0 != null goto label0;
+
+        $r0 = staticinvoke <org.apache.lucene.analysis.Token: java.lang.Class class$(java.lang.String)>("org.apache.lucene.analysis.Token");
+        <org.apache.lucene.analysis.Token: java.lang.Class class$org$apache$lucene$analysis$Token> = $r0;
+        goto label1;
+
+     label0:
+        $r0 = <org.apache.lucene.analysis.Token: java.lang.Class class$org$apache$lucene$analysis$Token>;
+
+     label1:
+        $z0 = virtualinvoke $r0.<java.lang.Class: boolean desiredAssertionStatus()>();
+        if $z0 != 0 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        <org.apache.lucene.analysis.Token: boolean $assertionsDisabled> = $z0;
+        <org.apache.lucene.analysis.Token: int MIN_BUFFER_SIZE> = 10;
+        return;
+    }
+}

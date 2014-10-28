@@ -1,0 +1,153 @@
+public class avrora.sim.output.SimPrinter extends java.lang.Object
+{
+    private avrora.sim.Simulator simulator;
+
+    public void <init>(avrora.sim.Simulator, java.lang.String)
+    {
+        avrora.sim.output.SimPrinter this;
+        avrora.sim.Simulator simulator;
+        java.lang.String category;
+
+        this := @this: avrora.sim.output.SimPrinter;
+        simulator := @parameter0: avrora.sim.Simulator;
+        category := @parameter1: java.lang.String;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.output.SimPrinter: avrora.sim.Simulator simulator> = simulator;
+        return;
+    }
+
+    public void println(java.lang.String)
+    {
+        avrora.sim.output.SimPrinter this;
+        java.lang.String s, $r3;
+        java.lang.Class $r0, l2;
+        java.lang.StringBuffer buf, $r1;
+        java.lang.Throwable l4, $r4;
+        int $i0;
+        avrora.sim.Simulator $r2;
+        long tid_println;
+        java.lang.Thread thread_println;
+
+        this := @this: avrora.sim.output.SimPrinter;
+        s := @parameter0: java.lang.String;
+        thread_println = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_println = virtualinvoke thread_println.<java.lang.Thread: long getId()>();
+        $r0 = class "cck/text/Terminal";
+        l2 = $r0;
+        entermonitor $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r0, 1, tid_println);
+
+     label0:
+        $r1 = new java.lang.StringBuffer;
+        $i0 = virtualinvoke s.<java.lang.String: int length()>();
+        $i0 = $i0 + 30;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>(int)>($i0);
+        buf = $r1;
+        $r2 = this.<avrora.sim.output.SimPrinter: avrora.sim.Simulator simulator>;
+        staticinvoke <avrora.sim.util.SimUtil: void getIDTimeString(java.lang.StringBuffer,avrora.sim.Simulator)>(buf, $r2);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(s);
+        $r3 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>($r3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l2, 1, tid_println);
+        exitmonitor l2;
+
+     label1:
+        goto label5;
+
+     label2:
+        $r4 := @caughtexception;
+
+     label3:
+        l4 = $r4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l2, 1, tid_println);
+        exitmonitor l2;
+
+     label4:
+        throw l4;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public void printBuffer(java.lang.StringBuffer)
+    {
+        avrora.sim.output.SimPrinter this;
+        java.lang.StringBuffer buffer;
+        java.lang.Class $r0, l2;
+        java.lang.Throwable l3, $r2;
+        java.lang.String $r1;
+        long tid_printBuffer;
+        java.lang.Thread thread_printBuffer;
+
+        this := @this: avrora.sim.output.SimPrinter;
+        buffer := @parameter0: java.lang.StringBuffer;
+        thread_printBuffer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_printBuffer = virtualinvoke thread_printBuffer.<java.lang.Thread: long getId()>();
+        $r0 = class "cck/text/Terminal";
+        l2 = $r0;
+        entermonitor $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r0, 1, tid_printBuffer);
+
+     label0:
+        $r1 = virtualinvoke buffer.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>($r1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l2, 1, tid_printBuffer);
+        exitmonitor l2;
+
+     label1:
+        goto label5;
+
+     label2:
+        $r2 := @caughtexception;
+
+     label3:
+        l3 = $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l2, 1, tid_printBuffer);
+        exitmonitor l2;
+
+     label4:
+        throw l3;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public java.lang.StringBuffer getBuffer()
+    {
+        avrora.sim.output.SimPrinter this;
+        java.lang.StringBuffer $r0, buf;
+        avrora.sim.Simulator $r1;
+
+        this := @this: avrora.sim.output.SimPrinter;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>(70);
+        buf = $r0;
+        $r1 = this.<avrora.sim.output.SimPrinter: avrora.sim.Simulator simulator>;
+        staticinvoke <avrora.sim.util.SimUtil: void getIDTimeString(java.lang.StringBuffer,avrora.sim.Simulator)>(buf, $r1);
+        return buf;
+    }
+
+    public java.lang.StringBuffer getBuffer(int)
+    {
+        avrora.sim.output.SimPrinter this;
+        int size, $i0;
+        java.lang.StringBuffer $r0, buf;
+        avrora.sim.Simulator $r1;
+
+        this := @this: avrora.sim.output.SimPrinter;
+        size := @parameter0: int;
+        $r0 = new java.lang.StringBuffer;
+        $i0 = 30 + size;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>($i0);
+        buf = $r0;
+        $r1 = this.<avrora.sim.output.SimPrinter: avrora.sim.Simulator simulator>;
+        staticinvoke <avrora.sim.util.SimUtil: void getIDTimeString(java.lang.StringBuffer,avrora.sim.Simulator)>(buf, $r1);
+        return buf;
+    }
+}

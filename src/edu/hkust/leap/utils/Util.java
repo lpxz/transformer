@@ -97,6 +97,7 @@ public class Util{
 		    	else
 		    	{
 		    		toret= strLine;
+		    		break;
 		    	}
 		     // System.out.println (strLine);
 		    }
@@ -165,7 +166,13 @@ public class Util{
     public static boolean shouldInstruThisMethod(String smname)
 	{    	   	
 		if (smname.contains("<clinit>")
-			|| smname.contains("<init>"))
+			|| smname.contains("<init>")
+			|| smname.contains("hashCode")
+			||  smname.contains("initTermBuffer")
+			||  smname.contains("getBoost"))// avoid recursion: hashCode->initTermBuffer->read -> hashCode()  smname.contains("initTermBuffer")
+			//org.apache.lucene.search.Query.getBoost
+			
+			//org.apache.lucene.analysis.Token.initTermBuffer
     	{
     		return false;
     	}
@@ -235,8 +242,8 @@ public class Util{
 	
 	}
 
-	public static String getSig4JDKDataStructureFakedField(Value base) {    	
-		String sig = base.getType().toString() + "["+ Parameters.fakedJDKDataStructureField+"]"; 
+	public static String getSig4DS(Value base) {    	
+		String sig = base.getType().toString() +  "."+  Parameters.dsIndex; 
 		return sig;
 	}
 

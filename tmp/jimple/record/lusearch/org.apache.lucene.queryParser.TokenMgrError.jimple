@@ -1,0 +1,216 @@
+public class org.apache.lucene.queryParser.TokenMgrError extends java.lang.Error
+{
+    static final int LEXICAL_ERROR;
+    static final int STATIC_LEXER_ERROR;
+    static final int INVALID_LEXICAL_STATE;
+    static final int LOOP_DETECTED;
+    int errorCode;
+
+    protected static final java.lang.String addEscapes(java.lang.String)
+    {
+        java.lang.String str, s, $r1, $r3, $r4;
+        java.lang.StringBuffer $r0, retval, $r2;
+        int i, $i0, $i2, $i3;
+        char ch, $c1;
+
+        str := @parameter0: java.lang.String;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        retval = $r0;
+        i = 0;
+
+     label0:
+        $i0 = virtualinvoke str.<java.lang.String: int length()>();
+        if i >= $i0 goto label14;
+
+        $c1 = virtualinvoke str.<java.lang.String: char charAt(int)>(i);
+        lookupswitch($c1)
+        {
+            case 0: goto label1;
+            case 8: goto label2;
+            case 9: goto label3;
+            case 10: goto label4;
+            case 12: goto label5;
+            case 13: goto label6;
+            case 34: goto label7;
+            case 39: goto label8;
+            case 92: goto label9;
+            default: goto label10;
+        };
+
+     label1:
+        goto label13;
+
+     label2:
+        virtualinvoke retval.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\\b");
+        goto label13;
+
+     label3:
+        virtualinvoke retval.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\\t");
+        goto label13;
+
+     label4:
+        virtualinvoke retval.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\\n");
+        goto label13;
+
+     label5:
+        virtualinvoke retval.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\\f");
+        goto label13;
+
+     label6:
+        virtualinvoke retval.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\\r");
+        goto label13;
+
+     label7:
+        virtualinvoke retval.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\\\"");
+        goto label13;
+
+     label8:
+        virtualinvoke retval.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\\\'");
+        goto label13;
+
+     label9:
+        virtualinvoke retval.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\\\\");
+        goto label13;
+
+     label10:
+        $c1 = virtualinvoke str.<java.lang.String: char charAt(int)>(i);
+        ch = $c1;
+        if $c1 < 32 goto label11;
+
+        if ch <= 126 goto label12;
+
+     label11:
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("0000");
+        $r1 = staticinvoke <java.lang.Integer: java.lang.String toString(int,int)>(ch, 16);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        s = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\\u");
+        $i2 = virtualinvoke s.<java.lang.String: int length()>();
+        $i2 = $i2 - 4;
+        $i3 = virtualinvoke s.<java.lang.String: int length()>();
+        $r3 = virtualinvoke s.<java.lang.String: java.lang.String substring(int,int)>($i2, $i3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r3);
+        $r1 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke retval.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        goto label13;
+
+     label12:
+        virtualinvoke retval.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(ch);
+
+     label13:
+        i = i + 1;
+        goto label0;
+
+     label14:
+        $r4 = virtualinvoke retval.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r4;
+    }
+
+    protected static java.lang.String LexicalError(boolean, int, int, int, java.lang.String, char)
+    {
+        boolean EOFSeen;
+        int lexState, errorLine, errorColumn;
+        java.lang.String errorAfter, $r1, $r3, $r4;
+        char curChar;
+        java.lang.StringBuffer $r0, $r2;
+
+        EOFSeen := @parameter0: boolean;
+        lexState := @parameter1: int;
+        errorLine := @parameter2: int;
+        errorColumn := @parameter3: int;
+        errorAfter := @parameter4: java.lang.String;
+        curChar := @parameter5: char;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Lexical error at line ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(errorLine);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", column ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(errorColumn);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".  Encountered: ");
+        if EOFSeen == 0 goto label0;
+
+        $r1 = "<EOF> ";
+        goto label1;
+
+     label0:
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\"");
+        $r3 = staticinvoke <java.lang.String: java.lang.String valueOf(char)>(curChar);
+        $r3 = staticinvoke <org.apache.lucene.queryParser.TokenMgrError: java.lang.String addEscapes(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\"");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" (");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(curChar);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("), ");
+        $r1 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+
+     label1:
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("after : \"");
+        $r1 = staticinvoke <org.apache.lucene.queryParser.TokenMgrError: java.lang.String addEscapes(java.lang.String)>(errorAfter);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\"");
+        $r4 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r4;
+    }
+
+    public java.lang.String getMessage()
+    {
+        org.apache.lucene.queryParser.TokenMgrError this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.queryParser.TokenMgrError;
+        $r0 = specialinvoke this.<java.lang.Error: java.lang.String getMessage()>();
+        return $r0;
+    }
+
+    public void <init>()
+    {
+        org.apache.lucene.queryParser.TokenMgrError this;
+
+        this := @this: org.apache.lucene.queryParser.TokenMgrError;
+        specialinvoke this.<java.lang.Error: void <init>()>();
+        return;
+    }
+
+    public void <init>(java.lang.String, int)
+    {
+        org.apache.lucene.queryParser.TokenMgrError this;
+        java.lang.String message;
+        int reason;
+
+        this := @this: org.apache.lucene.queryParser.TokenMgrError;
+        message := @parameter0: java.lang.String;
+        reason := @parameter1: int;
+        specialinvoke this.<java.lang.Error: void <init>(java.lang.String)>(message);
+        this.<org.apache.lucene.queryParser.TokenMgrError: int errorCode> = reason;
+        return;
+    }
+
+    public void <init>(boolean, int, int, int, java.lang.String, char, int)
+    {
+        org.apache.lucene.queryParser.TokenMgrError this;
+        boolean EOFSeen;
+        int lexState, errorLine, errorColumn, reason;
+        java.lang.String errorAfter, $r0;
+        char curChar;
+
+        this := @this: org.apache.lucene.queryParser.TokenMgrError;
+        EOFSeen := @parameter0: boolean;
+        lexState := @parameter1: int;
+        errorLine := @parameter2: int;
+        errorColumn := @parameter3: int;
+        errorAfter := @parameter4: java.lang.String;
+        curChar := @parameter5: char;
+        reason := @parameter6: int;
+        $r0 = staticinvoke <org.apache.lucene.queryParser.TokenMgrError: java.lang.String LexicalError(boolean,int,int,int,java.lang.String,char)>(EOFSeen, lexState, errorLine, errorColumn, errorAfter, curChar);
+        specialinvoke this.<org.apache.lucene.queryParser.TokenMgrError: void <init>(java.lang.String,int)>($r0, reason);
+        return;
+    }
+}

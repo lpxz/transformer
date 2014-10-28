@@ -1,0 +1,59 @@
+public class avrora.sim.radio.CC1000Radio$Modem1Register extends avrora.sim.radio.CC1000Radio$RadioRegister
+{
+    int mlimit;
+    boolean lockAvgN;
+    boolean lockAvgMode;
+    int settling;
+    boolean modemResetN;
+    final avrora.sim.radio.CC1000Radio this$0;
+
+    void <init>(avrora.sim.radio.CC1000Radio)
+    {
+        avrora.sim.radio.CC1000Radio$Modem1Register this;
+        avrora.sim.radio.CC1000Radio l1;
+
+        this := @this: avrora.sim.radio.CC1000Radio$Modem1Register;
+        l1 := @parameter0: avrora.sim.radio.CC1000Radio;
+        this.<avrora.sim.radio.CC1000Radio$Modem1Register: avrora.sim.radio.CC1000Radio this$0> = l1;
+        specialinvoke this.<avrora.sim.radio.CC1000Radio$RadioRegister: void <init>(avrora.sim.radio.CC1000Radio,java.lang.String,byte)>(l1, "MODEM1", 103);
+        this.<avrora.sim.radio.CC1000Radio$Modem1Register: int settling> = 11;
+        return;
+    }
+
+    protected void decode(byte)
+    {
+        avrora.sim.radio.CC1000Radio$Modem1Register this;
+        byte val, $b1;
+        short $s0;
+        boolean $z0;
+        int[] $r0;
+        int $i2;
+        long tid_decode;
+        java.lang.Thread thread_decode;
+
+        this := @this: avrora.sim.radio.CC1000Radio$Modem1Register;
+        val := @parameter0: byte;
+        thread_decode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_decode = virtualinvoke thread_decode.<java.lang.Thread: long getId()>();
+        $s0 = val & 224;
+        $s0 = $s0 >> 5;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 152, tid_decode, "avrora.sim.radio.CC1000Radio$Modem1Register", 762, $s0);
+        this.<avrora.sim.radio.CC1000Radio$Modem1Register: int mlimit> = $s0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 4);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 153, tid_decode, "avrora.sim.radio.CC1000Radio$Modem1Register", 763, $z0);
+        this.<avrora.sim.radio.CC1000Radio$Modem1Register: boolean lockAvgN> = $z0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 154, tid_decode, "avrora.sim.radio.CC1000Radio$Modem1Register", 764, $z0);
+        this.<avrora.sim.radio.CC1000Radio$Modem1Register: boolean lockAvgMode> = $z0;
+        $r0 = <avrora.sim.radio.CC1000Radio: int[] SETTLING>;
+        $b1 = val & 6;
+        $b1 = $b1 >> 1;
+        $i2 = $r0[$b1];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 155, tid_decode, "avrora.sim.radio.CC1000Radio$Modem1Register", 765, $i2);
+        this.<avrora.sim.radio.CC1000Radio$Modem1Register: int settling> = $i2;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 156, tid_decode, "avrora.sim.radio.CC1000Radio$Modem1Register", 766, $z0);
+        this.<avrora.sim.radio.CC1000Radio$Modem1Register: boolean modemResetN> = $z0;
+        return;
+    }
+}

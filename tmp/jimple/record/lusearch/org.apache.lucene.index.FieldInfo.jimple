@@ -1,0 +1,181 @@
+final class org.apache.lucene.index.FieldInfo extends java.lang.Object
+{
+    java.lang.String name;
+    boolean isIndexed;
+    int number;
+    boolean storeTermVector;
+    boolean storeOffsetWithTermVector;
+    boolean storePositionWithTermVector;
+    boolean omitNorms;
+    boolean omitTf;
+    boolean storePayloads;
+
+    void <init>(java.lang.String, boolean, int, boolean, boolean, boolean, boolean, boolean, boolean)
+    {
+        org.apache.lucene.index.FieldInfo this;
+        java.lang.String na;
+        boolean tk, storeTermVector, storePositionWithTermVector, storeOffsetWithTermVector, omitNorms, storePayloads, omitTf;
+        int nu;
+
+        this := @this: org.apache.lucene.index.FieldInfo;
+        na := @parameter0: java.lang.String;
+        tk := @parameter1: boolean;
+        nu := @parameter2: int;
+        storeTermVector := @parameter3: boolean;
+        storePositionWithTermVector := @parameter4: boolean;
+        storeOffsetWithTermVector := @parameter5: boolean;
+        omitNorms := @parameter6: boolean;
+        storePayloads := @parameter7: boolean;
+        omitTf := @parameter8: boolean;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.index.FieldInfo: java.lang.String name> = na;
+        this.<org.apache.lucene.index.FieldInfo: boolean isIndexed> = tk;
+        this.<org.apache.lucene.index.FieldInfo: int number> = nu;
+        this.<org.apache.lucene.index.FieldInfo: boolean storeTermVector> = storeTermVector;
+        this.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector> = storeOffsetWithTermVector;
+        this.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector> = storePositionWithTermVector;
+        this.<org.apache.lucene.index.FieldInfo: boolean omitNorms> = omitNorms;
+        this.<org.apache.lucene.index.FieldInfo: boolean storePayloads> = storePayloads;
+        this.<org.apache.lucene.index.FieldInfo: boolean omitTf> = omitTf;
+        return;
+    }
+
+    public java.lang.Object clone()
+    {
+        org.apache.lucene.index.FieldInfo this, $r0;
+        java.lang.String $r1;
+        boolean $z0, $z1, $z2, $z3, $z4, $z5, $z6;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.FieldInfo;
+        $r0 = new org.apache.lucene.index.FieldInfo;
+        $r1 = this.<org.apache.lucene.index.FieldInfo: java.lang.String name>;
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        $i0 = this.<org.apache.lucene.index.FieldInfo: int number>;
+        $z1 = this.<org.apache.lucene.index.FieldInfo: boolean storeTermVector>;
+        $z2 = this.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector>;
+        $z3 = this.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector>;
+        $z4 = this.<org.apache.lucene.index.FieldInfo: boolean omitNorms>;
+        $z5 = this.<org.apache.lucene.index.FieldInfo: boolean storePayloads>;
+        $z6 = this.<org.apache.lucene.index.FieldInfo: boolean omitTf>;
+        specialinvoke $r0.<org.apache.lucene.index.FieldInfo: void <init>(java.lang.String,boolean,int,boolean,boolean,boolean,boolean,boolean,boolean)>($r1, $z0, $i0, $z1, $z2, $z3, $z4, $z5, $z6);
+        return $r0;
+    }
+
+    void update(boolean, boolean, boolean, boolean, boolean, boolean, boolean)
+    {
+        org.apache.lucene.index.FieldInfo this;
+        boolean isIndexed, storeTermVector, storePositionWithTermVector, storeOffsetWithTermVector, omitNorms, storePayloads, omitTf, $z0;
+
+        this := @this: org.apache.lucene.index.FieldInfo;
+        isIndexed := @parameter0: boolean;
+        storeTermVector := @parameter1: boolean;
+        storePositionWithTermVector := @parameter2: boolean;
+        storeOffsetWithTermVector := @parameter3: boolean;
+        omitNorms := @parameter4: boolean;
+        storePayloads := @parameter5: boolean;
+        omitTf := @parameter6: boolean;
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        if $z0 == isIndexed goto label0;
+
+        this.<org.apache.lucene.index.FieldInfo: boolean isIndexed> = 1;
+
+     label0:
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean storeTermVector>;
+        if $z0 == storeTermVector goto label1;
+
+        this.<org.apache.lucene.index.FieldInfo: boolean storeTermVector> = 1;
+
+     label1:
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector>;
+        if $z0 == storePositionWithTermVector goto label2;
+
+        this.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector> = 1;
+
+     label2:
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector>;
+        if $z0 == storeOffsetWithTermVector goto label3;
+
+        this.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector> = 1;
+
+     label3:
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean omitNorms>;
+        if $z0 == omitNorms goto label4;
+
+        this.<org.apache.lucene.index.FieldInfo: boolean omitNorms> = 0;
+
+     label4:
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean omitTf>;
+        if $z0 == omitTf goto label5;
+
+        this.<org.apache.lucene.index.FieldInfo: boolean omitTf> = 1;
+
+     label5:
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean storePayloads>;
+        if $z0 == storePayloads goto label6;
+
+        this.<org.apache.lucene.index.FieldInfo: boolean storePayloads> = 1;
+
+     label6:
+        return;
+    }
+
+    void update(org.apache.lucene.index.FieldInfo)
+    {
+        org.apache.lucene.index.FieldInfo this, other;
+        boolean $z0, $z1;
+
+        this := @this: org.apache.lucene.index.FieldInfo;
+        other := @parameter0: org.apache.lucene.index.FieldInfo;
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        $z1 = other.<org.apache.lucene.index.FieldInfo: boolean isIndexed>;
+        if $z0 == $z1 goto label0;
+
+        this.<org.apache.lucene.index.FieldInfo: boolean isIndexed> = 1;
+
+     label0:
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean storeTermVector>;
+        $z1 = other.<org.apache.lucene.index.FieldInfo: boolean storeTermVector>;
+        if $z0 == $z1 goto label1;
+
+        this.<org.apache.lucene.index.FieldInfo: boolean storeTermVector> = 1;
+
+     label1:
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector>;
+        $z1 = other.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector>;
+        if $z0 == $z1 goto label2;
+
+        this.<org.apache.lucene.index.FieldInfo: boolean storePositionWithTermVector> = 1;
+
+     label2:
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector>;
+        $z1 = other.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector>;
+        if $z0 == $z1 goto label3;
+
+        this.<org.apache.lucene.index.FieldInfo: boolean storeOffsetWithTermVector> = 1;
+
+     label3:
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean omitNorms>;
+        $z1 = other.<org.apache.lucene.index.FieldInfo: boolean omitNorms>;
+        if $z0 == $z1 goto label4;
+
+        this.<org.apache.lucene.index.FieldInfo: boolean omitNorms> = 0;
+
+     label4:
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean omitTf>;
+        $z1 = this.<org.apache.lucene.index.FieldInfo: boolean omitTf>;
+        if $z0 == $z1 goto label5;
+
+        this.<org.apache.lucene.index.FieldInfo: boolean omitTf> = 1;
+
+     label5:
+        $z0 = this.<org.apache.lucene.index.FieldInfo: boolean storePayloads>;
+        $z1 = other.<org.apache.lucene.index.FieldInfo: boolean storePayloads>;
+        if $z0 == $z1 goto label6;
+
+        this.<org.apache.lucene.index.FieldInfo: boolean storePayloads> = 1;
+
+     label6:
+        return;
+    }
+}

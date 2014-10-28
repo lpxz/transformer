@@ -1,0 +1,35 @@
+public class avrora.monitors.TraceMonitor extends avrora.monitors.MonitorFactory
+{
+    final cck.util.Option$List FROMTO;
+    final cck.util.Option$Long TIME;
+
+    public void <init>()
+    {
+        avrora.monitors.TraceMonitor this;
+        cck.util.Option$List $r0;
+        cck.util.Option$Long $r1;
+
+        this := @this: avrora.monitors.TraceMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"trace\" monitor traces the execution of the entire program by printing every instruction as it executes. ");
+        $r0 = virtualinvoke this.<avrora.monitors.TraceMonitor: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("trace-from", "", "The \"trace-from\" option specifies the list of program point pairs for which to enable the tracing. The tracing will be enabled when the first point is entered and be disabled when the second point is reached. Nesting of multiple point pairs is handled correctly.");
+        this.<avrora.monitors.TraceMonitor: cck.util.Option$List FROMTO> = $r0;
+        $r1 = virtualinvoke this.<avrora.monitors.TraceMonitor: cck.util.Option$Long newOption(java.lang.String,long,java.lang.String)>("trace-start", 0L, "The \"trace-start\" option specifies the time to start the instruction trace, in clock cycles. This option can be useful for diagnosing problems in long simulations that happens after a given time is reached.");
+        this.<avrora.monitors.TraceMonitor: cck.util.Option$Long TIME> = $r1;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.TraceMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.TraceMonitor$Mon tmp$547759079;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.TraceMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$547759079 = new avrora.monitors.TraceMonitor$Mon;
+        specialinvoke tmp$547759079.<avrora.monitors.TraceMonitor$Mon: void <init>(avrora.monitors.TraceMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$547759079;
+        return tmp;
+    }
+}

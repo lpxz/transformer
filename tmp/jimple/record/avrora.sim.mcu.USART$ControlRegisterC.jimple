@@ -1,0 +1,51 @@
+public class avrora.sim.mcu.USART$ControlRegisterC extends avrora.sim.RWRegister
+{
+    final avrora.sim.state.RegisterView _stopBits;
+    final avrora.sim.state.RegisterView _ucszLow;
+    final avrora.sim.state.RegisterView _umsel;
+    final avrora.sim.mcu.USART this$0;
+
+    protected void <init>(avrora.sim.mcu.USART)
+    {
+        avrora.sim.mcu.USART$ControlRegisterC this;
+        avrora.sim.mcu.USART l1;
+        avrora.sim.state.RegisterView $r0;
+
+        this := @this: avrora.sim.mcu.USART$ControlRegisterC;
+        l1 := @parameter0: avrora.sim.mcu.USART;
+        this.<avrora.sim.mcu.USART$ControlRegisterC: avrora.sim.mcu.USART this$0> = l1;
+        specialinvoke this.<avrora.sim.RWRegister: void <init>()>();
+        $r0 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.RegisterView bitView(avrora.sim.state.RegisterView,int)>(this, 3);
+        this.<avrora.sim.mcu.USART$ControlRegisterC: avrora.sim.state.RegisterView _stopBits> = $r0;
+        $r0 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.RegisterView bitRangeView(avrora.sim.state.RegisterView,int,int)>(this, 1, 2);
+        this.<avrora.sim.mcu.USART$ControlRegisterC: avrora.sim.state.RegisterView _ucszLow> = $r0;
+        $r0 = staticinvoke <avrora.sim.state.RegisterUtil: avrora.sim.state.RegisterView bitView(avrora.sim.state.RegisterView,int)>(this, 6);
+        this.<avrora.sim.mcu.USART$ControlRegisterC: avrora.sim.state.RegisterView _umsel> = $r0;
+        return;
+    }
+
+    public int getFrameSize()
+    {
+        avrora.sim.mcu.USART$ControlRegisterC this;
+
+        this := @this: avrora.sim.mcu.USART$ControlRegisterC;
+        return 8;
+    }
+
+    public int getStopBits()
+    {
+        avrora.sim.mcu.USART$ControlRegisterC this;
+        avrora.sim.state.RegisterView $r0;
+        int $i0;
+
+        this := @this: avrora.sim.mcu.USART$ControlRegisterC;
+        $r0 = this.<avrora.sim.mcu.USART$ControlRegisterC: avrora.sim.state.RegisterView _stopBits>;
+        $i0 = interfaceinvoke $r0.<avrora.sim.state.RegisterView: int getValue()>();
+        if $i0 != 1 goto label0;
+
+        return 2;
+
+     label0:
+        return 1;
+    }
+}

@@ -1,0 +1,873 @@
+public class org.apache.commons.cli.Option extends java.lang.Object implements java.lang.Cloneable, java.io.Serializable
+{
+    private static final long serialVersionUID;
+    public static final int UNINITIALIZED;
+    public static final int UNLIMITED_VALUES;
+    private java.lang.String opt;
+    private java.lang.String longOpt;
+    private java.lang.String argName;
+    private java.lang.String description;
+    private boolean required;
+    private boolean optionalArg;
+    private int numberOfArgs;
+    private java.lang.Object type;
+    private java.util.List values;
+    private char valuesep;
+
+    public void <init>(java.lang.String, java.lang.String) throws java.lang.IllegalArgumentException
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String opt, description;
+
+        this := @this: org.apache.commons.cli.Option;
+        opt := @parameter0: java.lang.String;
+        description := @parameter1: java.lang.String;
+        specialinvoke this.<org.apache.commons.cli.Option: void <init>(java.lang.String,java.lang.String,boolean,java.lang.String)>(opt, null, 0, description);
+        return;
+    }
+
+    public void <init>(java.lang.String, boolean, java.lang.String) throws java.lang.IllegalArgumentException
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String opt, description;
+        boolean hasArg;
+
+        this := @this: org.apache.commons.cli.Option;
+        opt := @parameter0: java.lang.String;
+        hasArg := @parameter1: boolean;
+        description := @parameter2: java.lang.String;
+        specialinvoke this.<org.apache.commons.cli.Option: void <init>(java.lang.String,java.lang.String,boolean,java.lang.String)>(opt, null, hasArg, description);
+        return;
+    }
+
+    public void <init>(java.lang.String, java.lang.String, boolean, java.lang.String) throws java.lang.IllegalArgumentException
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String opt, longOpt, description;
+        boolean hasArg;
+        java.util.ArrayList $r0;
+
+        this := @this: org.apache.commons.cli.Option;
+        opt := @parameter0: java.lang.String;
+        longOpt := @parameter1: java.lang.String;
+        hasArg := @parameter2: boolean;
+        description := @parameter3: java.lang.String;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.commons.cli.Option: java.lang.String argName> = "arg";
+        this.<org.apache.commons.cli.Option: int numberOfArgs> = -1;
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+        this.<org.apache.commons.cli.Option: java.util.List values> = $r0;
+        staticinvoke <org.apache.commons.cli.OptionValidator: void validateOption(java.lang.String)>(opt);
+        this.<org.apache.commons.cli.Option: java.lang.String opt> = opt;
+        this.<org.apache.commons.cli.Option: java.lang.String longOpt> = longOpt;
+        if hasArg == 0 goto label0;
+
+        this.<org.apache.commons.cli.Option: int numberOfArgs> = 1;
+
+     label0:
+        this.<org.apache.commons.cli.Option: java.lang.String description> = description;
+        return;
+    }
+
+    public int getId()
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String $r0;
+        char $c0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $r0 = virtualinvoke this.<org.apache.commons.cli.Option: java.lang.String getKey()>();
+        $c0 = virtualinvoke $r0.<java.lang.String: char charAt(int)>(0);
+        return $c0;
+    }
+
+    java.lang.String getKey()
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $r0 = this.<org.apache.commons.cli.Option: java.lang.String opt>;
+        if $r0 != null goto label0;
+
+        $r0 = this.<org.apache.commons.cli.Option: java.lang.String longOpt>;
+        return $r0;
+
+     label0:
+        $r0 = this.<org.apache.commons.cli.Option: java.lang.String opt>;
+        return $r0;
+    }
+
+    public java.lang.String getOpt()
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $r0 = this.<org.apache.commons.cli.Option: java.lang.String opt>;
+        return $r0;
+    }
+
+    public java.lang.Object getType()
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.Object $r0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $r0 = this.<org.apache.commons.cli.Option: java.lang.Object type>;
+        return $r0;
+    }
+
+    public void setType(java.lang.Object)
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.Object type;
+
+        this := @this: org.apache.commons.cli.Option;
+        type := @parameter0: java.lang.Object;
+        this.<org.apache.commons.cli.Option: java.lang.Object type> = type;
+        return;
+    }
+
+    public java.lang.String getLongOpt()
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $r0 = this.<org.apache.commons.cli.Option: java.lang.String longOpt>;
+        return $r0;
+    }
+
+    public void setLongOpt(java.lang.String)
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String longOpt;
+
+        this := @this: org.apache.commons.cli.Option;
+        longOpt := @parameter0: java.lang.String;
+        this.<org.apache.commons.cli.Option: java.lang.String longOpt> = longOpt;
+        return;
+    }
+
+    public void setOptionalArg(boolean)
+    {
+        org.apache.commons.cli.Option this;
+        boolean optionalArg;
+
+        this := @this: org.apache.commons.cli.Option;
+        optionalArg := @parameter0: boolean;
+        this.<org.apache.commons.cli.Option: boolean optionalArg> = optionalArg;
+        return;
+    }
+
+    public boolean hasOptionalArg()
+    {
+        org.apache.commons.cli.Option this;
+        boolean $z0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $z0 = this.<org.apache.commons.cli.Option: boolean optionalArg>;
+        return $z0;
+    }
+
+    public boolean hasLongOpt()
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String $r0;
+        boolean $z0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $r0 = this.<org.apache.commons.cli.Option: java.lang.String longOpt>;
+        if $r0 == null goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public boolean hasArg()
+    {
+        org.apache.commons.cli.Option this;
+        int $i0;
+        boolean $z0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $i0 = this.<org.apache.commons.cli.Option: int numberOfArgs>;
+        if $i0 > 0 goto label0;
+
+        $i0 = this.<org.apache.commons.cli.Option: int numberOfArgs>;
+        if $i0 != -2 goto label1;
+
+     label0:
+        $z0 = 1;
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public java.lang.String getDescription()
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $r0 = this.<org.apache.commons.cli.Option: java.lang.String description>;
+        return $r0;
+    }
+
+    public void setDescription(java.lang.String)
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String description;
+
+        this := @this: org.apache.commons.cli.Option;
+        description := @parameter0: java.lang.String;
+        this.<org.apache.commons.cli.Option: java.lang.String description> = description;
+        return;
+    }
+
+    public boolean isRequired()
+    {
+        org.apache.commons.cli.Option this;
+        boolean $z0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $z0 = this.<org.apache.commons.cli.Option: boolean required>;
+        return $z0;
+    }
+
+    public void setRequired(boolean)
+    {
+        org.apache.commons.cli.Option this;
+        boolean required;
+
+        this := @this: org.apache.commons.cli.Option;
+        required := @parameter0: boolean;
+        this.<org.apache.commons.cli.Option: boolean required> = required;
+        return;
+    }
+
+    public void setArgName(java.lang.String)
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String argName;
+
+        this := @this: org.apache.commons.cli.Option;
+        argName := @parameter0: java.lang.String;
+        this.<org.apache.commons.cli.Option: java.lang.String argName> = argName;
+        return;
+    }
+
+    public java.lang.String getArgName()
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $r0 = this.<org.apache.commons.cli.Option: java.lang.String argName>;
+        return $r0;
+    }
+
+    public boolean hasArgName()
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String $r0;
+        int $i0;
+        boolean $z0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $r0 = this.<org.apache.commons.cli.Option: java.lang.String argName>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<org.apache.commons.cli.Option: java.lang.String argName>;
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+        if $i0 <= 0 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public boolean hasArgs()
+    {
+        org.apache.commons.cli.Option this;
+        int $i0;
+        boolean $z0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $i0 = this.<org.apache.commons.cli.Option: int numberOfArgs>;
+        if $i0 > 1 goto label0;
+
+        $i0 = this.<org.apache.commons.cli.Option: int numberOfArgs>;
+        if $i0 != -2 goto label1;
+
+     label0:
+        $z0 = 1;
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public void setArgs(int)
+    {
+        org.apache.commons.cli.Option this;
+        int num;
+
+        this := @this: org.apache.commons.cli.Option;
+        num := @parameter0: int;
+        this.<org.apache.commons.cli.Option: int numberOfArgs> = num;
+        return;
+    }
+
+    public void setValueSeparator(char)
+    {
+        org.apache.commons.cli.Option this;
+        char sep;
+
+        this := @this: org.apache.commons.cli.Option;
+        sep := @parameter0: char;
+        this.<org.apache.commons.cli.Option: char valuesep> = sep;
+        return;
+    }
+
+    public char getValueSeparator()
+    {
+        org.apache.commons.cli.Option this;
+        char $c0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $c0 = this.<org.apache.commons.cli.Option: char valuesep>;
+        return $c0;
+    }
+
+    public boolean hasValueSeparator()
+    {
+        org.apache.commons.cli.Option this;
+        char $c0;
+        boolean $z0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $c0 = this.<org.apache.commons.cli.Option: char valuesep>;
+        if $c0 <= 0 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        return $z0;
+    }
+
+    public int getArgs()
+    {
+        org.apache.commons.cli.Option this;
+        int $i0;
+
+        this := @this: org.apache.commons.cli.Option;
+        $i0 = this.<org.apache.commons.cli.Option: int numberOfArgs>;
+        return $i0;
+    }
+
+    void addValueForProcessing(java.lang.String)
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String value;
+        int $i0;
+        java.lang.RuntimeException $r0;
+
+        this := @this: org.apache.commons.cli.Option;
+        value := @parameter0: java.lang.String;
+        $i0 = this.<org.apache.commons.cli.Option: int numberOfArgs>;
+        lookupswitch($i0)
+        {
+            case -1: goto label0;
+            default: goto label1;
+        };
+
+     label0:
+        $r0 = new java.lang.RuntimeException;
+        specialinvoke $r0.<java.lang.RuntimeException: void <init>(java.lang.String)>("NO_ARGS_ALLOWED");
+        throw $r0;
+
+     label1:
+        specialinvoke this.<org.apache.commons.cli.Option: void processValue(java.lang.String)>(value);
+        return;
+    }
+
+    private void processValue(java.lang.String)
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String value, $r1;
+        char sep;
+        int index, $i0, $i1;
+        boolean $z0;
+        java.util.List $r0;
+        long tid_processValue;
+        java.lang.Thread thread_processValue;
+
+        this := @this: org.apache.commons.cli.Option;
+        value := @parameter0: java.lang.String;
+        thread_processValue = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_processValue = virtualinvoke thread_processValue.<java.lang.Thread: long getId()>();
+        $z0 = virtualinvoke this.<org.apache.commons.cli.Option: boolean hasValueSeparator()>();
+        if $z0 == 0 goto label2;
+
+        sep = virtualinvoke this.<org.apache.commons.cli.Option: char getValueSeparator()>();
+        index = virtualinvoke value.<java.lang.String: int indexOf(int)>(sep);
+
+     label0:
+        if index == -1 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 166, tid_processValue, "org.apache.commons.cli.Option", 437, $r0);
+        $r0 = this.<org.apache.commons.cli.Option: java.util.List values>;
+        $i0 = interfaceinvoke $r0.<java.util.List: int size()>();
+        $i1 = this.<org.apache.commons.cli.Option: int numberOfArgs>;
+        $i1 = $i1 - 1;
+        if $i0 != $i1 goto label1;
+
+        goto label2;
+
+     label1:
+        $r1 = virtualinvoke value.<java.lang.String: java.lang.String substring(int,int)>(0, index);
+        specialinvoke this.<org.apache.commons.cli.Option: void add(java.lang.String)>($r1);
+        $i1 = index + 1;
+        value = virtualinvoke value.<java.lang.String: java.lang.String substring(int)>($i1);
+        index = virtualinvoke value.<java.lang.String: int indexOf(int)>(sep);
+        goto label0;
+
+     label2:
+        specialinvoke this.<org.apache.commons.cli.Option: void add(java.lang.String)>(value);
+        return;
+    }
+
+    private void add(java.lang.String)
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String value;
+        int $i0, $i1;
+        java.util.List $r0;
+        java.lang.RuntimeException $r1;
+        long tid_add;
+        java.lang.Thread thread_add;
+
+        this := @this: org.apache.commons.cli.Option;
+        value := @parameter0: java.lang.String;
+        thread_add = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_add = virtualinvoke thread_add.<java.lang.Thread: long getId()>();
+        $i0 = this.<org.apache.commons.cli.Option: int numberOfArgs>;
+        if $i0 <= 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 166, tid_add, "org.apache.commons.cli.Option", 468, $r0);
+        $r0 = this.<org.apache.commons.cli.Option: java.util.List values>;
+        $i0 = interfaceinvoke $r0.<java.util.List: int size()>();
+        $i1 = this.<org.apache.commons.cli.Option: int numberOfArgs>;
+        $i1 = $i1 - 1;
+        if $i0 <= $i1 goto label0;
+
+        $r1 = new java.lang.RuntimeException;
+        specialinvoke $r1.<java.lang.RuntimeException: void <init>(java.lang.String)>("Cannot add value, list full.");
+        throw $r1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 166, tid_add, "org.apache.commons.cli.Option", 474, $r0);
+        $r0 = this.<org.apache.commons.cli.Option: java.util.List values>;
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>(value);
+        return;
+    }
+
+    public java.lang.String getValue()
+    {
+        org.apache.commons.cli.Option this;
+        boolean $z0;
+        java.lang.String $r0;
+        java.util.List $r1;
+        java.lang.Object $r2;
+        long tid_getValue;
+        java.lang.Thread thread_getValue;
+
+        this := @this: org.apache.commons.cli.Option;
+        thread_getValue = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getValue = virtualinvoke thread_getValue.<java.lang.Thread: long getId()>();
+        $z0 = specialinvoke this.<org.apache.commons.cli.Option: boolean hasNoValues()>();
+        if $z0 == 0 goto label0;
+
+        $r0 = null;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 166, tid_getValue, "org.apache.commons.cli.Option", 486, $r1);
+        $r1 = this.<org.apache.commons.cli.Option: java.util.List values>;
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>(0);
+        $r0 = (java.lang.String) $r2;
+
+     label1:
+        return $r0;
+    }
+
+    public java.lang.String getValue(int) throws java.lang.IndexOutOfBoundsException
+    {
+        org.apache.commons.cli.Option this;
+        int index;
+        boolean $z0;
+        java.lang.String $r0;
+        java.util.List $r1;
+        java.lang.Object $r2;
+        long tid_getValue;
+        java.lang.Thread thread_getValue;
+
+        this := @this: org.apache.commons.cli.Option;
+        index := @parameter0: int;
+        thread_getValue = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getValue = virtualinvoke thread_getValue.<java.lang.Thread: long getId()>();
+        $z0 = specialinvoke this.<org.apache.commons.cli.Option: boolean hasNoValues()>();
+        if $z0 == 0 goto label0;
+
+        $r0 = null;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 166, tid_getValue, "org.apache.commons.cli.Option", 503, $r1);
+        $r1 = this.<org.apache.commons.cli.Option: java.util.List values>;
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>(index);
+        $r0 = (java.lang.String) $r2;
+
+     label1:
+        return $r0;
+    }
+
+    public java.lang.String getValue(java.lang.String)
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String defaultValue, value, $r0;
+
+        this := @this: org.apache.commons.cli.Option;
+        defaultValue := @parameter0: java.lang.String;
+        value = virtualinvoke this.<org.apache.commons.cli.Option: java.lang.String getValue()>();
+        if value == null goto label0;
+
+        $r0 = value;
+        goto label1;
+
+     label0:
+        $r0 = defaultValue;
+
+     label1:
+        return $r0;
+    }
+
+    public java.lang.String[] getValues()
+    {
+        org.apache.commons.cli.Option this;
+        boolean $z0;
+        java.lang.String[] $r0, $r3;
+        java.util.List $r1, $r2;
+        int $i0;
+        java.lang.Object[] $r4;
+        long tid_getValues;
+        java.lang.Thread thread_getValues;
+
+        this := @this: org.apache.commons.cli.Option;
+        thread_getValues = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getValues = virtualinvoke thread_getValues.<java.lang.Thread: long getId()>();
+        $z0 = specialinvoke this.<org.apache.commons.cli.Option: boolean hasNoValues()>();
+        if $z0 == 0 goto label0;
+
+        $r0 = null;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 166, tid_getValues, "org.apache.commons.cli.Option", 532, $r1);
+        $r1 = this.<org.apache.commons.cli.Option: java.util.List values>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 166, tid_getValues, "org.apache.commons.cli.Option", 532, $r2);
+        $r2 = this.<org.apache.commons.cli.Option: java.util.List values>;
+        $i0 = interfaceinvoke $r2.<java.util.List: int size()>();
+        $r3 = newarray (java.lang.String)[$i0];
+        $r4 = interfaceinvoke $r1.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($r3);
+        $r0 = (java.lang.String[]) $r4;
+        $r0 = (java.lang.String[]) $r0;
+
+     label1:
+        return $r0;
+    }
+
+    public java.util.List getValuesList()
+    {
+        org.apache.commons.cli.Option this;
+        java.util.List $r0;
+        long tid_getValuesList;
+        java.lang.Thread thread_getValuesList;
+
+        this := @this: org.apache.commons.cli.Option;
+        thread_getValuesList = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getValuesList = virtualinvoke thread_getValuesList.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 166, tid_getValuesList, "org.apache.commons.cli.Option", 541, $r0);
+        $r0 = this.<org.apache.commons.cli.Option: java.util.List values>;
+        return $r0;
+    }
+
+    public java.lang.String toString()
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.StringBuffer $r0, buf;
+        java.lang.String $r1, $r2;
+        boolean $z0;
+        java.lang.Object $r3, $r4;
+
+        this := @this: org.apache.commons.cli.Option;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buf = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("[ option: ");
+        $r1 = this.<org.apache.commons.cli.Option: java.lang.String opt>;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        $r2 = this.<org.apache.commons.cli.Option: java.lang.String longOpt>;
+        if $r2 == null goto label0;
+
+        $r0 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" ");
+        $r1 = this.<org.apache.commons.cli.Option: java.lang.String longOpt>;
+        virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+
+     label0:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" ");
+        $z0 = virtualinvoke this.<org.apache.commons.cli.Option: boolean hasArgs()>();
+        if $z0 == 0 goto label1;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("[ARG...]");
+        goto label2;
+
+     label1:
+        $z0 = virtualinvoke this.<org.apache.commons.cli.Option: boolean hasArg()>();
+        if $z0 == 0 goto label2;
+
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" [ARG]");
+
+     label2:
+        $r0 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" :: ");
+        $r1 = this.<org.apache.commons.cli.Option: java.lang.String description>;
+        virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        $r3 = this.<org.apache.commons.cli.Option: java.lang.Object type>;
+        if $r3 == null goto label3;
+
+        $r0 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" :: ");
+        $r4 = this.<org.apache.commons.cli.Option: java.lang.Object type>;
+        virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r4);
+
+     label3:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" ]");
+        $r2 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r2;
+    }
+
+    private boolean hasNoValues()
+    {
+        org.apache.commons.cli.Option this;
+        java.util.List $r0;
+        boolean $z0;
+        long tid_hasNoValues;
+        java.lang.Thread thread_hasNoValues;
+
+        this := @this: org.apache.commons.cli.Option;
+        thread_hasNoValues = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_hasNoValues = virtualinvoke thread_hasNoValues.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 166, tid_hasNoValues, "org.apache.commons.cli.Option", 590, $r0);
+        $r0 = this.<org.apache.commons.cli.Option: java.util.List values>;
+        $z0 = interfaceinvoke $r0.<java.util.List: boolean isEmpty()>();
+        return $z0;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        org.apache.commons.cli.Option this, option;
+        java.lang.Object o;
+        java.lang.Class $r0, $r1;
+        java.lang.String $r2, $r3;
+        boolean $z0;
+
+        this := @this: org.apache.commons.cli.Option;
+        o := @parameter0: java.lang.Object;
+        if this != o goto label0;
+
+        return 1;
+
+     label0:
+        if o == null goto label1;
+
+        $r0 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+        $r1 = virtualinvoke o.<java.lang.Object: java.lang.Class getClass()>();
+        if $r0 == $r1 goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        option = (org.apache.commons.cli.Option) o;
+        $r2 = this.<org.apache.commons.cli.Option: java.lang.String opt>;
+        if $r2 == null goto label3;
+
+        $r2 = this.<org.apache.commons.cli.Option: java.lang.String opt>;
+        $r3 = option.<org.apache.commons.cli.Option: java.lang.String opt>;
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 != 0 goto label5;
+
+        goto label4;
+
+     label3:
+        $r2 = option.<org.apache.commons.cli.Option: java.lang.String opt>;
+        if $r2 == null goto label5;
+
+     label4:
+        return 0;
+
+     label5:
+        $r2 = this.<org.apache.commons.cli.Option: java.lang.String longOpt>;
+        if $r2 == null goto label6;
+
+        $r2 = this.<org.apache.commons.cli.Option: java.lang.String longOpt>;
+        $r3 = option.<org.apache.commons.cli.Option: java.lang.String longOpt>;
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 != 0 goto label8;
+
+        goto label7;
+
+     label6:
+        $r2 = option.<org.apache.commons.cli.Option: java.lang.String longOpt>;
+        if $r2 == null goto label8;
+
+     label7:
+        return 0;
+
+     label8:
+        return 1;
+    }
+
+    public int hashCode()
+    {
+        org.apache.commons.cli.Option this;
+        int result, $i0, $i1;
+        java.lang.String $r0, $r1;
+
+        this := @this: org.apache.commons.cli.Option;
+        $r0 = this.<org.apache.commons.cli.Option: java.lang.String opt>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<org.apache.commons.cli.Option: java.lang.String opt>;
+        $i0 = virtualinvoke $r0.<java.lang.String: int hashCode()>();
+        goto label1;
+
+     label0:
+        $i0 = 0;
+
+     label1:
+        result = $i0;
+        $i0 = 31 * result;
+        $r1 = this.<org.apache.commons.cli.Option: java.lang.String longOpt>;
+        if $r1 == null goto label2;
+
+        $r1 = this.<org.apache.commons.cli.Option: java.lang.String longOpt>;
+        $i1 = virtualinvoke $r1.<java.lang.String: int hashCode()>();
+        goto label3;
+
+     label2:
+        $i1 = 0;
+
+     label3:
+        result = $i0 + $i1;
+        return result;
+    }
+
+    public java.lang.Object clone()
+    {
+        org.apache.commons.cli.Option this, option;
+        java.util.ArrayList $r0;
+        java.lang.CloneNotSupportedException cnse, $r4;
+        java.lang.Object $r1;
+        java.util.List $r2;
+        java.lang.RuntimeException $r5;
+        java.lang.StringBuffer $r6;
+        java.lang.String $r7, $r8;
+        long tid_clone;
+        java.lang.Thread thread_clone;
+
+        this := @this: org.apache.commons.cli.Option;
+        thread_clone = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clone = virtualinvoke thread_clone.<java.lang.Thread: long getId()>();
+
+     label0:
+        $r1 = specialinvoke this.<java.lang.Object: java.lang.Object clone()>();
+        option = (org.apache.commons.cli.Option) $r1;
+        $r0 = new java.util.ArrayList;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 166, tid_clone, "org.apache.commons.cli.Option", 642, $r2);
+        $r2 = this.<org.apache.commons.cli.Option: java.util.List values>;
+        specialinvoke $r0.<java.util.ArrayList: void <init>(java.util.Collection)>($r2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(option, 166, tid_clone, "org.apache.commons.cli.Option", 642, $r0);
+        option.<org.apache.commons.cli.Option: java.util.List values> = $r0;
+
+     label1:
+        return option;
+
+     label2:
+        $r4 := @caughtexception;
+        cnse = $r4;
+        $r5 = new java.lang.RuntimeException;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("A CloneNotSupportedException was thrown: ");
+        $r7 = virtualinvoke cnse.<java.lang.CloneNotSupportedException: java.lang.String getMessage()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r7);
+        $r8 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r5.<java.lang.RuntimeException: void <init>(java.lang.String)>($r8);
+        throw $r5;
+
+        catch java.lang.CloneNotSupportedException from label0 to label1 with label2;
+    }
+
+    void clearValues()
+    {
+        org.apache.commons.cli.Option this;
+        java.util.List $r0;
+        long tid_clearValues;
+        java.lang.Thread thread_clearValues;
+
+        this := @this: org.apache.commons.cli.Option;
+        thread_clearValues = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clearValues = virtualinvoke thread_clearValues.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 166, tid_clearValues, "org.apache.commons.cli.Option", 659, $r0);
+        $r0 = this.<org.apache.commons.cli.Option: java.util.List values>;
+        interfaceinvoke $r0.<java.util.List: void clear()>();
+        return;
+    }
+
+    public boolean addValue(java.lang.String)
+    {
+        org.apache.commons.cli.Option this;
+        java.lang.String value;
+        java.lang.UnsupportedOperationException $r0;
+
+        this := @this: org.apache.commons.cli.Option;
+        value := @parameter0: java.lang.String;
+        $r0 = new java.lang.UnsupportedOperationException;
+        specialinvoke $r0.<java.lang.UnsupportedOperationException: void <init>(java.lang.String)>("The addValue method is not intended for client use. Subclasses should use the addValueForProcessing method instead. ");
+        throw $r0;
+    }
+}

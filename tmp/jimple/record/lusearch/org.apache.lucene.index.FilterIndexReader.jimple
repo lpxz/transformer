@@ -1,0 +1,395 @@
+public class org.apache.lucene.index.FilterIndexReader extends org.apache.lucene.index.IndexReader
+{
+    protected org.apache.lucene.index.IndexReader in;
+
+    public void <init>(org.apache.lucene.index.IndexReader)
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader in;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        in := @parameter0: org.apache.lucene.index.IndexReader;
+        specialinvoke this.<org.apache.lucene.index.IndexReader: void <init>()>();
+        this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in> = in;
+        return;
+    }
+
+    public org.apache.lucene.store.Directory directory()
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader $r0;
+        org.apache.lucene.store.Directory $r1;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: org.apache.lucene.store.Directory directory()>();
+        return $r1;
+    }
+
+    public org.apache.lucene.index.TermFreqVector[] getTermFreqVectors(int) throws java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        int docNumber;
+        org.apache.lucene.index.IndexReader $r0;
+        org.apache.lucene.index.TermFreqVector[] $r1;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        docNumber := @parameter0: int;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: org.apache.lucene.index.TermFreqVector[] getTermFreqVectors(int)>(docNumber);
+        return $r1;
+    }
+
+    public org.apache.lucene.index.TermFreqVector getTermFreqVector(int, java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        int docNumber;
+        java.lang.String field;
+        org.apache.lucene.index.IndexReader $r0;
+        org.apache.lucene.index.TermFreqVector $r1;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        docNumber := @parameter0: int;
+        field := @parameter1: java.lang.String;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: org.apache.lucene.index.TermFreqVector getTermFreqVector(int,java.lang.String)>(docNumber, field);
+        return $r1;
+    }
+
+    public void getTermFreqVector(int, java.lang.String, org.apache.lucene.index.TermVectorMapper) throws java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        int docNumber;
+        java.lang.String field;
+        org.apache.lucene.index.TermVectorMapper mapper;
+        org.apache.lucene.index.IndexReader $r0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        docNumber := @parameter0: int;
+        field := @parameter1: java.lang.String;
+        mapper := @parameter2: org.apache.lucene.index.TermVectorMapper;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        virtualinvoke $r0.<org.apache.lucene.index.IndexReader: void getTermFreqVector(int,java.lang.String,org.apache.lucene.index.TermVectorMapper)>(docNumber, field, mapper);
+        return;
+    }
+
+    public void getTermFreqVector(int, org.apache.lucene.index.TermVectorMapper) throws java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        int docNumber;
+        org.apache.lucene.index.TermVectorMapper mapper;
+        org.apache.lucene.index.IndexReader $r0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        docNumber := @parameter0: int;
+        mapper := @parameter1: org.apache.lucene.index.TermVectorMapper;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        virtualinvoke $r0.<org.apache.lucene.index.IndexReader: void getTermFreqVector(int,org.apache.lucene.index.TermVectorMapper)>(docNumber, mapper);
+        return;
+    }
+
+    public int numDocs()
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader $r0;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: int numDocs()>();
+        return $i0;
+    }
+
+    public int maxDoc()
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader $r0;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: int maxDoc()>();
+        return $i0;
+    }
+
+    public org.apache.lucene.document.Document document(int, org.apache.lucene.document.FieldSelector) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        int n;
+        org.apache.lucene.document.FieldSelector fieldSelector;
+        org.apache.lucene.index.IndexReader $r0;
+        org.apache.lucene.document.Document $r1;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        n := @parameter0: int;
+        fieldSelector := @parameter1: org.apache.lucene.document.FieldSelector;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: org.apache.lucene.document.Document document(int,org.apache.lucene.document.FieldSelector)>(n, fieldSelector);
+        return $r1;
+    }
+
+    public boolean isDeleted(int)
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        int n;
+        org.apache.lucene.index.IndexReader $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        n := @parameter0: int;
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: boolean isDeleted(int)>(n);
+        return $z0;
+    }
+
+    public boolean hasDeletions()
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: boolean hasDeletions()>();
+        return $z0;
+    }
+
+    protected void doUndeleteAll() throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader $r0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        virtualinvoke $r0.<org.apache.lucene.index.IndexReader: void undeleteAll()>();
+        return;
+    }
+
+    public boolean hasNorms(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        java.lang.String field;
+        org.apache.lucene.index.IndexReader $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        field := @parameter0: java.lang.String;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: boolean hasNorms(java.lang.String)>(field);
+        return $z0;
+    }
+
+    public byte[] norms(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        java.lang.String f;
+        org.apache.lucene.index.IndexReader $r0;
+        byte[] $r1;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        f := @parameter0: java.lang.String;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: byte[] norms(java.lang.String)>(f);
+        return $r1;
+    }
+
+    public void norms(java.lang.String, byte[], int) throws java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        java.lang.String f;
+        byte[] bytes;
+        int offset;
+        org.apache.lucene.index.IndexReader $r0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        f := @parameter0: java.lang.String;
+        bytes := @parameter1: byte[];
+        offset := @parameter2: int;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        virtualinvoke $r0.<org.apache.lucene.index.IndexReader: void norms(java.lang.String,byte[],int)>(f, bytes, offset);
+        return;
+    }
+
+    protected void doSetNorm(int, java.lang.String, byte) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        int d;
+        java.lang.String f;
+        byte b;
+        org.apache.lucene.index.IndexReader $r0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        d := @parameter0: int;
+        f := @parameter1: java.lang.String;
+        b := @parameter2: byte;
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        virtualinvoke $r0.<org.apache.lucene.index.IndexReader: void setNorm(int,java.lang.String,byte)>(d, f, b);
+        return;
+    }
+
+    public org.apache.lucene.index.TermEnum terms() throws java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader $r0;
+        org.apache.lucene.index.TermEnum $r1;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: org.apache.lucene.index.TermEnum terms()>();
+        return $r1;
+    }
+
+    public org.apache.lucene.index.TermEnum terms(org.apache.lucene.index.Term) throws java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.Term t;
+        org.apache.lucene.index.IndexReader $r0;
+        org.apache.lucene.index.TermEnum $r1;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        t := @parameter0: org.apache.lucene.index.Term;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: org.apache.lucene.index.TermEnum terms(org.apache.lucene.index.Term)>(t);
+        return $r1;
+    }
+
+    public int docFreq(org.apache.lucene.index.Term) throws java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.Term t;
+        org.apache.lucene.index.IndexReader $r0;
+        int $i0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        t := @parameter0: org.apache.lucene.index.Term;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: int docFreq(org.apache.lucene.index.Term)>(t);
+        return $i0;
+    }
+
+    public org.apache.lucene.index.TermDocs termDocs() throws java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader $r0;
+        org.apache.lucene.index.TermDocs $r1;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: org.apache.lucene.index.TermDocs termDocs()>();
+        return $r1;
+    }
+
+    public org.apache.lucene.index.TermPositions termPositions() throws java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader $r0;
+        org.apache.lucene.index.TermPositions $r1;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: org.apache.lucene.index.TermPositions termPositions()>();
+        return $r1;
+    }
+
+    protected void doDelete(int) throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        int n;
+        org.apache.lucene.index.IndexReader $r0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        n := @parameter0: int;
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        virtualinvoke $r0.<org.apache.lucene.index.IndexReader: void deleteDocument(int)>(n);
+        return;
+    }
+
+    protected void doCommit() throws java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader $r0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        virtualinvoke $r0.<org.apache.lucene.index.IndexReader: void commit()>();
+        return;
+    }
+
+    protected void doClose() throws java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader $r0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        virtualinvoke $r0.<org.apache.lucene.index.IndexReader: void close()>();
+        return;
+    }
+
+    public java.util.Collection getFieldNames(org.apache.lucene.index.IndexReader$FieldOption)
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader$FieldOption fieldNames;
+        org.apache.lucene.index.IndexReader $r0;
+        java.util.Collection $r1;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        fieldNames := @parameter0: org.apache.lucene.index.IndexReader$FieldOption;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: java.util.Collection getFieldNames(org.apache.lucene.index.IndexReader$FieldOption)>(fieldNames);
+        return $r1;
+    }
+
+    public long getVersion()
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader $r0;
+        long $l0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $l0 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: long getVersion()>();
+        return $l0;
+    }
+
+    public boolean isCurrent() throws org.apache.lucene.index.CorruptIndexException, java.io.IOException
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: boolean isCurrent()>();
+        return $z0;
+    }
+
+    public boolean isOptimized()
+    {
+        org.apache.lucene.index.FilterIndexReader this;
+        org.apache.lucene.index.IndexReader $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.FilterIndexReader;
+        virtualinvoke this.<org.apache.lucene.index.FilterIndexReader: void ensureOpen()>();
+        $r0 = this.<org.apache.lucene.index.FilterIndexReader: org.apache.lucene.index.IndexReader in>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: boolean isOptimized()>();
+        return $z0;
+    }
+}

@@ -1,0 +1,96 @@
+public final class org.apache.lucene.document.FieldSelectorResult extends java.lang.Object implements java.io.Serializable
+{
+    public static final transient org.apache.lucene.document.FieldSelectorResult LOAD;
+    public static final transient org.apache.lucene.document.FieldSelectorResult LAZY_LOAD;
+    public static final transient org.apache.lucene.document.FieldSelectorResult NO_LOAD;
+    public static final transient org.apache.lucene.document.FieldSelectorResult LOAD_AND_BREAK;
+    public static final transient org.apache.lucene.document.FieldSelectorResult LOAD_FOR_MERGE;
+    public static final transient org.apache.lucene.document.FieldSelectorResult SIZE;
+    public static final transient org.apache.lucene.document.FieldSelectorResult SIZE_AND_BREAK;
+    private int id;
+
+    private void <init>(int)
+    {
+        org.apache.lucene.document.FieldSelectorResult this;
+        int id;
+
+        this := @this: org.apache.lucene.document.FieldSelectorResult;
+        id := @parameter0: int;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.document.FieldSelectorResult: int id> = id;
+        return;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        org.apache.lucene.document.FieldSelectorResult this, that;
+        java.lang.Object o;
+        java.lang.Class $r0, $r1;
+        int $i0, $i1;
+
+        this := @this: org.apache.lucene.document.FieldSelectorResult;
+        o := @parameter0: java.lang.Object;
+        if this != o goto label0;
+
+        return 1;
+
+     label0:
+        if o == null goto label1;
+
+        $r0 = virtualinvoke this.<java.lang.Object: java.lang.Class getClass()>();
+        $r1 = virtualinvoke o.<java.lang.Object: java.lang.Class getClass()>();
+        if $r0 == $r1 goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        that = (org.apache.lucene.document.FieldSelectorResult) o;
+        $i0 = this.<org.apache.lucene.document.FieldSelectorResult: int id>;
+        $i1 = that.<org.apache.lucene.document.FieldSelectorResult: int id>;
+        if $i0 == $i1 goto label3;
+
+        return 0;
+
+     label3:
+        return 1;
+    }
+
+    public int hashCode()
+    {
+        org.apache.lucene.document.FieldSelectorResult this;
+        int $i0;
+
+        this := @this: org.apache.lucene.document.FieldSelectorResult;
+        $i0 = this.<org.apache.lucene.document.FieldSelectorResult: int id>;
+        return $i0;
+    }
+
+    static void <clinit>()
+    {
+        org.apache.lucene.document.FieldSelectorResult $r0;
+
+        $r0 = new org.apache.lucene.document.FieldSelectorResult;
+        specialinvoke $r0.<org.apache.lucene.document.FieldSelectorResult: void <init>(int)>(0);
+        <org.apache.lucene.document.FieldSelectorResult: org.apache.lucene.document.FieldSelectorResult LOAD> = $r0;
+        $r0 = new org.apache.lucene.document.FieldSelectorResult;
+        specialinvoke $r0.<org.apache.lucene.document.FieldSelectorResult: void <init>(int)>(1);
+        <org.apache.lucene.document.FieldSelectorResult: org.apache.lucene.document.FieldSelectorResult LAZY_LOAD> = $r0;
+        $r0 = new org.apache.lucene.document.FieldSelectorResult;
+        specialinvoke $r0.<org.apache.lucene.document.FieldSelectorResult: void <init>(int)>(2);
+        <org.apache.lucene.document.FieldSelectorResult: org.apache.lucene.document.FieldSelectorResult NO_LOAD> = $r0;
+        $r0 = new org.apache.lucene.document.FieldSelectorResult;
+        specialinvoke $r0.<org.apache.lucene.document.FieldSelectorResult: void <init>(int)>(3);
+        <org.apache.lucene.document.FieldSelectorResult: org.apache.lucene.document.FieldSelectorResult LOAD_AND_BREAK> = $r0;
+        $r0 = new org.apache.lucene.document.FieldSelectorResult;
+        specialinvoke $r0.<org.apache.lucene.document.FieldSelectorResult: void <init>(int)>(4);
+        <org.apache.lucene.document.FieldSelectorResult: org.apache.lucene.document.FieldSelectorResult LOAD_FOR_MERGE> = $r0;
+        $r0 = new org.apache.lucene.document.FieldSelectorResult;
+        specialinvoke $r0.<org.apache.lucene.document.FieldSelectorResult: void <init>(int)>(5);
+        <org.apache.lucene.document.FieldSelectorResult: org.apache.lucene.document.FieldSelectorResult SIZE> = $r0;
+        $r0 = new org.apache.lucene.document.FieldSelectorResult;
+        specialinvoke $r0.<org.apache.lucene.document.FieldSelectorResult: void <init>(int)>(6);
+        <org.apache.lucene.document.FieldSelectorResult: org.apache.lucene.document.FieldSelectorResult SIZE_AND_BREAK> = $r0;
+        return;
+    }
+}

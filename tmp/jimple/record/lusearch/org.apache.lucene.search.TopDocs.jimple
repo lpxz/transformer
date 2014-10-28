@@ -1,0 +1,45 @@
+public class org.apache.lucene.search.TopDocs extends java.lang.Object implements java.io.Serializable
+{
+    public int totalHits;
+    public org.apache.lucene.search.ScoreDoc[] scoreDocs;
+    private float maxScore;
+
+    public float getMaxScore()
+    {
+        org.apache.lucene.search.TopDocs this;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.TopDocs;
+        $f0 = this.<org.apache.lucene.search.TopDocs: float maxScore>;
+        return $f0;
+    }
+
+    public void setMaxScore(float)
+    {
+        org.apache.lucene.search.TopDocs this;
+        float maxScore;
+
+        this := @this: org.apache.lucene.search.TopDocs;
+        maxScore := @parameter0: float;
+        this.<org.apache.lucene.search.TopDocs: float maxScore> = maxScore;
+        return;
+    }
+
+    public void <init>(int, org.apache.lucene.search.ScoreDoc[], float)
+    {
+        org.apache.lucene.search.TopDocs this;
+        int totalHits;
+        org.apache.lucene.search.ScoreDoc[] scoreDocs;
+        float maxScore;
+
+        this := @this: org.apache.lucene.search.TopDocs;
+        totalHits := @parameter0: int;
+        scoreDocs := @parameter1: org.apache.lucene.search.ScoreDoc[];
+        maxScore := @parameter2: float;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.search.TopDocs: int totalHits> = totalHits;
+        this.<org.apache.lucene.search.TopDocs: org.apache.lucene.search.ScoreDoc[] scoreDocs> = scoreDocs;
+        this.<org.apache.lucene.search.TopDocs: float maxScore> = maxScore;
+        return;
+    }
+}

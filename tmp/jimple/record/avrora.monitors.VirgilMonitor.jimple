@@ -1,0 +1,37 @@
+public class avrora.monitors.VirgilMonitor extends avrora.monitors.MonitorFactory
+{
+    public static final int ABORT_TYPE_CODE;
+    public static final int ABORT_NULL_CODE;
+    public static final int ABORT_BOUNDS_CODE;
+    public static final int ABORT_DIV_CODE;
+    public static final int ABORT_ALLOC_CODE;
+    public static final int ABORT_UNIMP_CODE;
+    public final cck.util.Option$Long STATUS_ADDR;
+
+    public void <init>()
+    {
+        avrora.monitors.VirgilMonitor this;
+        cck.util.Option$Long $r0;
+
+        this := @this: avrora.monitors.VirgilMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"virgil\" monitor watches for execution of an AVR break instruction, which is used by the Virgil compiler to signal fatal exceptions.");
+        $r0 = virtualinvoke this.<avrora.monitors.VirgilMonitor: cck.util.Option$Long newOption(java.lang.String,long,java.lang.String)>("status-addr", 145L, "This option specifies the address in memory where the status register lies. The status register is used to diagnose the cause of a program abort.");
+        this.<avrora.monitors.VirgilMonitor: cck.util.Option$Long STATUS_ADDR> = $r0;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.VirgilMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.VirgilMonitor$Mon tmp$549692806;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.VirgilMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$549692806 = new avrora.monitors.VirgilMonitor$Mon;
+        specialinvoke tmp$549692806.<avrora.monitors.VirgilMonitor$Mon: void <init>(avrora.monitors.VirgilMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$549692806;
+        return tmp;
+    }
+}

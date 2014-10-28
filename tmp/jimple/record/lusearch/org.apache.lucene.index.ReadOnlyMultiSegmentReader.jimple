@@ -1,0 +1,48 @@
+class org.apache.lucene.index.ReadOnlyMultiSegmentReader extends org.apache.lucene.index.MultiSegmentReader
+{
+
+    void <init>(org.apache.lucene.store.Directory, org.apache.lucene.index.SegmentInfos, boolean) throws java.io.IOException
+    {
+        org.apache.lucene.index.ReadOnlyMultiSegmentReader this;
+        org.apache.lucene.store.Directory directory;
+        org.apache.lucene.index.SegmentInfos sis;
+        boolean closeDirectory;
+
+        this := @this: org.apache.lucene.index.ReadOnlyMultiSegmentReader;
+        directory := @parameter0: org.apache.lucene.store.Directory;
+        sis := @parameter1: org.apache.lucene.index.SegmentInfos;
+        closeDirectory := @parameter2: boolean;
+        specialinvoke this.<org.apache.lucene.index.MultiSegmentReader: void <init>(org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfos,boolean,boolean)>(directory, sis, closeDirectory, 1);
+        return;
+    }
+
+    void <init>(org.apache.lucene.store.Directory, org.apache.lucene.index.SegmentInfos, boolean, org.apache.lucene.index.SegmentReader[], int[], java.util.Map) throws java.io.IOException
+    {
+        org.apache.lucene.index.ReadOnlyMultiSegmentReader this;
+        org.apache.lucene.store.Directory directory;
+        org.apache.lucene.index.SegmentInfos infos;
+        boolean closeDirectory;
+        org.apache.lucene.index.SegmentReader[] oldReaders;
+        int[] oldStarts;
+        java.util.Map oldNormsCache;
+
+        this := @this: org.apache.lucene.index.ReadOnlyMultiSegmentReader;
+        directory := @parameter0: org.apache.lucene.store.Directory;
+        infos := @parameter1: org.apache.lucene.index.SegmentInfos;
+        closeDirectory := @parameter2: boolean;
+        oldReaders := @parameter3: org.apache.lucene.index.SegmentReader[];
+        oldStarts := @parameter4: int[];
+        oldNormsCache := @parameter5: java.util.Map;
+        specialinvoke this.<org.apache.lucene.index.MultiSegmentReader: void <init>(org.apache.lucene.store.Directory,org.apache.lucene.index.SegmentInfos,boolean,org.apache.lucene.index.SegmentReader[],int[],java.util.Map,boolean)>(directory, infos, closeDirectory, oldReaders, oldStarts, oldNormsCache, 1);
+        return;
+    }
+
+    protected void acquireWriteLock()
+    {
+        org.apache.lucene.index.ReadOnlyMultiSegmentReader this;
+
+        this := @this: org.apache.lucene.index.ReadOnlyMultiSegmentReader;
+        staticinvoke <org.apache.lucene.index.ReadOnlySegmentReader: void noWrite()>();
+        return;
+    }
+}

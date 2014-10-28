@@ -1,0 +1,28 @@
+public class avrora.sim.platform.ExternalFlash$PD2Input extends java.lang.Object implements avrora.sim.mcu.Microcontroller$Pin$Input
+{
+    final avrora.sim.platform.ExternalFlash this$0;
+
+    protected void <init>(avrora.sim.platform.ExternalFlash)
+    {
+        avrora.sim.platform.ExternalFlash$PD2Input this;
+        avrora.sim.platform.ExternalFlash l1;
+
+        this := @this: avrora.sim.platform.ExternalFlash$PD2Input;
+        l1 := @parameter0: avrora.sim.platform.ExternalFlash;
+        this.<avrora.sim.platform.ExternalFlash$PD2Input: avrora.sim.platform.ExternalFlash this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public boolean read()
+    {
+        avrora.sim.platform.ExternalFlash$PD2Input this;
+        avrora.sim.platform.ExternalFlash $r0;
+        boolean $z0;
+
+        this := @this: avrora.sim.platform.ExternalFlash$PD2Input;
+        $r0 = this.<avrora.sim.platform.ExternalFlash$PD2Input: avrora.sim.platform.ExternalFlash this$0>;
+        $z0 = staticinvoke <avrora.sim.platform.ExternalFlash: boolean access$2400(avrora.sim.platform.ExternalFlash)>($r0);
+        return $z0;
+    }
+}

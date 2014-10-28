@@ -1,0 +1,86 @@
+public abstract class avrora.sim.radio.Medium$Transmitter extends avrora.sim.radio.Medium$TXRX
+{
+    protected avrora.sim.radio.Medium$Transmission transmission;
+    protected final avrora.sim.radio.Medium$Transmitter$Ticker ticker;
+    protected boolean shutdown;
+
+    protected void <init>(avrora.sim.radio.Medium, avrora.sim.clock.Clock)
+    {
+        avrora.sim.radio.Medium$Transmitter this;
+        avrora.sim.radio.Medium m;
+        avrora.sim.clock.Clock c;
+        avrora.sim.radio.Medium$Transmitter$Ticker $r0;
+
+        this := @this: avrora.sim.radio.Medium$Transmitter;
+        m := @parameter0: avrora.sim.radio.Medium;
+        c := @parameter1: avrora.sim.clock.Clock;
+        specialinvoke this.<avrora.sim.radio.Medium$TXRX: void <init>(avrora.sim.radio.Medium,avrora.sim.clock.Clock)>(m, c);
+        $r0 = new avrora.sim.radio.Medium$Transmitter$Ticker;
+        specialinvoke $r0.<avrora.sim.radio.Medium$Transmitter$Ticker: void <init>(avrora.sim.radio.Medium$Transmitter)>(this);
+        this.<avrora.sim.radio.Medium$Transmitter: avrora.sim.radio.Medium$Transmitter$Ticker ticker> = $r0;
+        return;
+    }
+
+    public final void beginTransmit(double, double)
+    {
+        avrora.sim.radio.Medium$Transmitter this;
+        double pow, freq;
+        boolean $z0;
+        avrora.sim.radio.Medium $r0;
+        avrora.sim.radio.Medium$Transmission $r1;
+        avrora.sim.clock.Clock $r2;
+        avrora.sim.radio.Medium$Transmitter$Ticker $r3;
+        long $l0, tid_beginTransmit;
+        java.lang.Thread thread_beginTransmit;
+
+        this := @this: avrora.sim.radio.Medium$Transmitter;
+        pow := @parameter0: double;
+        freq := @parameter1: double;
+        thread_beginTransmit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_beginTransmit = virtualinvoke thread_beginTransmit.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 174, tid_beginTransmit, "avrora.sim.radio.Medium$Transmitter", 198, $z0);
+        $z0 = this.<avrora.sim.radio.Medium$Transmitter: boolean activated>;
+        if $z0 != 0 goto label0;
+
+        $r0 = this.<avrora.sim.radio.Medium$Transmitter: avrora.sim.radio.Medium medium>;
+        $r1 = virtualinvoke $r0.<avrora.sim.radio.Medium: avrora.sim.radio.Medium$Transmission newTransmission(avrora.sim.radio.Medium$Transmitter,double,double)>(this, pow, freq);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 175, tid_beginTransmit, "avrora.sim.radio.Medium$Transmitter", 199, $r1);
+        this.<avrora.sim.radio.Medium$Transmitter: avrora.sim.radio.Medium$Transmission transmission> = $r1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 174, tid_beginTransmit, "avrora.sim.radio.Medium$Transmitter", 200, 1);
+        this.<avrora.sim.radio.Medium$Transmitter: boolean activated> = 1;
+        $r2 = this.<avrora.sim.radio.Medium$Transmitter: avrora.sim.clock.Clock clock>;
+        $r3 = this.<avrora.sim.radio.Medium$Transmitter: avrora.sim.radio.Medium$Transmitter$Ticker ticker>;
+        $l0 = this.<avrora.sim.radio.Medium$Transmitter: long leadCycles>;
+        virtualinvoke $r2.<avrora.sim.clock.Clock: void insertEvent(avrora.sim.Simulator$Event,long)>($r3, $l0);
+
+     label0:
+        return;
+    }
+
+    public final void endTransmit()
+    {
+        avrora.sim.radio.Medium$Transmitter this;
+        boolean $z0;
+        avrora.sim.radio.Medium$Transmission $r0;
+        long tid_endTransmit;
+        java.lang.Thread thread_endTransmit;
+
+        this := @this: avrora.sim.radio.Medium$Transmitter;
+        thread_endTransmit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_endTransmit = virtualinvoke thread_endTransmit.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 174, tid_endTransmit, "avrora.sim.radio.Medium$Transmitter", 210, $z0);
+        $z0 = this.<avrora.sim.radio.Medium$Transmitter: boolean activated>;
+        if $z0 == 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 176, tid_endTransmit, "avrora.sim.radio.Medium$Transmitter", 211, 1);
+        this.<avrora.sim.radio.Medium$Transmitter: boolean shutdown> = 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 175, tid_endTransmit, "avrora.sim.radio.Medium$Transmitter", 212, $r0);
+        $r0 = this.<avrora.sim.radio.Medium$Transmitter: avrora.sim.radio.Medium$Transmission transmission>;
+        virtualinvoke $r0.<avrora.sim.radio.Medium$Transmission: void end()>();
+
+     label0:
+        return;
+    }
+
+    public abstract byte nextByte();
+}

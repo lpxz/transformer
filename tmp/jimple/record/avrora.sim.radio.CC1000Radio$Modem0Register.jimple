@@ -1,0 +1,178 @@
+public class avrora.sim.radio.CC1000Radio$Modem0Register extends avrora.sim.radio.CC1000Radio$RadioRegister
+{
+    int baudrate;
+    int bitrate;
+    static final int DATA_FORMAT_NRZ;
+    static final int DATA_FORMAT_MANCHESTER;
+    static final int DATA_FORMAT_UART;
+    int dataFormat;
+    int xoscFreqRange;
+    final avrora.sim.radio.CC1000Radio this$0;
+
+    void <init>(avrora.sim.radio.CC1000Radio)
+    {
+        avrora.sim.radio.CC1000Radio$Modem0Register this;
+        avrora.sim.radio.CC1000Radio l1;
+        int[] $r0;
+        int $i0;
+        byte $b1;
+
+        this := @this: avrora.sim.radio.CC1000Radio$Modem0Register;
+        l1 := @parameter0: avrora.sim.radio.CC1000Radio;
+        this.<avrora.sim.radio.CC1000Radio$Modem0Register: avrora.sim.radio.CC1000Radio this$0> = l1;
+        specialinvoke this.<avrora.sim.radio.CC1000Radio$RadioRegister: void <init>(avrora.sim.radio.CC1000Radio,java.lang.String,byte)>(l1, "MODEM0", 36);
+        this.<avrora.sim.radio.CC1000Radio$Modem0Register: int baudrate> = 2400;
+        this.<avrora.sim.radio.CC1000Radio$Modem0Register: int bitrate> = 1200;
+        this.<avrora.sim.radio.CC1000Radio$Modem0Register: int dataFormat> = 1;
+        $r0 = <avrora.sim.radio.CC1000Radio: int[] XOSC_FREQ>;
+        $i0 = $r0[0];
+        this.<avrora.sim.radio.CC1000Radio$Modem0Register: int xoscFreqRange> = $i0;
+        $b1 = this.<avrora.sim.radio.CC1000Radio$Modem0Register: byte value>;
+        virtualinvoke this.<avrora.sim.radio.CC1000Radio$Modem0Register: void decode(byte)>($b1);
+        return;
+    }
+
+    protected void decode(byte)
+    {
+        avrora.sim.radio.CC1000Radio$Modem0Register this;
+        byte val, baudIndex, xoscIndex, $b0, $b1, $b4;
+        int[] $r0;
+        int $i2, $i3;
+        long tid_decode;
+        java.lang.Thread thread_decode;
+
+        this := @this: avrora.sim.radio.CC1000Radio$Modem0Register;
+        val := @parameter0: byte;
+        thread_decode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_decode = virtualinvoke thread_decode.<java.lang.Thread: long getId()>();
+        $b0 = val & 112;
+        baudIndex = $b0 >> 4;
+        xoscIndex = val & 3;
+        $b1 = val & 12;
+        $b1 = $b1 >> 2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 157, tid_decode, "avrora.sim.radio.CC1000Radio$Modem0Register", 801, $b1);
+        this.<avrora.sim.radio.CC1000Radio$Modem0Register: int dataFormat> = $b1;
+        $r0 = <avrora.sim.radio.CC1000Radio: int[] XOSC_FREQ>;
+        $i2 = $r0[xoscIndex];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 158, tid_decode, "avrora.sim.radio.CC1000Radio$Modem0Register", 802, $i2);
+        this.<avrora.sim.radio.CC1000Radio$Modem0Register: int xoscFreqRange> = $i2;
+        specialinvoke this.<avrora.sim.radio.CC1000Radio$Modem0Register: void calculateBaudRate(int,int)>(baudIndex, xoscIndex);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 159, tid_decode, "avrora.sim.radio.CC1000Radio$Modem0Register", 804, $i2);
+        $i2 = this.<avrora.sim.radio.CC1000Radio$Modem0Register: int baudrate>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 157, tid_decode, "avrora.sim.radio.CC1000Radio$Modem0Register", 804, $i3);
+        $i3 = this.<avrora.sim.radio.CC1000Radio$Modem0Register: int dataFormat>;
+        if $i3 != 1 goto label0;
+
+        $b4 = 2;
+        goto label1;
+
+     label0:
+        $b4 = 1;
+
+     label1:
+        $i2 = $i2 / $b4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 160, tid_decode, "avrora.sim.radio.CC1000Radio$Modem0Register", 804, $i2);
+        this.<avrora.sim.radio.CC1000Radio$Modem0Register: int bitrate> = $i2;
+        return;
+    }
+
+    private void calculateBaudRate(int, int)
+    {
+        avrora.sim.radio.CC1000Radio$Modem0Register this;
+        int baudIndex, xoscIndex, $i1, $i4;
+        int[] $r0, $r2;
+        avrora.sim.radio.CC1000Radio $r1;
+        long $l0, $l2, tid_calculateBaudRate;
+        byte $b3;
+        java.lang.Thread thread_calculateBaudRate;
+
+        this := @this: avrora.sim.radio.CC1000Radio$Modem0Register;
+        baudIndex := @parameter0: int;
+        xoscIndex := @parameter1: int;
+        thread_calculateBaudRate = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_calculateBaudRate = virtualinvoke thread_calculateBaudRate.<java.lang.Thread: long getId()>();
+        if baudIndex != 5 goto label2;
+
+        $r1 = this.<avrora.sim.radio.CC1000Radio$Modem0Register: avrora.sim.radio.CC1000Radio this$0>;
+        $l0 = $r1.<avrora.sim.radio.CC1000Radio: long xoscFrequency>;
+        $r0 = <avrora.sim.radio.CC1000Radio: int[] XOSC_FREQ>;
+        $i1 = $r0[2];
+        $l2 = (long) $i1;
+        $b3 = $l0 cmp $l2;
+        if $b3 <= 0 goto label2;
+
+        if xoscIndex != 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 159, tid_calculateBaudRate, "avrora.sim.radio.CC1000Radio$Modem0Register", 810, 76800);
+        this.<avrora.sim.radio.CC1000Radio$Modem0Register: int baudrate> = 76800;
+        goto label3;
+
+     label0:
+        if xoscIndex != 1 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 159, tid_calculateBaudRate, "avrora.sim.radio.CC1000Radio$Modem0Register", 811, 38400);
+        this.<avrora.sim.radio.CC1000Radio$Modem0Register: int baudrate> = 38400;
+        goto label3;
+
+     label1:
+        $r2 = <avrora.sim.radio.CC1000Radio: int[] BAUDRATE>;
+        $i4 = $r2[baudIndex];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 159, tid_calculateBaudRate, "avrora.sim.radio.CC1000Radio$Modem0Register", 812, $i4);
+        this.<avrora.sim.radio.CC1000Radio$Modem0Register: int baudrate> = $i4;
+        goto label3;
+
+     label2:
+        $r2 = <avrora.sim.radio.CC1000Radio: int[] BAUDRATE>;
+        $i4 = $r2[baudIndex];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 159, tid_calculateBaudRate, "avrora.sim.radio.CC1000Radio$Modem0Register", 814, $i4);
+        this.<avrora.sim.radio.CC1000Radio$Modem0Register: int baudrate> = $i4;
+
+     label3:
+        return;
+    }
+
+    protected void printStatus()
+    {
+        avrora.sim.radio.CC1000Radio$Modem0Register this;
+        java.lang.StringBuilder $r0;
+        avrora.sim.radio.CC1000Radio $r1;
+        avrora.sim.output.SimPrinter $r2;
+        int $i0;
+        boolean $z0;
+        java.lang.String $r3;
+        long tid_printStatus;
+        java.lang.Thread thread_printStatus;
+
+        this := @this: avrora.sim.radio.CC1000Radio$Modem0Register;
+        thread_printStatus = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_printStatus = virtualinvoke thread_printStatus.<java.lang.Thread: long getId()>();
+        $r1 = this.<avrora.sim.radio.CC1000Radio$Modem0Register: avrora.sim.radio.CC1000Radio this$0>;
+        $r2 = $r1.<avrora.sim.radio.CC1000Radio: avrora.sim.output.SimPrinter radioPrinter>;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("CC1000[MODEM0]: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 159, tid_printStatus, "avrora.sim.radio.CC1000Radio$Modem0Register", 819, $i0);
+        $i0 = this.<avrora.sim.radio.CC1000Radio$Modem0Register: int baudrate>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" baud, ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 160, tid_printStatus, "avrora.sim.radio.CC1000Radio$Modem0Register", 819, $i0);
+        $i0 = this.<avrora.sim.radio.CC1000Radio$Modem0Register: int bitrate>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bit rate, manchester: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 157, tid_printStatus, "avrora.sim.radio.CC1000Radio$Modem0Register", 819, $i0);
+        $i0 = this.<avrora.sim.radio.CC1000Radio$Modem0Register: int dataFormat>;
+        if $i0 != 1 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z0);
+        $r3 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r2.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r3);
+        return;
+    }
+}

@@ -1,0 +1,496 @@
+class org.apache.lucene.search.DisjunctionSumScorer extends org.apache.lucene.search.Scorer
+{
+    private final int nrScorers;
+    protected final java.util.List subScorers;
+    private final int minimumNrMatchers;
+    private org.apache.lucene.util.ScorerDocQueue scorerDocQueue;
+    private int queueSize;
+    private int currentDoc;
+    protected int nrMatchers;
+    private float currentScore;
+
+    public void <init>(java.util.List, int)
+    {
+        org.apache.lucene.search.DisjunctionSumScorer this;
+        java.util.List subScorers;
+        int minimumNrMatchers, $i0, $i1;
+        java.lang.IllegalArgumentException $r0;
+
+        this := @this: org.apache.lucene.search.DisjunctionSumScorer;
+        subScorers := @parameter0: java.util.List;
+        minimumNrMatchers := @parameter1: int;
+        specialinvoke this.<org.apache.lucene.search.Scorer: void <init>(org.apache.lucene.search.Similarity)>(null);
+        this.<org.apache.lucene.search.DisjunctionSumScorer: org.apache.lucene.util.ScorerDocQueue scorerDocQueue> = null;
+        this.<org.apache.lucene.search.DisjunctionSumScorer: int queueSize> = -1;
+        this.<org.apache.lucene.search.DisjunctionSumScorer: int currentDoc> = -1;
+        this.<org.apache.lucene.search.DisjunctionSumScorer: int nrMatchers> = -1;
+        this.<org.apache.lucene.search.DisjunctionSumScorer: float currentScore> = #NaNF;
+        $i0 = interfaceinvoke subScorers.<java.util.List: int size()>();
+        this.<org.apache.lucene.search.DisjunctionSumScorer: int nrScorers> = $i0;
+        if minimumNrMatchers > 0 goto label0;
+
+        $r0 = new java.lang.IllegalArgumentException;
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Minimum nr of matchers must be positive");
+        throw $r0;
+
+     label0:
+        $i1 = this.<org.apache.lucene.search.DisjunctionSumScorer: int nrScorers>;
+        if $i1 > 1 goto label1;
+
+        $r0 = new java.lang.IllegalArgumentException;
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("There must be at least 2 subScorers");
+        throw $r0;
+
+     label1:
+        this.<org.apache.lucene.search.DisjunctionSumScorer: int minimumNrMatchers> = minimumNrMatchers;
+        this.<org.apache.lucene.search.DisjunctionSumScorer: java.util.List subScorers> = subScorers;
+        return;
+    }
+
+    public void <init>(java.util.List)
+    {
+        org.apache.lucene.search.DisjunctionSumScorer this;
+        java.util.List subScorers;
+
+        this := @this: org.apache.lucene.search.DisjunctionSumScorer;
+        subScorers := @parameter0: java.util.List;
+        specialinvoke this.<org.apache.lucene.search.DisjunctionSumScorer: void <init>(java.util.List,int)>(subScorers, 1);
+        return;
+    }
+
+    private void initScorerDocQueue() throws java.io.IOException
+    {
+        org.apache.lucene.search.DisjunctionSumScorer this;
+        java.util.Iterator si;
+        org.apache.lucene.util.ScorerDocQueue $r0, $r3;
+        org.apache.lucene.search.Scorer se;
+        java.util.List $r1;
+        int $i0, $i1;
+        boolean $z0;
+        java.lang.Object $r2;
+        long tid_initScorerDocQueue;
+        java.lang.Thread thread_initScorerDocQueue;
+
+        this := @this: org.apache.lucene.search.DisjunctionSumScorer;
+        thread_initScorerDocQueue = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_initScorerDocQueue = virtualinvoke thread_initScorerDocQueue.<java.lang.Thread: long getId()>();
+        $r1 = this.<org.apache.lucene.search.DisjunctionSumScorer: java.util.List subScorers>;
+        si = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+        $r0 = new org.apache.lucene.util.ScorerDocQueue;
+        $i0 = this.<org.apache.lucene.search.DisjunctionSumScorer: int nrScorers>;
+        specialinvoke $r0.<org.apache.lucene.util.ScorerDocQueue: void <init>(int)>($i0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 98, tid_initScorerDocQueue, "org.apache.lucene.search.DisjunctionSumScorer", 101, $r0);
+        this.<org.apache.lucene.search.DisjunctionSumScorer: org.apache.lucene.util.ScorerDocQueue scorerDocQueue> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 99, tid_initScorerDocQueue, "org.apache.lucene.search.DisjunctionSumScorer", 102, 0);
+        this.<org.apache.lucene.search.DisjunctionSumScorer: int queueSize> = 0;
+
+     label0:
+        $z0 = interfaceinvoke si.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r2 = interfaceinvoke si.<java.util.Iterator: java.lang.Object next()>();
+        se = (org.apache.lucene.search.Scorer) $r2;
+        $z0 = virtualinvoke se.<org.apache.lucene.search.Scorer: boolean next()>();
+        if $z0 == 0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 98, tid_initScorerDocQueue, "org.apache.lucene.search.DisjunctionSumScorer", 106, $r3);
+        $r3 = this.<org.apache.lucene.search.DisjunctionSumScorer: org.apache.lucene.util.ScorerDocQueue scorerDocQueue>;
+        $z0 = virtualinvoke $r3.<org.apache.lucene.util.ScorerDocQueue: boolean insert(org.apache.lucene.search.Scorer)>(se);
+        if $z0 == 0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 99, tid_initScorerDocQueue, "org.apache.lucene.search.DisjunctionSumScorer", 107, $i1);
+        $i1 = this.<org.apache.lucene.search.DisjunctionSumScorer: int queueSize>;
+        $i1 = $i1 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 99, tid_initScorerDocQueue, "org.apache.lucene.search.DisjunctionSumScorer", 107, $i1);
+        this.<org.apache.lucene.search.DisjunctionSumScorer: int queueSize> = $i1;
+
+     label1:
+        goto label0;
+
+     label2:
+        return;
+    }
+
+    public void score(org.apache.lucene.search.HitCollector) throws java.io.IOException
+    {
+        org.apache.lucene.search.DisjunctionSumScorer this;
+        org.apache.lucene.search.HitCollector hc;
+        boolean $z0;
+        int $i0;
+        float $f0;
+        long tid_score;
+        java.lang.Thread thread_score;
+
+        this := @this: org.apache.lucene.search.DisjunctionSumScorer;
+        hc := @parameter0: org.apache.lucene.search.HitCollector;
+        thread_score = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_score = virtualinvoke thread_score.<java.lang.Thread: long getId()>();
+
+     label0:
+        $z0 = virtualinvoke this.<org.apache.lucene.search.DisjunctionSumScorer: boolean next()>();
+        if $z0 == 0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 100, tid_score, "org.apache.lucene.search.DisjunctionSumScorer", 120, $i0);
+        $i0 = this.<org.apache.lucene.search.DisjunctionSumScorer: int currentDoc>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 101, tid_score, "org.apache.lucene.search.DisjunctionSumScorer", 120, $f0);
+        $f0 = this.<org.apache.lucene.search.DisjunctionSumScorer: float currentScore>;
+        virtualinvoke hc.<org.apache.lucene.search.HitCollector: void collect(int,float)>($i0, $f0);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    protected boolean score(org.apache.lucene.search.HitCollector, int) throws java.io.IOException
+    {
+        org.apache.lucene.search.DisjunctionSumScorer this;
+        org.apache.lucene.search.HitCollector hc;
+        int max, $i0, $i1;
+        float $f0;
+        boolean $z0;
+        long tid_score;
+        java.lang.Thread thread_score;
+
+        this := @this: org.apache.lucene.search.DisjunctionSumScorer;
+        hc := @parameter0: org.apache.lucene.search.HitCollector;
+        max := @parameter1: int;
+        thread_score = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_score = virtualinvoke thread_score.<java.lang.Thread: long getId()>();
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 100, tid_score, "org.apache.lucene.search.DisjunctionSumScorer", 133, $i0);
+        $i0 = this.<org.apache.lucene.search.DisjunctionSumScorer: int currentDoc>;
+        if $i0 >= max goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 100, tid_score, "org.apache.lucene.search.DisjunctionSumScorer", 134, $i1);
+        $i1 = this.<org.apache.lucene.search.DisjunctionSumScorer: int currentDoc>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 101, tid_score, "org.apache.lucene.search.DisjunctionSumScorer", 134, $f0);
+        $f0 = this.<org.apache.lucene.search.DisjunctionSumScorer: float currentScore>;
+        virtualinvoke hc.<org.apache.lucene.search.HitCollector: void collect(int,float)>($i1, $f0);
+        $z0 = virtualinvoke this.<org.apache.lucene.search.DisjunctionSumScorer: boolean next()>();
+        if $z0 != 0 goto label0;
+
+        return 0;
+
+     label1:
+        return 1;
+    }
+
+    public boolean next() throws java.io.IOException
+    {
+        org.apache.lucene.search.DisjunctionSumScorer this;
+        org.apache.lucene.util.ScorerDocQueue $r0;
+        int $i0, $i1;
+        boolean $z0;
+        long tid_next;
+        java.lang.Thread thread_next;
+
+        this := @this: org.apache.lucene.search.DisjunctionSumScorer;
+        thread_next = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_next = virtualinvoke thread_next.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 98, tid_next, "org.apache.lucene.search.DisjunctionSumScorer", 143, $r0);
+        $r0 = this.<org.apache.lucene.search.DisjunctionSumScorer: org.apache.lucene.util.ScorerDocQueue scorerDocQueue>;
+        if $r0 != null goto label0;
+
+        specialinvoke this.<org.apache.lucene.search.DisjunctionSumScorer: void initScorerDocQueue()>();
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 98, tid_next, "org.apache.lucene.search.DisjunctionSumScorer", 146, $r0);
+        $r0 = this.<org.apache.lucene.search.DisjunctionSumScorer: org.apache.lucene.util.ScorerDocQueue scorerDocQueue>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.util.ScorerDocQueue: int size()>();
+        $i1 = this.<org.apache.lucene.search.DisjunctionSumScorer: int minimumNrMatchers>;
+        if $i0 < $i1 goto label1;
+
+        $z0 = virtualinvoke this.<org.apache.lucene.search.DisjunctionSumScorer: boolean advanceAfterCurrent()>();
+        if $z0 == 0 goto label1;
+
+        $z0 = 1;
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    protected boolean advanceAfterCurrent() throws java.io.IOException
+    {
+        org.apache.lucene.search.DisjunctionSumScorer this;
+        org.apache.lucene.util.ScorerDocQueue $r0, $r1, $r3;
+        int $i0, $i1, $i2;
+        float $f0, $f1;
+        boolean $z0;
+        long tid_advanceAfterCurrent;
+        java.lang.Thread thread_advanceAfterCurrent;
+
+        this := @this: org.apache.lucene.search.DisjunctionSumScorer;
+        thread_advanceAfterCurrent = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_advanceAfterCurrent = virtualinvoke thread_advanceAfterCurrent.<java.lang.Thread: long getId()>();
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 98, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 171, $r0);
+        $r0 = this.<org.apache.lucene.search.DisjunctionSumScorer: org.apache.lucene.util.ScorerDocQueue scorerDocQueue>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.util.ScorerDocQueue: int topDoc()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 100, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 171, $i0);
+        this.<org.apache.lucene.search.DisjunctionSumScorer: int currentDoc> = $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 98, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 172, $r0);
+        $r0 = this.<org.apache.lucene.search.DisjunctionSumScorer: org.apache.lucene.util.ScorerDocQueue scorerDocQueue>;
+        $f0 = virtualinvoke $r0.<org.apache.lucene.util.ScorerDocQueue: float topScore()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 101, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 172, $f0);
+        this.<org.apache.lucene.search.DisjunctionSumScorer: float currentScore> = $f0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 97, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 173, 1);
+        this.<org.apache.lucene.search.DisjunctionSumScorer: int nrMatchers> = 1;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 98, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 175, $r1);
+        $r1 = this.<org.apache.lucene.search.DisjunctionSumScorer: org.apache.lucene.util.ScorerDocQueue scorerDocQueue>;
+        $z0 = virtualinvoke $r1.<org.apache.lucene.util.ScorerDocQueue: boolean topNextAndAdjustElsePop()>();
+        if $z0 != 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 99, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 176, $i0);
+        $i0 = this.<org.apache.lucene.search.DisjunctionSumScorer: int queueSize>;
+        $i1 = $i0 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 99, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 176, $i1);
+        this.<org.apache.lucene.search.DisjunctionSumScorer: int queueSize> = $i1;
+        if $i1 != 0 goto label2;
+
+        goto label4;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 98, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 180, $r1);
+        $r1 = this.<org.apache.lucene.search.DisjunctionSumScorer: org.apache.lucene.util.ScorerDocQueue scorerDocQueue>;
+        $i2 = virtualinvoke $r1.<org.apache.lucene.util.ScorerDocQueue: int topDoc()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 100, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 180, $i0);
+        $i0 = this.<org.apache.lucene.search.DisjunctionSumScorer: int currentDoc>;
+        if $i2 == $i0 goto label3;
+
+        goto label4;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 101, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 183, $f0);
+        $f0 = this.<org.apache.lucene.search.DisjunctionSumScorer: float currentScore>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 98, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 183, $r3);
+        $r3 = this.<org.apache.lucene.search.DisjunctionSumScorer: org.apache.lucene.util.ScorerDocQueue scorerDocQueue>;
+        $f1 = virtualinvoke $r3.<org.apache.lucene.util.ScorerDocQueue: float topScore()>();
+        $f0 = $f0 + $f1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 101, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 183, $f0);
+        this.<org.apache.lucene.search.DisjunctionSumScorer: float currentScore> = $f0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 97, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 184, $i0);
+        $i0 = this.<org.apache.lucene.search.DisjunctionSumScorer: int nrMatchers>;
+        $i0 = $i0 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 97, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 184, $i0);
+        this.<org.apache.lucene.search.DisjunctionSumScorer: int nrMatchers> = $i0;
+        goto label1;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 97, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 187, $i2);
+        $i2 = this.<org.apache.lucene.search.DisjunctionSumScorer: int nrMatchers>;
+        $i0 = this.<org.apache.lucene.search.DisjunctionSumScorer: int minimumNrMatchers>;
+        if $i2 < $i0 goto label5;
+
+        return 1;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 99, tid_advanceAfterCurrent, "org.apache.lucene.search.DisjunctionSumScorer", 189, $i2);
+        $i2 = this.<org.apache.lucene.search.DisjunctionSumScorer: int queueSize>;
+        $i0 = this.<org.apache.lucene.search.DisjunctionSumScorer: int minimumNrMatchers>;
+        if $i2 >= $i0 goto label0;
+
+        return 0;
+    }
+
+    public float score() throws java.io.IOException
+    {
+        org.apache.lucene.search.DisjunctionSumScorer this;
+        float $f0;
+        long tid_score;
+        java.lang.Thread thread_score;
+
+        this := @this: org.apache.lucene.search.DisjunctionSumScorer;
+        thread_score = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_score = virtualinvoke thread_score.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(this, 101, tid_score, "org.apache.lucene.search.DisjunctionSumScorer", 198, $f0);
+        $f0 = this.<org.apache.lucene.search.DisjunctionSumScorer: float currentScore>;
+        return $f0;
+    }
+
+    public int doc()
+    {
+        org.apache.lucene.search.DisjunctionSumScorer this;
+        int $i0;
+        long tid_doc;
+        java.lang.Thread thread_doc;
+
+        this := @this: org.apache.lucene.search.DisjunctionSumScorer;
+        thread_doc = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_doc = virtualinvoke thread_doc.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 100, tid_doc, "org.apache.lucene.search.DisjunctionSumScorer", 200, $i0);
+        $i0 = this.<org.apache.lucene.search.DisjunctionSumScorer: int currentDoc>;
+        return $i0;
+    }
+
+    public int nrMatchers()
+    {
+        org.apache.lucene.search.DisjunctionSumScorer this;
+        int $i0;
+        long tid_nrMatchers;
+        java.lang.Thread thread_nrMatchers;
+
+        this := @this: org.apache.lucene.search.DisjunctionSumScorer;
+        thread_nrMatchers = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_nrMatchers = virtualinvoke thread_nrMatchers.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 97, tid_nrMatchers, "org.apache.lucene.search.DisjunctionSumScorer", 206, $i0);
+        $i0 = this.<org.apache.lucene.search.DisjunctionSumScorer: int nrMatchers>;
+        return $i0;
+    }
+
+    public boolean skipTo(int) throws java.io.IOException
+    {
+        org.apache.lucene.search.DisjunctionSumScorer this;
+        int target, $i0, $i1, $i2;
+        org.apache.lucene.util.ScorerDocQueue $r0;
+        boolean $z0;
+        long tid_skipTo;
+        java.lang.Thread thread_skipTo;
+
+        this := @this: org.apache.lucene.search.DisjunctionSumScorer;
+        target := @parameter0: int;
+        thread_skipTo = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_skipTo = virtualinvoke thread_skipTo.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 98, tid_skipTo, "org.apache.lucene.search.DisjunctionSumScorer", 217, $r0);
+        $r0 = this.<org.apache.lucene.search.DisjunctionSumScorer: org.apache.lucene.util.ScorerDocQueue scorerDocQueue>;
+        if $r0 != null goto label0;
+
+        specialinvoke this.<org.apache.lucene.search.DisjunctionSumScorer: void initScorerDocQueue()>();
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 99, tid_skipTo, "org.apache.lucene.search.DisjunctionSumScorer", 220, $i0);
+        $i0 = this.<org.apache.lucene.search.DisjunctionSumScorer: int queueSize>;
+        $i1 = this.<org.apache.lucene.search.DisjunctionSumScorer: int minimumNrMatchers>;
+        if $i0 >= $i1 goto label1;
+
+        return 0;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 100, tid_skipTo, "org.apache.lucene.search.DisjunctionSumScorer", 223, $i1);
+        $i1 = this.<org.apache.lucene.search.DisjunctionSumScorer: int currentDoc>;
+        if target > $i1 goto label2;
+
+        return 1;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 98, tid_skipTo, "org.apache.lucene.search.DisjunctionSumScorer", 227, $r0);
+        $r0 = this.<org.apache.lucene.search.DisjunctionSumScorer: org.apache.lucene.util.ScorerDocQueue scorerDocQueue>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.util.ScorerDocQueue: int topDoc()>();
+        if $i0 < target goto label3;
+
+        $z0 = virtualinvoke this.<org.apache.lucene.search.DisjunctionSumScorer: boolean advanceAfterCurrent()>();
+        return $z0;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 98, tid_skipTo, "org.apache.lucene.search.DisjunctionSumScorer", 229, $r0);
+        $r0 = this.<org.apache.lucene.search.DisjunctionSumScorer: org.apache.lucene.util.ScorerDocQueue scorerDocQueue>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.util.ScorerDocQueue: boolean topSkipToAndAdjustElsePop(int)>(target);
+        if $z0 != 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 99, tid_skipTo, "org.apache.lucene.search.DisjunctionSumScorer", 230, $i1);
+        $i1 = this.<org.apache.lucene.search.DisjunctionSumScorer: int queueSize>;
+        $i2 = $i1 - 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 99, tid_skipTo, "org.apache.lucene.search.DisjunctionSumScorer", 230, $i2);
+        this.<org.apache.lucene.search.DisjunctionSumScorer: int queueSize> = $i2;
+        $i1 = this.<org.apache.lucene.search.DisjunctionSumScorer: int minimumNrMatchers>;
+        if $i2 >= $i1 goto label2;
+
+        return 0;
+    }
+
+    public org.apache.lucene.search.Explanation explain(int) throws java.io.IOException
+    {
+        org.apache.lucene.search.DisjunctionSumScorer this;
+        int doc, nrMatches, $i1, $i2, $i3;
+        org.apache.lucene.search.Explanation $r0, res, es;
+        java.util.Iterator ssi;
+        float sumScore, $f0, $f1;
+        java.util.List $r1, $r5;
+        boolean $z0;
+        java.lang.Object $r2;
+        org.apache.lucene.search.Scorer $r3;
+        byte $b0;
+        java.lang.StringBuffer $r4;
+        java.lang.String $r6;
+        long tid_explain;
+        java.lang.Thread thread_explain;
+
+        this := @this: org.apache.lucene.search.DisjunctionSumScorer;
+        doc := @parameter0: int;
+        thread_explain = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_explain = virtualinvoke thread_explain.<java.lang.Thread: long getId()>();
+        $r0 = new org.apache.lucene.search.Explanation;
+        specialinvoke $r0.<org.apache.lucene.search.Explanation: void <init>()>();
+        res = $r0;
+        $r1 = this.<org.apache.lucene.search.DisjunctionSumScorer: java.util.List subScorers>;
+        ssi = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+        sumScore = 0.0F;
+        nrMatches = 0;
+
+     label0:
+        $z0 = interfaceinvoke ssi.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r2 = interfaceinvoke ssi.<java.util.Iterator: java.lang.Object next()>();
+        $r3 = (org.apache.lucene.search.Scorer) $r2;
+        es = virtualinvoke $r3.<org.apache.lucene.search.Scorer: org.apache.lucene.search.Explanation explain(int)>(doc);
+        $f0 = virtualinvoke es.<org.apache.lucene.search.Explanation: float getValue()>();
+        $b0 = $f0 cmpl 0.0F;
+        if $b0 <= 0 goto label1;
+
+        $f1 = virtualinvoke es.<org.apache.lucene.search.Explanation: float getValue()>();
+        sumScore = sumScore + $f1;
+        nrMatches = nrMatches + 1;
+
+     label1:
+        virtualinvoke res.<org.apache.lucene.search.Explanation: void addDetail(org.apache.lucene.search.Explanation)>(es);
+        goto label0;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 97, tid_explain, "org.apache.lucene.search.DisjunctionSumScorer", 251, $i1);
+        $i1 = this.<org.apache.lucene.search.DisjunctionSumScorer: int nrMatchers>;
+        $i2 = this.<org.apache.lucene.search.DisjunctionSumScorer: int minimumNrMatchers>;
+        if $i1 < $i2 goto label3;
+
+        virtualinvoke res.<org.apache.lucene.search.Explanation: void setValue(float)>(sumScore);
+        $r4 = new java.lang.StringBuffer;
+        specialinvoke $r4.<java.lang.StringBuffer: void <init>()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("sum over at least ");
+        $i3 = this.<org.apache.lucene.search.DisjunctionSumScorer: int minimumNrMatchers>;
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i3);
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" of ");
+        $r5 = this.<org.apache.lucene.search.DisjunctionSumScorer: java.util.List subScorers>;
+        $i3 = interfaceinvoke $r5.<java.util.List: int size()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i3);
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(":");
+        $r6 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke res.<org.apache.lucene.search.Explanation: void setDescription(java.lang.String)>($r6);
+        goto label4;
+
+     label3:
+        virtualinvoke res.<org.apache.lucene.search.Explanation: void setValue(float)>(0.0F);
+        $r4 = new java.lang.StringBuffer;
+        specialinvoke $r4.<java.lang.StringBuffer: void <init>()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(nrMatches);
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" match(es) but at least ");
+        $i3 = this.<org.apache.lucene.search.DisjunctionSumScorer: int minimumNrMatchers>;
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i3);
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" of ");
+        $r5 = this.<org.apache.lucene.search.DisjunctionSumScorer: java.util.List subScorers>;
+        $i3 = interfaceinvoke $r5.<java.util.List: int size()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i3);
+        $r4 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" needed");
+        $r6 = virtualinvoke $r4.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke res.<org.apache.lucene.search.Explanation: void setDescription(java.lang.String)>($r6);
+
+     label4:
+        return res;
+    }
+}

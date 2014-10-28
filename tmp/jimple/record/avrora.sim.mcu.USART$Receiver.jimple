@@ -1,0 +1,70 @@
+public class avrora.sim.mcu.USART$Receiver extends java.lang.Object
+{
+    boolean receiving;
+    avrora.sim.mcu.USART$Receiver$Receive receive;
+    final avrora.sim.mcu.USART this$0;
+
+    protected void <init>(avrora.sim.mcu.USART)
+    {
+        avrora.sim.mcu.USART$Receiver this;
+        avrora.sim.mcu.USART l1;
+        avrora.sim.mcu.USART$Receiver$Receive $r0;
+
+        this := @this: avrora.sim.mcu.USART$Receiver;
+        l1 := @parameter0: avrora.sim.mcu.USART;
+        this.<avrora.sim.mcu.USART$Receiver: avrora.sim.mcu.USART this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new avrora.sim.mcu.USART$Receiver$Receive;
+        specialinvoke $r0.<avrora.sim.mcu.USART$Receiver$Receive: void <init>(avrora.sim.mcu.USART$Receiver)>(this);
+        this.<avrora.sim.mcu.USART$Receiver: avrora.sim.mcu.USART$Receiver$Receive receive> = $r0;
+        return;
+    }
+
+    protected void enableReceive()
+    {
+        avrora.sim.mcu.USART$Receiver this;
+        boolean $z0;
+        avrora.sim.mcu.USART$Receiver$Receive $r0, $r6;
+        avrora.sim.mcu.USART $r1, $r4, $r7;
+        avrora.sim.mcu.USART$USARTDevice $r2;
+        avrora.sim.mcu.USART$Frame $r3;
+        avrora.sim.clock.Clock $r5;
+        avrora.sim.mcu.USART$ControlRegisterC $r8;
+        int $i0, $i1;
+        long $l2, tid_enableReceive;
+        java.lang.Thread thread_enableReceive;
+
+        this := @this: avrora.sim.mcu.USART$Receiver;
+        thread_enableReceive = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_enableReceive = virtualinvoke thread_enableReceive.<java.lang.Thread: long getId()>();
+        $z0 = this.<avrora.sim.mcu.USART$Receiver: boolean receiving>;
+        if $z0 != 0 goto label0;
+
+        $r0 = this.<avrora.sim.mcu.USART$Receiver: avrora.sim.mcu.USART$Receiver$Receive receive>;
+        $r1 = this.<avrora.sim.mcu.USART$Receiver: avrora.sim.mcu.USART this$0>;
+        $r2 = $r1.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$USARTDevice connectedDevice>;
+        $r3 = interfaceinvoke $r2.<avrora.sim.mcu.USART$USARTDevice: avrora.sim.mcu.USART$Frame transmitFrame()>();
+        $r0.<avrora.sim.mcu.USART$Receiver$Receive: avrora.sim.mcu.USART$Frame frame> = $r3;
+        $r4 = this.<avrora.sim.mcu.USART$Receiver: avrora.sim.mcu.USART this$0>;
+        $r5 = $r4.<avrora.sim.mcu.USART: avrora.sim.clock.Clock mainClock>;
+        $r6 = this.<avrora.sim.mcu.USART$Receiver: avrora.sim.mcu.USART$Receiver$Receive receive>;
+        $r7 = this.<avrora.sim.mcu.USART$Receiver: avrora.sim.mcu.USART this$0>;
+        $r8 = $r7.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$ControlRegisterC UCSRnC_reg>;
+        $i0 = virtualinvoke $r8.<avrora.sim.mcu.USART$ControlRegisterC: int getFrameSize()>();
+        $i1 = 1 + $i0;
+        $r7 = this.<avrora.sim.mcu.USART$Receiver: avrora.sim.mcu.USART this$0>;
+        $r8 = $r7.<avrora.sim.mcu.USART: avrora.sim.mcu.USART$ControlRegisterC UCSRnC_reg>;
+        $i0 = virtualinvoke $r8.<avrora.sim.mcu.USART$ControlRegisterC: int getStopBits()>();
+        $i1 = $i1 + $i0;
+        $r7 = this.<avrora.sim.mcu.USART$Receiver: avrora.sim.mcu.USART this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r7, 32, tid_enableReceive, "avrora.sim.mcu.USART$Receiver", 284, $i0);
+        $i0 = $r7.<avrora.sim.mcu.USART: int period>;
+        $i1 = $i1 * $i0;
+        $l2 = (long) $i1;
+        virtualinvoke $r5.<avrora.sim.clock.Clock: void insertEvent(avrora.sim.Simulator$Event,long)>($r6, $l2);
+        this.<avrora.sim.mcu.USART$Receiver: boolean receiving> = 1;
+
+     label0:
+        return;
+    }
+}

@@ -1,0 +1,447 @@
+public class org.apache.lucene.search.ConstantScoreRangeQuery extends org.apache.lucene.search.Query
+{
+    private final java.lang.String fieldName;
+    private final java.lang.String lowerVal;
+    private final java.lang.String upperVal;
+    private final boolean includeLower;
+    private final boolean includeUpper;
+    private java.text.Collator collator;
+
+    public void <init>(java.lang.String, java.lang.String, java.lang.String, boolean, boolean)
+    {
+        org.apache.lucene.search.ConstantScoreRangeQuery this;
+        java.lang.String fieldName, lowerVal, upperVal, $r0;
+        boolean includeLower, includeUpper, $z0;
+
+        this := @this: org.apache.lucene.search.ConstantScoreRangeQuery;
+        fieldName := @parameter0: java.lang.String;
+        lowerVal := @parameter1: java.lang.String;
+        upperVal := @parameter2: java.lang.String;
+        includeLower := @parameter3: boolean;
+        includeUpper := @parameter4: boolean;
+        specialinvoke this.<org.apache.lucene.search.Query: void <init>()>();
+        if lowerVal != null goto label0;
+
+        includeLower = 1;
+        goto label1;
+
+     label0:
+        if includeLower == 0 goto label1;
+
+        $z0 = virtualinvoke lowerVal.<java.lang.String: boolean equals(java.lang.Object)>("");
+        if $z0 == 0 goto label1;
+
+        lowerVal = null;
+
+     label1:
+        if upperVal != null goto label2;
+
+        includeUpper = 1;
+
+     label2:
+        $r0 = virtualinvoke fieldName.<java.lang.String: java.lang.String intern()>();
+        this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String fieldName> = $r0;
+        this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String lowerVal> = lowerVal;
+        this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String upperVal> = upperVal;
+        this.<org.apache.lucene.search.ConstantScoreRangeQuery: boolean includeLower> = includeLower;
+        this.<org.apache.lucene.search.ConstantScoreRangeQuery: boolean includeUpper> = includeUpper;
+        return;
+    }
+
+    public void <init>(java.lang.String, java.lang.String, java.lang.String, boolean, boolean, java.text.Collator)
+    {
+        org.apache.lucene.search.ConstantScoreRangeQuery this;
+        java.lang.String fieldName, lowerVal, upperVal;
+        boolean includeLower, includeUpper;
+        java.text.Collator collator;
+
+        this := @this: org.apache.lucene.search.ConstantScoreRangeQuery;
+        fieldName := @parameter0: java.lang.String;
+        lowerVal := @parameter1: java.lang.String;
+        upperVal := @parameter2: java.lang.String;
+        includeLower := @parameter3: boolean;
+        includeUpper := @parameter4: boolean;
+        collator := @parameter5: java.text.Collator;
+        specialinvoke this.<org.apache.lucene.search.ConstantScoreRangeQuery: void <init>(java.lang.String,java.lang.String,java.lang.String,boolean,boolean)>(fieldName, lowerVal, upperVal, includeLower, includeUpper);
+        this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.text.Collator collator> = collator;
+        return;
+    }
+
+    public java.lang.String getField()
+    {
+        org.apache.lucene.search.ConstantScoreRangeQuery this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.search.ConstantScoreRangeQuery;
+        $r0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String fieldName>;
+        return $r0;
+    }
+
+    public java.lang.String getLowerVal()
+    {
+        org.apache.lucene.search.ConstantScoreRangeQuery this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.search.ConstantScoreRangeQuery;
+        $r0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String lowerVal>;
+        return $r0;
+    }
+
+    public java.lang.String getUpperVal()
+    {
+        org.apache.lucene.search.ConstantScoreRangeQuery this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.search.ConstantScoreRangeQuery;
+        $r0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String upperVal>;
+        return $r0;
+    }
+
+    public boolean includesLower()
+    {
+        org.apache.lucene.search.ConstantScoreRangeQuery this;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.ConstantScoreRangeQuery;
+        $z0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: boolean includeLower>;
+        return $z0;
+    }
+
+    public boolean includesUpper()
+    {
+        org.apache.lucene.search.ConstantScoreRangeQuery this;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.ConstantScoreRangeQuery;
+        $z0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: boolean includeUpper>;
+        return $z0;
+    }
+
+    public org.apache.lucene.search.Query rewrite(org.apache.lucene.index.IndexReader) throws java.io.IOException
+    {
+        org.apache.lucene.search.ConstantScoreRangeQuery this;
+        org.apache.lucene.index.IndexReader reader;
+        org.apache.lucene.search.RangeFilter rangeFilt, tmp$550636100;
+        org.apache.lucene.search.ConstantScoreQuery q, tmp$550636163;
+        java.lang.String $r2, $r3, $r4, $r5, $r6;
+        boolean $z0, $z1;
+        java.text.Collator $r7;
+        float $f0;
+        org.apache.lucene.search.Filter tmp;
+        org.apache.lucene.search.Query tmp;
+
+        this := @this: org.apache.lucene.search.ConstantScoreRangeQuery;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        tmp$550636100 = new org.apache.lucene.search.RangeFilter;
+        $r2 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String fieldName>;
+        $r3 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String lowerVal>;
+        if $r3 == null goto label0;
+
+        $r3 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String lowerVal>;
+        goto label1;
+
+     label0:
+        $r3 = "";
+
+     label1:
+        $r4 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String upperVal>;
+        $r5 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String lowerVal>;
+        if $r5 != "" goto label2;
+
+        $z0 = 0;
+        goto label3;
+
+     label2:
+        $z0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: boolean includeLower>;
+
+     label3:
+        $r6 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String upperVal>;
+        if $r6 != null goto label4;
+
+        $z1 = 0;
+        goto label5;
+
+     label4:
+        $z1 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: boolean includeUpper>;
+
+     label5:
+        $r7 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.text.Collator collator>;
+        specialinvoke tmp$550636100.<org.apache.lucene.search.RangeFilter: void <init>(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.text.Collator)>($r2, $r3, $r4, $z0, $z1, $r7);
+        rangeFilt = tmp$550636100;
+        tmp$550636163 = new org.apache.lucene.search.ConstantScoreQuery;
+        tmp = (org.apache.lucene.search.Filter) rangeFilt;
+        specialinvoke tmp$550636163.<org.apache.lucene.search.ConstantScoreQuery: void <init>(org.apache.lucene.search.Filter)>(tmp);
+        q = tmp$550636163;
+        $f0 = virtualinvoke this.<org.apache.lucene.search.ConstantScoreRangeQuery: float getBoost()>();
+        tmp = (org.apache.lucene.search.Query) q;
+        virtualinvoke tmp.<org.apache.lucene.search.Query: void setBoost(float)>($f0);
+        tmp = (org.apache.lucene.search.Query) q;
+        return tmp;
+    }
+
+    public java.lang.String toString(java.lang.String)
+    {
+        org.apache.lucene.search.ConstantScoreRangeQuery this;
+        java.lang.String field, $r1, $r2;
+        java.lang.StringBuffer $r0, buffer;
+        boolean $z0, $z1;
+        char $c0;
+        float $f0, $f1;
+        byte $b1;
+
+        this := @this: org.apache.lucene.search.ConstantScoreRangeQuery;
+        field := @parameter0: java.lang.String;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buffer = $r0;
+        $r1 = virtualinvoke this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String getField()>();
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>(field);
+        if $z0 != 0 goto label0;
+
+        $r2 = virtualinvoke this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String getField()>();
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(":");
+
+     label0:
+        $z1 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: boolean includeLower>;
+        if $z1 == 0 goto label1;
+
+        $c0 = 91;
+        goto label2;
+
+     label1:
+        $c0 = 123;
+
+     label2:
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+        $r2 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String lowerVal>;
+        if $r2 == null goto label3;
+
+        $r2 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String lowerVal>;
+        goto label4;
+
+     label3:
+        $r2 = "*";
+
+     label4:
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" TO ");
+        $r2 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String upperVal>;
+        if $r2 == null goto label5;
+
+        $r2 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String upperVal>;
+        goto label6;
+
+     label5:
+        $r2 = "*";
+
+     label6:
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $z1 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: boolean includeUpper>;
+        if $z1 == 0 goto label7;
+
+        $c0 = 93;
+        goto label8;
+
+     label7:
+        $c0 = 125;
+
+     label8:
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+        $f0 = virtualinvoke this.<org.apache.lucene.search.ConstantScoreRangeQuery: float getBoost()>();
+        $b1 = $f0 cmpl 1.0F;
+        if $b1 == 0 goto label9;
+
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("^");
+        $f1 = virtualinvoke this.<org.apache.lucene.search.ConstantScoreRangeQuery: float getBoost()>();
+        $r2 = staticinvoke <java.lang.Float: java.lang.String toString(float)>($f1);
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+
+     label9:
+        $r1 = virtualinvoke buffer.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        org.apache.lucene.search.ConstantScoreRangeQuery this, other;
+        java.lang.Object o;
+        boolean $z0, $z1;
+        java.lang.String $r0, $r1;
+        java.text.Collator $r2, $r3;
+        float $f0, $f1;
+        byte $b0;
+
+        this := @this: org.apache.lucene.search.ConstantScoreRangeQuery;
+        o := @parameter0: java.lang.Object;
+        if this != o goto label0;
+
+        return 1;
+
+     label0:
+        $z0 = o instanceof org.apache.lucene.search.ConstantScoreRangeQuery;
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        other = (org.apache.lucene.search.ConstantScoreRangeQuery) o;
+        $r0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String fieldName>;
+        $r1 = other.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String fieldName>;
+        if $r0 != $r1 goto label2;
+
+        $z0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: boolean includeLower>;
+        $z1 = other.<org.apache.lucene.search.ConstantScoreRangeQuery: boolean includeLower>;
+        if $z0 != $z1 goto label2;
+
+        $z0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: boolean includeUpper>;
+        $z1 = other.<org.apache.lucene.search.ConstantScoreRangeQuery: boolean includeUpper>;
+        if $z0 != $z1 goto label2;
+
+        $r2 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.text.Collator collator>;
+        if $r2 == null goto label3;
+
+        $r2 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.text.Collator collator>;
+        $r3 = other.<org.apache.lucene.search.ConstantScoreRangeQuery: java.text.Collator collator>;
+        $z0 = virtualinvoke $r2.<java.text.Collator: boolean equals(java.lang.Object)>($r3);
+        if $z0 != 0 goto label3;
+
+     label2:
+        return 0;
+
+     label3:
+        $r0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String lowerVal>;
+        if $r0 == null goto label4;
+
+        $r0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String lowerVal>;
+        $r1 = other.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String lowerVal>;
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+        if $z0 != 0 goto label6;
+
+        goto label5;
+
+     label4:
+        $r0 = other.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String lowerVal>;
+        if $r0 == null goto label6;
+
+     label5:
+        return 0;
+
+     label6:
+        $r0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String upperVal>;
+        if $r0 == null goto label7;
+
+        $r0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String upperVal>;
+        $r1 = other.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String upperVal>;
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+        if $z0 != 0 goto label9;
+
+        goto label8;
+
+     label7:
+        $r0 = other.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String upperVal>;
+        if $r0 == null goto label9;
+
+     label8:
+        return 0;
+
+     label9:
+        $f0 = virtualinvoke this.<org.apache.lucene.search.ConstantScoreRangeQuery: float getBoost()>();
+        $f1 = virtualinvoke other.<org.apache.lucene.search.ConstantScoreRangeQuery: float getBoost()>();
+        $b0 = $f0 cmpl $f1;
+        if $b0 != 0 goto label10;
+
+        $z0 = 1;
+        goto label11;
+
+     label10:
+        $z0 = 0;
+
+     label11:
+        return $z0;
+    }
+
+    public int hashCode()
+    {
+        org.apache.lucene.search.ConstantScoreRangeQuery this;
+        int h, $i0, $i1, $i2;
+        float $f0;
+        java.lang.String $r0;
+        boolean $z0, $z1;
+        java.text.Collator $r1;
+
+        this := @this: org.apache.lucene.search.ConstantScoreRangeQuery;
+        $f0 = virtualinvoke this.<org.apache.lucene.search.ConstantScoreRangeQuery: float getBoost()>();
+        $i0 = staticinvoke <java.lang.Float: int floatToIntBits(float)>($f0);
+        $r0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String fieldName>;
+        $i1 = virtualinvoke $r0.<java.lang.String: int hashCode()>();
+        h = $i0 ^ $i1;
+        $i0 = h;
+        $r0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String lowerVal>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String lowerVal>;
+        $i1 = virtualinvoke $r0.<java.lang.String: int hashCode()>();
+        goto label1;
+
+     label0:
+        $i1 = -1772448166;
+
+     label1:
+        h = $i0 ^ $i1;
+        $i1 = h << 17;
+        $i2 = h >>> 16;
+        $i1 = $i1 | $i2;
+        h = h ^ $i1;
+        $i0 = h;
+        $r0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String upperVal>;
+        if $r0 == null goto label2;
+
+        $r0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.lang.String upperVal>;
+        $i1 = virtualinvoke $r0.<java.lang.String: int hashCode()>();
+        goto label3;
+
+     label2:
+        $i1 = 1516853865;
+
+     label3:
+        h = $i0 ^ $i1;
+        $i0 = h;
+        $z0 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: boolean includeLower>;
+        if $z0 == 0 goto label4;
+
+        $i1 = 1716885930;
+        goto label5;
+
+     label4:
+        $i1 = 0;
+
+     label5:
+        $z1 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: boolean includeUpper>;
+        if $z1 == 0 goto label6;
+
+        $i2 = -1716890266;
+        goto label7;
+
+     label6:
+        $i2 = 0;
+
+     label7:
+        $i1 = $i1 ^ $i2;
+        h = $i0 ^ $i1;
+        $i0 = h;
+        $r1 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.text.Collator collator>;
+        if $r1 == null goto label8;
+
+        $r1 = this.<org.apache.lucene.search.ConstantScoreRangeQuery: java.text.Collator collator>;
+        $i1 = virtualinvoke $r1.<java.text.Collator: int hashCode()>();
+        goto label9;
+
+     label8:
+        $i1 = 0;
+
+     label9:
+        h = $i0 ^ $i1;
+        return h;
+    }
+}

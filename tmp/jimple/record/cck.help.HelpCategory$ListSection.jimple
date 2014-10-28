@@ -1,0 +1,67 @@
+class cck.help.HelpCategory$ListSection extends cck.help.HelpCategory$Section
+{
+    final java.lang.String title;
+    final java.lang.String para;
+    final java.util.List list;
+    final cck.help.HelpCategory this$0;
+
+    void <init>(cck.help.HelpCategory, java.lang.String, java.lang.String, java.util.List)
+    {
+        cck.help.HelpCategory$ListSection this;
+        cck.help.HelpCategory l1;
+        java.lang.String t, p;
+        java.util.List l;
+
+        this := @this: cck.help.HelpCategory$ListSection;
+        l1 := @parameter0: cck.help.HelpCategory;
+        t := @parameter1: java.lang.String;
+        p := @parameter2: java.lang.String;
+        l := @parameter3: java.util.List;
+        this.<cck.help.HelpCategory$ListSection: cck.help.HelpCategory this$0> = l1;
+        specialinvoke this.<cck.help.HelpCategory$Section: void <init>(cck.help.HelpCategory,cck.help.HelpCategory$1)>(l1, null);
+        this.<cck.help.HelpCategory$ListSection: java.lang.String title> = t;
+        this.<cck.help.HelpCategory$ListSection: java.lang.String para> = p;
+        this.<cck.help.HelpCategory$ListSection: java.util.List list> = l;
+        return;
+    }
+
+    void printHelp()
+    {
+        cck.help.HelpCategory$ListSection this;
+        java.util.Iterator i;
+        cck.help.HelpItem hi;
+        java.lang.String $r0;
+        java.util.List $r1;
+        boolean $z0;
+        java.lang.Object $r2;
+
+        this := @this: cck.help.HelpCategory$ListSection;
+        $r0 = this.<cck.help.HelpCategory$ListSection: java.lang.String title>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<cck.help.HelpCategory$ListSection: java.lang.String title>;
+        staticinvoke <cck.text.Terminal: void printBrightBlue(java.lang.String)>($r0);
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>("\n");
+
+     label0:
+        $r0 = this.<cck.help.HelpCategory$ListSection: java.lang.String para>;
+        $r0 = staticinvoke <cck.text.StringUtil: java.lang.String formatParagraphs(java.lang.String,int,int,int)>($r0, 0, 4, 78);
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>($r0);
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>("");
+        $r1 = this.<cck.help.HelpCategory$ListSection: java.util.List list>;
+        i = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r2 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        hi = (cck.help.HelpItem) $r2;
+        interfaceinvoke hi.<cck.help.HelpItem: void printHelp()>();
+        goto label1;
+
+     label2:
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>("");
+        return;
+    }
+}

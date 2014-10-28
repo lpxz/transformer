@@ -1,0 +1,98 @@
+public class avrora.actions.AnalyzeStackAction extends avrora.actions.Action
+{
+    public static final java.lang.String HELP;
+    public final cck.util.Option$Bool MONITOR_STATES;
+    public final cck.util.Option$Bool USE_ISEA;
+    public final cck.util.Option$Bool TRACE_SUMMARY;
+    public final cck.util.Option$Bool TRACE;
+    public final cck.util.Option$Bool DUMP_STATE_SPACE;
+    public final cck.util.Option$Bool SHOW_PATH;
+    public final cck.util.Option$Long RESERVE;
+    public static final int MEGABYTES;
+
+    public void <init>()
+    {
+        avrora.actions.AnalyzeStackAction this;
+        cck.util.Option$Bool $r0;
+        cck.util.Option$Long $r1;
+
+        this := @this: avrora.actions.AnalyzeStackAction;
+        specialinvoke this.<avrora.actions.Action: void <init>(java.lang.String)>("The \"analyze-stack\" option invokes the built-in stack analysis tool on the specified program. It uses an abstract interpretation of the program to determine the possible interrupt masks at each program point and determines the worst-case stack depth in the presence of interrupts.");
+        $r0 = virtualinvoke this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("monitor-states", 0, "This option is used to monitor the progress of a long-running stack analysis problem. The analyzer will report the count of states, edges, and propagation information produced every 5 seconds. ");
+        this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool MONITOR_STATES> = $r0;
+        $r0 = virtualinvoke this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("use-isea", 0, "This option enables the use of information from inter-procedural side effect analysis that may help in reducing the memory usage during state exploration, without affecting stack analysis precision. When this option is enabled, the stack analyzer will consult the ISEA analysis subsystem for each procedure call that it encounters in the program.");
+        this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool USE_ISEA> = $r0;
+        $r0 = virtualinvoke this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("trace-summary", 1, "This option is used to reduce the amount of output by summarizing the error tracethat yields the maximal stack depth. When true, the analysis will shorten the error trace by not reporting edges between states of adjacent instructions that do not change the stack height.");
+        this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool TRACE_SUMMARY> = $r0;
+        $r0 = virtualinvoke this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("trace", 0, "This option causes the stack analyzer to print a trace of each abstract state produced, every edge between states that is inserted, and all propagations performed during the analysis. ");
+        this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool TRACE> = $r0;
+        $r0 = virtualinvoke this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("dump-state-space", 0, "This option causes the stack analyzer to print a dump of all the reachable abstract states in the state space, as well as all edges between states. This can be used for a post-mortem analysis.");
+        this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool DUMP_STATE_SPACE> = $r0;
+        $r0 = virtualinvoke this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("show-path", 0, "This option causes the stack analyzer to print out the execution path corresponding to the maximal stack depth.");
+        this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool SHOW_PATH> = $r0;
+        $r1 = virtualinvoke this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Long newOption(java.lang.String,long,java.lang.String)>("reserve", 0L, "This option is used for reserving a small portion of memory before the analysis begins, in case the Java heap space is exhausted. This can happen with very large analyses. By reserving some space up front, there is space left so that post mortem graph analysis can be run. The units given are megabytes.");
+        this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Long RESERVE> = $r1;
+        return;
+    }
+
+    public void run(java.lang.String[]) throws java.lang.Exception
+    {
+        avrora.actions.AnalyzeStackAction this;
+        java.lang.String[] args;
+        avrora.core.Program p;
+        avrora.stack.Analyzer a, $r3;
+        cck.util.Option$Bool $r0;
+        boolean $z0;
+        cck.util.Option$Long $r1;
+        long $l0, tid_run;
+        int $i1;
+        byte[] $r2;
+        java.lang.Thread thread_run;
+
+        this := @this: avrora.actions.AnalyzeStackAction;
+        args := @parameter0: java.lang.String[];
+        thread_run = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_run = virtualinvoke thread_run.<java.lang.Thread: long getId()>();
+        p = staticinvoke <avrora.Main: avrora.core.Program loadProgram(java.lang.String[])>(args);
+        $r0 = this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool TRACE_SUMMARY>;
+        $z0 = virtualinvoke $r0.<cck.util.Option$Bool: boolean get()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,boolean)>(191, tid_run, "avrora.actionsavrora.actions.AnalyzeStackAction", 105, $z0);
+        <avrora.stack.Analyzer: boolean TRACE_SUMMARY> = $z0;
+        $r0 = this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool MONITOR_STATES>;
+        $z0 = virtualinvoke $r0.<cck.util.Option$Bool: boolean get()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,boolean)>(192, tid_run, "avrora.actionsavrora.actions.AnalyzeStackAction", 106, $z0);
+        <avrora.stack.Analyzer: boolean MONITOR_STATES> = $z0;
+        $r0 = this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool TRACE>;
+        $z0 = virtualinvoke $r0.<cck.util.Option$Bool: boolean get()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,boolean)>(193, tid_run, "avrora.actionsavrora.actions.AnalyzeStackAction", 107, $z0);
+        <avrora.stack.Analyzer: boolean TRACE> = $z0;
+        $r0 = this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool USE_ISEA>;
+        $z0 = virtualinvoke $r0.<cck.util.Option$Bool: boolean get()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,boolean)>(194, tid_run, "avrora.actionsavrora.actions.AnalyzeStackAction", 108, $z0);
+        <avrora.stack.Analyzer: boolean USE_ISEA> = $z0;
+        $r0 = this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool SHOW_PATH>;
+        $z0 = virtualinvoke $r0.<cck.util.Option$Bool: boolean get()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,boolean)>(195, tid_run, "avrora.actionsavrora.actions.AnalyzeStackAction", 109, $z0);
+        <avrora.stack.Analyzer: boolean SHOW_PATH> = $z0;
+        $r1 = this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Long RESERVE>;
+        $l0 = virtualinvoke $r1.<cck.util.Option$Long: long get()>();
+        $l0 = $l0 * 1048576L;
+        $i1 = (int) $l0;
+        $r2 = newarray (byte)[$i1];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,java.lang.Object)>(196, tid_run, "avrora.actionsavrora.actions.AnalyzeStackAction", 110, $r2);
+        <avrora.stack.Analyzer: byte[] reserve> = $r2;
+        $r3 = new avrora.stack.Analyzer;
+        specialinvoke $r3.<avrora.stack.Analyzer: void <init>(avrora.core.Program)>(p);
+        a = $r3;
+        virtualinvoke a.<avrora.stack.Analyzer: void run()>();
+        virtualinvoke a.<avrora.stack.Analyzer: void report()>();
+        $r0 = this.<avrora.actions.AnalyzeStackAction: cck.util.Option$Bool DUMP_STATE_SPACE>;
+        $z0 = virtualinvoke $r0.<cck.util.Option$Bool: boolean get()>();
+        if $z0 == 0 goto label0;
+
+        virtualinvoke a.<avrora.stack.Analyzer: void dump()>();
+
+     label0:
+        return;
+    }
+}

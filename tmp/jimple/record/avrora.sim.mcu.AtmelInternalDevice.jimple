@@ -1,0 +1,119 @@
+public abstract class avrora.sim.mcu.AtmelInternalDevice extends java.lang.Object
+{
+    public final java.lang.String name;
+    protected final avrora.sim.mcu.AtmelMicrocontroller microcontroller;
+    protected final avrora.sim.Simulator simulator;
+    protected final avrora.sim.AtmelInterpreter interpreter;
+    protected final avrora.sim.output.SimPrinter devicePrinter;
+    protected final avrora.sim.clock.Clock mainClock;
+
+    public void <init>(java.lang.String, avrora.sim.mcu.AtmelMicrocontroller)
+    {
+        avrora.sim.mcu.AtmelInternalDevice this;
+        java.lang.String n, $r5;
+        avrora.sim.mcu.AtmelMicrocontroller m;
+        java.lang.StringBuilder $r0;
+        avrora.sim.Simulator $r1;
+        avrora.sim.clock.MainClock $r2;
+        avrora.sim.Interpreter $r3;
+        avrora.sim.AtmelInterpreter $r4;
+        avrora.sim.output.SimPrinter $r6;
+
+        this := @this: avrora.sim.mcu.AtmelInternalDevice;
+        n := @parameter0: java.lang.String;
+        m := @parameter1: avrora.sim.mcu.AtmelMicrocontroller;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.mcu.AtmelInternalDevice: java.lang.String name> = n;
+        this.<avrora.sim.mcu.AtmelInternalDevice: avrora.sim.mcu.AtmelMicrocontroller microcontroller> = m;
+        $r1 = virtualinvoke m.<avrora.sim.mcu.AtmelMicrocontroller: avrora.sim.Simulator getSimulator()>();
+        this.<avrora.sim.mcu.AtmelInternalDevice: avrora.sim.Simulator simulator> = $r1;
+        $r1 = this.<avrora.sim.mcu.AtmelInternalDevice: avrora.sim.Simulator simulator>;
+        $r2 = virtualinvoke $r1.<avrora.sim.Simulator: avrora.sim.clock.MainClock getClock()>();
+        this.<avrora.sim.mcu.AtmelInternalDevice: avrora.sim.clock.Clock mainClock> = $r2;
+        $r1 = this.<avrora.sim.mcu.AtmelInternalDevice: avrora.sim.Simulator simulator>;
+        $r3 = virtualinvoke $r1.<avrora.sim.Simulator: avrora.sim.Interpreter getInterpreter()>();
+        $r4 = (avrora.sim.AtmelInterpreter) $r3;
+        this.<avrora.sim.mcu.AtmelInternalDevice: avrora.sim.AtmelInterpreter interpreter> = $r4;
+        $r1 = virtualinvoke m.<avrora.sim.mcu.AtmelMicrocontroller: avrora.sim.Simulator getSimulator()>();
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("atmel.");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(n);
+        $r5 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r6 = virtualinvoke $r1.<avrora.sim.Simulator: avrora.sim.output.SimPrinter getPrinter(java.lang.String)>($r5);
+        this.<avrora.sim.mcu.AtmelInternalDevice: avrora.sim.output.SimPrinter devicePrinter> = $r6;
+        return;
+    }
+
+    public java.util.Iterator getIORegs()
+    {
+        avrora.sim.mcu.AtmelInternalDevice this;
+        cck.util.Util$InternalError $r0;
+
+        this := @this: avrora.sim.mcu.AtmelInternalDevice;
+        $r0 = staticinvoke <cck.util.Util: cck.util.Util$InternalError unimplemented()>();
+        throw $r0;
+    }
+
+    protected void installIOReg(java.lang.String, avrora.sim.ActiveRegister)
+    {
+        avrora.sim.mcu.AtmelInternalDevice this;
+        java.lang.String name;
+        avrora.sim.ActiveRegister reg;
+        avrora.sim.mcu.AtmelMicrocontroller $r0;
+
+        this := @this: avrora.sim.mcu.AtmelInternalDevice;
+        name := @parameter0: java.lang.String;
+        reg := @parameter1: avrora.sim.ActiveRegister;
+        $r0 = this.<avrora.sim.mcu.AtmelInternalDevice: avrora.sim.mcu.AtmelMicrocontroller microcontroller>;
+        virtualinvoke $r0.<avrora.sim.mcu.AtmelMicrocontroller: avrora.sim.ActiveRegister installIOReg(java.lang.String,avrora.sim.ActiveRegister)>(name, reg);
+        return;
+    }
+
+    protected static int read16(avrora.sim.RWRegister, avrora.sim.RWRegister)
+    {
+        avrora.sim.RWRegister high, low;
+        short result, $s2;
+        byte $b0, $b1;
+        int $i3, result;
+
+        high := @parameter0: avrora.sim.RWRegister;
+        low := @parameter1: avrora.sim.RWRegister;
+        $b0 = virtualinvoke low.<avrora.sim.RWRegister: byte read()>();
+        result = $b0 & 255;
+        $b1 = virtualinvoke high.<avrora.sim.RWRegister: byte read()>();
+        $s2 = $b1 & 255;
+        $i3 = $s2 << 8;
+        result = result | $i3;
+        return result;
+    }
+
+    protected static void write16(int, avrora.sim.RWRegister, avrora.sim.RWRegister)
+    {
+        int val, $i0;
+        avrora.sim.RWRegister high, low;
+        byte $b1;
+
+        val := @parameter0: int;
+        high := @parameter1: avrora.sim.RWRegister;
+        low := @parameter2: avrora.sim.RWRegister;
+        $i0 = val & 65280;
+        $i0 = $i0 >> 8;
+        $b1 = (byte) $i0;
+        virtualinvoke high.<avrora.sim.RWRegister: void write(byte)>($b1);
+        $i0 = val & 255;
+        $b1 = (byte) $i0;
+        virtualinvoke low.<avrora.sim.RWRegister: void write(byte)>($b1);
+        return;
+    }
+
+    public avrora.sim.clock.Clock getClock()
+    {
+        avrora.sim.mcu.AtmelInternalDevice this;
+        avrora.sim.clock.Clock $r0;
+
+        this := @this: avrora.sim.mcu.AtmelInternalDevice;
+        $r0 = this.<avrora.sim.mcu.AtmelInternalDevice: avrora.sim.clock.Clock mainClock>;
+        return $r0;
+    }
+}

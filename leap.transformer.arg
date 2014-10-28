@@ -1,5 +1,9 @@
-# SPENO  mainclass args (to added manually)
-#J /home/lpxz/eclipse/workspacePA_icse/benchmarks/bin demo.Example
-#c /home/lpxz/eclipse/workspacePA_icse/cache4j/bin net.sf.cache4j.test.BlockingCacheTest
-#c /home/lpxz/eclipse/workspacePA_icse/benchmarks/bin demo.Example
-c /home/lpxz/eclipse/workspacePA_icse/specjbb2005/bin spec.jbb.JBBmain
+# withrefl format  classpath mainclass  dacapobenchName (needed by dacapo only, for adding entries)
+#false c /home/lpxz/eclipse/workspacePA_icse/cache4j/bin net.sf.cache4j.test.BlockingCacheTest
+#false c /home/lpxz/eclipse/workspacePA_icse/benchmarks/bin demo.Example
+#false c /home/lpxz/eclipse/workspacePA_icse/specjbb2005/bin spec.jbb.JBBmain
+#false c /home/lpxz/eclipse/workspacePA_icse/benchmarks/bin demo.Example 
+false c /home/lpxz/eclipse/workspacePA_icse/benchmarks/bin critical.Critical 
+#true c /home/lpxz/work/dacapo/out/avrora-small Harness avrora
+
+ 

@@ -1,0 +1,393 @@
+public class org.dacapo.lusearch.Search$QueryProcessor extends java.lang.Object
+{
+    org.dacapo.lusearch.Search parent;
+    java.lang.String field;
+    int hitsPerPage;
+    boolean raw;
+    org.apache.lucene.index.IndexReader reader;
+    org.apache.lucene.search.Searcher searcher;
+    java.io.BufferedReader in;
+    java.io.PrintWriter out;
+    final org.dacapo.lusearch.Search this$0;
+
+    public void <init>(org.dacapo.lusearch.Search, org.dacapo.lusearch.Search, java.lang.String, int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean, int)
+    {
+        org.dacapo.lusearch.Search$QueryProcessor this;
+        org.dacapo.lusearch.Search l1, parent;
+        java.lang.String name, index, outBase, queryBase, field, normsField, query, $r6, $r12;
+        int id, hitsPerPage;
+        boolean raw;
+        java.lang.StringBuilder $r0, $r5;
+        java.lang.Exception e, $r13;
+        org.apache.lucene.index.IndexReader $r1, $r3;
+        org.dacapo.lusearch.Search$OneNormsReader $r2;
+        org.apache.lucene.search.IndexSearcher $r4;
+        java.io.BufferedReader $r7;
+        java.io.FileReader $r8;
+        java.io.PrintWriter $r9;
+        java.io.BufferedWriter $r10;
+        java.io.FileWriter $r11;
+
+        this := @this: org.dacapo.lusearch.Search$QueryProcessor;
+        l1 := @parameter0: org.dacapo.lusearch.Search;
+        parent := @parameter1: org.dacapo.lusearch.Search;
+        name := @parameter2: java.lang.String;
+        id := @parameter3: int;
+        index := @parameter4: java.lang.String;
+        outBase := @parameter5: java.lang.String;
+        queryBase := @parameter6: java.lang.String;
+        field := @parameter7: java.lang.String;
+        normsField := @parameter8: java.lang.String;
+        raw := @parameter9: boolean;
+        hitsPerPage := @parameter10: int;
+        this.<org.dacapo.lusearch.Search$QueryProcessor: org.dacapo.lusearch.Search this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.dacapo.lusearch.Search$QueryProcessor: org.dacapo.lusearch.Search parent> = parent;
+        this.<org.dacapo.lusearch.Search$QueryProcessor: java.lang.String field> = field;
+        this.<org.dacapo.lusearch.Search$QueryProcessor: boolean raw> = raw;
+        this.<org.dacapo.lusearch.Search$QueryProcessor: int hitsPerPage> = hitsPerPage;
+
+     label0:
+        $r1 = staticinvoke <org.apache.lucene.index.IndexReader: org.apache.lucene.index.IndexReader open(java.lang.String)>(index);
+        this.<org.dacapo.lusearch.Search$QueryProcessor: org.apache.lucene.index.IndexReader reader> = $r1;
+        if normsField == null goto label1;
+
+        $r2 = new org.dacapo.lusearch.Search$OneNormsReader;
+        $r3 = this.<org.dacapo.lusearch.Search$QueryProcessor: org.apache.lucene.index.IndexReader reader>;
+        specialinvoke $r2.<org.dacapo.lusearch.Search$OneNormsReader: void <init>(org.apache.lucene.index.IndexReader,java.lang.String)>($r3, normsField);
+        this.<org.dacapo.lusearch.Search$QueryProcessor: org.apache.lucene.index.IndexReader reader> = $r2;
+
+     label1:
+        $r4 = new org.apache.lucene.search.IndexSearcher;
+        $r3 = this.<org.dacapo.lusearch.Search$QueryProcessor: org.apache.lucene.index.IndexReader reader>;
+        specialinvoke $r4.<org.apache.lucene.search.IndexSearcher: void <init>(org.apache.lucene.index.IndexReader)>($r3);
+        this.<org.dacapo.lusearch.Search$QueryProcessor: org.apache.lucene.search.Searcher searcher> = $r4;
+        $r5 = new java.lang.StringBuilder;
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(queryBase);
+        if id >= 10 goto label2;
+
+        $r6 = "00";
+        goto label4;
+
+     label2:
+        if id >= 100 goto label3;
+
+        $r6 = "0";
+        goto label4;
+
+     label3:
+        $r6 = "";
+
+     label4:
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(id);
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".txt");
+        query = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r7 = new java.io.BufferedReader;
+        $r8 = new java.io.FileReader;
+        specialinvoke $r8.<java.io.FileReader: void <init>(java.lang.String)>(query);
+        specialinvoke $r7.<java.io.BufferedReader: void <init>(java.io.Reader)>($r8);
+        this.<org.dacapo.lusearch.Search$QueryProcessor: java.io.BufferedReader in> = $r7;
+        $r9 = new java.io.PrintWriter;
+        $r10 = new java.io.BufferedWriter;
+        $r11 = new java.io.FileWriter;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(outBase);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(id);
+        $r12 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke $r11.<java.io.FileWriter: void <init>(java.lang.String)>($r12);
+        specialinvoke $r10.<java.io.BufferedWriter: void <init>(java.io.Writer)>($r11);
+        specialinvoke $r9.<java.io.PrintWriter: void <init>(java.io.Writer)>($r10);
+        this.<org.dacapo.lusearch.Search$QueryProcessor: java.io.PrintWriter out> = $r9;
+
+     label5:
+        goto label7;
+
+     label6:
+        $r13 := @caughtexception;
+        e = $r13;
+        virtualinvoke e.<java.lang.Exception: void printStackTrace()>();
+
+     label7:
+        return;
+
+        catch java.lang.Exception from label0 to label5 with label6;
+    }
+
+    public void run() throws java.io.IOException
+    {
+        org.dacapo.lusearch.Search$QueryProcessor this;
+        org.apache.lucene.analysis.standard.StandardAnalyzer $r0, analyzer;
+        org.apache.lucene.queryParser.QueryParser parser, $r1;
+        java.lang.String line, $r2, $r13;
+        org.apache.lucene.search.Query query;
+        java.lang.Exception e, $r4;
+        org.dacapo.lusearch.Search l3, $r9, $r12;
+        java.lang.Throwable l6, $r14;
+        java.io.BufferedReader $r3;
+        int $i0, $i1, $i2;
+        org.apache.lucene.search.Searcher $r5;
+        org.apache.lucene.index.IndexReader $r7;
+        java.io.PrintWriter $r8;
+        java.io.PrintStream $r10;
+        java.lang.StringBuilder $r11;
+        long tid_run;
+        java.lang.Thread thread_run;
+
+        this := @this: org.dacapo.lusearch.Search$QueryProcessor;
+        thread_run = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_run = virtualinvoke thread_run.<java.lang.Thread: long getId()>();
+        $r0 = new org.apache.lucene.analysis.standard.StandardAnalyzer;
+        specialinvoke $r0.<org.apache.lucene.analysis.standard.StandardAnalyzer: void <init>()>();
+        analyzer = $r0;
+        $r1 = new org.apache.lucene.queryParser.QueryParser;
+        $r2 = this.<org.dacapo.lusearch.Search$QueryProcessor: java.lang.String field>;
+        specialinvoke $r1.<org.apache.lucene.queryParser.QueryParser: void <init>(java.lang.String,org.apache.lucene.analysis.Analyzer)>($r2, analyzer);
+        parser = $r1;
+
+     label0:
+        $r3 = this.<org.dacapo.lusearch.Search$QueryProcessor: java.io.BufferedReader in>;
+        line = virtualinvoke $r3.<java.io.BufferedReader: java.lang.String readLine()>();
+        if line == null goto label7;
+
+        $i0 = virtualinvoke line.<java.lang.String: int length()>();
+        if $i0 != -1 goto label1;
+
+        goto label7;
+
+     label1:
+        line = virtualinvoke line.<java.lang.String: java.lang.String trim()>();
+        $i0 = virtualinvoke line.<java.lang.String: int length()>();
+        if $i0 != 0 goto label2;
+
+        goto label7;
+
+     label2:
+        query = null;
+
+     label3:
+        query = virtualinvoke parser.<org.apache.lucene.queryParser.QueryParser: org.apache.lucene.search.Query parse(java.lang.String)>(line);
+
+     label4:
+        goto label6;
+
+     label5:
+        $r4 := @caughtexception;
+        e = $r4;
+        virtualinvoke e.<java.lang.Exception: void printStackTrace()>();
+
+     label6:
+        $r5 = this.<org.dacapo.lusearch.Search$QueryProcessor: org.apache.lucene.search.Searcher searcher>;
+        virtualinvoke $r5.<org.apache.lucene.search.Searcher: org.apache.lucene.search.TopDocs search(org.apache.lucene.search.Query,org.apache.lucene.search.Filter,int)>(query, null, 10);
+        virtualinvoke this.<org.dacapo.lusearch.Search$QueryProcessor: void doPagingSearch(org.apache.lucene.search.Query)>(query);
+        goto label0;
+
+     label7:
+        $r7 = this.<org.dacapo.lusearch.Search$QueryProcessor: org.apache.lucene.index.IndexReader reader>;
+        virtualinvoke $r7.<org.apache.lucene.index.IndexReader: void close()>();
+        $r8 = this.<org.dacapo.lusearch.Search$QueryProcessor: java.io.PrintWriter out>;
+        virtualinvoke $r8.<java.io.PrintWriter: void flush()>();
+        $r8 = this.<org.dacapo.lusearch.Search$QueryProcessor: java.io.PrintWriter out>;
+        virtualinvoke $r8.<java.io.PrintWriter: void close()>();
+        $r9 = this.<org.dacapo.lusearch.Search$QueryProcessor: org.dacapo.lusearch.Search parent>;
+        l3 = $r9;
+        entermonitor $r9;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r9, 6, tid_run);
+
+     label8:
+        $r9 = this.<org.dacapo.lusearch.Search$QueryProcessor: org.dacapo.lusearch.Search parent>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r9, 111, tid_run, "org.dacapo.lusearch.Search$QueryProcessor", 250, $i1);
+        $i1 = $r9.<org.dacapo.lusearch.Search: int completed>;
+        $i1 = $i1 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r9, 111, tid_run, "org.dacapo.lusearch.Search$QueryProcessor", 250, $i1);
+        $r9.<org.dacapo.lusearch.Search: int completed> = $i1;
+        $r9 = this.<org.dacapo.lusearch.Search$QueryProcessor: org.dacapo.lusearch.Search parent>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r9, 111, tid_run, "org.dacapo.lusearch.Search$QueryProcessor", 251, $i0);
+        $i0 = $r9.<org.dacapo.lusearch.Search: int completed>;
+        $i0 = $i0 % 4;
+        if $i0 != 0 goto label9;
+
+        $r10 = <java.lang.System: java.io.PrintStream out>;
+        $r11 = new java.lang.StringBuilder;
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
+        $r12 = this.<org.dacapo.lusearch.Search$QueryProcessor: org.dacapo.lusearch.Search parent>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r12, 111, tid_run, "org.dacapo.lusearch.Search$QueryProcessor", 252, $i2);
+        $i2 = $r12.<org.dacapo.lusearch.Search: int completed>;
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" query batches completed");
+        $r13 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r10.<java.io.PrintStream: void println(java.lang.String)>($r13);
+
+     label9:
+        $r9 = this.<org.dacapo.lusearch.Search$QueryProcessor: org.dacapo.lusearch.Search parent>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void notifyBefore(java.lang.Object,int,long)>($r9, 0, tid_run);
+        virtualinvoke $r9.<java.lang.Object: void notify()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 6, tid_run);
+        exitmonitor l3;
+
+     label10:
+        goto label14;
+
+     label11:
+        $r14 := @caughtexception;
+
+     label12:
+        l6 = $r14;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l3, 6, tid_run);
+        exitmonitor l3;
+
+     label13:
+        throw l6;
+
+     label14:
+        return;
+
+        catch java.lang.Exception from label3 to label4 with label5;
+        catch java.lang.Throwable from label8 to label10 with label11;
+        catch java.lang.Throwable from label12 to label13 with label11;
+    }
+
+    public void doPagingSearch(org.apache.lucene.search.Query) throws java.io.IOException
+    {
+        org.dacapo.lusearch.Search$QueryProcessor this;
+        org.apache.lucene.search.Query query;
+        org.apache.lucene.search.TopDocCollector $r0, collector;
+        org.apache.lucene.search.ScoreDoc[] hits;
+        int numTotalHits, start, end, i, $i0, $i1, $i2;
+        org.apache.lucene.document.Document doc;
+        java.lang.String path, title, $r5, $r6, $r7;
+        org.apache.lucene.search.Searcher $r1;
+        org.apache.lucene.search.TopDocs $r2;
+        java.io.PrintWriter $r3;
+        java.lang.StringBuilder $r4;
+        boolean $z0;
+        org.apache.lucene.search.ScoreDoc $r8, $r9;
+        float $f0;
+        long tid_doPagingSearch;
+        java.lang.Thread thread_doPagingSearch;
+
+        this := @this: org.dacapo.lusearch.Search$QueryProcessor;
+        query := @parameter0: org.apache.lucene.search.Query;
+        thread_doPagingSearch = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_doPagingSearch = virtualinvoke thread_doPagingSearch.<java.lang.Thread: long getId()>();
+        $r0 = new org.apache.lucene.search.TopDocCollector;
+        specialinvoke $r0.<org.apache.lucene.search.TopDocCollector: void <init>(int)>(20);
+        collector = $r0;
+        $r1 = this.<org.dacapo.lusearch.Search$QueryProcessor: org.apache.lucene.search.Searcher searcher>;
+        virtualinvoke $r1.<org.apache.lucene.search.Searcher: void search(org.apache.lucene.search.Query,org.apache.lucene.search.HitCollector)>(query, collector);
+        $r2 = virtualinvoke collector.<org.apache.lucene.search.TopDocCollector: org.apache.lucene.search.TopDocs topDocs()>();
+        hits = $r2.<org.apache.lucene.search.TopDocs: org.apache.lucene.search.ScoreDoc[] scoreDocs>;
+        numTotalHits = virtualinvoke collector.<org.apache.lucene.search.TopDocCollector: int getTotalHits()>();
+        if numTotalHits <= 0 goto label0;
+
+        $r3 = this.<org.dacapo.lusearch.Search$QueryProcessor: java.io.PrintWriter out>;
+        $r4 = new java.lang.StringBuilder;
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(numTotalHits);
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" total matching documents for ");
+        $r5 = this.<org.dacapo.lusearch.Search$QueryProcessor: java.lang.String field>;
+        $r6 = virtualinvoke query.<org.apache.lucene.search.Query: java.lang.String toString(java.lang.String)>($r5);
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+        $r7 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintWriter: void println(java.lang.String)>($r7);
+
+     label0:
+        start = 0;
+        $i0 = this.<org.dacapo.lusearch.Search$QueryProcessor: int hitsPerPage>;
+        staticinvoke <java.lang.Math: int min(int,int)>(numTotalHits, $i0);
+
+     label1:
+        $i0 = staticinvoke <java.lang.Math: int min(int,int)>(20, numTotalHits);
+        if start >= $i0 goto label8;
+
+        $i1 = lengthof hits;
+        $i2 = this.<org.dacapo.lusearch.Search$QueryProcessor: int hitsPerPage>;
+        $i0 = start + $i2;
+        end = staticinvoke <java.lang.Math: int min(int,int)>($i1, $i0);
+        i = start;
+
+     label2:
+        if i >= end goto label7;
+
+        $z0 = this.<org.dacapo.lusearch.Search$QueryProcessor: boolean raw>;
+        if $z0 == 0 goto label3;
+
+        $r3 = this.<org.dacapo.lusearch.Search$QueryProcessor: java.io.PrintWriter out>;
+        $r4 = new java.lang.StringBuilder;
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("doc=");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(hits, 112, tid_doPagingSearch, "org.dacapo.lusearch.Search$QueryProcessor", 288, i, $r8);
+        $r8 = hits[i];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r8, 113, tid_doPagingSearch, "org.dacapo.lusearch.Search$QueryProcessor", 288, $i2);
+        $i2 = $r8.<org.apache.lucene.search.ScoreDoc: int doc>;
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" score=");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(hits, 112, tid_doPagingSearch, "org.dacapo.lusearch.Search$QueryProcessor", 288, i, $r8);
+        $r8 = hits[i];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>($r8, 114, tid_doPagingSearch, "org.dacapo.lusearch.Search$QueryProcessor", 288, $f0);
+        $f0 = $r8.<org.apache.lucene.search.ScoreDoc: float score>;
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(float)>($f0);
+        $r7 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintWriter: void println(java.lang.String)>($r7);
+        goto label6;
+
+     label3:
+        $r1 = this.<org.dacapo.lusearch.Search$QueryProcessor: org.apache.lucene.search.Searcher searcher>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(hits, 112, tid_doPagingSearch, "org.dacapo.lusearch.Search$QueryProcessor", 292, i, $r9);
+        $r9 = hits[i];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r9, 113, tid_doPagingSearch, "org.dacapo.lusearch.Search$QueryProcessor", 292, $i0);
+        $i0 = $r9.<org.apache.lucene.search.ScoreDoc: int doc>;
+        doc = virtualinvoke $r1.<org.apache.lucene.search.Searcher: org.apache.lucene.document.Document doc(int)>($i0);
+        path = virtualinvoke doc.<org.apache.lucene.document.Document: java.lang.String get(java.lang.String)>("path");
+        if path == null goto label5;
+
+        $r3 = this.<org.dacapo.lusearch.Search$QueryProcessor: java.io.PrintWriter out>;
+        $r4 = new java.lang.StringBuilder;
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\t");
+        $i2 = i + 1;
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(". ");
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(path);
+        $r7 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintWriter: void println(java.lang.String)>($r7);
+        title = virtualinvoke doc.<org.apache.lucene.document.Document: java.lang.String get(java.lang.String)>("title");
+        if title == null goto label4;
+
+        $r3 = this.<org.dacapo.lusearch.Search$QueryProcessor: java.io.PrintWriter out>;
+        $r4 = new java.lang.StringBuilder;
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("   Title: ");
+        $r6 = virtualinvoke doc.<org.apache.lucene.document.Document: java.lang.String get(java.lang.String)>("title");
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+        $r7 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintWriter: void println(java.lang.String)>($r7);
+
+     label4:
+        goto label6;
+
+     label5:
+        $r3 = this.<org.dacapo.lusearch.Search$QueryProcessor: java.io.PrintWriter out>;
+        $r4 = new java.lang.StringBuilder;
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+        $i2 = i + 1;
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(". ");
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("No path for this document");
+        $r7 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r3.<java.io.PrintWriter: void println(java.lang.String)>($r7);
+
+     label6:
+        i = i + 1;
+        goto label2;
+
+     label7:
+        start = end;
+        goto label1;
+
+     label8:
+        return;
+    }
+}

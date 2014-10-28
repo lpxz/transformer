@@ -1,0 +1,68 @@
+public class avrora.sim.mcu.Timer16Bit$InputCapturePin extends java.lang.Object implements avrora.sim.state.BooleanView
+{
+    boolean level;
+    final avrora.sim.mcu.Timer16Bit this$0;
+
+    public void <init>(avrora.sim.mcu.Timer16Bit)
+    {
+        avrora.sim.mcu.Timer16Bit$InputCapturePin this;
+        avrora.sim.mcu.Timer16Bit l1;
+
+        this := @this: avrora.sim.mcu.Timer16Bit$InputCapturePin;
+        l1 := @parameter0: avrora.sim.mcu.Timer16Bit;
+        this.<avrora.sim.mcu.Timer16Bit$InputCapturePin: avrora.sim.mcu.Timer16Bit this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public boolean getValue()
+    {
+        avrora.sim.mcu.Timer16Bit$InputCapturePin this;
+        boolean $z0;
+
+        this := @this: avrora.sim.mcu.Timer16Bit$InputCapturePin;
+        $z0 = this.<avrora.sim.mcu.Timer16Bit$InputCapturePin: boolean level>;
+        return $z0;
+    }
+
+    public void setValue(boolean)
+    {
+        avrora.sim.mcu.Timer16Bit$InputCapturePin this;
+        boolean v, $z0, $z1;
+        avrora.sim.mcu.Timer16Bit $r0;
+        avrora.sim.mcu.RegisterSet$Field $r1;
+        int $i0;
+        long tid_setValue;
+        java.lang.Thread thread_setValue;
+
+        this := @this: avrora.sim.mcu.Timer16Bit$InputCapturePin;
+        v := @parameter0: boolean;
+        thread_setValue = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setValue = virtualinvoke thread_setValue.<java.lang.Thread: long getId()>();
+        $z0 = this.<avrora.sim.mcu.Timer16Bit$InputCapturePin: boolean level>;
+        if v == $z0 goto label2;
+
+        this.<avrora.sim.mcu.Timer16Bit$InputCapturePin: boolean level> = v;
+        $r0 = this.<avrora.sim.mcu.Timer16Bit$InputCapturePin: avrora.sim.mcu.Timer16Bit this$0>;
+        $r1 = $r0.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.RegisterSet$Field ICESn_flag>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 89, tid_setValue, "avrora.sim.mcu.Timer16Bit$InputCapturePin", 85, $i0);
+        $i0 = $r1.<avrora.sim.mcu.RegisterSet$Field: int value>;
+        if $i0 != 1 goto label0;
+
+        $z1 = 1;
+        goto label1;
+
+     label0:
+        $z1 = 0;
+
+     label1:
+        $z0 = this.<avrora.sim.mcu.Timer16Bit$InputCapturePin: boolean level>;
+        if $z1 != $z0 goto label2;
+
+        $r0 = this.<avrora.sim.mcu.Timer16Bit$InputCapturePin: avrora.sim.mcu.Timer16Bit this$0>;
+        virtualinvoke $r0.<avrora.sim.mcu.Timer16Bit: void captureInput()>();
+
+     label2:
+        return;
+    }
+}

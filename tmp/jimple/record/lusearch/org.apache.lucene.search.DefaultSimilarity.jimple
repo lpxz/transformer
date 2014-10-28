@@ -1,0 +1,108 @@
+public class org.apache.lucene.search.DefaultSimilarity extends org.apache.lucene.search.Similarity
+{
+
+    public void <init>()
+    {
+        org.apache.lucene.search.DefaultSimilarity this;
+
+        this := @this: org.apache.lucene.search.DefaultSimilarity;
+        specialinvoke this.<org.apache.lucene.search.Similarity: void <init>()>();
+        return;
+    }
+
+    public float lengthNorm(java.lang.String, int)
+    {
+        org.apache.lucene.search.DefaultSimilarity this;
+        java.lang.String fieldName;
+        int numTerms;
+        double $d0, $d1;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.DefaultSimilarity;
+        fieldName := @parameter0: java.lang.String;
+        numTerms := @parameter1: int;
+        $d0 = (double) numTerms;
+        $d0 = staticinvoke <java.lang.Math: double sqrt(double)>($d0);
+        $d1 = 1.0 / $d0;
+        $f0 = (float) $d1;
+        return $f0;
+    }
+
+    public float queryNorm(float)
+    {
+        org.apache.lucene.search.DefaultSimilarity this;
+        float sumOfSquaredWeights, $f0;
+        double $d0, $d1;
+
+        this := @this: org.apache.lucene.search.DefaultSimilarity;
+        sumOfSquaredWeights := @parameter0: float;
+        $d0 = (double) sumOfSquaredWeights;
+        $d0 = staticinvoke <java.lang.Math: double sqrt(double)>($d0);
+        $d1 = 1.0 / $d0;
+        $f0 = (float) $d1;
+        return $f0;
+    }
+
+    public float tf(float)
+    {
+        org.apache.lucene.search.DefaultSimilarity this;
+        float freq, $f0;
+        double $d0;
+
+        this := @this: org.apache.lucene.search.DefaultSimilarity;
+        freq := @parameter0: float;
+        $d0 = (double) freq;
+        $d0 = staticinvoke <java.lang.Math: double sqrt(double)>($d0);
+        $f0 = (float) $d0;
+        return $f0;
+    }
+
+    public float sloppyFreq(int)
+    {
+        org.apache.lucene.search.DefaultSimilarity this;
+        int distance, $i0;
+        float $f0, $f1;
+
+        this := @this: org.apache.lucene.search.DefaultSimilarity;
+        distance := @parameter0: int;
+        $i0 = distance + 1;
+        $f0 = (float) $i0;
+        $f1 = 1.0F / $f0;
+        return $f1;
+    }
+
+    public float idf(int, int)
+    {
+        org.apache.lucene.search.DefaultSimilarity this;
+        int docFreq, numDocs, $i0;
+        double $d0, $d1;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.DefaultSimilarity;
+        docFreq := @parameter0: int;
+        numDocs := @parameter1: int;
+        $d0 = (double) numDocs;
+        $i0 = docFreq + 1;
+        $d1 = (double) $i0;
+        $d0 = $d0 / $d1;
+        $d0 = staticinvoke <java.lang.Math: double log(double)>($d0);
+        $d0 = $d0 + 1.0;
+        $f0 = (float) $d0;
+        return $f0;
+    }
+
+    public float coord(int, int)
+    {
+        org.apache.lucene.search.DefaultSimilarity this;
+        int overlap, maxOverlap;
+        float $f0, $f1;
+
+        this := @this: org.apache.lucene.search.DefaultSimilarity;
+        overlap := @parameter0: int;
+        maxOverlap := @parameter1: int;
+        $f0 = (float) overlap;
+        $f1 = (float) maxOverlap;
+        $f0 = $f0 / $f1;
+        return $f0;
+    }
+}

@@ -1,0 +1,53 @@
+class avrora.core.SourceMapping$1 extends java.lang.Object implements java.util.Comparator
+{
+
+    void <init>()
+    {
+        avrora.core.SourceMapping$1 this;
+
+        this := @this: avrora.core.SourceMapping$1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public int compare(java.lang.Object, java.lang.Object)
+    {
+        avrora.core.SourceMapping$1 this;
+        java.lang.Object o1, o2;
+        avrora.core.SourceMapping$Location l1, l2;
+        int $i0, $i1;
+        java.lang.String $r0, $r1;
+
+        this := @this: avrora.core.SourceMapping$1;
+        o1 := @parameter0: java.lang.Object;
+        o2 := @parameter1: java.lang.Object;
+        l1 = (avrora.core.SourceMapping$Location) o1;
+        l2 = (avrora.core.SourceMapping$Location) o2;
+        $i0 = l1.<avrora.core.SourceMapping$Location: int lma_addr>;
+        $i1 = l2.<avrora.core.SourceMapping$Location: int lma_addr>;
+        if $i0 != $i1 goto label2;
+
+        $r0 = l1.<avrora.core.SourceMapping$Location: java.lang.String name>;
+        if $r0 != null goto label0;
+
+        return 1;
+
+     label0:
+        $r0 = l2.<avrora.core.SourceMapping$Location: java.lang.String name>;
+        if $r0 != null goto label1;
+
+        return -1;
+
+     label1:
+        $r0 = l1.<avrora.core.SourceMapping$Location: java.lang.String name>;
+        $r1 = l2.<avrora.core.SourceMapping$Location: java.lang.String name>;
+        $i0 = virtualinvoke $r0.<java.lang.String: int compareTo(java.lang.String)>($r1);
+        return $i0;
+
+     label2:
+        $i0 = l1.<avrora.core.SourceMapping$Location: int lma_addr>;
+        $i1 = l2.<avrora.core.SourceMapping$Location: int lma_addr>;
+        $i0 = $i0 - $i1;
+        return $i0;
+    }
+}

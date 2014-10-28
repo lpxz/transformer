@@ -1,0 +1,476 @@
+public class avrora.syntax.raw.RAWReader extends avrora.core.ProgramReader
+{
+    boolean inCode;
+
+    public void <init>()
+    {
+        avrora.syntax.raw.RAWReader this;
+
+        this := @this: avrora.syntax.raw.RAWReader;
+        specialinvoke this.<avrora.core.ProgramReader: void <init>(java.lang.String)>("The \"raw\" program format reader reads programs that consist of small records of bytes and instructions.");
+        return;
+    }
+
+    public avrora.core.Program read(java.lang.String[]) throws java.lang.Exception
+    {
+        avrora.syntax.raw.RAWReader this;
+        java.lang.String[] args;
+        avrora.arch.AbstractArchitecture arch;
+        java.lang.String fname;
+        java.util.List records;
+        avrora.core.Program p;
+        int $i0;
+        long tid_read;
+        java.lang.Thread thread_read;
+
+        this := @this: avrora.syntax.raw.RAWReader;
+        args := @parameter0: java.lang.String[];
+        thread_read = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_read = virtualinvoke thread_read.<java.lang.Thread: long getId()>();
+        $i0 = lengthof args;
+        if $i0 != 0 goto label0;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String)>("no input files");
+
+     label0:
+        $i0 = lengthof args;
+        if $i0 == 1 goto label1;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String)>("input type \"raw\" accepts only one file at a time.");
+
+     label1:
+        arch = virtualinvoke this.<avrora.syntax.raw.RAWReader: avrora.arch.AbstractArchitecture getArchitecture()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 18, tid_read, "avrora.syntax.raw.RAWReader", 79, 0, fname);
+        fname = args[0];
+        records = specialinvoke this.<avrora.syntax.raw.RAWReader: java.util.List parseFile(java.lang.String)>(fname);
+        p = specialinvoke this.<avrora.syntax.raw.RAWReader: avrora.core.Program createProgram(avrora.arch.AbstractArchitecture,java.util.List)>(arch, records);
+        specialinvoke this.<avrora.syntax.raw.RAWReader: void loadProgram(avrora.core.Program,java.util.List)>(p, records);
+        return p;
+    }
+
+    private java.util.List parseFile(java.lang.String) throws java.lang.Exception
+    {
+        avrora.syntax.raw.RAWReader this;
+        java.lang.String fname, line;
+        java.io.FileReader $r0;
+        java.io.BufferedReader reader, $r1;
+        java.util.LinkedList records, $r2;
+        int cntr, $i0;
+        avrora.syntax.raw.RAWReader$Record r;
+
+        this := @this: avrora.syntax.raw.RAWReader;
+        fname := @parameter0: java.lang.String;
+        staticinvoke <avrora.Main: void checkFileExists(java.lang.String)>(fname);
+        $r1 = new java.io.BufferedReader;
+        $r0 = new java.io.FileReader;
+        specialinvoke $r0.<java.io.FileReader: void <init>(java.lang.String)>(fname);
+        specialinvoke $r1.<java.io.BufferedReader: void <init>(java.io.Reader)>($r0);
+        reader = $r1;
+        $r2 = new java.util.LinkedList;
+        specialinvoke $r2.<java.util.LinkedList: void <init>()>();
+        records = $r2;
+        cntr = 1;
+
+     label0:
+        line = virtualinvoke reader.<java.io.BufferedReader: java.lang.String readLine()>();
+        if line != null goto label1;
+
+        goto label3;
+
+     label1:
+        $i0 = cntr;
+        cntr = cntr + 1;
+        r = virtualinvoke this.<avrora.syntax.raw.RAWReader: avrora.syntax.raw.RAWReader$Record parse(int,java.lang.String)>($i0, line);
+        if r == null goto label2;
+
+        interfaceinvoke records.<java.util.List: boolean add(java.lang.Object)>(r);
+
+     label2:
+        goto label0;
+
+     label3:
+        return records;
+    }
+
+    private avrora.core.Program createProgram(avrora.arch.AbstractArchitecture, java.util.List)
+    {
+        avrora.syntax.raw.RAWReader this;
+        avrora.arch.AbstractArchitecture arch;
+        java.util.List records, $r1, $r2;
+        boolean init, $z0;
+        int min, max, $i0, $i1, $i2;
+        java.util.Iterator i;
+        avrora.syntax.raw.RAWReader$Record r;
+        java.lang.Object $r0;
+        avrora.core.Program $r3;
+
+        this := @this: avrora.syntax.raw.RAWReader;
+        arch := @parameter0: avrora.arch.AbstractArchitecture;
+        records := @parameter1: java.util.List;
+        init = 0;
+        min = 0;
+        max = 0;
+        i = interfaceinvoke records.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label3;
+
+        $r0 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        r = (avrora.syntax.raw.RAWReader$Record) $r0;
+        if init == 0 goto label1;
+
+        $i0 = r.<avrora.syntax.raw.RAWReader$Record: int addr>;
+        min = staticinvoke <cck.util.Arithmetic: int min(int,int)>(min, $i0);
+        $i0 = r.<avrora.syntax.raw.RAWReader$Record: int addr>;
+        $r1 = r.<avrora.syntax.raw.RAWReader$Record: java.util.List bytes>;
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+        $i0 = $i0 + $i1;
+        max = staticinvoke <cck.util.Arithmetic: int max(int,int)>(max, $i0);
+        goto label2;
+
+     label1:
+        init = 1;
+        min = r.<avrora.syntax.raw.RAWReader$Record: int addr>;
+        $i2 = r.<avrora.syntax.raw.RAWReader$Record: int addr>;
+        $r2 = r.<avrora.syntax.raw.RAWReader$Record: java.util.List bytes>;
+        $i0 = interfaceinvoke $r2.<java.util.List: int size()>();
+        max = $i2 + $i0;
+
+     label2:
+        goto label0;
+
+     label3:
+        $r3 = new avrora.core.Program;
+        specialinvoke $r3.<avrora.core.Program: void <init>(avrora.arch.AbstractArchitecture,int,int)>(arch, min, max);
+        return $r3;
+    }
+
+    private void loadProgram(avrora.core.Program, java.util.List)
+    {
+        avrora.syntax.raw.RAWReader this;
+        avrora.core.Program p;
+        java.util.List records;
+        java.util.Iterator i;
+        avrora.syntax.raw.RAWReader$Record r;
+        boolean $z0;
+        java.lang.Object $r0;
+
+        this := @this: avrora.syntax.raw.RAWReader;
+        p := @parameter0: avrora.core.Program;
+        records := @parameter1: java.util.List;
+        i = interfaceinvoke records.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r0 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        r = (avrora.syntax.raw.RAWReader$Record) $r0;
+        specialinvoke this.<avrora.syntax.raw.RAWReader: void loadBytes(avrora.syntax.raw.RAWReader$Record,avrora.core.Program)>(r, p);
+        specialinvoke this.<avrora.syntax.raw.RAWReader: void loadInstr(avrora.syntax.raw.RAWReader$Record,avrora.core.Program)>(r, p);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    private void loadBytes(avrora.syntax.raw.RAWReader$Record, avrora.core.Program)
+    {
+        avrora.syntax.raw.RAWReader this;
+        avrora.syntax.raw.RAWReader$Record r;
+        avrora.core.Program p;
+        int pos, $i0;
+        java.util.Iterator b;
+        java.lang.Byte by;
+        java.util.List $r0;
+        boolean $z0;
+        java.lang.Object $r1;
+        byte $b1;
+
+        this := @this: avrora.syntax.raw.RAWReader;
+        r := @parameter0: avrora.syntax.raw.RAWReader$Record;
+        p := @parameter1: avrora.core.Program;
+        pos = r.<avrora.syntax.raw.RAWReader$Record: int addr>;
+        $r0 = r.<avrora.syntax.raw.RAWReader$Record: java.util.List bytes>;
+        b = interfaceinvoke $r0.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke b.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r1 = interfaceinvoke b.<java.util.Iterator: java.lang.Object next()>();
+        by = (java.lang.Byte) $r1;
+        $b1 = virtualinvoke by.<java.lang.Byte: byte byteValue()>();
+        $i0 = pos;
+        pos = pos + 1;
+        virtualinvoke p.<avrora.core.Program: void writeProgramByte(byte,int)>($b1, $i0);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    private void loadInstr(avrora.syntax.raw.RAWReader$Record, avrora.core.Program)
+    {
+        avrora.syntax.raw.RAWReader this;
+        avrora.syntax.raw.RAWReader$Record r;
+        avrora.core.Program p;
+        int pos, $i0, $i1;
+        boolean $z0;
+        java.util.List $r0;
+
+        this := @this: avrora.syntax.raw.RAWReader;
+        r := @parameter0: avrora.syntax.raw.RAWReader$Record;
+        p := @parameter1: avrora.core.Program;
+        $z0 = r.<avrora.syntax.raw.RAWReader$Record: boolean code>;
+        if $z0 == 0 goto label1;
+
+        pos = r.<avrora.syntax.raw.RAWReader$Record: int addr>;
+
+     label0:
+        $i0 = r.<avrora.syntax.raw.RAWReader$Record: int addr>;
+        $r0 = r.<avrora.syntax.raw.RAWReader$Record: java.util.List bytes>;
+        $i1 = interfaceinvoke $r0.<java.util.List: int size()>();
+        $i0 = $i0 + $i1;
+        if pos >= $i0 goto label1;
+
+        virtualinvoke p.<avrora.core.Program: avrora.arch.AbstractInstr disassembleInstr(int)>(pos);
+        pos = pos + 2;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    protected avrora.syntax.raw.RAWReader$Record parse(int, java.lang.String) throws java.lang.Exception
+    {
+        avrora.syntax.raw.RAWReader this;
+        int lineno;
+        java.lang.String line;
+        java.text.StringCharacterIterator $r0, i;
+        char ch;
+        avrora.syntax.raw.RAWReader$Record $r1;
+
+        this := @this: avrora.syntax.raw.RAWReader;
+        lineno := @parameter0: int;
+        line := @parameter1: java.lang.String;
+        $r0 = new java.text.StringCharacterIterator;
+        specialinvoke $r0.<java.text.StringCharacterIterator: void <init>(java.lang.String)>(line);
+        i = $r0;
+        staticinvoke <cck.text.StringUtil: void skipWhiteSpace(java.text.CharacterIterator)>(i);
+        ch = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        if ch != 65535 goto label0;
+
+        return null;
+
+     label0:
+        if ch != 59 goto label1;
+
+        return null;
+
+     label1:
+        if ch != 46 goto label2;
+
+        $r1 = specialinvoke this.<avrora.syntax.raw.RAWReader: avrora.syntax.raw.RAWReader$Record readDirective(java.text.CharacterIterator)>(i);
+        return $r1;
+
+     label2:
+        $r1 = specialinvoke this.<avrora.syntax.raw.RAWReader: avrora.syntax.raw.RAWReader$Record readRecord(char,int,java.text.CharacterIterator)>(ch, lineno, i);
+        return $r1;
+    }
+
+    private avrora.syntax.raw.RAWReader$Record readRecord(char, int, java.text.CharacterIterator) throws java.lang.Exception
+    {
+        avrora.syntax.raw.RAWReader this;
+        char ch, ch;
+        int lineno, $i0, $i1;
+        java.text.CharacterIterator i;
+        avrora.syntax.raw.RAWReader$Record record, $r2;
+        boolean $z0, $z1;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+
+        this := @this: avrora.syntax.raw.RAWReader;
+        ch := @parameter0: char;
+        lineno := @parameter1: int;
+        i := @parameter2: java.text.CharacterIterator;
+        $z0 = staticinvoke <cck.text.StringUtil: boolean isHexDigit(char)>(ch);
+        if $z0 != 0 goto label0;
+
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("syntax error @ ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(lineno);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+        $i0 = interfaceinvoke i.<java.text.CharacterIterator: int getIndex()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.util.Util: void userError(java.lang.String)>($r1);
+
+     label0:
+        $r2 = new avrora.syntax.raw.RAWReader$Record;
+        $i1 = specialinvoke this.<avrora.syntax.raw.RAWReader: int readAddress(java.text.CharacterIterator,char)>(i, ch);
+        specialinvoke $r2.<avrora.syntax.raw.RAWReader$Record: void <init>(avrora.syntax.raw.RAWReader,int)>(this, $i1);
+        record = $r2;
+        $z1 = this.<avrora.syntax.raw.RAWReader: boolean inCode>;
+        record.<avrora.syntax.raw.RAWReader$Record: boolean code> = $z1;
+        staticinvoke <cck.text.StringUtil: void expectChar(java.text.CharacterIterator,char)>(i, 58);
+
+     label1:
+        staticinvoke <cck.text.StringUtil: void skipWhiteSpace(java.text.CharacterIterator)>(i);
+        ch = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        $z0 = staticinvoke <cck.text.StringUtil: boolean isHexDigit(char)>(ch);
+        if $z0 == 0 goto label2;
+
+        specialinvoke this.<avrora.syntax.raw.RAWReader: void readByte(avrora.syntax.raw.RAWReader$Record,java.text.CharacterIterator)>(record, i);
+        goto label1;
+
+     label2:
+        if ch != 34 goto label3;
+
+        specialinvoke this.<avrora.syntax.raw.RAWReader: void readString(avrora.syntax.raw.RAWReader$Record,java.text.CharacterIterator)>(record, i);
+        goto label1;
+
+     label3:
+        if ch != 59 goto label4;
+
+        goto label6;
+
+     label4:
+        if ch != 65535 goto label5;
+
+        goto label6;
+
+     label5:
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("syntax error at ");
+        $i0 = interfaceinvoke i.<java.text.CharacterIterator: int getIndex()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.util.Util: void userError(java.lang.String)>($r1);
+        goto label1;
+
+     label6:
+        return record;
+    }
+
+    private avrora.syntax.raw.RAWReader$Record readDirective(java.text.CharacterIterator)
+    {
+        avrora.syntax.raw.RAWReader this;
+        java.text.CharacterIterator i;
+        java.lang.String dir, $r0;
+        boolean $z0;
+
+        this := @this: avrora.syntax.raw.RAWReader;
+        i := @parameter0: java.text.CharacterIterator;
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        dir = staticinvoke <cck.text.StringUtil: java.lang.String readIdentifier(java.text.CharacterIterator)>(i);
+        $r0 = "code";
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>(dir);
+        if $z0 == 0 goto label0;
+
+        this.<avrora.syntax.raw.RAWReader: boolean inCode> = 1;
+        goto label1;
+
+     label0:
+        $r0 = "data";
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>(dir);
+        if $z0 == 0 goto label1;
+
+        this.<avrora.syntax.raw.RAWReader: boolean inCode> = 0;
+
+     label1:
+        return null;
+    }
+
+    private int readAddress(java.text.CharacterIterator, char)
+    {
+        avrora.syntax.raw.RAWReader this;
+        java.text.CharacterIterator i;
+        char ch;
+        int $i1;
+
+        this := @this: avrora.syntax.raw.RAWReader;
+        i := @parameter0: java.text.CharacterIterator;
+        ch := @parameter1: char;
+        if ch != 48 goto label0;
+
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        staticinvoke <cck.text.StringUtil: boolean peekAndEat(java.text.CharacterIterator,char)>(i, 120);
+
+     label0:
+        $i1 = staticinvoke <cck.text.StringUtil: int readHexValue(java.text.CharacterIterator,int)>(i, 8);
+        return $i1;
+    }
+
+    private void readByte(avrora.syntax.raw.RAWReader$Record, java.text.CharacterIterator)
+    {
+        avrora.syntax.raw.RAWReader this;
+        avrora.syntax.raw.RAWReader$Record record;
+        java.text.CharacterIterator i;
+        int readByte;
+        java.util.List $r0;
+        java.lang.Byte $r1;
+        byte $b0;
+        boolean $z0;
+        char $c1;
+
+        this := @this: avrora.syntax.raw.RAWReader;
+        record := @parameter0: avrora.syntax.raw.RAWReader$Record;
+        i := @parameter1: java.text.CharacterIterator;
+        readByte = staticinvoke <cck.text.StringUtil: int readHexValue(java.text.CharacterIterator,int)>(i, 2);
+        $r0 = record.<avrora.syntax.raw.RAWReader$Record: java.util.List bytes>;
+        $r1 = new java.lang.Byte;
+        $b0 = (byte) readByte;
+        specialinvoke $r1.<java.lang.Byte: void <init>(byte)>($b0);
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>($r1);
+        $c1 = interfaceinvoke i.<java.text.CharacterIterator: char current()>();
+        $z0 = staticinvoke <cck.text.StringUtil: boolean isHexDigit(char)>($c1);
+        if $z0 == 0 goto label0;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String)>("constant too long");
+
+     label0:
+        return;
+    }
+
+    private void readString(avrora.syntax.raw.RAWReader$Record, java.text.CharacterIterator)
+    {
+        avrora.syntax.raw.RAWReader this;
+        avrora.syntax.raw.RAWReader$Record record;
+        java.text.CharacterIterator i;
+        java.lang.StringBuffer $r0, buf;
+        char ch, $c0;
+        java.util.List $r1;
+        java.lang.String $r2;
+
+        this := @this: avrora.syntax.raw.RAWReader;
+        record := @parameter0: avrora.syntax.raw.RAWReader$Record;
+        i := @parameter1: java.text.CharacterIterator;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buf = $r0;
+
+     label0:
+        $c0 = interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        ch = $c0;
+        if $c0 == 65535 goto label2;
+
+        if ch != 34 goto label1;
+
+        interfaceinvoke i.<java.text.CharacterIterator: char next()>();
+        goto label2;
+
+     label1:
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(ch);
+        goto label0;
+
+     label2:
+        $r1 = record.<avrora.syntax.raw.RAWReader$Record: java.util.List strings>;
+        $r2 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>($r2);
+        return;
+    }
+}

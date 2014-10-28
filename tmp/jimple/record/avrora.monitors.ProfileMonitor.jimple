@@ -1,0 +1,38 @@
+public class avrora.monitors.ProfileMonitor extends avrora.monitors.MonitorFactory
+{
+    public final cck.util.Option$Bool CYCLES;
+    public final cck.util.Option$Long PERIOD;
+    public final cck.util.Option$Bool CLASSES;
+
+    public void <init>()
+    {
+        avrora.monitors.ProfileMonitor this;
+        cck.util.Option$Bool $r0;
+        cck.util.Option$Long $r1;
+
+        this := @this: avrora.monitors.ProfileMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"profile\" monitor profiles the execution history of every instruction in the program and generates a textual report of the execution frequency for all instructions.");
+        $r0 = virtualinvoke this.<avrora.monitors.ProfileMonitor: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("record-cycles", 1, "This option controls whether this monitor will record the cycles consumed by each instruction or basic block. ");
+        this.<avrora.monitors.ProfileMonitor: cck.util.Option$Bool CYCLES> = $r0;
+        $r1 = virtualinvoke this.<avrora.monitors.ProfileMonitor: cck.util.Option$Long newOption(java.lang.String,long,java.lang.String)>("period", 0L, "This option specifies whether the profiling will be exact or periodic. When this option is set to non-zero, then a sample of the program counter is taken at the specified period in clock cycles, rather than through probes at each instruction.");
+        this.<avrora.monitors.ProfileMonitor: cck.util.Option$Long PERIOD> = $r1;
+        $r0 = virtualinvoke this.<avrora.monitors.ProfileMonitor: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("instr-classes", 0, "This option selects whether the profiling monitor will generate a report of the types of instructions that were executed most frequently by the program.");
+        this.<avrora.monitors.ProfileMonitor: cck.util.Option$Bool CLASSES> = $r0;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.ProfileMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.ProfileMonitor$Mon tmp$553922589;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.ProfileMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$553922589 = new avrora.monitors.ProfileMonitor$Mon;
+        specialinvoke tmp$553922589.<avrora.monitors.ProfileMonitor$Mon: void <init>(avrora.monitors.ProfileMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$553922589;
+        return tmp;
+    }
+}

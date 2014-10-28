@@ -1,0 +1,114 @@
+public class avrora.sim.state.RegisterUtil$PermutedView extends java.lang.Object implements avrora.sim.state.RegisterView
+{
+    protected final avrora.sim.state.RegisterView reg;
+    protected final byte[] bits;
+
+    public void <init>(avrora.sim.state.RegisterView, byte[])
+    {
+        avrora.sim.state.RegisterUtil$PermutedView this;
+        avrora.sim.state.RegisterView r;
+        byte[] b;
+
+        this := @this: avrora.sim.state.RegisterUtil$PermutedView;
+        r := @parameter0: avrora.sim.state.RegisterView;
+        b := @parameter1: byte[];
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.state.RegisterUtil$PermutedView: byte[] bits> = b;
+        this.<avrora.sim.state.RegisterUtil$PermutedView: avrora.sim.state.RegisterView reg> = r;
+        return;
+    }
+
+    public int getWidth()
+    {
+        avrora.sim.state.RegisterUtil$PermutedView this;
+        byte[] $r0;
+        int $i0;
+
+        this := @this: avrora.sim.state.RegisterUtil$PermutedView;
+        $r0 = this.<avrora.sim.state.RegisterUtil$PermutedView: byte[] bits>;
+        $i0 = lengthof $r0;
+        return $i0;
+    }
+
+    public int getValue()
+    {
+        avrora.sim.state.RegisterUtil$PermutedView this;
+        int val, res, cntr, bit, $i0, $i2;
+        avrora.sim.state.RegisterView $r0;
+        byte[] $r1;
+        byte $b1;
+        long tid_getValue;
+        java.lang.Thread thread_getValue;
+
+        this := @this: avrora.sim.state.RegisterUtil$PermutedView;
+        thread_getValue = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getValue = virtualinvoke thread_getValue.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.state.RegisterUtil$PermutedView: avrora.sim.state.RegisterView reg>;
+        val = interfaceinvoke $r0.<avrora.sim.state.RegisterView: int getValue()>();
+        res = 0;
+        cntr = 0;
+
+     label0:
+        $r1 = this.<avrora.sim.state.RegisterUtil$PermutedView: byte[] bits>;
+        $i0 = lengthof $r1;
+        if cntr >= $i0 goto label1;
+
+        $r1 = this.<avrora.sim.state.RegisterUtil$PermutedView: byte[] bits>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r1, 0, tid_getValue, "avrora.sim.state.RegisterUtil$PermutedView", 169, cntr, $b1);
+        $b1 = $r1[cntr];
+        $i2 = val >> $b1;
+        bit = $i2 & 1;
+        $i0 = bit << cntr;
+        res = res | $i0;
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        return res;
+    }
+
+    public void setValue(int)
+    {
+        avrora.sim.state.RegisterUtil$PermutedView this;
+        int val, res, cntr, nbit, $i0, $i1;
+        avrora.sim.state.RegisterView $r0;
+        byte[] $r1, $r2;
+        byte $b2;
+        long tid_setValue;
+        java.lang.Thread thread_setValue;
+
+        this := @this: avrora.sim.state.RegisterUtil$PermutedView;
+        val := @parameter0: int;
+        thread_setValue = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setValue = virtualinvoke thread_setValue.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.state.RegisterUtil$PermutedView: avrora.sim.state.RegisterView reg>;
+        res = interfaceinvoke $r0.<avrora.sim.state.RegisterView: int getValue()>();
+        cntr = 0;
+
+     label0:
+        $r1 = this.<avrora.sim.state.RegisterUtil$PermutedView: byte[] bits>;
+        $i0 = lengthof $r1;
+        if cntr >= $i0 goto label1;
+
+        $i1 = val >> cntr;
+        nbit = $i1 & 1;
+        $r2 = this.<avrora.sim.state.RegisterUtil$PermutedView: byte[] bits>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r2, 0, tid_setValue, "avrora.sim.state.RegisterUtil$PermutedView", 179, cntr, $b2);
+        $b2 = $r2[cntr];
+        $i0 = 1 << $b2;
+        $i0 = $i0 ^ -1;
+        $i1 = res & $i0;
+        $r2 = this.<avrora.sim.state.RegisterUtil$PermutedView: byte[] bits>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r2, 0, tid_setValue, "avrora.sim.state.RegisterUtil$PermutedView", 179, cntr, $b2);
+        $b2 = $r2[cntr];
+        $i0 = nbit << $b2;
+        res = $i1 | $i0;
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        $r0 = this.<avrora.sim.state.RegisterUtil$PermutedView: avrora.sim.state.RegisterView reg>;
+        interfaceinvoke $r0.<avrora.sim.state.RegisterView: void setValue(int)>(res);
+        return;
+    }
+}

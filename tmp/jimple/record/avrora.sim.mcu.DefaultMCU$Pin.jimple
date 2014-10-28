@@ -1,0 +1,292 @@
+public class avrora.sim.mcu.DefaultMCU$Pin extends java.lang.Object implements avrora.sim.mcu.Microcontroller$Pin
+{
+    protected final int number;
+    boolean level;
+    boolean outputDir;
+    boolean pullup;
+    avrora.sim.mcu.Microcontroller$Pin$Input input;
+    avrora.sim.mcu.Microcontroller$Pin$Output output;
+    final avrora.sim.mcu.DefaultMCU this$0;
+
+    protected void <init>(avrora.sim.mcu.DefaultMCU, int)
+    {
+        avrora.sim.mcu.DefaultMCU$Pin this;
+        avrora.sim.mcu.DefaultMCU l1;
+        int num;
+
+        this := @this: avrora.sim.mcu.DefaultMCU$Pin;
+        l1 := @parameter0: avrora.sim.mcu.DefaultMCU;
+        num := @parameter1: int;
+        this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.DefaultMCU this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.mcu.DefaultMCU$Pin: int number> = num;
+        return;
+    }
+
+    public void connectOutput(avrora.sim.mcu.Microcontroller$Pin$Output)
+    {
+        avrora.sim.mcu.DefaultMCU$Pin this;
+        avrora.sim.mcu.Microcontroller$Pin$Output o;
+
+        this := @this: avrora.sim.mcu.DefaultMCU$Pin;
+        o := @parameter0: avrora.sim.mcu.Microcontroller$Pin$Output;
+        this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.Microcontroller$Pin$Output output> = o;
+        return;
+    }
+
+    public void connectInput(avrora.sim.mcu.Microcontroller$Pin$Input)
+    {
+        avrora.sim.mcu.DefaultMCU$Pin this;
+        avrora.sim.mcu.Microcontroller$Pin$Input i;
+
+        this := @this: avrora.sim.mcu.DefaultMCU$Pin;
+        i := @parameter0: avrora.sim.mcu.Microcontroller$Pin$Input;
+        this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.Microcontroller$Pin$Input input> = i;
+        return;
+    }
+
+    protected void setOutputDir(boolean)
+    {
+        avrora.sim.mcu.DefaultMCU$Pin this;
+        boolean out, $z0;
+        long tid_setOutputDir;
+        java.lang.Thread thread_setOutputDir;
+
+        this := @this: avrora.sim.mcu.DefaultMCU$Pin;
+        out := @parameter0: boolean;
+        thread_setOutputDir = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setOutputDir = virtualinvoke thread_setOutputDir.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 28, tid_setOutputDir, "avrora.sim.mcu.DefaultMCU$Pin", 168, out);
+        this.<avrora.sim.mcu.DefaultMCU$Pin: boolean outputDir> = out;
+        if out == 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 29, tid_setOutputDir, "avrora.sim.mcu.DefaultMCU$Pin", 169, $z0);
+        $z0 = this.<avrora.sim.mcu.DefaultMCU$Pin: boolean level>;
+        virtualinvoke this.<avrora.sim.mcu.DefaultMCU$Pin: void write(boolean)>($z0);
+
+     label0:
+        return;
+    }
+
+    protected void setPullup(boolean)
+    {
+        avrora.sim.mcu.DefaultMCU$Pin this;
+        boolean pull;
+
+        this := @this: avrora.sim.mcu.DefaultMCU$Pin;
+        pull := @parameter0: boolean;
+        this.<avrora.sim.mcu.DefaultMCU$Pin: boolean pullup> = pull;
+        return;
+    }
+
+    protected boolean read()
+    {
+        avrora.sim.mcu.DefaultMCU$Pin this;
+        boolean result, $z0;
+        avrora.sim.mcu.Microcontroller$Pin$Input $r0;
+        long tid_read;
+        java.lang.Thread thread_read;
+
+        this := @this: avrora.sim.mcu.DefaultMCU$Pin;
+        thread_read = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_read = virtualinvoke thread_read.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 28, tid_read, "avrora.sim.mcu.DefaultMCU$Pin", 178, $z0);
+        $z0 = this.<avrora.sim.mcu.DefaultMCU$Pin: boolean outputDir>;
+        if $z0 != 0 goto label1;
+
+        $r0 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.Microcontroller$Pin$Input input>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.Microcontroller$Pin$Input input>;
+        result = interfaceinvoke $r0.<avrora.sim.mcu.Microcontroller$Pin$Input: boolean read()>();
+        goto label2;
+
+     label0:
+        result = this.<avrora.sim.mcu.DefaultMCU$Pin: boolean pullup>;
+        goto label2;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 29, tid_read, "avrora.sim.mcu.DefaultMCU$Pin", 185, result);
+        result = this.<avrora.sim.mcu.DefaultMCU$Pin: boolean level>;
+
+     label2:
+        specialinvoke this.<avrora.sim.mcu.DefaultMCU$Pin: void printRead(boolean)>(result);
+        return result;
+    }
+
+    private void printRead(boolean)
+    {
+        avrora.sim.mcu.DefaultMCU$Pin this;
+        boolean result;
+        java.lang.String dir, $r6;
+        avrora.sim.mcu.DefaultMCU $r0, $r2;
+        avrora.sim.output.SimPrinter $r1, $r4;
+        avrora.sim.Simulator $r3;
+        java.lang.StringBuilder $r5;
+        int $i0;
+        long tid_printRead;
+        java.lang.Thread thread_printRead;
+
+        this := @this: avrora.sim.mcu.DefaultMCU$Pin;
+        result := @parameter0: boolean;
+        thread_printRead = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_printRead = virtualinvoke thread_printRead.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.DefaultMCU this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r0, 30, tid_printRead, "avrora.sim.mcu.DefaultMCU$Pin", 193, $r1);
+        $r1 = $r0.<avrora.sim.mcu.DefaultMCU: avrora.sim.output.SimPrinter pinPrinter>;
+        if $r1 != null goto label0;
+
+        $r0 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.DefaultMCU this$0>;
+        $r2 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.DefaultMCU this$0>;
+        $r3 = $r2.<avrora.sim.mcu.DefaultMCU: avrora.sim.Simulator simulator>;
+        $r4 = virtualinvoke $r3.<avrora.sim.Simulator: avrora.sim.output.SimPrinter getPrinter(java.lang.String)>("mcu.pin");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r0, 30, tid_printRead, "avrora.sim.mcu.DefaultMCU$Pin", 193, $r4);
+        $r0.<avrora.sim.mcu.DefaultMCU: avrora.sim.output.SimPrinter pinPrinter> = $r4;
+
+     label0:
+        $r0 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.DefaultMCU this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r0, 30, tid_printRead, "avrora.sim.mcu.DefaultMCU$Pin", 194, $r1);
+        $r1 = $r0.<avrora.sim.mcu.DefaultMCU: avrora.sim.output.SimPrinter pinPrinter>;
+        if $r1 == null goto label1;
+
+        dir = specialinvoke this.<avrora.sim.mcu.DefaultMCU$Pin: java.lang.String getDirection()>();
+        $r0 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.DefaultMCU this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r0, 30, tid_printRead, "avrora.sim.mcu.DefaultMCU$Pin", 196, $r1);
+        $r1 = $r0.<avrora.sim.mcu.DefaultMCU: avrora.sim.output.SimPrinter pinPrinter>;
+        $r5 = new java.lang.StringBuilder;
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("READ PIN: ");
+        $i0 = this.<avrora.sim.mcu.DefaultMCU$Pin: int number>;
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(dir);
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("<- ");
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>(result);
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r1.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r6);
+
+     label1:
+        return;
+    }
+
+    private java.lang.String getDirection()
+    {
+        avrora.sim.mcu.DefaultMCU$Pin this;
+        boolean $z0, $z1;
+        avrora.sim.mcu.Microcontroller$Pin$Input $r0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+        long tid_getDirection;
+        java.lang.Thread thread_getDirection;
+
+        this := @this: avrora.sim.mcu.DefaultMCU$Pin;
+        thread_getDirection = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getDirection = virtualinvoke thread_getDirection.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 28, tid_getDirection, "avrora.sim.mcu.DefaultMCU$Pin", 201, $z0);
+        $z0 = this.<avrora.sim.mcu.DefaultMCU$Pin: boolean outputDir>;
+        if $z0 != 0 goto label1;
+
+        $r0 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.Microcontroller$Pin$Input input>;
+        if $r0 == null goto label0;
+
+        return "[input] ";
+
+     label0:
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[pullup:");
+        $z1 = this.<avrora.sim.mcu.DefaultMCU$Pin: boolean pullup>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z1);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("] ");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r2;
+
+     label1:
+        return "[output] ";
+    }
+
+    protected void write(boolean)
+    {
+        avrora.sim.mcu.DefaultMCU$Pin this;
+        boolean value, $z0;
+        avrora.sim.mcu.Microcontroller$Pin$Output $r0;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.mcu.DefaultMCU$Pin;
+        value := @parameter0: boolean;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 29, tid_write, "avrora.sim.mcu.DefaultMCU$Pin", 213, value);
+        this.<avrora.sim.mcu.DefaultMCU$Pin: boolean level> = value;
+        specialinvoke this.<avrora.sim.mcu.DefaultMCU$Pin: void printWrite(boolean)>(value);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 28, tid_write, "avrora.sim.mcu.DefaultMCU$Pin", 216, $z0);
+        $z0 = this.<avrora.sim.mcu.DefaultMCU$Pin: boolean outputDir>;
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.Microcontroller$Pin$Output output>;
+        if $r0 == null goto label0;
+
+        $r0 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.Microcontroller$Pin$Output output>;
+        interfaceinvoke $r0.<avrora.sim.mcu.Microcontroller$Pin$Output: void write(boolean)>(value);
+
+     label0:
+        return;
+    }
+
+    private void printWrite(boolean)
+    {
+        avrora.sim.mcu.DefaultMCU$Pin this;
+        boolean value, $z0;
+        java.lang.String dir, $r6;
+        avrora.sim.mcu.DefaultMCU $r0, $r1;
+        avrora.sim.Simulator $r2;
+        avrora.sim.output.SimPrinter $r3, $r4;
+        java.lang.StringBuilder $r5;
+        int $i0;
+        long tid_printWrite;
+        java.lang.Thread thread_printWrite;
+
+        this := @this: avrora.sim.mcu.DefaultMCU$Pin;
+        value := @parameter0: boolean;
+        thread_printWrite = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_printWrite = virtualinvoke thread_printWrite.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.DefaultMCU this$0>;
+        $z0 = staticinvoke <avrora.sim.mcu.DefaultMCU: boolean access$000(avrora.sim.mcu.DefaultMCU)>($r0);
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.DefaultMCU this$0>;
+        $r1 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.DefaultMCU this$0>;
+        $r2 = $r1.<avrora.sim.mcu.DefaultMCU: avrora.sim.Simulator simulator>;
+        $r3 = virtualinvoke $r2.<avrora.sim.Simulator: avrora.sim.output.SimPrinter getPrinter(java.lang.String)>("mcu.pin");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r0, 30, tid_printWrite, "avrora.sim.mcu.DefaultMCU$Pin", 221, $r3);
+        $r0.<avrora.sim.mcu.DefaultMCU: avrora.sim.output.SimPrinter pinPrinter> = $r3;
+        $r0 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.DefaultMCU this$0>;
+        staticinvoke <avrora.sim.mcu.DefaultMCU: boolean access$002(avrora.sim.mcu.DefaultMCU,boolean)>($r0, 1);
+
+     label0:
+        $r0 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.DefaultMCU this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r0, 30, tid_printWrite, "avrora.sim.mcu.DefaultMCU$Pin", 224, $r4);
+        $r4 = $r0.<avrora.sim.mcu.DefaultMCU: avrora.sim.output.SimPrinter pinPrinter>;
+        if $r4 == null goto label1;
+
+        dir = specialinvoke this.<avrora.sim.mcu.DefaultMCU$Pin: java.lang.String getDirection()>();
+        $r0 = this.<avrora.sim.mcu.DefaultMCU$Pin: avrora.sim.mcu.DefaultMCU this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>($r0, 30, tid_printWrite, "avrora.sim.mcu.DefaultMCU$Pin", 226, $r4);
+        $r4 = $r0.<avrora.sim.mcu.DefaultMCU: avrora.sim.output.SimPrinter pinPrinter>;
+        $r5 = new java.lang.StringBuilder;
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("WRITE PIN: ");
+        $i0 = this.<avrora.sim.mcu.DefaultMCU$Pin: int number>;
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(dir);
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("-> ");
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>(value);
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r4.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r6);
+
+     label1:
+        return;
+    }
+}

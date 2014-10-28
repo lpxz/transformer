@@ -1,0 +1,178 @@
+public final class org.apache.lucene.analysis.StopAnalyzer extends org.apache.lucene.analysis.Analyzer
+{
+    private java.util.Set stopWords;
+    public static final java.lang.String[] ENGLISH_STOP_WORDS;
+
+    public void <init>()
+    {
+        org.apache.lucene.analysis.StopAnalyzer this;
+        java.lang.String[] $r0;
+        java.util.Set $r1;
+
+        this := @this: org.apache.lucene.analysis.StopAnalyzer;
+        specialinvoke this.<org.apache.lucene.analysis.Analyzer: void <init>()>();
+        $r0 = <org.apache.lucene.analysis.StopAnalyzer: java.lang.String[] ENGLISH_STOP_WORDS>;
+        $r1 = staticinvoke <org.apache.lucene.analysis.StopFilter: java.util.Set makeStopSet(java.lang.String[])>($r0);
+        this.<org.apache.lucene.analysis.StopAnalyzer: java.util.Set stopWords> = $r1;
+        return;
+    }
+
+    public void <init>(java.util.Set)
+    {
+        org.apache.lucene.analysis.StopAnalyzer this;
+        java.util.Set stopWords;
+
+        this := @this: org.apache.lucene.analysis.StopAnalyzer;
+        stopWords := @parameter0: java.util.Set;
+        specialinvoke this.<org.apache.lucene.analysis.Analyzer: void <init>()>();
+        this.<org.apache.lucene.analysis.StopAnalyzer: java.util.Set stopWords> = stopWords;
+        return;
+    }
+
+    public void <init>(java.lang.String[])
+    {
+        org.apache.lucene.analysis.StopAnalyzer this;
+        java.lang.String[] stopWords;
+        java.util.Set $r0;
+
+        this := @this: org.apache.lucene.analysis.StopAnalyzer;
+        stopWords := @parameter0: java.lang.String[];
+        specialinvoke this.<org.apache.lucene.analysis.Analyzer: void <init>()>();
+        $r0 = staticinvoke <org.apache.lucene.analysis.StopFilter: java.util.Set makeStopSet(java.lang.String[])>(stopWords);
+        this.<org.apache.lucene.analysis.StopAnalyzer: java.util.Set stopWords> = $r0;
+        return;
+    }
+
+    public void <init>(java.io.File) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.StopAnalyzer this;
+        java.io.File stopwordsFile;
+        java.util.HashSet $r0;
+
+        this := @this: org.apache.lucene.analysis.StopAnalyzer;
+        stopwordsFile := @parameter0: java.io.File;
+        specialinvoke this.<org.apache.lucene.analysis.Analyzer: void <init>()>();
+        $r0 = staticinvoke <org.apache.lucene.analysis.WordlistLoader: java.util.HashSet getWordSet(java.io.File)>(stopwordsFile);
+        this.<org.apache.lucene.analysis.StopAnalyzer: java.util.Set stopWords> = $r0;
+        return;
+    }
+
+    public void <init>(java.io.Reader) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.StopAnalyzer this;
+        java.io.Reader stopwords;
+        java.util.HashSet $r0;
+
+        this := @this: org.apache.lucene.analysis.StopAnalyzer;
+        stopwords := @parameter0: java.io.Reader;
+        specialinvoke this.<org.apache.lucene.analysis.Analyzer: void <init>()>();
+        $r0 = staticinvoke <org.apache.lucene.analysis.WordlistLoader: java.util.HashSet getWordSet(java.io.Reader)>(stopwords);
+        this.<org.apache.lucene.analysis.StopAnalyzer: java.util.Set stopWords> = $r0;
+        return;
+    }
+
+    public org.apache.lucene.analysis.TokenStream tokenStream(java.lang.String, java.io.Reader)
+    {
+        org.apache.lucene.analysis.StopAnalyzer this;
+        java.lang.String fieldName;
+        java.io.Reader reader;
+        org.apache.lucene.analysis.StopFilter $r0;
+        org.apache.lucene.analysis.LowerCaseTokenizer $r1;
+        java.util.Set $r2;
+
+        this := @this: org.apache.lucene.analysis.StopAnalyzer;
+        fieldName := @parameter0: java.lang.String;
+        reader := @parameter1: java.io.Reader;
+        $r0 = new org.apache.lucene.analysis.StopFilter;
+        $r1 = new org.apache.lucene.analysis.LowerCaseTokenizer;
+        specialinvoke $r1.<org.apache.lucene.analysis.LowerCaseTokenizer: void <init>(java.io.Reader)>(reader);
+        $r2 = this.<org.apache.lucene.analysis.StopAnalyzer: java.util.Set stopWords>;
+        specialinvoke $r0.<org.apache.lucene.analysis.StopFilter: void <init>(org.apache.lucene.analysis.TokenStream,java.util.Set)>($r1, $r2);
+        return $r0;
+    }
+
+    public org.apache.lucene.analysis.TokenStream reusableTokenStream(java.lang.String, java.io.Reader) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.StopAnalyzer this;
+        java.lang.String fieldName;
+        java.io.Reader reader;
+        org.apache.lucene.analysis.StopAnalyzer$SavedStreams streams, $r1;
+        java.lang.Object $r0;
+        org.apache.lucene.analysis.LowerCaseTokenizer $r2;
+        org.apache.lucene.analysis.StopFilter $r3;
+        org.apache.lucene.analysis.Tokenizer $r4, $r6;
+        java.util.Set $r5;
+        org.apache.lucene.analysis.TokenStream $r7;
+
+        this := @this: org.apache.lucene.analysis.StopAnalyzer;
+        fieldName := @parameter0: java.lang.String;
+        reader := @parameter1: java.io.Reader;
+        $r0 = virtualinvoke this.<org.apache.lucene.analysis.StopAnalyzer: java.lang.Object getPreviousTokenStream()>();
+        streams = (org.apache.lucene.analysis.StopAnalyzer$SavedStreams) $r0;
+        if streams != null goto label0;
+
+        $r1 = new org.apache.lucene.analysis.StopAnalyzer$SavedStreams;
+        specialinvoke $r1.<org.apache.lucene.analysis.StopAnalyzer$SavedStreams: void <init>(org.apache.lucene.analysis.StopAnalyzer,org.apache.lucene.analysis.StopAnalyzer$1)>(this, null);
+        streams = $r1;
+        $r2 = new org.apache.lucene.analysis.LowerCaseTokenizer;
+        specialinvoke $r2.<org.apache.lucene.analysis.LowerCaseTokenizer: void <init>(java.io.Reader)>(reader);
+        streams.<org.apache.lucene.analysis.StopAnalyzer$SavedStreams: org.apache.lucene.analysis.Tokenizer source> = $r2;
+        $r3 = new org.apache.lucene.analysis.StopFilter;
+        $r4 = streams.<org.apache.lucene.analysis.StopAnalyzer$SavedStreams: org.apache.lucene.analysis.Tokenizer source>;
+        $r5 = this.<org.apache.lucene.analysis.StopAnalyzer: java.util.Set stopWords>;
+        specialinvoke $r3.<org.apache.lucene.analysis.StopFilter: void <init>(org.apache.lucene.analysis.TokenStream,java.util.Set)>($r4, $r5);
+        streams.<org.apache.lucene.analysis.StopAnalyzer$SavedStreams: org.apache.lucene.analysis.TokenStream result> = $r3;
+        virtualinvoke this.<org.apache.lucene.analysis.StopAnalyzer: void setPreviousTokenStream(java.lang.Object)>(streams);
+        goto label1;
+
+     label0:
+        $r6 = streams.<org.apache.lucene.analysis.StopAnalyzer$SavedStreams: org.apache.lucene.analysis.Tokenizer source>;
+        virtualinvoke $r6.<org.apache.lucene.analysis.Tokenizer: void reset(java.io.Reader)>(reader);
+
+     label1:
+        $r7 = streams.<org.apache.lucene.analysis.StopAnalyzer$SavedStreams: org.apache.lucene.analysis.TokenStream result>;
+        return $r7;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String[] $r0;
+
+        $r0 = newarray (java.lang.String)[33];
+        $r0[0] = "a";
+        $r0[1] = "an";
+        $r0[2] = "and";
+        $r0[3] = "are";
+        $r0[4] = "as";
+        $r0[5] = "at";
+        $r0[6] = "be";
+        $r0[7] = "but";
+        $r0[8] = "by";
+        $r0[9] = "for";
+        $r0[10] = "if";
+        $r0[11] = "in";
+        $r0[12] = "into";
+        $r0[13] = "is";
+        $r0[14] = "it";
+        $r0[15] = "no";
+        $r0[16] = "not";
+        $r0[17] = "of";
+        $r0[18] = "on";
+        $r0[19] = "or";
+        $r0[20] = "such";
+        $r0[21] = "that";
+        $r0[22] = "the";
+        $r0[23] = "their";
+        $r0[24] = "then";
+        $r0[25] = "there";
+        $r0[26] = "these";
+        $r0[27] = "they";
+        $r0[28] = "this";
+        $r0[29] = "to";
+        $r0[30] = "was";
+        $r0[31] = "will";
+        $r0[32] = "with";
+        <org.apache.lucene.analysis.StopAnalyzer: java.lang.String[] ENGLISH_STOP_WORDS> = $r0;
+        return;
+    }
+}

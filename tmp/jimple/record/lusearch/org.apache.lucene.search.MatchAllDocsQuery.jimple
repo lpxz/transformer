@@ -1,0 +1,102 @@
+public class org.apache.lucene.search.MatchAllDocsQuery extends org.apache.lucene.search.Query
+{
+
+    public void <init>()
+    {
+        org.apache.lucene.search.MatchAllDocsQuery this;
+
+        this := @this: org.apache.lucene.search.MatchAllDocsQuery;
+        specialinvoke this.<org.apache.lucene.search.Query: void <init>()>();
+        return;
+    }
+
+    protected org.apache.lucene.search.Weight createWeight(org.apache.lucene.search.Searcher)
+    {
+        org.apache.lucene.search.MatchAllDocsQuery this;
+        org.apache.lucene.search.Searcher searcher;
+        org.apache.lucene.search.MatchAllDocsQuery$MatchAllDocsWeight tmp$551997349;
+        org.apache.lucene.search.Weight tmp;
+
+        this := @this: org.apache.lucene.search.MatchAllDocsQuery;
+        searcher := @parameter0: org.apache.lucene.search.Searcher;
+        tmp$551997349 = new org.apache.lucene.search.MatchAllDocsQuery$MatchAllDocsWeight;
+        specialinvoke tmp$551997349.<org.apache.lucene.search.MatchAllDocsQuery$MatchAllDocsWeight: void <init>(org.apache.lucene.search.MatchAllDocsQuery,org.apache.lucene.search.Searcher)>(this, searcher);
+        tmp = (org.apache.lucene.search.Weight) tmp$551997349;
+        return tmp;
+    }
+
+    public void extractTerms(java.util.Set)
+    {
+        org.apache.lucene.search.MatchAllDocsQuery this;
+        java.util.Set terms;
+
+        this := @this: org.apache.lucene.search.MatchAllDocsQuery;
+        terms := @parameter0: java.util.Set;
+        return;
+    }
+
+    public java.lang.String toString(java.lang.String)
+    {
+        org.apache.lucene.search.MatchAllDocsQuery this;
+        java.lang.String field, $r1, $r2;
+        java.lang.StringBuffer $r0, buffer;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.MatchAllDocsQuery;
+        field := @parameter0: java.lang.String;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buffer = $r0;
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("MatchAllDocsQuery");
+        $f0 = virtualinvoke this.<org.apache.lucene.search.MatchAllDocsQuery: float getBoost()>();
+        $r1 = staticinvoke <org.apache.lucene.util.ToStringUtils: java.lang.String boost(float)>($f0);
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r1);
+        $r2 = virtualinvoke buffer.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r2;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        org.apache.lucene.search.MatchAllDocsQuery this, other;
+        java.lang.Object o;
+        boolean $z0;
+        float $f0, $f1;
+        byte $b0;
+
+        this := @this: org.apache.lucene.search.MatchAllDocsQuery;
+        o := @parameter0: java.lang.Object;
+        $z0 = o instanceof org.apache.lucene.search.MatchAllDocsQuery;
+        if $z0 != 0 goto label0;
+
+        return 0;
+
+     label0:
+        other = (org.apache.lucene.search.MatchAllDocsQuery) o;
+        $f0 = virtualinvoke this.<org.apache.lucene.search.MatchAllDocsQuery: float getBoost()>();
+        $f1 = virtualinvoke other.<org.apache.lucene.search.MatchAllDocsQuery: float getBoost()>();
+        $b0 = $f0 cmpl $f1;
+        if $b0 != 0 goto label1;
+
+        $z0 = 1;
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public int hashCode()
+    {
+        org.apache.lucene.search.MatchAllDocsQuery this;
+        float $f0;
+        int $i0;
+
+        this := @this: org.apache.lucene.search.MatchAllDocsQuery;
+        $f0 = virtualinvoke this.<org.apache.lucene.search.MatchAllDocsQuery: float getBoost()>();
+        $i0 = staticinvoke <java.lang.Float: int floatToIntBits(float)>($f0);
+        $i0 = $i0 ^ 447156624;
+        return $i0;
+    }
+}

@@ -1,0 +1,139 @@
+public class avrora.sim.mcu.EEPROM extends avrora.sim.mcu.AtmelInternalDevice
+{
+    final int EEPROM_SIZE;
+    final int EEPROM_SIZE_numBits;
+    public static final int EEARH;
+    public static final int EEARL;
+    public static final int EEDR;
+    public static final int EECR;
+    final byte[] EEPROM_data;
+    final avrora.sim.RWRegister EEDR_reg;
+    final avrora.sim.mcu.EEPROM$EECRReg EECR_reg;
+    final avrora.sim.RWRegister EEARL_reg;
+    final avrora.sim.mcu.EEPROM$EEARHReg EEARH_reg;
+    static final int EERIE;
+    static final int EEMWE;
+    static final int EEWE;
+    static final int EERE;
+    static final int EEPROM_INTERRUPT;
+    boolean masterWriteEnable;
+    boolean writeEnable;
+    boolean readEnable;
+    final avrora.sim.mcu.EEPROM$EEPROMTicker ticker;
+    final avrora.sim.mcu.EEPROM$EEPROMWriteFinishedEvent writeFinishedEvent;
+    int writeCount;
+    boolean writeEnableWritten;
+    boolean readEnableWritten;
+
+    void <init>(int, avrora.sim.mcu.AtmelMicrocontroller)
+    {
+        avrora.sim.mcu.EEPROM this;
+        int size, $i0;
+        avrora.sim.mcu.AtmelMicrocontroller m;
+        avrora.sim.mcu.EEPROM$EEPROMTicker $r0;
+        avrora.sim.mcu.EEPROM$EEPROMWriteFinishedEvent $r1;
+        avrora.sim.RWRegister $r2, $r7;
+        avrora.sim.mcu.EEPROM$EECRReg $r3, $r8;
+        avrora.sim.mcu.EEPROM$EEARLReg $r4;
+        avrora.sim.mcu.EEPROM$EEARHReg $r5, $r9;
+        byte[] $r6;
+
+        this := @this: avrora.sim.mcu.EEPROM;
+        size := @parameter0: int;
+        m := @parameter1: avrora.sim.mcu.AtmelMicrocontroller;
+        specialinvoke this.<avrora.sim.mcu.AtmelInternalDevice: void <init>(java.lang.String,avrora.sim.mcu.AtmelMicrocontroller)>("eeprom", m);
+        this.<avrora.sim.mcu.EEPROM: int writeCount> = -1;
+        $r0 = new avrora.sim.mcu.EEPROM$EEPROMTicker;
+        specialinvoke $r0.<avrora.sim.mcu.EEPROM$EEPROMTicker: void <init>(avrora.sim.mcu.EEPROM)>(this);
+        this.<avrora.sim.mcu.EEPROM: avrora.sim.mcu.EEPROM$EEPROMTicker ticker> = $r0;
+        $r1 = new avrora.sim.mcu.EEPROM$EEPROMWriteFinishedEvent;
+        specialinvoke $r1.<avrora.sim.mcu.EEPROM$EEPROMWriteFinishedEvent: void <init>(avrora.sim.mcu.EEPROM)>(this);
+        this.<avrora.sim.mcu.EEPROM: avrora.sim.mcu.EEPROM$EEPROMWriteFinishedEvent writeFinishedEvent> = $r1;
+        $r2 = new avrora.sim.RWRegister;
+        specialinvoke $r2.<avrora.sim.RWRegister: void <init>()>();
+        this.<avrora.sim.mcu.EEPROM: avrora.sim.RWRegister EEDR_reg> = $r2;
+        $r3 = new avrora.sim.mcu.EEPROM$EECRReg;
+        specialinvoke $r3.<avrora.sim.mcu.EEPROM$EECRReg: void <init>(avrora.sim.mcu.EEPROM)>(this);
+        this.<avrora.sim.mcu.EEPROM: avrora.sim.mcu.EEPROM$EECRReg EECR_reg> = $r3;
+        $r4 = new avrora.sim.mcu.EEPROM$EEARLReg;
+        specialinvoke $r4.<avrora.sim.mcu.EEPROM$EEARLReg: void <init>(avrora.sim.mcu.EEPROM)>(this);
+        this.<avrora.sim.mcu.EEPROM: avrora.sim.RWRegister EEARL_reg> = $r4;
+        $r5 = new avrora.sim.mcu.EEPROM$EEARHReg;
+        specialinvoke $r5.<avrora.sim.mcu.EEPROM$EEARHReg: void <init>(avrora.sim.mcu.EEPROM)>(this);
+        this.<avrora.sim.mcu.EEPROM: avrora.sim.mcu.EEPROM$EEARHReg EEARH_reg> = $r5;
+        this.<avrora.sim.mcu.EEPROM: int EEPROM_SIZE> = size;
+        $i0 = staticinvoke <cck.util.Arithmetic: int log(int)>(size);
+        this.<avrora.sim.mcu.EEPROM: int EEPROM_SIZE_numBits> = $i0;
+        $i0 = this.<avrora.sim.mcu.EEPROM: int EEPROM_SIZE>;
+        $r6 = newarray (byte)[$i0];
+        this.<avrora.sim.mcu.EEPROM: byte[] EEPROM_data> = $r6;
+        $r7 = this.<avrora.sim.mcu.EEPROM: avrora.sim.RWRegister EEDR_reg>;
+        virtualinvoke this.<avrora.sim.mcu.EEPROM: void installIOReg(java.lang.String,avrora.sim.ActiveRegister)>("EEDR", $r7);
+        $r8 = this.<avrora.sim.mcu.EEPROM: avrora.sim.mcu.EEPROM$EECRReg EECR_reg>;
+        virtualinvoke this.<avrora.sim.mcu.EEPROM: void installIOReg(java.lang.String,avrora.sim.ActiveRegister)>("EECR", $r8);
+        $r7 = this.<avrora.sim.mcu.EEPROM: avrora.sim.RWRegister EEARL_reg>;
+        virtualinvoke this.<avrora.sim.mcu.EEPROM: void installIOReg(java.lang.String,avrora.sim.ActiveRegister)>("EEARL", $r7);
+        $r9 = this.<avrora.sim.mcu.EEPROM: avrora.sim.mcu.EEPROM$EEARHReg EEARH_reg>;
+        virtualinvoke this.<avrora.sim.mcu.EEPROM: void installIOReg(java.lang.String,avrora.sim.ActiveRegister)>("EEARH", $r9);
+        return;
+    }
+
+    public int getSize()
+    {
+        avrora.sim.mcu.EEPROM this;
+        int $i0;
+
+        this := @this: avrora.sim.mcu.EEPROM;
+        $i0 = this.<avrora.sim.mcu.EEPROM: int EEPROM_SIZE>;
+        return $i0;
+    }
+
+    public void setContent(byte[])
+    {
+        avrora.sim.mcu.EEPROM this;
+        byte[] contents, $r0;
+        int addr, $i0;
+        byte $b1;
+        avrora.sim.output.SimPrinter $r1;
+        long tid_setContent;
+        java.lang.Thread thread_setContent;
+
+        this := @this: avrora.sim.mcu.EEPROM;
+        contents := @parameter0: byte[];
+        thread_setContent = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setContent = virtualinvoke thread_setContent.<java.lang.Thread: long getId()>();
+        addr = 0;
+
+     label0:
+        $i0 = lengthof contents;
+        if addr >= $i0 goto label1;
+
+        $r0 = this.<avrora.sim.mcu.EEPROM: byte[] EEPROM_data>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>(contents, 0, tid_setContent, "avrora.sim.mcu.EEPROM", 111, addr, $b1);
+        $b1 = contents[addr];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r0, 0, tid_setContent, "avrora.sim.mcu.EEPROM", 111, addr, $b1);
+        $r0[addr] = $b1;
+        addr = addr + 1;
+        goto label0;
+
+     label1:
+        $r1 = this.<avrora.sim.mcu.EEPROM: avrora.sim.output.SimPrinter devicePrinter>;
+        if $r1 == null goto label2;
+
+        $r1 = this.<avrora.sim.mcu.EEPROM: avrora.sim.output.SimPrinter devicePrinter>;
+        virtualinvoke $r1.<avrora.sim.output.SimPrinter: void println(java.lang.String)>("EEPROM: content set");
+
+     label2:
+        return;
+    }
+
+    public byte[] getContent()
+    {
+        avrora.sim.mcu.EEPROM this;
+        byte[] $r0;
+
+        this := @this: avrora.sim.mcu.EEPROM;
+        $r0 = this.<avrora.sim.mcu.EEPROM: byte[] EEPROM_data>;
+        return $r0;
+    }
+}

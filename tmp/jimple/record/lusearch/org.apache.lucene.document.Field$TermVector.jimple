@@ -1,0 +1,41 @@
+public final class org.apache.lucene.document.Field$TermVector extends org.apache.lucene.util.Parameter implements java.io.Serializable
+{
+    public static final org.apache.lucene.document.Field$TermVector NO;
+    public static final org.apache.lucene.document.Field$TermVector YES;
+    public static final org.apache.lucene.document.Field$TermVector WITH_POSITIONS;
+    public static final org.apache.lucene.document.Field$TermVector WITH_OFFSETS;
+    public static final org.apache.lucene.document.Field$TermVector WITH_POSITIONS_OFFSETS;
+
+    private void <init>(java.lang.String)
+    {
+        org.apache.lucene.document.Field$TermVector this;
+        java.lang.String name;
+
+        this := @this: org.apache.lucene.document.Field$TermVector;
+        name := @parameter0: java.lang.String;
+        specialinvoke this.<org.apache.lucene.util.Parameter: void <init>(java.lang.String)>(name);
+        return;
+    }
+
+    static void <clinit>()
+    {
+        org.apache.lucene.document.Field$TermVector $r0;
+
+        $r0 = new org.apache.lucene.document.Field$TermVector;
+        specialinvoke $r0.<org.apache.lucene.document.Field$TermVector: void <init>(java.lang.String)>("NO");
+        <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector NO> = $r0;
+        $r0 = new org.apache.lucene.document.Field$TermVector;
+        specialinvoke $r0.<org.apache.lucene.document.Field$TermVector: void <init>(java.lang.String)>("YES");
+        <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector YES> = $r0;
+        $r0 = new org.apache.lucene.document.Field$TermVector;
+        specialinvoke $r0.<org.apache.lucene.document.Field$TermVector: void <init>(java.lang.String)>("WITH_POSITIONS");
+        <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector WITH_POSITIONS> = $r0;
+        $r0 = new org.apache.lucene.document.Field$TermVector;
+        specialinvoke $r0.<org.apache.lucene.document.Field$TermVector: void <init>(java.lang.String)>("WITH_OFFSETS");
+        <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector WITH_OFFSETS> = $r0;
+        $r0 = new org.apache.lucene.document.Field$TermVector;
+        specialinvoke $r0.<org.apache.lucene.document.Field$TermVector: void <init>(java.lang.String)>("WITH_POSITIONS_OFFSETS");
+        <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector WITH_POSITIONS_OFFSETS> = $r0;
+        return;
+    }
+}

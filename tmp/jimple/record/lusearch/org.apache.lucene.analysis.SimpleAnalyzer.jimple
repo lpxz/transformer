@@ -1,0 +1,56 @@
+public final class org.apache.lucene.analysis.SimpleAnalyzer extends org.apache.lucene.analysis.Analyzer
+{
+
+    public void <init>()
+    {
+        org.apache.lucene.analysis.SimpleAnalyzer this;
+
+        this := @this: org.apache.lucene.analysis.SimpleAnalyzer;
+        specialinvoke this.<org.apache.lucene.analysis.Analyzer: void <init>()>();
+        return;
+    }
+
+    public org.apache.lucene.analysis.TokenStream tokenStream(java.lang.String, java.io.Reader)
+    {
+        org.apache.lucene.analysis.SimpleAnalyzer this;
+        java.lang.String fieldName;
+        java.io.Reader reader;
+        org.apache.lucene.analysis.LowerCaseTokenizer $r0;
+
+        this := @this: org.apache.lucene.analysis.SimpleAnalyzer;
+        fieldName := @parameter0: java.lang.String;
+        reader := @parameter1: java.io.Reader;
+        $r0 = new org.apache.lucene.analysis.LowerCaseTokenizer;
+        specialinvoke $r0.<org.apache.lucene.analysis.LowerCaseTokenizer: void <init>(java.io.Reader)>(reader);
+        return $r0;
+    }
+
+    public org.apache.lucene.analysis.TokenStream reusableTokenStream(java.lang.String, java.io.Reader) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.SimpleAnalyzer this;
+        java.lang.String fieldName;
+        java.io.Reader reader;
+        org.apache.lucene.analysis.Tokenizer tokenizer;
+        java.lang.Object $r0;
+        org.apache.lucene.analysis.LowerCaseTokenizer $r1;
+
+        this := @this: org.apache.lucene.analysis.SimpleAnalyzer;
+        fieldName := @parameter0: java.lang.String;
+        reader := @parameter1: java.io.Reader;
+        $r0 = virtualinvoke this.<org.apache.lucene.analysis.SimpleAnalyzer: java.lang.Object getPreviousTokenStream()>();
+        tokenizer = (org.apache.lucene.analysis.Tokenizer) $r0;
+        if tokenizer != null goto label0;
+
+        $r1 = new org.apache.lucene.analysis.LowerCaseTokenizer;
+        specialinvoke $r1.<org.apache.lucene.analysis.LowerCaseTokenizer: void <init>(java.io.Reader)>(reader);
+        tokenizer = $r1;
+        virtualinvoke this.<org.apache.lucene.analysis.SimpleAnalyzer: void setPreviousTokenStream(java.lang.Object)>(tokenizer);
+        goto label1;
+
+     label0:
+        virtualinvoke tokenizer.<org.apache.lucene.analysis.Tokenizer: void reset(java.io.Reader)>(reader);
+
+     label1:
+        return tokenizer;
+    }
+}

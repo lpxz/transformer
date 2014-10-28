@@ -1,0 +1,463 @@
+public class org.apache.commons.cli.CommandLine extends java.lang.Object implements java.io.Serializable
+{
+    private static final long serialVersionUID;
+    private java.util.List args;
+    private java.util.List options;
+
+    void <init>()
+    {
+        org.apache.commons.cli.CommandLine this;
+        java.util.LinkedList $r0;
+        java.util.ArrayList $r1;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new java.util.LinkedList;
+        specialinvoke $r0.<java.util.LinkedList: void <init>()>();
+        this.<org.apache.commons.cli.CommandLine: java.util.List args> = $r0;
+        $r1 = new java.util.ArrayList;
+        specialinvoke $r1.<java.util.ArrayList: void <init>()>();
+        this.<org.apache.commons.cli.CommandLine: java.util.List options> = $r1;
+        return;
+    }
+
+    public boolean hasOption(java.lang.String)
+    {
+        org.apache.commons.cli.CommandLine this;
+        java.lang.String opt;
+        java.util.List $r0;
+        org.apache.commons.cli.Option $r1;
+        boolean $z0;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        opt := @parameter0: java.lang.String;
+        $r0 = this.<org.apache.commons.cli.CommandLine: java.util.List options>;
+        $r1 = specialinvoke this.<org.apache.commons.cli.CommandLine: org.apache.commons.cli.Option resolveOption(java.lang.String)>(opt);
+        $z0 = interfaceinvoke $r0.<java.util.List: boolean contains(java.lang.Object)>($r1);
+        return $z0;
+    }
+
+    public boolean hasOption(char)
+    {
+        org.apache.commons.cli.CommandLine this;
+        char opt;
+        java.lang.String $r0;
+        boolean $z0;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        opt := @parameter0: char;
+        $r0 = staticinvoke <java.lang.String: java.lang.String valueOf(char)>(opt);
+        $z0 = virtualinvoke this.<org.apache.commons.cli.CommandLine: boolean hasOption(java.lang.String)>($r0);
+        return $z0;
+    }
+
+    public java.lang.Object getOptionObject(java.lang.String)
+    {
+        org.apache.commons.cli.CommandLine this;
+        java.lang.String opt, $r4, $r5;
+        org.apache.commons.cli.ParseException pe, $r1;
+        java.lang.Object $r0;
+        java.io.PrintStream $r2;
+        java.lang.StringBuffer $r3;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        opt := @parameter0: java.lang.String;
+
+     label0:
+        $r0 = virtualinvoke this.<org.apache.commons.cli.CommandLine: java.lang.Object getParsedOptionValue(java.lang.String)>(opt);
+
+     label1:
+        return $r0;
+
+     label2:
+        $r1 := @caughtexception;
+        pe = $r1;
+        $r2 = <java.lang.System: java.io.PrintStream err>;
+        $r3 = new java.lang.StringBuffer;
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Exception found converting ");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(opt);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" to desired type: ");
+        $r4 = virtualinvoke pe.<org.apache.commons.cli.ParseException: java.lang.String getMessage()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r5 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke $r2.<java.io.PrintStream: void println(java.lang.String)>($r5);
+        return null;
+
+        catch org.apache.commons.cli.ParseException from label0 to label1 with label2;
+    }
+
+    public java.lang.Object getParsedOptionValue(java.lang.String) throws org.apache.commons.cli.ParseException
+    {
+        org.apache.commons.cli.CommandLine this;
+        java.lang.String opt, res;
+        org.apache.commons.cli.Option option;
+        java.lang.Object type, $r0;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        opt := @parameter0: java.lang.String;
+        res = virtualinvoke this.<org.apache.commons.cli.CommandLine: java.lang.String getOptionValue(java.lang.String)>(opt);
+        option = specialinvoke this.<org.apache.commons.cli.CommandLine: org.apache.commons.cli.Option resolveOption(java.lang.String)>(opt);
+        if option != null goto label0;
+
+        return null;
+
+     label0:
+        type = virtualinvoke option.<org.apache.commons.cli.Option: java.lang.Object getType()>();
+        if res != null goto label1;
+
+        $r0 = null;
+        goto label2;
+
+     label1:
+        $r0 = staticinvoke <org.apache.commons.cli.TypeHandler: java.lang.Object createValue(java.lang.String,java.lang.Object)>(res, type);
+
+     label2:
+        return $r0;
+    }
+
+    public java.lang.Object getOptionObject(char)
+    {
+        org.apache.commons.cli.CommandLine this;
+        char opt;
+        java.lang.String $r0;
+        java.lang.Object $r1;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        opt := @parameter0: char;
+        $r0 = staticinvoke <java.lang.String: java.lang.String valueOf(char)>(opt);
+        $r1 = virtualinvoke this.<org.apache.commons.cli.CommandLine: java.lang.Object getOptionObject(java.lang.String)>($r0);
+        return $r1;
+    }
+
+    public java.lang.String getOptionValue(java.lang.String)
+    {
+        org.apache.commons.cli.CommandLine this;
+        java.lang.String opt, $r0;
+        java.lang.String[] values;
+        long tid_getOptionValue;
+        java.lang.Thread thread_getOptionValue;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        opt := @parameter0: java.lang.String;
+        thread_getOptionValue = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getOptionValue = virtualinvoke thread_getOptionValue.<java.lang.Thread: long getId()>();
+        values = virtualinvoke this.<org.apache.commons.cli.CommandLine: java.lang.String[] getOptionValues(java.lang.String)>(opt);
+        if values != null goto label0;
+
+        $r0 = null;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(values, 10, tid_getOptionValue, "org.apache.commons.cli.CommandLine", 147, 0, $r0);
+        $r0 = values[0];
+
+     label1:
+        return $r0;
+    }
+
+    public java.lang.String getOptionValue(char)
+    {
+        org.apache.commons.cli.CommandLine this;
+        char opt;
+        java.lang.String $r0, $r1;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        opt := @parameter0: char;
+        $r0 = staticinvoke <java.lang.String: java.lang.String valueOf(char)>(opt);
+        $r1 = virtualinvoke this.<org.apache.commons.cli.CommandLine: java.lang.String getOptionValue(java.lang.String)>($r0);
+        return $r1;
+    }
+
+    public java.lang.String[] getOptionValues(java.lang.String)
+    {
+        org.apache.commons.cli.CommandLine this;
+        java.lang.String opt, $r3;
+        java.util.ArrayList $r0, values;
+        java.util.Iterator it;
+        org.apache.commons.cli.Option option;
+        java.util.List $r1, $r4;
+        boolean $z0;
+        java.lang.Object $r2;
+        java.lang.String[] $r5, $r6;
+        int $i0;
+        java.lang.Object[] $r7;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        opt := @parameter0: java.lang.String;
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+        values = $r0;
+        $r1 = this.<org.apache.commons.cli.CommandLine: java.util.List options>;
+        it = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label3;
+
+        $r2 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+        option = (org.apache.commons.cli.Option) $r2;
+        $r3 = virtualinvoke option.<org.apache.commons.cli.Option: java.lang.String getOpt()>();
+        $z0 = virtualinvoke opt.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 != 0 goto label1;
+
+        $r3 = virtualinvoke option.<org.apache.commons.cli.Option: java.lang.String getLongOpt()>();
+        $z0 = virtualinvoke opt.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label2;
+
+     label1:
+        $r4 = virtualinvoke option.<org.apache.commons.cli.Option: java.util.List getValuesList()>();
+        interfaceinvoke values.<java.util.List: boolean addAll(java.util.Collection)>($r4);
+
+     label2:
+        goto label0;
+
+     label3:
+        $z0 = interfaceinvoke values.<java.util.List: boolean isEmpty()>();
+        if $z0 == 0 goto label4;
+
+        $r5 = null;
+        goto label5;
+
+     label4:
+        $i0 = interfaceinvoke values.<java.util.List: int size()>();
+        $r6 = newarray (java.lang.String)[$i0];
+        $r7 = interfaceinvoke values.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($r6);
+        $r5 = (java.lang.String[]) $r7;
+        $r5 = (java.lang.String[]) $r5;
+
+     label5:
+        return $r5;
+    }
+
+    private org.apache.commons.cli.Option resolveOption(java.lang.String)
+    {
+        org.apache.commons.cli.CommandLine this;
+        java.lang.String opt, opt, $r2;
+        java.util.Iterator it;
+        org.apache.commons.cli.Option option;
+        java.util.List $r0;
+        boolean $z0;
+        java.lang.Object $r1;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        opt := @parameter0: java.lang.String;
+        opt = staticinvoke <org.apache.commons.cli.Util: java.lang.String stripLeadingHyphens(java.lang.String)>(opt);
+        $r0 = this.<org.apache.commons.cli.CommandLine: java.util.List options>;
+        it = interfaceinvoke $r0.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label3;
+
+        $r1 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+        option = (org.apache.commons.cli.Option) $r1;
+        $r2 = virtualinvoke option.<org.apache.commons.cli.Option: java.lang.String getOpt()>();
+        $z0 = virtualinvoke opt.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+        if $z0 == 0 goto label1;
+
+        return option;
+
+     label1:
+        $r2 = virtualinvoke option.<org.apache.commons.cli.Option: java.lang.String getLongOpt()>();
+        $z0 = virtualinvoke opt.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+        if $z0 == 0 goto label2;
+
+        return option;
+
+     label2:
+        goto label0;
+
+     label3:
+        return null;
+    }
+
+    public java.lang.String[] getOptionValues(char)
+    {
+        org.apache.commons.cli.CommandLine this;
+        char opt;
+        java.lang.String $r0;
+        java.lang.String[] $r1;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        opt := @parameter0: char;
+        $r0 = staticinvoke <java.lang.String: java.lang.String valueOf(char)>(opt);
+        $r1 = virtualinvoke this.<org.apache.commons.cli.CommandLine: java.lang.String[] getOptionValues(java.lang.String)>($r0);
+        return $r1;
+    }
+
+    public java.lang.String getOptionValue(java.lang.String, java.lang.String)
+    {
+        org.apache.commons.cli.CommandLine this;
+        java.lang.String opt, defaultValue, answer, $r0;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        opt := @parameter0: java.lang.String;
+        defaultValue := @parameter1: java.lang.String;
+        answer = virtualinvoke this.<org.apache.commons.cli.CommandLine: java.lang.String getOptionValue(java.lang.String)>(opt);
+        if answer == null goto label0;
+
+        $r0 = answer;
+        goto label1;
+
+     label0:
+        $r0 = defaultValue;
+
+     label1:
+        return $r0;
+    }
+
+    public java.lang.String getOptionValue(char, java.lang.String)
+    {
+        org.apache.commons.cli.CommandLine this;
+        char opt;
+        java.lang.String defaultValue, $r0, $r1;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        opt := @parameter0: char;
+        defaultValue := @parameter1: java.lang.String;
+        $r0 = staticinvoke <java.lang.String: java.lang.String valueOf(char)>(opt);
+        $r1 = virtualinvoke this.<org.apache.commons.cli.CommandLine: java.lang.String getOptionValue(java.lang.String,java.lang.String)>($r0, defaultValue);
+        return $r1;
+    }
+
+    public java.util.Properties getOptionProperties(java.lang.String)
+    {
+        org.apache.commons.cli.CommandLine this;
+        java.lang.String opt, $r3;
+        java.util.Properties $r0, props;
+        java.util.Iterator it;
+        org.apache.commons.cli.Option option;
+        java.util.List values, $r1;
+        boolean $z0;
+        java.lang.Object $r2, $r4, $r5;
+        int $i0;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        opt := @parameter0: java.lang.String;
+        $r0 = new java.util.Properties;
+        specialinvoke $r0.<java.util.Properties: void <init>()>();
+        props = $r0;
+        $r1 = this.<org.apache.commons.cli.CommandLine: java.util.List options>;
+        it = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke it.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label4;
+
+        $r2 = interfaceinvoke it.<java.util.Iterator: java.lang.Object next()>();
+        option = (org.apache.commons.cli.Option) $r2;
+        $r3 = virtualinvoke option.<org.apache.commons.cli.Option: java.lang.String getOpt()>();
+        $z0 = virtualinvoke opt.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 != 0 goto label1;
+
+        $r3 = virtualinvoke option.<org.apache.commons.cli.Option: java.lang.String getLongOpt()>();
+        $z0 = virtualinvoke opt.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label3;
+
+     label1:
+        values = virtualinvoke option.<org.apache.commons.cli.Option: java.util.List getValuesList()>();
+        $i0 = interfaceinvoke values.<java.util.List: int size()>();
+        if $i0 < 2 goto label2;
+
+        $r4 = interfaceinvoke values.<java.util.List: java.lang.Object get(int)>(0);
+        $r5 = interfaceinvoke values.<java.util.List: java.lang.Object get(int)>(1);
+        virtualinvoke props.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r5);
+        goto label3;
+
+     label2:
+        $i0 = interfaceinvoke values.<java.util.List: int size()>();
+        if $i0 != 1 goto label3;
+
+        $r4 = interfaceinvoke values.<java.util.List: java.lang.Object get(int)>(0);
+        virtualinvoke props.<java.util.Properties: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, "true");
+
+     label3:
+        goto label0;
+
+     label4:
+        return props;
+    }
+
+    public java.lang.String[] getArgs()
+    {
+        org.apache.commons.cli.CommandLine this;
+        java.lang.String[] answer;
+        java.util.List $r0;
+        int $i0;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        $r0 = this.<org.apache.commons.cli.CommandLine: java.util.List args>;
+        $i0 = interfaceinvoke $r0.<java.util.List: int size()>();
+        answer = newarray (java.lang.String)[$i0];
+        $r0 = this.<org.apache.commons.cli.CommandLine: java.util.List args>;
+        interfaceinvoke $r0.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>(answer);
+        return answer;
+    }
+
+    public java.util.List getArgList()
+    {
+        org.apache.commons.cli.CommandLine this;
+        java.util.List $r0;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        $r0 = this.<org.apache.commons.cli.CommandLine: java.util.List args>;
+        return $r0;
+    }
+
+    void addArg(java.lang.String)
+    {
+        org.apache.commons.cli.CommandLine this;
+        java.lang.String arg;
+        java.util.List $r0;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        arg := @parameter0: java.lang.String;
+        $r0 = this.<org.apache.commons.cli.CommandLine: java.util.List args>;
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>(arg);
+        return;
+    }
+
+    void addOption(org.apache.commons.cli.Option)
+    {
+        org.apache.commons.cli.CommandLine this;
+        org.apache.commons.cli.Option opt;
+        java.util.List $r0;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        opt := @parameter0: org.apache.commons.cli.Option;
+        $r0 = this.<org.apache.commons.cli.CommandLine: java.util.List options>;
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>(opt);
+        return;
+    }
+
+    public java.util.Iterator iterator()
+    {
+        org.apache.commons.cli.CommandLine this;
+        java.util.List $r0;
+        java.util.Iterator $r1;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        $r0 = this.<org.apache.commons.cli.CommandLine: java.util.List options>;
+        $r1 = interfaceinvoke $r0.<java.util.List: java.util.Iterator iterator()>();
+        return $r1;
+    }
+
+    public org.apache.commons.cli.Option[] getOptions()
+    {
+        org.apache.commons.cli.CommandLine this;
+        java.util.List processed;
+        org.apache.commons.cli.Option[] optionsArray, $r1;
+        int $i0;
+        java.lang.Object[] $r0;
+
+        this := @this: org.apache.commons.cli.CommandLine;
+        processed = this.<org.apache.commons.cli.CommandLine: java.util.List options>;
+        $i0 = interfaceinvoke processed.<java.util.Collection: int size()>();
+        optionsArray = newarray (org.apache.commons.cli.Option)[$i0];
+        $r0 = interfaceinvoke processed.<java.util.Collection: java.lang.Object[] toArray(java.lang.Object[])>(optionsArray);
+        $r1 = (org.apache.commons.cli.Option[]) $r0;
+        $r1 = (org.apache.commons.cli.Option[]) $r1;
+        return $r1;
+    }
+}

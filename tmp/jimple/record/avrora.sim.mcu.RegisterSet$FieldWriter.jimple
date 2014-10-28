@@ -1,0 +1,39 @@
+class avrora.sim.mcu.RegisterSet$FieldWriter extends java.lang.Object
+{
+    int value;
+    int writtenMask;
+    avrora.sim.mcu.RegisterSet$Field fobject;
+
+    void <init>()
+    {
+        avrora.sim.mcu.RegisterSet$FieldWriter this;
+
+        this := @this: avrora.sim.mcu.RegisterSet$FieldWriter;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    void commit()
+    {
+        avrora.sim.mcu.RegisterSet$FieldWriter this;
+        avrora.sim.mcu.RegisterSet$Field $r0;
+        int $i0, $i1;
+        long tid_commit;
+        java.lang.Thread thread_commit;
+
+        this := @this: avrora.sim.mcu.RegisterSet$FieldWriter;
+        thread_commit = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_commit = virtualinvoke thread_commit.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.RegisterSet$FieldWriter: avrora.sim.mcu.RegisterSet$Field fobject>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 186, tid_commit, "avrora.sim.mcu.RegisterSet$FieldWriter", 96, $i0);
+        $i0 = this.<avrora.sim.mcu.RegisterSet$FieldWriter: int value>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 187, tid_commit, "avrora.sim.mcu.RegisterSet$FieldWriter", 96, $i1);
+        $i1 = this.<avrora.sim.mcu.RegisterSet$FieldWriter: int writtenMask>;
+        virtualinvoke $r0.<avrora.sim.mcu.RegisterSet$Field: void write(int,int)>($i0, $i1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 186, tid_commit, "avrora.sim.mcu.RegisterSet$FieldWriter", 97, 0);
+        this.<avrora.sim.mcu.RegisterSet$FieldWriter: int value> = 0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 187, tid_commit, "avrora.sim.mcu.RegisterSet$FieldWriter", 98, 0);
+        this.<avrora.sim.mcu.RegisterSet$FieldWriter: int writtenMask> = 0;
+        return;
+    }
+}

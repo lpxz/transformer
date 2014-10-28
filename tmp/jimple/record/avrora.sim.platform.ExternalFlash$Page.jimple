@@ -1,0 +1,68 @@
+class avrora.sim.platform.ExternalFlash$Page extends java.lang.Object
+{
+    final short[] bytes;
+    final avrora.sim.platform.ExternalFlash this$0;
+
+    protected void <init>(avrora.sim.platform.ExternalFlash, int)
+    {
+        avrora.sim.platform.ExternalFlash$Page this;
+        avrora.sim.platform.ExternalFlash l1;
+        int numBytes;
+        short[] $r0;
+
+        this := @this: avrora.sim.platform.ExternalFlash$Page;
+        l1 := @parameter0: avrora.sim.platform.ExternalFlash;
+        numBytes := @parameter1: int;
+        this.<avrora.sim.platform.ExternalFlash$Page: avrora.sim.platform.ExternalFlash this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = newarray (short)[numBytes];
+        this.<avrora.sim.platform.ExternalFlash$Page: short[] bytes> = $r0;
+        return;
+    }
+
+    void debug()
+    {
+        avrora.sim.platform.ExternalFlash$Page this;
+        int i, $i0;
+        avrora.sim.platform.ExternalFlash $r0;
+        avrora.sim.output.SimPrinter $r1;
+        short[] $r2, $r4;
+        java.lang.StringBuilder $r3;
+        short $s1;
+        java.lang.String $r5;
+        long tid_debug;
+        java.lang.Thread thread_debug;
+
+        this := @this: avrora.sim.platform.ExternalFlash$Page;
+        thread_debug = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_debug = virtualinvoke thread_debug.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.platform.ExternalFlash$Page: avrora.sim.platform.ExternalFlash this$0>;
+        $r1 = $r0.<avrora.sim.platform.ExternalFlash: avrora.sim.output.SimPrinter printer>;
+        if $r1 == null goto label1;
+
+        i = 0;
+
+     label0:
+        $r2 = this.<avrora.sim.platform.ExternalFlash$Page: short[] bytes>;
+        $i0 = lengthof $r2;
+        if i >= $i0 goto label1;
+
+        $r0 = this.<avrora.sim.platform.ExternalFlash$Page: avrora.sim.platform.ExternalFlash this$0>;
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Byte ");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(i);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" = ");
+        $r4 = this.<avrora.sim.platform.ExternalFlash$Page: short[] bytes>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,short)>($r4, 39, tid_debug, "avrora.sim.platform.ExternalFlash$Page", 144, i, $s1);
+        $s1 = $r4[i];
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s1);
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <avrora.sim.platform.ExternalFlash: void access$000(avrora.sim.platform.ExternalFlash,java.lang.String)>($r0, $r5);
+        i = i + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+}

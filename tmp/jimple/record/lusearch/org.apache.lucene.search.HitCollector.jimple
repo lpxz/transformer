@@ -1,0 +1,14 @@
+public abstract class org.apache.lucene.search.HitCollector extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        org.apache.lucene.search.HitCollector this;
+
+        this := @this: org.apache.lucene.search.HitCollector;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public abstract void collect(int, float);
+}

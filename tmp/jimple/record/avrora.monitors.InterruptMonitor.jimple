@@ -1,0 +1,34 @@
+public class avrora.monitors.InterruptMonitor extends avrora.monitors.MonitorFactory
+{
+    protected final cck.util.Option$Bool SHOW;
+    protected final cck.util.Option$Bool INV_ONLY;
+
+    public void <init>()
+    {
+        avrora.monitors.InterruptMonitor this;
+        cck.util.Option$Bool $r0;
+
+        this := @this: avrora.monitors.InterruptMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The interrupt monitor tracks changes to the state of interrupts, including posting, enabling, and invoking of interrupts.");
+        $r0 = virtualinvoke this.<avrora.monitors.InterruptMonitor: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("show-interrupts", 0, "This option, when specified, will cause the interrupt monitor to bring out changes to the state of each interrupt.");
+        this.<avrora.monitors.InterruptMonitor: cck.util.Option$Bool SHOW> = $r0;
+        $r0 = virtualinvoke this.<avrora.monitors.InterruptMonitor: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("invocations-only", 1, "This option, when specified, will cause the interrupt to print only invocations of the specified interrupts, and not enablings, disablings, postings, and unpostings.");
+        this.<avrora.monitors.InterruptMonitor: cck.util.Option$Bool INV_ONLY> = $r0;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.InterruptMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.InterruptMonitor$Mon tmp$549230182;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.InterruptMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$549230182 = new avrora.monitors.InterruptMonitor$Mon;
+        specialinvoke tmp$549230182.<avrora.monitors.InterruptMonitor$Mon: void <init>(avrora.monitors.InterruptMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$549230182;
+        return tmp;
+    }
+}

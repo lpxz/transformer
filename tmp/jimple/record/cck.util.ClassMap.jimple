@@ -1,0 +1,290 @@
+public class cck.util.ClassMap extends java.lang.Object
+{
+    protected final java.lang.String type;
+    protected final java.lang.Class clazz;
+    protected final java.util.HashMap classMap;
+    protected final java.util.HashMap reverseMap;
+    protected final java.util.HashMap objMap;
+
+    public void <init>(java.lang.String, java.lang.Class)
+    {
+        cck.util.ClassMap this;
+        java.lang.String t;
+        java.lang.Class clz;
+        java.util.HashMap $r0;
+
+        this := @this: cck.util.ClassMap;
+        t := @parameter0: java.lang.String;
+        clz := @parameter1: java.lang.Class;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<cck.util.ClassMap: java.lang.Class clazz> = clz;
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        this.<cck.util.ClassMap: java.util.HashMap classMap> = $r0;
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        this.<cck.util.ClassMap: java.util.HashMap reverseMap> = $r0;
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        this.<cck.util.ClassMap: java.util.HashMap objMap> = $r0;
+        this.<cck.util.ClassMap: java.lang.String type> = t;
+        return;
+    }
+
+    public void addClass(java.lang.String, java.lang.Class)
+    {
+        cck.util.ClassMap this;
+        java.lang.String alias;
+        java.lang.Class clz;
+        java.util.HashMap $r0;
+
+        this := @this: cck.util.ClassMap;
+        alias := @parameter0: java.lang.String;
+        clz := @parameter1: java.lang.Class;
+        $r0 = this.<cck.util.ClassMap: java.util.HashMap classMap>;
+        virtualinvoke $r0.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(alias, clz);
+        $r0 = this.<cck.util.ClassMap: java.util.HashMap reverseMap>;
+        virtualinvoke $r0.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(clz, alias);
+        return;
+    }
+
+    public void addInstance(java.lang.String, java.lang.Object)
+    {
+        cck.util.ClassMap this;
+        java.lang.String alias, $r2, $r4;
+        java.lang.Object o;
+        java.lang.Class cz, $r0, $r3;
+        boolean $z0;
+        java.lang.StringBuilder $r1;
+        cck.util.Util$InternalError $r5;
+        java.util.HashMap $r6;
+
+        this := @this: cck.util.ClassMap;
+        alias := @parameter0: java.lang.String;
+        o := @parameter1: java.lang.Object;
+        cz = virtualinvoke o.<java.lang.Object: java.lang.Class getClass()>();
+        $r0 = this.<cck.util.ClassMap: java.lang.Class clazz>;
+        $z0 = virtualinvoke $r0.<java.lang.Class: boolean isAssignableFrom(java.lang.Class)>(cz);
+        if $z0 != 0 goto label0;
+
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Object of class ");
+        $r2 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>(cz);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" is not an instance of ");
+        $r3 = this.<cck.util.ClassMap: java.lang.Class clazz>;
+        $r2 = virtualinvoke $r3.<java.lang.Class: java.lang.String getName()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+        $r4 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r5 = staticinvoke <cck.util.Util: cck.util.Util$InternalError failure(java.lang.String)>($r4);
+        throw $r5;
+
+     label0:
+        $r6 = this.<cck.util.ClassMap: java.util.HashMap objMap>;
+        virtualinvoke $r6.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(alias, o);
+        $r6 = this.<cck.util.ClassMap: java.util.HashMap classMap>;
+        virtualinvoke $r6.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(alias, cz);
+        $r6 = this.<cck.util.ClassMap: java.util.HashMap reverseMap>;
+        virtualinvoke $r6.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(o, alias);
+        return;
+    }
+
+    public java.lang.Class getClass(java.lang.String)
+    {
+        cck.util.ClassMap this;
+        java.lang.String shortName;
+        java.lang.Object o, $r2;
+        java.util.HashMap $r0;
+        java.lang.Class $r1;
+
+        this := @this: cck.util.ClassMap;
+        shortName := @parameter0: java.lang.String;
+        $r0 = this.<cck.util.ClassMap: java.util.HashMap objMap>;
+        o = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(shortName);
+        if o == null goto label0;
+
+        $r1 = virtualinvoke o.<java.lang.Object: java.lang.Class getClass()>();
+        return $r1;
+
+     label0:
+        $r0 = this.<cck.util.ClassMap: java.util.HashMap classMap>;
+        $r2 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(shortName);
+        $r1 = (java.lang.Class) $r2;
+        return $r1;
+    }
+
+    public java.lang.Object getObjectOfClass(java.lang.String)
+    {
+        cck.util.ClassMap this;
+        java.lang.String name, clname, $r4, $r5;
+        java.lang.Object o, $r1;
+        java.lang.Class c, $r6, $r7;
+        java.lang.ClassNotFoundException e, $r2;
+        java.util.HashMap $r0;
+        java.lang.StringBuilder $r3;
+        boolean $z0;
+        java.lang.InstantiationException $r8, e;
+        java.lang.IllegalAccessException $r9, e;
+        cck.util.Util$InternalError $r10;
+
+        this := @this: cck.util.ClassMap;
+        name := @parameter0: java.lang.String;
+        $r0 = this.<cck.util.ClassMap: java.util.HashMap objMap>;
+        o = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(name);
+        if o == null goto label0;
+
+        return o;
+
+     label0:
+        clname = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>(name);
+        $r0 = this.<cck.util.ClassMap: java.util.HashMap classMap>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(name);
+        c = (java.lang.Class) $r1;
+        if c != null goto label4;
+
+     label1:
+        c = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(name);
+
+     label2:
+        goto label5;
+
+     label3:
+        $r2 := @caughtexception;
+        e = $r2;
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+        $r4 = this.<cck.util.ClassMap: java.lang.String type>;
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" class not found");
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.util.Util: void userError(java.lang.String,java.lang.String)>($r5, clname);
+        goto label5;
+
+     label4:
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(clname);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+        $r4 = virtualinvoke c.<java.lang.Class: java.lang.String toString()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+        clname = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label5:
+        $r6 = this.<cck.util.ClassMap: java.lang.Class clazz>;
+        $z0 = virtualinvoke $r6.<java.lang.Class: boolean isAssignableFrom(java.lang.Class)>(c);
+        if $z0 != 0 goto label6;
+
+        $r3 = new java.lang.StringBuilder;
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("The specified class does not extend ");
+        $r7 = this.<cck.util.ClassMap: java.lang.Class clazz>;
+        $r4 = virtualinvoke $r7.<java.lang.Class: java.lang.String getName()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.util.Util: void userError(java.lang.String,java.lang.String)>($r5, clname);
+
+     label6:
+        $r1 = virtualinvoke c.<java.lang.Class: java.lang.Object newInstance()>();
+
+     label7:
+        return $r1;
+
+     label8:
+        $r8 := @caughtexception;
+        e = $r8;
+        staticinvoke <cck.util.Util: void userError(java.lang.String,java.lang.String)>("The specified class does not have a default constructor", clname);
+        goto label10;
+
+     label9:
+        $r9 := @caughtexception;
+        e = $r9;
+        staticinvoke <cck.util.Util: void userError(java.lang.String,java.lang.String)>("Illegal access to class", clname);
+
+     label10:
+        $r10 = staticinvoke <cck.util.Util: cck.util.Util$InternalError unreachable()>();
+        throw $r10;
+
+        catch java.lang.ClassNotFoundException from label1 to label2 with label3;
+        catch java.lang.InstantiationException from label6 to label7 with label8;
+        catch java.lang.IllegalAccessException from label6 to label7 with label9;
+    }
+
+    public java.lang.String getAlias(java.lang.Object)
+    {
+        cck.util.ClassMap this;
+        java.lang.Object o, $r1;
+        java.lang.String s;
+        java.util.HashMap $r0;
+        java.lang.Class $r2, $r3;
+
+        this := @this: cck.util.ClassMap;
+        o := @parameter0: java.lang.Object;
+        $r0 = this.<cck.util.ClassMap: java.util.HashMap reverseMap>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(o);
+        s = (java.lang.String) $r1;
+        if s != null goto label0;
+
+        $r0 = this.<cck.util.ClassMap: java.util.HashMap reverseMap>;
+        $r2 = virtualinvoke o.<java.lang.Object: java.lang.Class getClass()>();
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r2);
+        s = (java.lang.String) $r1;
+
+     label0:
+        if s != null goto label1;
+
+        $r3 = virtualinvoke o.<java.lang.Object: java.lang.Class getClass()>();
+        s = virtualinvoke $r3.<java.lang.Class: java.lang.String getName()>();
+
+     label1:
+        return s;
+    }
+
+    public java.util.List getSortedList()
+    {
+        cck.util.ClassMap this;
+        java.util.ArrayList list;
+        java.util.Comparator $r0;
+        java.util.HashMap $r1;
+        java.util.Set $r2;
+        java.util.Enumeration $r3;
+
+        this := @this: cck.util.ClassMap;
+        $r1 = this.<cck.util.ClassMap: java.util.HashMap classMap>;
+        $r2 = virtualinvoke $r1.<java.util.HashMap: java.util.Set keySet()>();
+        $r3 = staticinvoke <java.util.Collections: java.util.Enumeration enumeration(java.util.Collection)>($r2);
+        list = staticinvoke <java.util.Collections: java.util.ArrayList list(java.util.Enumeration)>($r3);
+        $r0 = <java.lang.String: java.util.Comparator CASE_INSENSITIVE_ORDER>;
+        staticinvoke <java.util.Collections: void sort(java.util.List,java.util.Comparator)>(list, $r0);
+        return list;
+    }
+
+    public java.util.Iterator getIterator()
+    {
+        cck.util.ClassMap this;
+        java.util.HashMap $r0;
+        java.util.Set $r1;
+        java.util.Iterator $r2;
+
+        this := @this: cck.util.ClassMap;
+        $r0 = this.<cck.util.ClassMap: java.util.HashMap classMap>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.util.Set keySet()>();
+        $r2 = interfaceinvoke $r1.<java.util.Set: java.util.Iterator iterator()>();
+        return $r2;
+    }
+
+    public java.util.Iterator iterator()
+    {
+        cck.util.ClassMap this;
+        java.util.HashMap $r0;
+        java.util.Set $r1;
+        java.util.Iterator $r2;
+
+        this := @this: cck.util.ClassMap;
+        $r0 = this.<cck.util.ClassMap: java.util.HashMap classMap>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.util.Set keySet()>();
+        $r2 = interfaceinvoke $r1.<java.util.Set: java.util.Iterator iterator()>();
+        return $r2;
+    }
+}

@@ -1,0 +1,15 @@
+public interface  org.apache.lucene.search.Weight extends java.lang.Object implements java.io.Serializable
+{
+
+    public abstract org.apache.lucene.search.Query getQuery();
+
+    public abstract float getValue();
+
+    public abstract float sumOfSquaredWeights() throws java.io.IOException;
+
+    public abstract void normalize(float);
+
+    public abstract org.apache.lucene.search.Scorer scorer(org.apache.lucene.index.IndexReader) throws java.io.IOException;
+
+    public abstract org.apache.lucene.search.Explanation explain(org.apache.lucene.index.IndexReader, int) throws java.io.IOException;
+}

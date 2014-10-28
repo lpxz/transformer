@@ -1,0 +1,76 @@
+public class avrora.sim.util.MulticastFSMProbe extends avrora.sim.util.TransactionalList implements avrora.sim.FiniteStateMachine$Probe
+{
+
+    public void <init>()
+    {
+        avrora.sim.util.MulticastFSMProbe this;
+
+        this := @this: avrora.sim.util.MulticastFSMProbe;
+        specialinvoke this.<avrora.sim.util.TransactionalList: void <init>()>();
+        return;
+    }
+
+    public void fireBeforeTransition(int, int)
+    {
+        avrora.sim.util.MulticastFSMProbe this;
+        int beforeState, afterState;
+        avrora.sim.util.TransactionalList$Link pos;
+        java.lang.Object $r0;
+        avrora.sim.FiniteStateMachine$Probe $r1;
+        long tid_fireBeforeTransition;
+        java.lang.Thread thread_fireBeforeTransition;
+
+        this := @this: avrora.sim.util.MulticastFSMProbe;
+        beforeState := @parameter0: int;
+        afterState := @parameter1: int;
+        thread_fireBeforeTransition = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_fireBeforeTransition = virtualinvoke thread_fireBeforeTransition.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_fireBeforeTransition, "avrora.sim.util.MulticastFSMProbe", 47, pos);
+        pos = this.<avrora.sim.util.MulticastFSMProbe: avrora.sim.util.TransactionalList$Link head>;
+
+     label0:
+        if pos == null goto label1;
+
+        $r0 = pos.<avrora.sim.util.TransactionalList$Link: java.lang.Object object>;
+        $r1 = (avrora.sim.FiniteStateMachine$Probe) $r0;
+        interfaceinvoke $r1.<avrora.sim.FiniteStateMachine$Probe: void fireBeforeTransition(int,int)>(beforeState, afterState);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 79, tid_fireBeforeTransition, "avrora.sim.util.MulticastFSMProbe", 47, pos);
+        pos = pos.<avrora.sim.util.TransactionalList$Link: avrora.sim.util.TransactionalList$Link next>;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    public void fireAfterTransition(int, int)
+    {
+        avrora.sim.util.MulticastFSMProbe this;
+        int beforeState, afterState;
+        avrora.sim.util.TransactionalList$Link pos;
+        java.lang.Object $r0;
+        avrora.sim.FiniteStateMachine$Probe $r1;
+        long tid_fireAfterTransition;
+        java.lang.Thread thread_fireAfterTransition;
+
+        this := @this: avrora.sim.util.MulticastFSMProbe;
+        beforeState := @parameter0: int;
+        afterState := @parameter1: int;
+        thread_fireAfterTransition = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_fireAfterTransition = virtualinvoke thread_fireAfterTransition.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 78, tid_fireAfterTransition, "avrora.sim.util.MulticastFSMProbe", 52, pos);
+        pos = this.<avrora.sim.util.MulticastFSMProbe: avrora.sim.util.TransactionalList$Link head>;
+
+     label0:
+        if pos == null goto label1;
+
+        $r0 = pos.<avrora.sim.util.TransactionalList$Link: java.lang.Object object>;
+        $r1 = (avrora.sim.FiniteStateMachine$Probe) $r0;
+        interfaceinvoke $r1.<avrora.sim.FiniteStateMachine$Probe: void fireAfterTransition(int,int)>(beforeState, afterState);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(pos, 79, tid_fireAfterTransition, "avrora.sim.util.MulticastFSMProbe", 52, pos);
+        pos = pos.<avrora.sim.util.TransactionalList$Link: avrora.sim.util.TransactionalList$Link next>;
+        goto label0;
+
+     label1:
+        return;
+    }
+}

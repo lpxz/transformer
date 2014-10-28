@@ -1,0 +1,46 @@
+public class avrora.monitors.GDBServer extends avrora.monitors.MonitorFactory
+{
+    public static java.lang.String HELP;
+    private final cck.util.Option$Long PORT;
+
+    public void <init>()
+    {
+        avrora.monitors.GDBServer this;
+        java.lang.String $r0;
+        cck.util.Option$Long $r1;
+
+        this := @this: avrora.monitors.GDBServer;
+        $r0 = <avrora.monitors.GDBServer: java.lang.String HELP>;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>($r0);
+        $r1 = virtualinvoke this.<avrora.monitors.GDBServer: cck.util.Option$Long newOption(java.lang.String,long,java.lang.String)>("port", 10001L, "This option specifies the port on which the GDB server will listen for a connection from the GDB front-end.");
+        this.<avrora.monitors.GDBServer: cck.util.Option$Long PORT> = $r1;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.GDBServer this;
+        avrora.sim.Simulator s;
+        cck.util.Option$Long $r1;
+        long $l0;
+        int $i1;
+        avrora.monitors.GDBServer$GDBMonitor tmp$549524120;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.GDBServer;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$549524120 = new avrora.monitors.GDBServer$GDBMonitor;
+        $r1 = this.<avrora.monitors.GDBServer: cck.util.Option$Long PORT>;
+        $l0 = virtualinvoke $r1.<cck.util.Option$Long: long get()>();
+        $i1 = (int) $l0;
+        specialinvoke tmp$549524120.<avrora.monitors.GDBServer$GDBMonitor: void <init>(avrora.monitors.GDBServer,avrora.sim.Simulator,int)>(this, s, $i1);
+        tmp = (avrora.monitors.Monitor) tmp$549524120;
+        return tmp;
+    }
+
+    static void <clinit>()
+    {
+        <avrora.monitors.GDBServer: java.lang.String HELP> = "The \"gdb\" monitor implements the GNU Debugger (gdb) remote serial protocol. The server will create a server socket which GDB can connect to in order to send commands to Avrora. This allows gdb to be used as a front end for debugging a program running inside of Avrora.";
+        return;
+    }
+}

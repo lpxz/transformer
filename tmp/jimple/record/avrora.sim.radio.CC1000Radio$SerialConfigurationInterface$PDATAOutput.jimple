@@ -1,0 +1,34 @@
+public class avrora.sim.radio.CC1000Radio$SerialConfigurationInterface$PDATAOutput extends java.lang.Object implements avrora.sim.mcu.Microcontroller$Pin$Output
+{
+    final avrora.sim.radio.CC1000Radio$SerialConfigurationInterface this$1;
+
+    protected void <init>(avrora.sim.radio.CC1000Radio$SerialConfigurationInterface)
+    {
+        avrora.sim.radio.CC1000Radio$SerialConfigurationInterface$PDATAOutput this;
+        avrora.sim.radio.CC1000Radio$SerialConfigurationInterface l1;
+
+        this := @this: avrora.sim.radio.CC1000Radio$SerialConfigurationInterface$PDATAOutput;
+        l1 := @parameter0: avrora.sim.radio.CC1000Radio$SerialConfigurationInterface;
+        this.<avrora.sim.radio.CC1000Radio$SerialConfigurationInterface$PDATAOutput: avrora.sim.radio.CC1000Radio$SerialConfigurationInterface this$1> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public void write(boolean)
+    {
+        avrora.sim.radio.CC1000Radio$SerialConfigurationInterface$PDATAOutput this;
+        boolean level;
+        avrora.sim.radio.CC1000Radio$SerialConfigurationInterface $r0;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.radio.CC1000Radio$SerialConfigurationInterface$PDATAOutput;
+        level := @parameter0: boolean;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.radio.CC1000Radio$SerialConfigurationInterface$PDATAOutput: avrora.sim.radio.CC1000Radio$SerialConfigurationInterface this$1>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r0, 62, tid_write, "avrora.sim.radio.CC1000Radio$SerialConfigurationInterface$PDATAOutput", 932, level);
+        $r0.<avrora.sim.radio.CC1000Radio$SerialConfigurationInterface: boolean inputPin> = level;
+        return;
+    }
+}

@@ -1,0 +1,554 @@
+public final class org.apache.lucene.document.Field extends org.apache.lucene.document.AbstractField implements org.apache.lucene.document.Fieldable, java.io.Serializable
+{
+
+    public java.lang.String stringValue()
+    {
+        org.apache.lucene.document.Field this;
+        java.lang.Object $r0;
+        boolean $z0;
+        java.lang.String $r1;
+
+        this := @this: org.apache.lucene.document.Field;
+        $r0 = this.<org.apache.lucene.document.Field: java.lang.Object fieldsData>;
+        $z0 = $r0 instanceof java.lang.String;
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<org.apache.lucene.document.Field: java.lang.Object fieldsData>;
+        $r1 = (java.lang.String) $r0;
+        goto label1;
+
+     label0:
+        $r1 = null;
+
+     label1:
+        return $r1;
+    }
+
+    public java.io.Reader readerValue()
+    {
+        org.apache.lucene.document.Field this;
+        java.lang.Object $r0;
+        boolean $z0;
+        java.io.Reader $r1;
+
+        this := @this: org.apache.lucene.document.Field;
+        $r0 = this.<org.apache.lucene.document.Field: java.lang.Object fieldsData>;
+        $z0 = $r0 instanceof java.io.Reader;
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<org.apache.lucene.document.Field: java.lang.Object fieldsData>;
+        $r1 = (java.io.Reader) $r0;
+        goto label1;
+
+     label0:
+        $r1 = null;
+
+     label1:
+        return $r1;
+    }
+
+    public byte[] binaryValue()
+    {
+        org.apache.lucene.document.Field this;
+        byte[] data, 'ret', $r1;
+        boolean $z0;
+        java.lang.Object $r0;
+        int $i0, $i1, $i2;
+
+        this := @this: org.apache.lucene.document.Field;
+        $z0 = this.<org.apache.lucene.document.Field: boolean isBinary>;
+        if $z0 != 0 goto label0;
+
+        return null;
+
+     label0:
+        $r0 = this.<org.apache.lucene.document.Field: java.lang.Object fieldsData>;
+        $r1 = (byte[]) $r0;
+        data = (byte[]) $r1;
+        $i0 = this.<org.apache.lucene.document.Field: int binaryOffset>;
+        if $i0 != 0 goto label1;
+
+        $i0 = lengthof data;
+        $i1 = this.<org.apache.lucene.document.Field: int binaryLength>;
+        if $i0 != $i1 goto label1;
+
+        return data;
+
+     label1:
+        $i0 = this.<org.apache.lucene.document.Field: int binaryLength>;
+        'ret' = newarray (byte)[$i0];
+        $i1 = this.<org.apache.lucene.document.Field: int binaryOffset>;
+        $i2 = this.<org.apache.lucene.document.Field: int binaryLength>;
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>(data, $i1, 'ret', 0, $i2);
+        return 'ret';
+    }
+
+    public org.apache.lucene.analysis.TokenStream tokenStreamValue()
+    {
+        org.apache.lucene.document.Field this;
+        java.lang.Object $r0;
+        boolean $z0;
+        org.apache.lucene.analysis.TokenStream $r1;
+
+        this := @this: org.apache.lucene.document.Field;
+        $r0 = this.<org.apache.lucene.document.Field: java.lang.Object fieldsData>;
+        $z0 = $r0 instanceof org.apache.lucene.analysis.TokenStream;
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<org.apache.lucene.document.Field: java.lang.Object fieldsData>;
+        $r1 = (org.apache.lucene.analysis.TokenStream) $r0;
+        goto label1;
+
+     label0:
+        $r1 = null;
+
+     label1:
+        return $r1;
+    }
+
+    public void setValue(java.lang.String)
+    {
+        org.apache.lucene.document.Field this;
+        java.lang.String value;
+
+        this := @this: org.apache.lucene.document.Field;
+        value := @parameter0: java.lang.String;
+        this.<org.apache.lucene.document.Field: java.lang.Object fieldsData> = value;
+        return;
+    }
+
+    public void setValue(java.io.Reader)
+    {
+        org.apache.lucene.document.Field this;
+        java.io.Reader value;
+
+        this := @this: org.apache.lucene.document.Field;
+        value := @parameter0: java.io.Reader;
+        this.<org.apache.lucene.document.Field: java.lang.Object fieldsData> = value;
+        return;
+    }
+
+    public void setValue(byte[])
+    {
+        org.apache.lucene.document.Field this;
+        byte[] value;
+        int $i0;
+
+        this := @this: org.apache.lucene.document.Field;
+        value := @parameter0: byte[];
+        this.<org.apache.lucene.document.Field: java.lang.Object fieldsData> = value;
+        $i0 = lengthof value;
+        this.<org.apache.lucene.document.Field: int binaryLength> = $i0;
+        this.<org.apache.lucene.document.Field: int binaryOffset> = 0;
+        return;
+    }
+
+    public void setValue(byte[], int, int)
+    {
+        org.apache.lucene.document.Field this;
+        byte[] value;
+        int offset, length;
+
+        this := @this: org.apache.lucene.document.Field;
+        value := @parameter0: byte[];
+        offset := @parameter1: int;
+        length := @parameter2: int;
+        this.<org.apache.lucene.document.Field: java.lang.Object fieldsData> = value;
+        this.<org.apache.lucene.document.Field: int binaryLength> = length;
+        this.<org.apache.lucene.document.Field: int binaryOffset> = offset;
+        return;
+    }
+
+    public void setValue(org.apache.lucene.analysis.TokenStream)
+    {
+        org.apache.lucene.document.Field this;
+        org.apache.lucene.analysis.TokenStream value;
+
+        this := @this: org.apache.lucene.document.Field;
+        value := @parameter0: org.apache.lucene.analysis.TokenStream;
+        this.<org.apache.lucene.document.Field: java.lang.Object fieldsData> = value;
+        return;
+    }
+
+    public void <init>(java.lang.String, java.lang.String, org.apache.lucene.document.Field$Store, org.apache.lucene.document.Field$Index)
+    {
+        org.apache.lucene.document.Field this;
+        java.lang.String name, value;
+        org.apache.lucene.document.Field$Store store;
+        org.apache.lucene.document.Field$Index index;
+        org.apache.lucene.document.Field$TermVector $r0;
+
+        this := @this: org.apache.lucene.document.Field;
+        name := @parameter0: java.lang.String;
+        value := @parameter1: java.lang.String;
+        store := @parameter2: org.apache.lucene.document.Field$Store;
+        index := @parameter3: org.apache.lucene.document.Field$Index;
+        $r0 = <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector NO>;
+        specialinvoke this.<org.apache.lucene.document.Field: void <init>(java.lang.String,java.lang.String,org.apache.lucene.document.Field$Store,org.apache.lucene.document.Field$Index,org.apache.lucene.document.Field$TermVector)>(name, value, store, index, $r0);
+        return;
+    }
+
+    public void <init>(java.lang.String, java.lang.String, org.apache.lucene.document.Field$Store, org.apache.lucene.document.Field$Index, org.apache.lucene.document.Field$TermVector)
+    {
+        org.apache.lucene.document.Field this;
+        java.lang.String name, value, $r5, $r7;
+        org.apache.lucene.document.Field$Store store, $r3;
+        org.apache.lucene.document.Field$Index index, $r2;
+        org.apache.lucene.document.Field$TermVector termVector, $r4;
+        java.lang.NullPointerException $r0;
+        int $i0;
+        java.lang.IllegalArgumentException $r1;
+        java.lang.StringBuffer $r6;
+
+        this := @this: org.apache.lucene.document.Field;
+        name := @parameter0: java.lang.String;
+        value := @parameter1: java.lang.String;
+        store := @parameter2: org.apache.lucene.document.Field$Store;
+        index := @parameter3: org.apache.lucene.document.Field$Index;
+        termVector := @parameter4: org.apache.lucene.document.Field$TermVector;
+        specialinvoke this.<org.apache.lucene.document.AbstractField: void <init>()>();
+        if name != null goto label0;
+
+        $r0 = new java.lang.NullPointerException;
+        specialinvoke $r0.<java.lang.NullPointerException: void <init>(java.lang.String)>("name cannot be null");
+        throw $r0;
+
+     label0:
+        if value != null goto label1;
+
+        $r0 = new java.lang.NullPointerException;
+        specialinvoke $r0.<java.lang.NullPointerException: void <init>(java.lang.String)>("value cannot be null");
+        throw $r0;
+
+     label1:
+        $i0 = virtualinvoke name.<java.lang.String: int length()>();
+        if $i0 != 0 goto label2;
+
+        $i0 = virtualinvoke value.<java.lang.String: int length()>();
+        if $i0 != 0 goto label2;
+
+        $r1 = new java.lang.IllegalArgumentException;
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("name and value cannot both be empty");
+        throw $r1;
+
+     label2:
+        $r2 = <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index NO>;
+        if index != $r2 goto label3;
+
+        $r3 = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store NO>;
+        if store != $r3 goto label3;
+
+        $r1 = new java.lang.IllegalArgumentException;
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("it doesn\'t make sense to have a field that is neither indexed nor stored");
+        throw $r1;
+
+     label3:
+        $r2 = <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index NO>;
+        if index != $r2 goto label4;
+
+        $r4 = <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector NO>;
+        if termVector == $r4 goto label4;
+
+        $r1 = new java.lang.IllegalArgumentException;
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("cannot store term vector information for a field that is not indexed");
+        throw $r1;
+
+     label4:
+        $r5 = virtualinvoke name.<java.lang.String: java.lang.String intern()>();
+        this.<org.apache.lucene.document.Field: java.lang.String name> = $r5;
+        this.<org.apache.lucene.document.Field: java.lang.Object fieldsData> = value;
+        $r3 = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store YES>;
+        if store != $r3 goto label5;
+
+        this.<org.apache.lucene.document.Field: boolean isStored> = 1;
+        this.<org.apache.lucene.document.Field: boolean isCompressed> = 0;
+        goto label8;
+
+     label5:
+        $r3 = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store COMPRESS>;
+        if store != $r3 goto label6;
+
+        this.<org.apache.lucene.document.Field: boolean isStored> = 1;
+        this.<org.apache.lucene.document.Field: boolean isCompressed> = 1;
+        goto label8;
+
+     label6:
+        $r3 = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store NO>;
+        if store != $r3 goto label7;
+
+        this.<org.apache.lucene.document.Field: boolean isStored> = 0;
+        this.<org.apache.lucene.document.Field: boolean isCompressed> = 0;
+        goto label8;
+
+     label7:
+        $r1 = new java.lang.IllegalArgumentException;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("unknown store parameter ");
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(store);
+        $r7 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r7);
+        throw $r1;
+
+     label8:
+        $r2 = <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index NO>;
+        if index != $r2 goto label9;
+
+        this.<org.apache.lucene.document.Field: boolean isIndexed> = 0;
+        this.<org.apache.lucene.document.Field: boolean isTokenized> = 0;
+        goto label14;
+
+     label9:
+        $r2 = <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index ANALYZED>;
+        if index != $r2 goto label10;
+
+        this.<org.apache.lucene.document.Field: boolean isIndexed> = 1;
+        this.<org.apache.lucene.document.Field: boolean isTokenized> = 1;
+        goto label14;
+
+     label10:
+        $r2 = <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index NOT_ANALYZED>;
+        if index != $r2 goto label11;
+
+        this.<org.apache.lucene.document.Field: boolean isIndexed> = 1;
+        this.<org.apache.lucene.document.Field: boolean isTokenized> = 0;
+        goto label14;
+
+     label11:
+        $r2 = <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index NOT_ANALYZED_NO_NORMS>;
+        if index != $r2 goto label12;
+
+        this.<org.apache.lucene.document.Field: boolean isIndexed> = 1;
+        this.<org.apache.lucene.document.Field: boolean isTokenized> = 0;
+        this.<org.apache.lucene.document.Field: boolean omitNorms> = 1;
+        goto label14;
+
+     label12:
+        $r2 = <org.apache.lucene.document.Field$Index: org.apache.lucene.document.Field$Index ANALYZED_NO_NORMS>;
+        if index != $r2 goto label13;
+
+        this.<org.apache.lucene.document.Field: boolean isIndexed> = 1;
+        this.<org.apache.lucene.document.Field: boolean isTokenized> = 1;
+        this.<org.apache.lucene.document.Field: boolean omitNorms> = 1;
+        goto label14;
+
+     label13:
+        $r1 = new java.lang.IllegalArgumentException;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("unknown index parameter ");
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(index);
+        $r7 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r7);
+        throw $r1;
+
+     label14:
+        this.<org.apache.lucene.document.Field: boolean isBinary> = 0;
+        virtualinvoke this.<org.apache.lucene.document.Field: void setStoreTermVector(org.apache.lucene.document.Field$TermVector)>(termVector);
+        return;
+    }
+
+    public void <init>(java.lang.String, java.io.Reader)
+    {
+        org.apache.lucene.document.Field this;
+        java.lang.String name;
+        java.io.Reader reader;
+        org.apache.lucene.document.Field$TermVector $r0;
+
+        this := @this: org.apache.lucene.document.Field;
+        name := @parameter0: java.lang.String;
+        reader := @parameter1: java.io.Reader;
+        $r0 = <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector NO>;
+        specialinvoke this.<org.apache.lucene.document.Field: void <init>(java.lang.String,java.io.Reader,org.apache.lucene.document.Field$TermVector)>(name, reader, $r0);
+        return;
+    }
+
+    public void <init>(java.lang.String, java.io.Reader, org.apache.lucene.document.Field$TermVector)
+    {
+        org.apache.lucene.document.Field this;
+        java.lang.String name, $r1;
+        java.io.Reader reader;
+        org.apache.lucene.document.Field$TermVector termVector;
+        java.lang.NullPointerException $r0;
+
+        this := @this: org.apache.lucene.document.Field;
+        name := @parameter0: java.lang.String;
+        reader := @parameter1: java.io.Reader;
+        termVector := @parameter2: org.apache.lucene.document.Field$TermVector;
+        specialinvoke this.<org.apache.lucene.document.AbstractField: void <init>()>();
+        if name != null goto label0;
+
+        $r0 = new java.lang.NullPointerException;
+        specialinvoke $r0.<java.lang.NullPointerException: void <init>(java.lang.String)>("name cannot be null");
+        throw $r0;
+
+     label0:
+        if reader != null goto label1;
+
+        $r0 = new java.lang.NullPointerException;
+        specialinvoke $r0.<java.lang.NullPointerException: void <init>(java.lang.String)>("reader cannot be null");
+        throw $r0;
+
+     label1:
+        $r1 = virtualinvoke name.<java.lang.String: java.lang.String intern()>();
+        this.<org.apache.lucene.document.Field: java.lang.String name> = $r1;
+        this.<org.apache.lucene.document.Field: java.lang.Object fieldsData> = reader;
+        this.<org.apache.lucene.document.Field: boolean isStored> = 0;
+        this.<org.apache.lucene.document.Field: boolean isCompressed> = 0;
+        this.<org.apache.lucene.document.Field: boolean isIndexed> = 1;
+        this.<org.apache.lucene.document.Field: boolean isTokenized> = 1;
+        this.<org.apache.lucene.document.Field: boolean isBinary> = 0;
+        virtualinvoke this.<org.apache.lucene.document.Field: void setStoreTermVector(org.apache.lucene.document.Field$TermVector)>(termVector);
+        return;
+    }
+
+    public void <init>(java.lang.String, org.apache.lucene.analysis.TokenStream)
+    {
+        org.apache.lucene.document.Field this;
+        java.lang.String name;
+        org.apache.lucene.analysis.TokenStream tokenStream;
+        org.apache.lucene.document.Field$TermVector $r0;
+
+        this := @this: org.apache.lucene.document.Field;
+        name := @parameter0: java.lang.String;
+        tokenStream := @parameter1: org.apache.lucene.analysis.TokenStream;
+        $r0 = <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector NO>;
+        specialinvoke this.<org.apache.lucene.document.Field: void <init>(java.lang.String,org.apache.lucene.analysis.TokenStream,org.apache.lucene.document.Field$TermVector)>(name, tokenStream, $r0);
+        return;
+    }
+
+    public void <init>(java.lang.String, org.apache.lucene.analysis.TokenStream, org.apache.lucene.document.Field$TermVector)
+    {
+        org.apache.lucene.document.Field this;
+        java.lang.String name, $r1;
+        org.apache.lucene.analysis.TokenStream tokenStream;
+        org.apache.lucene.document.Field$TermVector termVector;
+        java.lang.NullPointerException $r0;
+
+        this := @this: org.apache.lucene.document.Field;
+        name := @parameter0: java.lang.String;
+        tokenStream := @parameter1: org.apache.lucene.analysis.TokenStream;
+        termVector := @parameter2: org.apache.lucene.document.Field$TermVector;
+        specialinvoke this.<org.apache.lucene.document.AbstractField: void <init>()>();
+        if name != null goto label0;
+
+        $r0 = new java.lang.NullPointerException;
+        specialinvoke $r0.<java.lang.NullPointerException: void <init>(java.lang.String)>("name cannot be null");
+        throw $r0;
+
+     label0:
+        if tokenStream != null goto label1;
+
+        $r0 = new java.lang.NullPointerException;
+        specialinvoke $r0.<java.lang.NullPointerException: void <init>(java.lang.String)>("tokenStream cannot be null");
+        throw $r0;
+
+     label1:
+        $r1 = virtualinvoke name.<java.lang.String: java.lang.String intern()>();
+        this.<org.apache.lucene.document.Field: java.lang.String name> = $r1;
+        this.<org.apache.lucene.document.Field: java.lang.Object fieldsData> = tokenStream;
+        this.<org.apache.lucene.document.Field: boolean isStored> = 0;
+        this.<org.apache.lucene.document.Field: boolean isCompressed> = 0;
+        this.<org.apache.lucene.document.Field: boolean isIndexed> = 1;
+        this.<org.apache.lucene.document.Field: boolean isTokenized> = 1;
+        this.<org.apache.lucene.document.Field: boolean isBinary> = 0;
+        virtualinvoke this.<org.apache.lucene.document.Field: void setStoreTermVector(org.apache.lucene.document.Field$TermVector)>(termVector);
+        return;
+    }
+
+    public void <init>(java.lang.String, byte[], org.apache.lucene.document.Field$Store)
+    {
+        org.apache.lucene.document.Field this;
+        java.lang.String name;
+        byte[] value;
+        org.apache.lucene.document.Field$Store store;
+        int $i0;
+
+        this := @this: org.apache.lucene.document.Field;
+        name := @parameter0: java.lang.String;
+        value := @parameter1: byte[];
+        store := @parameter2: org.apache.lucene.document.Field$Store;
+        $i0 = lengthof value;
+        specialinvoke this.<org.apache.lucene.document.Field: void <init>(java.lang.String,byte[],int,int,org.apache.lucene.document.Field$Store)>(name, value, 0, $i0, store);
+        return;
+    }
+
+    public void <init>(java.lang.String, byte[], int, int, org.apache.lucene.document.Field$Store)
+    {
+        org.apache.lucene.document.Field this;
+        java.lang.String name, $r1, $r4;
+        byte[] value;
+        int offset, length;
+        org.apache.lucene.document.Field$Store store, $r2;
+        java.lang.IllegalArgumentException $r0;
+        java.lang.StringBuffer $r3;
+        org.apache.lucene.document.Field$TermVector $r5;
+
+        this := @this: org.apache.lucene.document.Field;
+        name := @parameter0: java.lang.String;
+        value := @parameter1: byte[];
+        offset := @parameter2: int;
+        length := @parameter3: int;
+        store := @parameter4: org.apache.lucene.document.Field$Store;
+        specialinvoke this.<org.apache.lucene.document.AbstractField: void <init>()>();
+        if name != null goto label0;
+
+        $r0 = new java.lang.IllegalArgumentException;
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("name cannot be null");
+        throw $r0;
+
+     label0:
+        if value != null goto label1;
+
+        $r0 = new java.lang.IllegalArgumentException;
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("value cannot be null");
+        throw $r0;
+
+     label1:
+        $r1 = virtualinvoke name.<java.lang.String: java.lang.String intern()>();
+        this.<org.apache.lucene.document.Field: java.lang.String name> = $r1;
+        this.<org.apache.lucene.document.Field: java.lang.Object fieldsData> = value;
+        $r2 = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store YES>;
+        if store != $r2 goto label2;
+
+        this.<org.apache.lucene.document.Field: boolean isStored> = 1;
+        this.<org.apache.lucene.document.Field: boolean isCompressed> = 0;
+        goto label5;
+
+     label2:
+        $r2 = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store COMPRESS>;
+        if store != $r2 goto label3;
+
+        this.<org.apache.lucene.document.Field: boolean isStored> = 1;
+        this.<org.apache.lucene.document.Field: boolean isCompressed> = 1;
+        goto label5;
+
+     label3:
+        $r2 = <org.apache.lucene.document.Field$Store: org.apache.lucene.document.Field$Store NO>;
+        if store != $r2 goto label4;
+
+        $r0 = new java.lang.IllegalArgumentException;
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("binary values can\'t be unstored");
+        throw $r0;
+
+     label4:
+        $r0 = new java.lang.IllegalArgumentException;
+        $r3 = new java.lang.StringBuffer;
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>()>();
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("unknown store parameter ");
+        $r3 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(store);
+        $r4 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r4);
+        throw $r0;
+
+     label5:
+        this.<org.apache.lucene.document.Field: boolean isIndexed> = 0;
+        this.<org.apache.lucene.document.Field: boolean isTokenized> = 0;
+        this.<org.apache.lucene.document.Field: boolean isBinary> = 1;
+        this.<org.apache.lucene.document.Field: int binaryLength> = length;
+        this.<org.apache.lucene.document.Field: int binaryOffset> = offset;
+        $r5 = <org.apache.lucene.document.Field$TermVector: org.apache.lucene.document.Field$TermVector NO>;
+        virtualinvoke this.<org.apache.lucene.document.Field: void setStoreTermVector(org.apache.lucene.document.Field$TermVector)>($r5);
+        return;
+    }
+}

@@ -1,0 +1,259 @@
+public class cck.text.Status extends java.lang.Object
+{
+    static java.util.Stack stack;
+    static boolean inside;
+    public static boolean ENABLED;
+    public static boolean TIMING;
+
+    public void <init>()
+    {
+        cck.text.Status this;
+
+        this := @this: cck.text.Status;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public static void begin(java.lang.String)
+    {
+        java.lang.String s, $r1;
+        boolean $z0;
+        java.util.Stack $r0;
+        int $i0;
+        cck.text.Status$Item $r2;
+        long tid_begin;
+        java.lang.Thread thread_begin;
+
+        s := @parameter0: java.lang.String;
+        thread_begin = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_begin = virtualinvoke thread_begin.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(198, tid_begin, "cck.textcck.text.Status", 74, $z0);
+        $z0 = <cck.text.Status: boolean ENABLED>;
+        if $z0 != 0 goto label0;
+
+        return;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(229, tid_begin, "cck.textcck.text.Status", 76, $z0);
+        $z0 = <cck.text.Status: boolean inside>;
+        if $z0 == 0 goto label1;
+
+        staticinvoke <cck.text.Terminal: void nextln()>();
+
+     label1:
+        $r0 = <cck.text.Status: java.util.Stack stack>;
+        $i0 = virtualinvoke $r0.<java.util.Stack: int size()>();
+        $i0 = $i0 * 4;
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String space(int)>($i0);
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>($r1);
+        staticinvoke <cck.text.Terminal: void print(int,java.lang.String)>(3, s);
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>("...");
+        staticinvoke <cck.text.Terminal: void flush()>();
+        $r0 = <cck.text.Status: java.util.Stack stack>;
+        $r2 = new cck.text.Status$Item;
+        specialinvoke $r2.<cck.text.Status$Item: void <init>(java.lang.String)>(s);
+        virtualinvoke $r0.<java.util.Stack: java.lang.Object push(java.lang.Object)>($r2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(229, tid_begin, "cck.textcck.text.Status", 84, 1);
+        <cck.text.Status: boolean inside> = 1;
+        return;
+    }
+
+    public static void success()
+    {
+        boolean $z0;
+        long tid_success;
+        java.lang.Thread thread_success;
+
+        thread_success = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_success = virtualinvoke thread_success.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(198, tid_success, "cck.textcck.text.Status", 92, $z0);
+        $z0 = <cck.text.Status: boolean ENABLED>;
+        if $z0 != 0 goto label0;
+
+        return;
+
+     label0:
+        staticinvoke <cck.text.Status: void print(int,java.lang.String)>(2, "OK");
+        return;
+    }
+
+    private static void print(int, java.lang.String)
+    {
+        int color;
+        java.lang.String s, $r3, $r4;
+        long time, $l0, $l1, tid_print;
+        cck.text.Status$Item i;
+        java.util.Stack $r0;
+        java.lang.Object $r1;
+        boolean $z0;
+        byte $b2;
+        java.lang.StringBuilder $r2;
+        java.lang.Thread thread_print;
+
+        color := @parameter0: int;
+        s := @parameter1: java.lang.String;
+        thread_print = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_print = virtualinvoke thread_print.<java.lang.Thread: long getId()>();
+        time = -1L;
+        $r0 = <cck.text.Status: java.util.Stack stack>;
+        $r1 = virtualinvoke $r0.<java.util.Stack: java.lang.Object pop()>();
+        i = (cck.text.Status$Item) $r1;
+        if i == null goto label0;
+
+        $l0 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+        $l1 = i.<cck.text.Status$Item: long starttime>;
+        time = $l0 - $l1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(199, tid_print, "cck.textcck.text.Status", 102, $z0);
+        $z0 = <cck.text.Status: boolean TIMING>;
+        if $z0 == 0 goto label1;
+
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>("[");
+
+     label1:
+        staticinvoke <cck.text.Terminal: void print(int,java.lang.String)>(color, s);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(199, tid_print, "cck.textcck.text.Status", 106, $z0);
+        $z0 = <cck.text.Status: boolean TIMING>;
+        if $z0 == 0 goto label3;
+
+        $b2 = time cmp 0L;
+        if $b2 < 0 goto label2;
+
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>(": ");
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+        $r3 = staticinvoke <cck.util.TimeUtil: java.lang.String milliToSecs(long)>(time);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" seconds");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>($r4);
+
+     label2:
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>("]");
+
+     label3:
+        staticinvoke <cck.text.Terminal: void nextln()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(229, tid_print, "cck.textcck.text.Status", 114, 0);
+        <cck.text.Status: boolean inside> = 0;
+        return;
+    }
+
+    public static void success(java.lang.String)
+    {
+        java.lang.String s;
+        boolean $z0;
+        long tid_success;
+        java.lang.Thread thread_success;
+
+        s := @parameter0: java.lang.String;
+        thread_success = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_success = virtualinvoke thread_success.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(198, tid_success, "cck.textcck.text.Status", 124, $z0);
+        $z0 = <cck.text.Status: boolean ENABLED>;
+        if $z0 != 0 goto label0;
+
+        return;
+
+     label0:
+        staticinvoke <cck.text.Status: void print(int,java.lang.String)>(2, s);
+        return;
+    }
+
+    public static void error()
+    {
+        boolean $z0;
+        long tid_error;
+        java.lang.Thread thread_error;
+
+        thread_error = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_error = virtualinvoke thread_error.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(198, tid_error, "cck.textcck.text.Status", 133, $z0);
+        $z0 = <cck.text.Status: boolean ENABLED>;
+        if $z0 != 0 goto label0;
+
+        return;
+
+     label0:
+        staticinvoke <cck.text.Status: void print(int,java.lang.String)>(1, "ERROR");
+        return;
+    }
+
+    public static void error(java.lang.String)
+    {
+        java.lang.String s;
+        boolean $z0;
+        long tid_error;
+        java.lang.Thread thread_error;
+
+        s := @parameter0: java.lang.String;
+        thread_error = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_error = virtualinvoke thread_error.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(198, tid_error, "cck.textcck.text.Status", 144, $z0);
+        $z0 = <cck.text.Status: boolean ENABLED>;
+        if $z0 != 0 goto label0;
+
+        return;
+
+     label0:
+        staticinvoke <cck.text.Status: void print(int,java.lang.String)>(1, s);
+        return;
+    }
+
+    public static void error(java.lang.Throwable)
+    {
+        java.lang.Throwable t;
+        boolean $z0;
+        long tid_error;
+        java.lang.Thread thread_error;
+
+        t := @parameter0: java.lang.Throwable;
+        thread_error = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_error = virtualinvoke thread_error.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(198, tid_error, "cck.textcck.text.Status", 155, $z0);
+        $z0 = <cck.text.Status: boolean ENABLED>;
+        if $z0 != 0 goto label0;
+
+        return;
+
+     label0:
+        staticinvoke <cck.text.Status: void print(int,java.lang.String)>(1, "UNEXPECTED EXCEPTION");
+        return;
+    }
+
+    public static void error(cck.util.Util$Error)
+    {
+        cck.util.Util$Error e;
+        boolean $z0;
+        long tid_error;
+        java.lang.Thread thread_error;
+
+        e := @parameter0: cck.util.Util$Error;
+        thread_error = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_error = virtualinvoke thread_error.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(198, tid_error, "cck.textcck.text.Status", 166, $z0);
+        $z0 = <cck.text.Status: boolean ENABLED>;
+        if $z0 != 0 goto label0;
+
+        return;
+
+     label0:
+        staticinvoke <cck.text.Status: void print(int,java.lang.String)>(1, "ERROR");
+        return;
+    }
+
+    static void <clinit>()
+    {
+        java.util.Stack $r0;
+
+        $r0 = new java.util.Stack;
+        specialinvoke $r0.<java.util.Stack: void <init>()>();
+        <cck.text.Status: java.util.Stack stack> = $r0;
+        <cck.text.Status: boolean inside> = 0;
+        <cck.text.Status: boolean ENABLED> = 1;
+        <cck.text.Status: boolean TIMING> = 1;
+        return;
+    }
+}

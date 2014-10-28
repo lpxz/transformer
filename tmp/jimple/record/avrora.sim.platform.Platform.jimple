@@ -1,0 +1,62 @@
+public abstract class avrora.sim.platform.Platform extends java.lang.Object
+{
+    protected final avrora.sim.mcu.Microcontroller mcu;
+    protected final java.util.HashMap devices;
+
+    protected void <init>(avrora.sim.mcu.Microcontroller)
+    {
+        avrora.sim.platform.Platform this;
+        avrora.sim.mcu.Microcontroller m, $r1;
+        java.util.HashMap $r0;
+
+        this := @this: avrora.sim.platform.Platform;
+        m := @parameter0: avrora.sim.mcu.Microcontroller;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.platform.Platform: avrora.sim.mcu.Microcontroller mcu> = m;
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        this.<avrora.sim.platform.Platform: java.util.HashMap devices> = $r0;
+        $r1 = this.<avrora.sim.platform.Platform: avrora.sim.mcu.Microcontroller mcu>;
+        interfaceinvoke $r1.<avrora.sim.mcu.Microcontroller: void setPlatform(avrora.sim.platform.Platform)>(this);
+        return;
+    }
+
+    public avrora.sim.mcu.Microcontroller getMicrocontroller()
+    {
+        avrora.sim.platform.Platform this;
+        avrora.sim.mcu.Microcontroller $r0;
+
+        this := @this: avrora.sim.platform.Platform;
+        $r0 = this.<avrora.sim.platform.Platform: avrora.sim.mcu.Microcontroller mcu>;
+        return $r0;
+    }
+
+    protected void addDevice(java.lang.String, java.lang.Object)
+    {
+        avrora.sim.platform.Platform this;
+        java.lang.String name;
+        java.lang.Object o;
+        java.util.HashMap $r0;
+
+        this := @this: avrora.sim.platform.Platform;
+        name := @parameter0: java.lang.String;
+        o := @parameter1: java.lang.Object;
+        $r0 = this.<avrora.sim.platform.Platform: java.util.HashMap devices>;
+        virtualinvoke $r0.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(name, o);
+        return;
+    }
+
+    public java.lang.Object getDevice(java.lang.String)
+    {
+        avrora.sim.platform.Platform this;
+        java.lang.String name;
+        java.util.HashMap $r0;
+        java.lang.Object $r1;
+
+        this := @this: avrora.sim.platform.Platform;
+        name := @parameter0: java.lang.String;
+        $r0 = this.<avrora.sim.platform.Platform: java.util.HashMap devices>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(name);
+        return $r1;
+    }
+}

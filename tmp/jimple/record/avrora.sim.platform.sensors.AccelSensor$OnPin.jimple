@@ -1,0 +1,41 @@
+class avrora.sim.platform.sensors.AccelSensor$OnPin extends java.lang.Object implements avrora.sim.mcu.Microcontroller$Pin$Output
+{
+    final avrora.sim.platform.sensors.AccelSensor this$0;
+
+    void <init>(avrora.sim.platform.sensors.AccelSensor)
+    {
+        avrora.sim.platform.sensors.AccelSensor$OnPin this;
+        avrora.sim.platform.sensors.AccelSensor l1;
+
+        this := @this: avrora.sim.platform.sensors.AccelSensor$OnPin;
+        l1 := @parameter0: avrora.sim.platform.sensors.AccelSensor;
+        this.<avrora.sim.platform.sensors.AccelSensor$OnPin: avrora.sim.platform.sensors.AccelSensor this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public void write(boolean)
+    {
+        avrora.sim.platform.sensors.AccelSensor$OnPin this;
+        boolean val;
+        avrora.sim.platform.sensors.AccelSensor $r0, $r2;
+        avrora.sim.FiniteStateMachine $r1;
+        int $i0;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.platform.sensors.AccelSensor$OnPin;
+        val := @parameter0: boolean;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.platform.sensors.AccelSensor$OnPin: avrora.sim.platform.sensors.AccelSensor this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r0, 58, tid_write, "avrora.sim.platform.sensors.AccelSensor$OnPin", 67, val);
+        $r0.<avrora.sim.platform.sensors.AccelSensor: boolean on> = val;
+        $r0 = this.<avrora.sim.platform.sensors.AccelSensor$OnPin: avrora.sim.platform.sensors.AccelSensor this$0>;
+        $r1 = $r0.<avrora.sim.platform.sensors.AccelSensor: avrora.sim.FiniteStateMachine fsm>;
+        $r2 = this.<avrora.sim.platform.sensors.AccelSensor$OnPin: avrora.sim.platform.sensors.AccelSensor this$0>;
+        $i0 = staticinvoke <avrora.sim.platform.sensors.AccelSensor: int access$000(avrora.sim.platform.sensors.AccelSensor)>($r2);
+        virtualinvoke $r1.<avrora.sim.FiniteStateMachine: void transition(int)>($i0);
+        return;
+    }
+}

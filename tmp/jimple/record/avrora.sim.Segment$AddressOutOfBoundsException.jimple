@@ -1,0 +1,32 @@
+public class avrora.sim.Segment$AddressOutOfBoundsException extends cck.util.Util$Error
+{
+    public final int data_addr;
+    final avrora.sim.Segment this$0;
+
+    protected void <init>(avrora.sim.Segment, int)
+    {
+        avrora.sim.Segment$AddressOutOfBoundsException this;
+        avrora.sim.Segment l1;
+        int da;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1, $r2;
+
+        this := @this: avrora.sim.Segment$AddressOutOfBoundsException;
+        l1 := @parameter0: avrora.sim.Segment;
+        da := @parameter1: int;
+        this.<avrora.sim.Segment$AddressOutOfBoundsException: avrora.sim.Segment this$0> = l1;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("illegal access of ");
+        $r1 = l1.<avrora.sim.Segment: java.lang.String name>;
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" at ");
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String addrToString(int)>(da);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke this.<cck.util.Util$Error: void <init>(java.lang.String,java.lang.String)>("Segment access error", $r2);
+        this.<avrora.sim.Segment$AddressOutOfBoundsException: int data_addr> = da;
+        return;
+    }
+}

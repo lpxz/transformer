@@ -1,0 +1,860 @@
+public abstract class avrora.sim.Simulation extends cck.help.HelpCategory
+{
+    public final cck.util.Option$Str PLATFORM;
+    public final cck.util.Option$Long CLOCKSPEED;
+    public final cck.util.Option$Long EXTCLOCKSPEED;
+    public final cck.util.Option$Str MCU;
+    public final cck.util.Option$Long RANDOMSEED;
+    public final cck.util.Option$Double SECONDS;
+    public final cck.util.Option$List MONITORS;
+    public final cck.util.Option$Str SCHEDULE;
+    public final cck.util.Option$Str EELOADIMAGE;
+    protected int num_nodes;
+    protected avrora.sim.Simulation$Node[] nodes;
+    protected boolean running;
+    protected boolean paused;
+    protected java.util.Random random;
+    protected java.util.LinkedList monitorFactoryList;
+    protected avrora.sim.energy.EnergyControl energyControl;
+    protected avrora.sim.clock.Synchronizer synchronizer;
+
+    protected void <init>(java.lang.String, java.lang.String, avrora.sim.clock.Synchronizer)
+    {
+        avrora.sim.Simulation this;
+        java.lang.String str, h;
+        avrora.sim.clock.Synchronizer s;
+        cck.util.Option$Str $r0;
+        cck.util.Option$Long $r1;
+        cck.util.Option$Double $r2;
+        cck.util.Option$List $r3;
+        avrora.sim.energy.EnergyControl $r4;
+        avrora.sim.Simulation$Node[] $r5;
+        java.util.LinkedList $r6;
+
+        this := @this: avrora.sim.Simulation;
+        str := @parameter0: java.lang.String;
+        h := @parameter1: java.lang.String;
+        s := @parameter2: avrora.sim.clock.Synchronizer;
+        specialinvoke this.<cck.help.HelpCategory: void <init>(java.lang.String,java.lang.String)>(str, h);
+        $r0 = virtualinvoke this.<avrora.sim.Simulation: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("platform", "", "This option selects the platform on which the microcontroller is built, including the external devices such as LEDs and radio. If the platform option is not set, the default platform is the microcontroller specified in the \"mcu\" option, with no external devices.");
+        this.<avrora.sim.Simulation: cck.util.Option$Str PLATFORM> = $r0;
+        $r1 = virtualinvoke this.<avrora.sim.Simulation: cck.util.Option$Long newOption(java.lang.String,long,java.lang.String)>("clockspeed", 8000000L, "This option specifies the clockspeed of the microcontroller when the platform is not specified. The speed is given in cycles per second, i.e. hertz.");
+        this.<avrora.sim.Simulation: cck.util.Option$Long CLOCKSPEED> = $r1;
+        $r1 = virtualinvoke this.<avrora.sim.Simulation: cck.util.Option$Long newOption(java.lang.String,long,java.lang.String)>("external-clockspeed", 0L, "This option specifies the clockspeed of the external clock supplied to the microcontroller when the platform is not specified. The speed is given in cycles per second, i.e. hertz. When this option is set to zero, the external clock is the same speed as the main clock.");
+        this.<avrora.sim.Simulation: cck.util.Option$Long EXTCLOCKSPEED> = $r1;
+        $r0 = virtualinvoke this.<avrora.sim.Simulation: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("mcu", "atmega128", "This option selects the microcontroller from a library of supported microcontroller models.");
+        this.<avrora.sim.Simulation: cck.util.Option$Str MCU> = $r0;
+        $r1 = virtualinvoke this.<avrora.sim.Simulation: cck.util.Option$Long newOption(java.lang.String,long,java.lang.String)>("random-seed", 0L, "This option is used to seed a pseudo-random number generator used in the simulation. If this option is set to non-zero, then its value is used as the seed for reproducible simulation results. If this option is not set, those parts of simulation that rely on random numbers will have seeds chosen based on system parameters that vary from run to run.");
+        this.<avrora.sim.Simulation: cck.util.Option$Long RANDOMSEED> = $r1;
+        $r2 = virtualinvoke this.<avrora.sim.Simulation: cck.util.Option$Double newOption(java.lang.String,double,java.lang.String)>("seconds", 0.0, "This option is used to terminate the simulation after the specified number of simulated seconds have passed.");
+        this.<avrora.sim.Simulation: cck.util.Option$Double SECONDS> = $r2;
+        $r3 = virtualinvoke this.<avrora.sim.Simulation: cck.util.Option$List newOptionList(java.lang.String,java.lang.String,java.lang.String)>("monitors", "", "This option specifies a list of monitors to be attached to the program. Monitors collect information about the execution of the program while it is running such as profiling data or timing information.");
+        this.<avrora.sim.Simulation: cck.util.Option$List MONITORS> = $r3;
+        $r0 = virtualinvoke this.<avrora.sim.Simulation: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("interrupt-schedule", "", "This option, when specified, contains the name of a file that contains an interrupt schedule that describes when to post interrupts (especially external interrupts) to the program. This is useful for testing programs under different interrupt loads. For multi-node simulations, the interrupt schedule is only applied to node 0.");
+        this.<avrora.sim.Simulation: cck.util.Option$Str SCHEDULE> = $r0;
+        $r0 = virtualinvoke this.<avrora.sim.Simulation: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("eeprom-load-image", "", "This option specifies a (binary) image file to load into EEPROM before starting the simulation.");
+        this.<avrora.sim.Simulation: cck.util.Option$Str EELOADIMAGE> = $r0;
+        $r4 = new avrora.sim.energy.EnergyControl;
+        specialinvoke $r4.<avrora.sim.energy.EnergyControl: void <init>()>();
+        this.<avrora.sim.Simulation: avrora.sim.energy.EnergyControl energyControl> = $r4;
+        $r5 = newarray (avrora.sim.Simulation$Node)[16];
+        this.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes> = $r5;
+        this.<avrora.sim.Simulation: avrora.sim.clock.Synchronizer synchronizer> = s;
+        $r6 = new java.util.LinkedList;
+        specialinvoke $r6.<java.util.LinkedList: void <init>()>();
+        this.<avrora.sim.Simulation: java.util.LinkedList monitorFactoryList> = $r6;
+        return;
+    }
+
+    public abstract void process(cck.util.Options, java.lang.String[]) throws java.lang.Exception;
+
+    public avrora.sim.Simulator createSimulator(int, avrora.sim.InterpreterFactory, avrora.sim.mcu.Microcontroller, avrora.core.Program)
+    {
+        avrora.sim.Simulation this;
+        int id;
+        avrora.sim.InterpreterFactory f;
+        avrora.sim.mcu.Microcontroller mcu;
+        avrora.core.Program p;
+        avrora.sim.Simulator $r0;
+
+        this := @this: avrora.sim.Simulation;
+        id := @parameter0: int;
+        f := @parameter1: avrora.sim.InterpreterFactory;
+        mcu := @parameter2: avrora.sim.mcu.Microcontroller;
+        p := @parameter3: avrora.core.Program;
+        $r0 = new avrora.sim.Simulator;
+        specialinvoke $r0.<avrora.sim.Simulator: void <init>(int,avrora.sim.Simulation,avrora.sim.InterpreterFactory,avrora.sim.mcu.Microcontroller,avrora.core.Program)>(id, this, f, mcu, p);
+        return $r0;
+    }
+
+    public avrora.sim.output.SimPrinter getPrinter(avrora.sim.Simulator, java.lang.String)
+    {
+        avrora.sim.Simulation this;
+        avrora.sim.Simulator s;
+        java.lang.String category;
+        boolean $z0;
+        avrora.sim.output.SimPrinter $r0;
+
+        this := @this: avrora.sim.Simulation;
+        s := @parameter0: avrora.sim.Simulator;
+        category := @parameter1: java.lang.String;
+        $z0 = staticinvoke <cck.text.Verbose: boolean isVerbose(java.lang.String)>(category);
+        if $z0 == 0 goto label0;
+
+        $r0 = new avrora.sim.output.SimPrinter;
+        specialinvoke $r0.<avrora.sim.output.SimPrinter: void <init>(avrora.sim.Simulator,java.lang.String)>(s, category);
+        return $r0;
+
+     label0:
+        return null;
+    }
+
+    public avrora.sim.output.SimPrinter getPrinter(avrora.sim.Simulator)
+    {
+        avrora.sim.Simulation this;
+        avrora.sim.Simulator s;
+        avrora.sim.output.SimPrinter $r0;
+
+        this := @this: avrora.sim.Simulation;
+        s := @parameter0: avrora.sim.Simulator;
+        $r0 = new avrora.sim.output.SimPrinter;
+        specialinvoke $r0.<avrora.sim.output.SimPrinter: void <init>(avrora.sim.Simulator,java.lang.String)>(s, "");
+        return $r0;
+    }
+
+    public avrora.sim.energy.EnergyControl getEnergyControl()
+    {
+        avrora.sim.Simulation this;
+        avrora.sim.energy.EnergyControl $r0;
+
+        this := @this: avrora.sim.Simulation;
+        $r0 = this.<avrora.sim.Simulation: avrora.sim.energy.EnergyControl energyControl>;
+        return $r0;
+    }
+
+    public avrora.sim.Simulation$Node createNode(avrora.sim.platform.PlatformFactory, avrora.core.LoadableProgram)
+    {
+        avrora.sim.Simulation this;
+        avrora.sim.platform.PlatformFactory pf;
+        avrora.core.LoadableProgram pp;
+        int $i0, id, $i1, $i2;
+        avrora.sim.Simulation$Node n;
+        boolean $z0;
+        avrora.sim.Simulation$Node[] $r1, $r2;
+        java.lang.Object localthislockcreateNode;
+        java.lang.Throwable throwableLocal0;
+        long tid_createNode;
+        java.lang.Thread thread_createNode;
+
+        this := @this: avrora.sim.Simulation;
+        pf := @parameter0: avrora.sim.platform.PlatformFactory;
+        pp := @parameter1: avrora.core.LoadableProgram;
+        thread_createNode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_createNode = virtualinvoke thread_createNode.<java.lang.Thread: long getId()>();
+        localthislockcreateNode = this;
+
+     label0:
+        entermonitor localthislockcreateNode;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockcreateNode, 0, tid_createNode);
+        $z0 = this.<avrora.sim.Simulation: boolean running>;
+        if $z0 == 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockcreateNode, 0, tid_createNode);
+        exitmonitor localthislockcreateNode;
+        goto label1;
+
+     label1:
+        return null;
+
+     label2:
+        $i0 = this.<avrora.sim.Simulation: int num_nodes>;
+        $i1 = $i0 + 1;
+        this.<avrora.sim.Simulation: int num_nodes> = $i1;
+        id = $i0;
+        n = virtualinvoke this.<avrora.sim.Simulation: avrora.sim.Simulation$Node newNode(int,avrora.sim.platform.PlatformFactory,avrora.core.LoadableProgram)>(id, pf, pp);
+        $r1 = this.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $i2 = lengthof $r1;
+        if id < $i2 goto label3;
+
+        specialinvoke this.<avrora.sim.Simulation: void grow()>();
+
+     label3:
+        $r2 = this.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $r2[id] = n;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockcreateNode, 0, tid_createNode);
+        exitmonitor localthislockcreateNode;
+        goto label4;
+
+     label4:
+        return n;
+
+     label5:
+        throwableLocal0 := @caughtexception;
+
+     label6:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockcreateNode, 0, tid_createNode);
+        exitmonitor localthislockcreateNode;
+
+     label7:
+        throw throwableLocal0;
+
+        catch java.lang.Throwable from label0 to label4 with label5;
+        catch java.lang.Throwable from label6 to label7 with label5;
+    }
+
+    protected avrora.sim.Simulation$Node newNode(int, avrora.sim.platform.PlatformFactory, avrora.core.LoadableProgram)
+    {
+        avrora.sim.Simulation this;
+        int id;
+        avrora.sim.platform.PlatformFactory pf;
+        avrora.core.LoadableProgram pp;
+        avrora.sim.Simulation$Node $r0;
+
+        this := @this: avrora.sim.Simulation;
+        id := @parameter0: int;
+        pf := @parameter1: avrora.sim.platform.PlatformFactory;
+        pp := @parameter2: avrora.core.LoadableProgram;
+        $r0 = new avrora.sim.Simulation$Node;
+        specialinvoke $r0.<avrora.sim.Simulation$Node: void <init>(avrora.sim.Simulation,int,avrora.sim.platform.PlatformFactory,avrora.core.LoadableProgram)>(this, id, pf, pp);
+        return $r0;
+    }
+
+    public int getNumberOfNodes()
+    {
+        avrora.sim.Simulation this;
+        int $i0;
+
+        this := @this: avrora.sim.Simulation;
+        $i0 = this.<avrora.sim.Simulation: int num_nodes>;
+        return $i0;
+    }
+
+    public java.util.Random getRandom()
+    {
+        avrora.sim.Simulation this;
+        long seed;
+        java.util.Random $r0, $r1;
+        cck.util.Option$Long $r2;
+        byte $b0;
+
+        this := @this: avrora.sim.Simulation;
+        $r1 = this.<avrora.sim.Simulation: java.util.Random random>;
+        if $r1 != null goto label1;
+
+        $r2 = this.<avrora.sim.Simulation: cck.util.Option$Long RANDOMSEED>;
+        seed = virtualinvoke $r2.<cck.util.Option$Long: long get()>();
+        $b0 = seed cmp 0L;
+        if $b0 == 0 goto label0;
+
+        $r0 = new java.util.Random;
+        specialinvoke $r0.<java.util.Random: void <init>(long)>(seed);
+        this.<avrora.sim.Simulation: java.util.Random random> = $r0;
+        goto label1;
+
+     label0:
+        $r0 = new java.util.Random;
+        specialinvoke $r0.<java.util.Random: void <init>()>();
+        this.<avrora.sim.Simulation: java.util.Random random> = $r0;
+
+     label1:
+        $r1 = this.<avrora.sim.Simulation: java.util.Random random>;
+        return $r1;
+    }
+
+    private void grow()
+    {
+        avrora.sim.Simulation this;
+        avrora.sim.Simulation$Node[] nnodes, $r0, $r1;
+        int $i0, $i1;
+
+        this := @this: avrora.sim.Simulation;
+        $r0 = this.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $i0 = lengthof $r0;
+        $i0 = $i0 * 2;
+        nnodes = newarray (avrora.sim.Simulation$Node)[$i0];
+        $r0 = this.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $r1 = this.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $i1 = lengthof $r1;
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r0, 0, nnodes, 0, $i1);
+        this.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes> = nnodes;
+        return;
+    }
+
+    public avrora.sim.Simulation$Node getNode(int)
+    {
+        avrora.sim.Simulation this;
+        int node_id, $i0;
+        avrora.sim.Simulation$Node[] $r0, $r1;
+        avrora.sim.Simulation$Node $r2;
+        java.lang.Object localthislockgetNode;
+        java.lang.Throwable throwableLocal1;
+        long tid_getNode;
+        java.lang.Thread thread_getNode;
+
+        this := @this: avrora.sim.Simulation;
+        node_id := @parameter0: int;
+        thread_getNode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getNode = virtualinvoke thread_getNode.<java.lang.Thread: long getId()>();
+        localthislockgetNode = this;
+
+     label0:
+        entermonitor localthislockgetNode;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockgetNode, 0, tid_getNode);
+        $r0 = this.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $i0 = lengthof $r0;
+        if node_id < $i0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockgetNode, 0, tid_getNode);
+        exitmonitor localthislockgetNode;
+        goto label1;
+
+     label1:
+        return null;
+
+     label2:
+        $r1 = this.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $r2 = $r1[node_id];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockgetNode, 0, tid_getNode);
+        exitmonitor localthislockgetNode;
+        goto label3;
+
+     label3:
+        return $r2;
+
+     label4:
+        throwableLocal1 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockgetNode, 0, tid_getNode);
+        exitmonitor localthislockgetNode;
+
+     label6:
+        throw throwableLocal1;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void removeNode(int)
+    {
+        avrora.sim.Simulation this;
+        int node_id, $i0;
+        avrora.sim.Simulation$Node node, $r1;
+        boolean $z0;
+        avrora.sim.Simulation$Node[] $r0;
+        avrora.sim.clock.Synchronizer $r3;
+        java.lang.Object localthislockremoveNode;
+        java.lang.Throwable throwableLocal2;
+        long tid_removeNode;
+        java.lang.Thread thread_removeNode;
+
+        this := @this: avrora.sim.Simulation;
+        node_id := @parameter0: int;
+        thread_removeNode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_removeNode = virtualinvoke thread_removeNode.<java.lang.Thread: long getId()>();
+        localthislockremoveNode = this;
+
+     label0:
+        entermonitor localthislockremoveNode;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockremoveNode, 0, tid_removeNode);
+        $z0 = this.<avrora.sim.Simulation: boolean running>;
+        if $z0 == 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockremoveNode, 0, tid_removeNode);
+        exitmonitor localthislockremoveNode;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        $r0 = this.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $r1 = $r0[node_id];
+        if $r1 == null goto label3;
+
+        $r0 = this.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        node = $r0[node_id];
+        $r0 = this.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $r0[node_id] = null;
+        $i0 = this.<avrora.sim.Simulation: int num_nodes>;
+        $i0 = $i0 - 1;
+        this.<avrora.sim.Simulation: int num_nodes> = $i0;
+        $r3 = this.<avrora.sim.Simulation: avrora.sim.clock.Synchronizer synchronizer>;
+        virtualinvoke $r3.<avrora.sim.clock.Synchronizer: void removeNode(avrora.sim.Simulation$Node)>(node);
+        virtualinvoke node.<avrora.sim.Simulation$Node: void remove()>();
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockremoveNode, 0, tid_removeNode);
+        exitmonitor localthislockremoveNode;
+        goto label4;
+
+     label4:
+        return;
+
+     label5:
+        throwableLocal2 := @caughtexception;
+
+     label6:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockremoveNode, 0, tid_removeNode);
+        exitmonitor localthislockremoveNode;
+
+     label7:
+        throw throwableLocal2;
+
+        catch java.lang.Throwable from label0 to label4 with label5;
+        catch java.lang.Throwable from label6 to label7 with label5;
+    }
+
+    public void start()
+    {
+        avrora.sim.Simulation this;
+        boolean $z0;
+        avrora.sim.clock.Synchronizer $r0;
+        java.lang.Object localthislockstart;
+        java.lang.Throwable throwableLocal3;
+        long tid_start;
+        java.lang.Thread thread_start;
+
+        this := @this: avrora.sim.Simulation;
+        thread_start = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_start = virtualinvoke thread_start.<java.lang.Thread: long getId()>();
+        localthislockstart = this;
+
+     label0:
+        entermonitor localthislockstart;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockstart, 0, tid_start);
+        $z0 = this.<avrora.sim.Simulation: boolean running>;
+        if $z0 == 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstart, 0, tid_start);
+        exitmonitor localthislockstart;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        virtualinvoke this.<avrora.sim.Simulation: void instantiateNodes()>();
+        $r0 = this.<avrora.sim.Simulation: avrora.sim.clock.Synchronizer synchronizer>;
+        virtualinvoke $r0.<avrora.sim.clock.Synchronizer: void start()>();
+        this.<avrora.sim.Simulation: boolean running> = 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstart, 0, tid_start);
+        exitmonitor localthislockstart;
+        goto label3;
+
+     label3:
+        return;
+
+     label4:
+        throwableLocal3 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstart, 0, tid_start);
+        exitmonitor localthislockstart;
+
+     label6:
+        throw throwableLocal3;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    protected void instantiateNodes()
+    {
+        avrora.sim.Simulation this;
+        int cntr, $i0;
+        avrora.sim.Simulation$Node n;
+        avrora.sim.Simulation$Node[] $r0, $r1;
+
+        this := @this: avrora.sim.Simulation;
+        cntr = 0;
+
+     label0:
+        $r0 = this.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        $i0 = lengthof $r0;
+        if cntr >= $i0 goto label3;
+
+        $r1 = this.<avrora.sim.Simulation: avrora.sim.Simulation$Node[] nodes>;
+        n = $r1[cntr];
+        if n != null goto label1;
+
+        goto label2;
+
+     label1:
+        virtualinvoke n.<avrora.sim.Simulation$Node: void instantiate()>();
+        virtualinvoke n.<avrora.sim.Simulation$Node: void addMonitors()>();
+
+     label2:
+        cntr = cntr + 1;
+        goto label0;
+
+     label3:
+        return;
+    }
+
+    public void pause()
+    {
+        avrora.sim.Simulation this;
+        boolean $z0;
+        avrora.sim.clock.Synchronizer $r0;
+        java.lang.Object localthislockpause;
+        java.lang.Throwable throwableLocal4;
+        long tid_pause;
+        java.lang.Thread thread_pause;
+
+        this := @this: avrora.sim.Simulation;
+        thread_pause = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_pause = virtualinvoke thread_pause.<java.lang.Thread: long getId()>();
+        localthislockpause = this;
+
+     label0:
+        entermonitor localthislockpause;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockpause, 0, tid_pause);
+        $z0 = this.<avrora.sim.Simulation: boolean running>;
+        if $z0 != 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockpause, 0, tid_pause);
+        exitmonitor localthislockpause;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        $r0 = this.<avrora.sim.Simulation: avrora.sim.clock.Synchronizer synchronizer>;
+        virtualinvoke $r0.<avrora.sim.clock.Synchronizer: void pause()>();
+        this.<avrora.sim.Simulation: boolean paused> = 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockpause, 0, tid_pause);
+        exitmonitor localthislockpause;
+        goto label3;
+
+     label3:
+        return;
+
+     label4:
+        throwableLocal4 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockpause, 0, tid_pause);
+        exitmonitor localthislockpause;
+
+     label6:
+        throw throwableLocal4;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void resume()
+    {
+        avrora.sim.Simulation this;
+        boolean $z0;
+        cck.util.Util$InternalError $r0;
+        java.lang.Object localthislockresume;
+        java.lang.Throwable throwableLocal5;
+        long tid_resume;
+        java.lang.Thread thread_resume;
+
+        this := @this: avrora.sim.Simulation;
+        thread_resume = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_resume = virtualinvoke thread_resume.<java.lang.Thread: long getId()>();
+        localthislockresume = this;
+
+     label0:
+        entermonitor localthislockresume;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockresume, 0, tid_resume);
+        $z0 = this.<avrora.sim.Simulation: boolean running>;
+        if $z0 != 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockresume, 0, tid_resume);
+        exitmonitor localthislockresume;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        $r0 = staticinvoke <cck.util.Util: cck.util.Util$InternalError unimplemented()>();
+
+     label3:
+        throw $r0;
+
+     label4:
+        throwableLocal5 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockresume, 0, tid_resume);
+        exitmonitor localthislockresume;
+
+     label6:
+        throw throwableLocal5;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void stop()
+    {
+        avrora.sim.Simulation this;
+        boolean $z0;
+        avrora.sim.clock.Synchronizer $r0;
+        java.lang.Object localthislockstop;
+        java.lang.Throwable throwableLocal6;
+        long tid_stop;
+        java.lang.Thread thread_stop;
+
+        this := @this: avrora.sim.Simulation;
+        thread_stop = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_stop = virtualinvoke thread_stop.<java.lang.Thread: long getId()>();
+        localthislockstop = this;
+
+     label0:
+        entermonitor localthislockstop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockstop, 0, tid_stop);
+        $z0 = this.<avrora.sim.Simulation: boolean running>;
+        if $z0 != 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstop, 0, tid_stop);
+        exitmonitor localthislockstop;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        $r0 = this.<avrora.sim.Simulation: avrora.sim.clock.Synchronizer synchronizer>;
+        virtualinvoke $r0.<avrora.sim.clock.Synchronizer: void stop()>();
+        this.<avrora.sim.Simulation: boolean paused> = 0;
+        this.<avrora.sim.Simulation: boolean running> = 0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstop, 0, tid_stop);
+        exitmonitor localthislockstop;
+        goto label3;
+
+     label3:
+        return;
+
+     label4:
+        throwableLocal6 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstop, 0, tid_stop);
+        exitmonitor localthislockstop;
+
+     label6:
+        throw throwableLocal6;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void join() throws java.lang.InterruptedException
+    {
+        avrora.sim.Simulation this;
+        avrora.sim.clock.Synchronizer $r0;
+        java.lang.Object localthislockjoin;
+        java.lang.Throwable throwableLocal7;
+        long tid_join;
+        java.lang.Thread thread_join;
+
+        this := @this: avrora.sim.Simulation;
+        thread_join = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_join = virtualinvoke thread_join.<java.lang.Thread: long getId()>();
+        localthislockjoin = this;
+
+     label0:
+        entermonitor localthislockjoin;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockjoin, 0, tid_join);
+        $r0 = this.<avrora.sim.Simulation: avrora.sim.clock.Synchronizer synchronizer>;
+        virtualinvoke $r0.<avrora.sim.clock.Synchronizer: void join()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockjoin, 0, tid_join);
+        exitmonitor localthislockjoin;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        throwableLocal7 := @caughtexception;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockjoin, 0, tid_join);
+        exitmonitor localthislockjoin;
+
+     label4:
+        throw throwableLocal7;
+
+        catch java.lang.Throwable from label0 to label1 with label2;
+        catch java.lang.Throwable from label3 to label4 with label2;
+    }
+
+    public void stopNode(int)
+    {
+        avrora.sim.Simulation this;
+        int id;
+        boolean $z0;
+        cck.util.Util$InternalError $r0;
+        java.lang.Object localthislockstopNode;
+        java.lang.Throwable throwableLocal8;
+        long tid_stopNode;
+        java.lang.Thread thread_stopNode;
+
+        this := @this: avrora.sim.Simulation;
+        id := @parameter0: int;
+        thread_stopNode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_stopNode = virtualinvoke thread_stopNode.<java.lang.Thread: long getId()>();
+        localthislockstopNode = this;
+
+     label0:
+        entermonitor localthislockstopNode;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>(localthislockstopNode, 0, tid_stopNode);
+        $z0 = this.<avrora.sim.Simulation: boolean running>;
+        if $z0 != 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstopNode, 0, tid_stopNode);
+        exitmonitor localthislockstopNode;
+        goto label1;
+
+     label1:
+        return;
+
+     label2:
+        $r0 = staticinvoke <cck.util.Util: cck.util.Util$InternalError unimplemented()>();
+
+     label3:
+        throw $r0;
+
+     label4:
+        throwableLocal8 := @caughtexception;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(localthislockstopNode, 0, tid_stopNode);
+        exitmonitor localthislockstopNode;
+
+     label6:
+        throw throwableLocal8;
+
+        catch java.lang.Throwable from label0 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public boolean isPaused()
+    {
+        avrora.sim.Simulation this;
+        boolean $z0;
+
+        this := @this: avrora.sim.Simulation;
+        $z0 = this.<avrora.sim.Simulation: boolean paused>;
+        return $z0;
+    }
+
+    public boolean isRunning()
+    {
+        avrora.sim.Simulation this;
+        boolean $z0;
+
+        this := @this: avrora.sim.Simulation;
+        $z0 = this.<avrora.sim.Simulation: boolean running>;
+        return $z0;
+    }
+
+    public java.util.Iterator getNodeIterator()
+    {
+        avrora.sim.Simulation this;
+        avrora.sim.Simulation$Iter $r0;
+
+        this := @this: avrora.sim.Simulation;
+        $r0 = new avrora.sim.Simulation$Iter;
+        specialinvoke $r0.<avrora.sim.Simulation$Iter: void <init>(avrora.sim.Simulation)>(this);
+        return $r0;
+    }
+
+    protected avrora.sim.platform.PlatformFactory getPlatform()
+    {
+        avrora.sim.Simulation this;
+        long hz, exthz;
+        java.lang.StringBuilder $r0, tmp$555611010;
+        avrora.sim.mcu.MicrocontrollerFactory mcf;
+        java.lang.String pfs, $r3, $r4;
+        cck.util.Option$Str $r1;
+        boolean $z0;
+        cck.util.Option$Long $r2;
+        byte $b0;
+        avrora.sim.platform.PlatformFactory $r6, tmp;
+        avrora.sim.platform.DefaultPlatform$Factory tmp$555611073;
+
+        this := @this: avrora.sim.Simulation;
+        $r1 = this.<avrora.sim.Simulation: cck.util.Option$Str PLATFORM>;
+        $z0 = virtualinvoke $r1.<cck.util.Option$Str: boolean isBlank()>();
+        if $z0 == 0 goto label2;
+
+        $r2 = this.<avrora.sim.Simulation: cck.util.Option$Long CLOCKSPEED>;
+        hz = virtualinvoke $r2.<cck.util.Option$Long: long get()>();
+        $r2 = this.<avrora.sim.Simulation: cck.util.Option$Long EXTCLOCKSPEED>;
+        exthz = virtualinvoke $r2.<cck.util.Option$Long: long get()>();
+        $b0 = exthz cmp 0L;
+        if $b0 != 0 goto label0;
+
+        exthz = hz;
+
+     label0:
+        $b0 = exthz cmp hz;
+        if $b0 <= 0 goto label1;
+
+        tmp$555611010 = new java.lang.StringBuilder;
+        specialinvoke tmp$555611010.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke tmp$555611010.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>(exthz);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("hz");
+        $r3 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.util.Util: void userError(java.lang.String,java.lang.String)>("External clock is greater than main clock speed", $r3);
+
+     label1:
+        $r1 = this.<avrora.sim.Simulation: cck.util.Option$Str MCU>;
+        $r4 = virtualinvoke $r1.<cck.util.Option$Str: java.lang.String get()>();
+        mcf = staticinvoke <avrora.Defaults: avrora.sim.mcu.MicrocontrollerFactory getMicrocontroller(java.lang.String)>($r4);
+        tmp$555611073 = new avrora.sim.platform.DefaultPlatform$Factory;
+        specialinvoke tmp$555611073.<avrora.sim.platform.DefaultPlatform$Factory: void <init>(long,long,avrora.sim.mcu.MicrocontrollerFactory)>(hz, exthz, mcf);
+        tmp = (avrora.sim.platform.PlatformFactory) tmp$555611073;
+        return tmp;
+
+     label2:
+        $r1 = this.<avrora.sim.Simulation: cck.util.Option$Str PLATFORM>;
+        pfs = virtualinvoke $r1.<cck.util.Option$Str: java.lang.String get()>();
+        $r6 = staticinvoke <avrora.Defaults: avrora.sim.platform.PlatformFactory getPlatform(java.lang.String)>(pfs);
+        return $r6;
+    }
+
+    protected void processMonitorList()
+    {
+        avrora.sim.Simulation this;
+        java.util.List l;
+        java.util.Iterator i;
+        java.lang.String clname;
+        avrora.monitors.MonitorFactory mf;
+        cck.util.Option$List $r0;
+        boolean $z0;
+        java.lang.Object $r1;
+        cck.util.Options $r2;
+        java.util.LinkedList $r3;
+
+        this := @this: avrora.sim.Simulation;
+        $r0 = this.<avrora.sim.Simulation: cck.util.Option$List MONITORS>;
+        l = virtualinvoke $r0.<cck.util.Option$List: java.util.List get()>();
+        i = interfaceinvoke l.<java.util.List: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r1 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        clname = (java.lang.String) $r1;
+        mf = staticinvoke <avrora.Defaults: avrora.monitors.MonitorFactory getMonitor(java.lang.String)>(clname);
+        $r2 = this.<avrora.sim.Simulation: cck.util.Options options>;
+        virtualinvoke mf.<avrora.monitors.MonitorFactory: void processOptions(cck.util.Options)>($r2);
+        $r3 = this.<avrora.sim.Simulation: java.util.LinkedList monitorFactoryList>;
+        virtualinvoke $r3.<java.util.LinkedList: void addLast(java.lang.Object)>(mf);
+        goto label0;
+
+     label1:
+        return;
+    }
+}

@@ -1,0 +1,62 @@
+public abstract class avrora.sim.radio.CC1000Radio$RadioRegister extends java.lang.Object
+{
+    protected final java.lang.String id;
+    protected byte value;
+    final avrora.sim.radio.CC1000Radio this$0;
+
+    void <init>(avrora.sim.radio.CC1000Radio, java.lang.String, byte)
+    {
+        avrora.sim.radio.CC1000Radio$RadioRegister this;
+        avrora.sim.radio.CC1000Radio l1;
+        java.lang.String id;
+        byte def;
+
+        this := @this: avrora.sim.radio.CC1000Radio$RadioRegister;
+        l1 := @parameter0: avrora.sim.radio.CC1000Radio;
+        id := @parameter1: java.lang.String;
+        def := @parameter2: byte;
+        this.<avrora.sim.radio.CC1000Radio$RadioRegister: avrora.sim.radio.CC1000Radio this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.radio.CC1000Radio$RadioRegister: java.lang.String id> = id;
+        this.<avrora.sim.radio.CC1000Radio$RadioRegister: byte value> = def;
+        return;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.radio.CC1000Radio$RadioRegister this;
+        byte val, $b0;
+        avrora.sim.radio.CC1000Radio $r0;
+        avrora.sim.output.SimPrinter $r1;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.radio.CC1000Radio$RadioRegister;
+        val := @parameter0: byte;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 64, tid_write, "avrora.sim.radio.CC1000Radio$RadioRegister", 216, val);
+        this.<avrora.sim.radio.CC1000Radio$RadioRegister: byte value> = val;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 64, tid_write, "avrora.sim.radio.CC1000Radio$RadioRegister", 217, $b0);
+        $b0 = this.<avrora.sim.radio.CC1000Radio$RadioRegister: byte value>;
+        virtualinvoke this.<avrora.sim.radio.CC1000Radio$RadioRegister: void decode(byte)>($b0);
+        $r0 = this.<avrora.sim.radio.CC1000Radio$RadioRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r1 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.output.SimPrinter radioPrinter>;
+        if $r1 == null goto label0;
+
+        virtualinvoke this.<avrora.sim.radio.CC1000Radio$RadioRegister: void printStatus()>();
+
+     label0:
+        return;
+    }
+
+    protected abstract void decode(byte);
+
+    protected void printStatus()
+    {
+        avrora.sim.radio.CC1000Radio$RadioRegister this;
+
+        this := @this: avrora.sim.radio.CC1000Radio$RadioRegister;
+        return;
+    }
+}

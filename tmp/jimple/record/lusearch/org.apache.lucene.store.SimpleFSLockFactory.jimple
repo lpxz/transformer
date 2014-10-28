@@ -1,0 +1,153 @@
+public class org.apache.lucene.store.SimpleFSLockFactory extends org.apache.lucene.store.LockFactory
+{
+    private java.io.File lockDir;
+
+    void <init>() throws java.io.IOException
+    {
+        org.apache.lucene.store.SimpleFSLockFactory this;
+        java.io.File $r0;
+
+        this := @this: org.apache.lucene.store.SimpleFSLockFactory;
+        $r0 = (java.io.File) null;
+        specialinvoke this.<org.apache.lucene.store.SimpleFSLockFactory: void <init>(java.io.File)>($r0);
+        return;
+    }
+
+    public void <init>(java.io.File) throws java.io.IOException
+    {
+        org.apache.lucene.store.SimpleFSLockFactory this;
+        java.io.File lockDir;
+
+        this := @this: org.apache.lucene.store.SimpleFSLockFactory;
+        lockDir := @parameter0: java.io.File;
+        specialinvoke this.<org.apache.lucene.store.LockFactory: void <init>()>();
+        virtualinvoke this.<org.apache.lucene.store.SimpleFSLockFactory: void setLockDir(java.io.File)>(lockDir);
+        return;
+    }
+
+    public void <init>(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.store.SimpleFSLockFactory this;
+        java.lang.String lockDirName;
+        java.io.File $r0;
+
+        this := @this: org.apache.lucene.store.SimpleFSLockFactory;
+        lockDirName := @parameter0: java.lang.String;
+        specialinvoke this.<org.apache.lucene.store.LockFactory: void <init>()>();
+        $r0 = new java.io.File;
+        specialinvoke $r0.<java.io.File: void <init>(java.lang.String)>(lockDirName);
+        this.<org.apache.lucene.store.SimpleFSLockFactory: java.io.File lockDir> = $r0;
+        $r0 = this.<org.apache.lucene.store.SimpleFSLockFactory: java.io.File lockDir>;
+        virtualinvoke this.<org.apache.lucene.store.SimpleFSLockFactory: void setLockDir(java.io.File)>($r0);
+        return;
+    }
+
+    void setLockDir(java.io.File) throws java.io.IOException
+    {
+        org.apache.lucene.store.SimpleFSLockFactory this;
+        java.io.File lockDir;
+        long tid_setLockDir;
+        java.lang.Thread thread_setLockDir;
+
+        this := @this: org.apache.lucene.store.SimpleFSLockFactory;
+        lockDir := @parameter0: java.io.File;
+        thread_setLockDir = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setLockDir = virtualinvoke thread_setLockDir.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 65, tid_setLockDir, "org.apache.lucene.store.SimpleFSLockFactory", 100, lockDir);
+        this.<org.apache.lucene.store.SimpleFSLockFactory: java.io.File lockDir> = lockDir;
+        return;
+    }
+
+    public org.apache.lucene.store.Lock makeLock(java.lang.String)
+    {
+        org.apache.lucene.store.SimpleFSLockFactory this;
+        java.lang.String lockName, $r0, $r2;
+        java.lang.StringBuffer $r1;
+        org.apache.lucene.store.SimpleFSLock $r3;
+        java.io.File $r4;
+        long tid_makeLock;
+        java.lang.Thread thread_makeLock;
+
+        this := @this: org.apache.lucene.store.SimpleFSLockFactory;
+        lockName := @parameter0: java.lang.String;
+        thread_makeLock = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_makeLock = virtualinvoke thread_makeLock.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 53, tid_makeLock, "org.apache.lucene.store.SimpleFSLockFactory", 104, $r0);
+        $r0 = this.<org.apache.lucene.store.SimpleFSLockFactory: java.lang.String lockPrefix>;
+        if $r0 == null goto label0;
+
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 53, tid_makeLock, "org.apache.lucene.store.SimpleFSLockFactory", 105, $r2);
+        $r2 = this.<org.apache.lucene.store.SimpleFSLockFactory: java.lang.String lockPrefix>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("-");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(lockName);
+        lockName = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+
+     label0:
+        $r3 = new org.apache.lucene.store.SimpleFSLock;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 65, tid_makeLock, "org.apache.lucene.store.SimpleFSLockFactory", 107, $r4);
+        $r4 = this.<org.apache.lucene.store.SimpleFSLockFactory: java.io.File lockDir>;
+        specialinvoke $r3.<org.apache.lucene.store.SimpleFSLock: void <init>(java.io.File,java.lang.String)>($r4, lockName);
+        return $r3;
+    }
+
+    public void clearLock(java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.store.SimpleFSLockFactory this;
+        java.lang.String lockName, $r1, $r3, $r7;
+        java.io.File lockFile, $r0, $r4;
+        boolean $z0;
+        java.lang.StringBuffer $r2, $r6;
+        java.io.IOException $r5;
+        long tid_clearLock;
+        java.lang.Thread thread_clearLock;
+
+        this := @this: org.apache.lucene.store.SimpleFSLockFactory;
+        lockName := @parameter0: java.lang.String;
+        thread_clearLock = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clearLock = virtualinvoke thread_clearLock.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 65, tid_clearLock, "org.apache.lucene.store.SimpleFSLockFactory", 111, $r0);
+        $r0 = this.<org.apache.lucene.store.SimpleFSLockFactory: java.io.File lockDir>;
+        $z0 = virtualinvoke $r0.<java.io.File: boolean exists()>();
+        if $z0 == 0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 53, tid_clearLock, "org.apache.lucene.store.SimpleFSLockFactory", 112, $r1);
+        $r1 = this.<org.apache.lucene.store.SimpleFSLockFactory: java.lang.String lockPrefix>;
+        if $r1 == null goto label0;
+
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 53, tid_clearLock, "org.apache.lucene.store.SimpleFSLockFactory", 113, $r3);
+        $r3 = this.<org.apache.lucene.store.SimpleFSLockFactory: java.lang.String lockPrefix>;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("-");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(lockName);
+        lockName = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+
+     label0:
+        $r0 = new java.io.File;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 65, tid_clearLock, "org.apache.lucene.store.SimpleFSLockFactory", 115, $r4);
+        $r4 = this.<org.apache.lucene.store.SimpleFSLockFactory: java.io.File lockDir>;
+        specialinvoke $r0.<java.io.File: void <init>(java.io.File,java.lang.String)>($r4, lockName);
+        lockFile = $r0;
+        $z0 = virtualinvoke lockFile.<java.io.File: boolean exists()>();
+        if $z0 == 0 goto label1;
+
+        $z0 = virtualinvoke lockFile.<java.io.File: boolean delete()>();
+        if $z0 != 0 goto label1;
+
+        $r5 = new java.io.IOException;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Cannot delete ");
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>(lockFile);
+        $r7 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>($r7);
+        throw $r5;
+
+     label1:
+        return;
+    }
+}

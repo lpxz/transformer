@@ -1,0 +1,51 @@
+public class avrora.actions.TestAction extends avrora.actions.Action
+{
+    public static final java.lang.String HELP;
+    public final cck.util.Option$Bool DETAIL;
+
+    public void <init>()
+    {
+        avrora.actions.TestAction this;
+        cck.util.Option$Bool $r0;
+
+        this := @this: avrora.actions.TestAction;
+        specialinvoke this.<avrora.actions.Action: void <init>(java.lang.String)>("The \"test\" action invokes the internal automated testing framework that runs test cases supplied at the command line. The test cases are used in regressions for diagnosing bugs.");
+        $r0 = virtualinvoke this.<avrora.actions.TestAction: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("detail", 0, "This option selects whether the automated testing framework will report detailed information for failed test cases.");
+        this.<avrora.actions.TestAction: cck.util.Option$Bool DETAIL> = $r0;
+        return;
+    }
+
+    public void run(java.lang.String[]) throws java.lang.Exception
+    {
+        avrora.actions.TestAction this;
+        java.lang.String[] args;
+        cck.util.ClassMap $r0;
+        cck.test.TestEngine engine, $r2;
+        boolean r, $z0;
+        cck.util.Option$Bool $r1;
+        long tid_run;
+        java.lang.Thread thread_run;
+
+        this := @this: avrora.actions.TestAction;
+        args := @parameter0: java.lang.String[];
+        thread_run = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_run = virtualinvoke thread_run.<java.lang.Thread: long getId()>();
+        $r1 = this.<avrora.actions.TestAction: cck.util.Option$Bool DETAIL>;
+        $z0 = virtualinvoke $r1.<cck.util.Option$Bool: boolean get()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,boolean)>(197, tid_run, "avrora.actionsavrora.actions.TestAction", 64, $z0);
+        <cck.test.TestEngine: boolean LONG_REPORT> = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(198, tid_run, "avrora.actionsavrora.actions.TestAction", 65, 0);
+        <cck.text.Status: boolean ENABLED> = 0;
+        $r2 = new cck.test.TestEngine;
+        $r0 = staticinvoke <avrora.Defaults: cck.util.ClassMap getTestHarnessMap()>();
+        specialinvoke $r2.<cck.test.TestEngine: void <init>(cck.util.ClassMap)>($r0);
+        engine = $r2;
+        r = virtualinvoke engine.<cck.test.TestEngine: boolean runTests(java.lang.String[])>(args);
+        if r != 0 goto label0;
+
+        staticinvoke <java.lang.System: void exit(int)>(1);
+
+     label0:
+        return;
+    }
+}

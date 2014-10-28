@@ -1,0 +1,1966 @@
+final class org.apache.lucene.index.SegmentInfo extends java.lang.Object
+{
+    static final int NO;
+    static final int YES;
+    static final int CHECK_DIR;
+    static final int WITHOUT_GEN;
+    public java.lang.String name;
+    public int docCount;
+    public org.apache.lucene.store.Directory dir;
+    private boolean preLockless;
+    private long delGen;
+    private long[] normGen;
+    private byte isCompoundFile;
+    private boolean hasSingleNormFile;
+    private java.util.List files;
+    long sizeInBytes;
+    private int docStoreOffset;
+    private java.lang.String docStoreSegment;
+    private boolean docStoreIsCompoundFile;
+    private int delCount;
+    private boolean hasProx;
+    static final boolean $assertionsDisabled;
+    static java.lang.Class class$org$apache$lucene$index$SegmentInfo;
+
+    public void <init>(java.lang.String, int, org.apache.lucene.store.Directory)
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        java.lang.String name;
+        int docCount;
+        org.apache.lucene.store.Directory dir;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        name := @parameter0: java.lang.String;
+        docCount := @parameter1: int;
+        dir := @parameter2: org.apache.lucene.store.Directory;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.index.SegmentInfo: long sizeInBytes> = -1L;
+        this.<org.apache.lucene.index.SegmentInfo: java.lang.String name> = name;
+        this.<org.apache.lucene.index.SegmentInfo: int docCount> = docCount;
+        this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir> = dir;
+        this.<org.apache.lucene.index.SegmentInfo: long delGen> = -1L;
+        this.<org.apache.lucene.index.SegmentInfo: byte isCompoundFile> = 0;
+        this.<org.apache.lucene.index.SegmentInfo: boolean preLockless> = 1;
+        this.<org.apache.lucene.index.SegmentInfo: boolean hasSingleNormFile> = 0;
+        this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset> = -1;
+        this.<org.apache.lucene.index.SegmentInfo: java.lang.String docStoreSegment> = name;
+        this.<org.apache.lucene.index.SegmentInfo: boolean docStoreIsCompoundFile> = 0;
+        this.<org.apache.lucene.index.SegmentInfo: int delCount> = 0;
+        this.<org.apache.lucene.index.SegmentInfo: boolean hasProx> = 1;
+        return;
+    }
+
+    public void <init>(java.lang.String, int, org.apache.lucene.store.Directory, boolean, boolean)
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        java.lang.String name;
+        int docCount;
+        org.apache.lucene.store.Directory dir;
+        boolean isCompoundFile, hasSingleNormFile;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        name := @parameter0: java.lang.String;
+        docCount := @parameter1: int;
+        dir := @parameter2: org.apache.lucene.store.Directory;
+        isCompoundFile := @parameter3: boolean;
+        hasSingleNormFile := @parameter4: boolean;
+        specialinvoke this.<org.apache.lucene.index.SegmentInfo: void <init>(java.lang.String,int,org.apache.lucene.store.Directory,boolean,boolean,int,java.lang.String,boolean,boolean)>(name, docCount, dir, isCompoundFile, hasSingleNormFile, -1, null, 0, 1);
+        return;
+    }
+
+    public void <init>(java.lang.String, int, org.apache.lucene.store.Directory, boolean, boolean, int, java.lang.String, boolean, boolean)
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        java.lang.String name, docStoreSegment, $r3;
+        int docCount, docStoreOffset;
+        org.apache.lucene.store.Directory dir;
+        boolean isCompoundFile, hasSingleNormFile, docStoreIsCompoundFile, hasProx, $z0;
+        byte $b0;
+        java.lang.AssertionError $r1;
+        java.lang.StringBuffer $r2;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        name := @parameter0: java.lang.String;
+        docCount := @parameter1: int;
+        dir := @parameter2: org.apache.lucene.store.Directory;
+        isCompoundFile := @parameter3: boolean;
+        hasSingleNormFile := @parameter4: boolean;
+        docStoreOffset := @parameter5: int;
+        docStoreSegment := @parameter6: java.lang.String;
+        docStoreIsCompoundFile := @parameter7: boolean;
+        hasProx := @parameter8: boolean;
+        specialinvoke this.<org.apache.lucene.index.SegmentInfo: void <init>(java.lang.String,int,org.apache.lucene.store.Directory)>(name, docCount, dir);
+        if isCompoundFile == 0 goto label0;
+
+        $b0 = 1;
+        goto label1;
+
+     label0:
+        $b0 = -1;
+
+     label1:
+        $b0 = (byte) $b0;
+        this.<org.apache.lucene.index.SegmentInfo: byte isCompoundFile> = $b0;
+        this.<org.apache.lucene.index.SegmentInfo: boolean hasSingleNormFile> = hasSingleNormFile;
+        this.<org.apache.lucene.index.SegmentInfo: boolean preLockless> = 0;
+        this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset> = docStoreOffset;
+        this.<org.apache.lucene.index.SegmentInfo: java.lang.String docStoreSegment> = docStoreSegment;
+        this.<org.apache.lucene.index.SegmentInfo: boolean docStoreIsCompoundFile> = docStoreIsCompoundFile;
+        this.<org.apache.lucene.index.SegmentInfo: boolean hasProx> = hasProx;
+        this.<org.apache.lucene.index.SegmentInfo: int delCount> = 0;
+        $z0 = <org.apache.lucene.index.SegmentInfo: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label2;
+
+        if docStoreOffset == -1 goto label2;
+
+        if docStoreSegment != null goto label2;
+
+        $r1 = new java.lang.AssertionError;
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("dso=");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(docStoreOffset);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" dss=");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(docStoreSegment);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" docCount=");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(docCount);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r1.<java.lang.AssertionError: void <init>(java.lang.Object)>($r3);
+        throw $r1;
+
+     label2:
+        return;
+    }
+
+    void reset(org.apache.lucene.index.SegmentInfo)
+    {
+        org.apache.lucene.index.SegmentInfo this, src;
+        java.lang.String $r0;
+        int $i0, $i2;
+        org.apache.lucene.store.Directory $r1;
+        boolean $z0;
+        long $l1, tid_reset;
+        long[] $r2, $r3, $r4, $r5;
+        byte $b3;
+        java.lang.Thread thread_reset;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        src := @parameter0: org.apache.lucene.index.SegmentInfo;
+        thread_reset = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_reset = virtualinvoke thread_reset.<java.lang.Thread: long getId()>();
+        specialinvoke this.<org.apache.lucene.index.SegmentInfo: void clearFiles()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(src, 1, tid_reset, "org.apache.lucene.index.SegmentInfo", 120, $r0);
+        $r0 = src.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_reset, "org.apache.lucene.index.SegmentInfo", 120, $r0);
+        this.<org.apache.lucene.index.SegmentInfo: java.lang.String name> = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(src, 2, tid_reset, "org.apache.lucene.index.SegmentInfo", 121, $i0);
+        $i0 = src.<org.apache.lucene.index.SegmentInfo: int docCount>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 2, tid_reset, "org.apache.lucene.index.SegmentInfo", 121, $i0);
+        this.<org.apache.lucene.index.SegmentInfo: int docCount> = $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(src, 0, tid_reset, "org.apache.lucene.index.SegmentInfo", 122, $r1);
+        $r1 = src.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_reset, "org.apache.lucene.index.SegmentInfo", 122, $r1);
+        this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir> = $r1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(src, 11, tid_reset, "org.apache.lucene.index.SegmentInfo", 123, $z0);
+        $z0 = src.<org.apache.lucene.index.SegmentInfo: boolean preLockless>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 11, tid_reset, "org.apache.lucene.index.SegmentInfo", 123, $z0);
+        this.<org.apache.lucene.index.SegmentInfo: boolean preLockless> = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(src, 12, tid_reset, "org.apache.lucene.index.SegmentInfo", 124, $l1);
+        $l1 = src.<org.apache.lucene.index.SegmentInfo: long delGen>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 12, tid_reset, "org.apache.lucene.index.SegmentInfo", 124, $l1);
+        this.<org.apache.lucene.index.SegmentInfo: long delGen> = $l1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(src, 13, tid_reset, "org.apache.lucene.index.SegmentInfo", 125, $i0);
+        $i0 = src.<org.apache.lucene.index.SegmentInfo: int docStoreOffset>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 13, tid_reset, "org.apache.lucene.index.SegmentInfo", 125, $i0);
+        this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset> = $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(src, 14, tid_reset, "org.apache.lucene.index.SegmentInfo", 126, $z0);
+        $z0 = src.<org.apache.lucene.index.SegmentInfo: boolean docStoreIsCompoundFile>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 14, tid_reset, "org.apache.lucene.index.SegmentInfo", 126, $z0);
+        this.<org.apache.lucene.index.SegmentInfo: boolean docStoreIsCompoundFile> = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(src, 15, tid_reset, "org.apache.lucene.index.SegmentInfo", 127, $r2);
+        $r2 = src.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        if $r2 != null goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_reset, "org.apache.lucene.index.SegmentInfo", 128, null);
+        this.<org.apache.lucene.index.SegmentInfo: long[] normGen> = null;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(src, 15, tid_reset, "org.apache.lucene.index.SegmentInfo", 130, $r3);
+        $r3 = src.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $i0 = lengthof $r3;
+        $r3 = newarray (long)[$i0];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_reset, "org.apache.lucene.index.SegmentInfo", 130, $r3);
+        this.<org.apache.lucene.index.SegmentInfo: long[] normGen> = $r3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(src, 15, tid_reset, "org.apache.lucene.index.SegmentInfo", 131, $r2);
+        $r2 = src.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_reset, "org.apache.lucene.index.SegmentInfo", 131, $r4);
+        $r4 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(src, 15, tid_reset, "org.apache.lucene.index.SegmentInfo", 131, $r5);
+        $r5 = src.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $i2 = lengthof $r5;
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, 0, $r4, 0, $i2);
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(src, 16, tid_reset, "org.apache.lucene.index.SegmentInfo", 133, $b3);
+        $b3 = src.<org.apache.lucene.index.SegmentInfo: byte isCompoundFile>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 16, tid_reset, "org.apache.lucene.index.SegmentInfo", 133, $b3);
+        this.<org.apache.lucene.index.SegmentInfo: byte isCompoundFile> = $b3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(src, 17, tid_reset, "org.apache.lucene.index.SegmentInfo", 134, $z0);
+        $z0 = src.<org.apache.lucene.index.SegmentInfo: boolean hasSingleNormFile>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 17, tid_reset, "org.apache.lucene.index.SegmentInfo", 134, $z0);
+        this.<org.apache.lucene.index.SegmentInfo: boolean hasSingleNormFile> = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(src, 18, tid_reset, "org.apache.lucene.index.SegmentInfo", 135, $i0);
+        $i0 = src.<org.apache.lucene.index.SegmentInfo: int delCount>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 18, tid_reset, "org.apache.lucene.index.SegmentInfo", 135, $i0);
+        this.<org.apache.lucene.index.SegmentInfo: int delCount> = $i0;
+        return;
+    }
+
+    void <init>(org.apache.lucene.store.Directory, int, org.apache.lucene.store.IndexInput) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        org.apache.lucene.store.Directory dir;
+        int format, numNormGen, j, $i0, $i2;
+        org.apache.lucene.store.IndexInput input;
+        java.lang.String $r0;
+        long $l1, $l4;
+        byte $b3, $b5;
+        boolean $z0, $z1;
+        long[] $r2, $r3;
+        java.lang.AssertionError $r4;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        dir := @parameter0: org.apache.lucene.store.Directory;
+        format := @parameter1: int;
+        input := @parameter2: org.apache.lucene.store.IndexInput;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.index.SegmentInfo: long sizeInBytes> = -1L;
+        this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir> = dir;
+        $r0 = virtualinvoke input.<org.apache.lucene.store.IndexInput: java.lang.String readString()>();
+        this.<org.apache.lucene.index.SegmentInfo: java.lang.String name> = $r0;
+        $i0 = virtualinvoke input.<org.apache.lucene.store.IndexInput: int readInt()>();
+        this.<org.apache.lucene.index.SegmentInfo: int docCount> = $i0;
+        if format > -2 goto label20;
+
+        $l1 = virtualinvoke input.<org.apache.lucene.store.IndexInput: long readLong()>();
+        this.<org.apache.lucene.index.SegmentInfo: long delGen> = $l1;
+        if format > -4 goto label3;
+
+        $i0 = virtualinvoke input.<org.apache.lucene.store.IndexInput: int readInt()>();
+        this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset> = $i0;
+        $i2 = this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset>;
+        if $i2 == -1 goto label2;
+
+        $r0 = virtualinvoke input.<org.apache.lucene.store.IndexInput: java.lang.String readString()>();
+        this.<org.apache.lucene.index.SegmentInfo: java.lang.String docStoreSegment> = $r0;
+        $b3 = virtualinvoke input.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        if 1 != $b3 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        this.<org.apache.lucene.index.SegmentInfo: boolean docStoreIsCompoundFile> = $z0;
+        goto label4;
+
+     label2:
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        this.<org.apache.lucene.index.SegmentInfo: java.lang.String docStoreSegment> = $r0;
+        this.<org.apache.lucene.index.SegmentInfo: boolean docStoreIsCompoundFile> = 0;
+        goto label4;
+
+     label3:
+        this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset> = -1;
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        this.<org.apache.lucene.index.SegmentInfo: java.lang.String docStoreSegment> = $r0;
+        this.<org.apache.lucene.index.SegmentInfo: boolean docStoreIsCompoundFile> = 0;
+
+     label4:
+        if format > -3 goto label7;
+
+        $b3 = virtualinvoke input.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        if 1 != $b3 goto label5;
+
+        $z0 = 1;
+        goto label6;
+
+     label5:
+        $z0 = 0;
+
+     label6:
+        this.<org.apache.lucene.index.SegmentInfo: boolean hasSingleNormFile> = $z0;
+        goto label8;
+
+     label7:
+        this.<org.apache.lucene.index.SegmentInfo: boolean hasSingleNormFile> = 0;
+
+     label8:
+        numNormGen = virtualinvoke input.<org.apache.lucene.store.IndexInput: int readInt()>();
+        if numNormGen != -1 goto label9;
+
+        this.<org.apache.lucene.index.SegmentInfo: long[] normGen> = null;
+        goto label11;
+
+     label9:
+        $r2 = newarray (long)[numNormGen];
+        this.<org.apache.lucene.index.SegmentInfo: long[] normGen> = $r2;
+        j = 0;
+
+     label10:
+        if j >= numNormGen goto label11;
+
+        $r3 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $l4 = virtualinvoke input.<org.apache.lucene.store.IndexInput: long readLong()>();
+        $r3[j] = $l4;
+        j = j + 1;
+        goto label10;
+
+     label11:
+        $b5 = virtualinvoke input.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        this.<org.apache.lucene.index.SegmentInfo: byte isCompoundFile> = $b5;
+        $b5 = this.<org.apache.lucene.index.SegmentInfo: byte isCompoundFile>;
+        if $b5 != 0 goto label12;
+
+        $z0 = 1;
+        goto label13;
+
+     label12:
+        $z0 = 0;
+
+     label13:
+        this.<org.apache.lucene.index.SegmentInfo: boolean preLockless> = $z0;
+        if format > -6 goto label14;
+
+        $i0 = virtualinvoke input.<org.apache.lucene.store.IndexInput: int readInt()>();
+        this.<org.apache.lucene.index.SegmentInfo: int delCount> = $i0;
+        $z1 = <org.apache.lucene.index.SegmentInfo: boolean $assertionsDisabled>;
+        if $z1 != 0 goto label15;
+
+        $i2 = this.<org.apache.lucene.index.SegmentInfo: int delCount>;
+        $i0 = this.<org.apache.lucene.index.SegmentInfo: int docCount>;
+        if $i2 <= $i0 goto label15;
+
+        $r4 = new java.lang.AssertionError;
+        specialinvoke $r4.<java.lang.AssertionError: void <init>()>();
+        throw $r4;
+
+     label14:
+        this.<org.apache.lucene.index.SegmentInfo: int delCount> = -1;
+
+     label15:
+        if format > -7 goto label18;
+
+        $b5 = virtualinvoke input.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        if $b5 != 1 goto label16;
+
+        $z0 = 1;
+        goto label17;
+
+     label16:
+        $z0 = 0;
+
+     label17:
+        this.<org.apache.lucene.index.SegmentInfo: boolean hasProx> = $z0;
+        goto label19;
+
+     label18:
+        this.<org.apache.lucene.index.SegmentInfo: boolean hasProx> = 1;
+
+     label19:
+        goto label21;
+
+     label20:
+        this.<org.apache.lucene.index.SegmentInfo: long delGen> = 0L;
+        this.<org.apache.lucene.index.SegmentInfo: long[] normGen> = null;
+        this.<org.apache.lucene.index.SegmentInfo: byte isCompoundFile> = 0;
+        this.<org.apache.lucene.index.SegmentInfo: boolean preLockless> = 1;
+        this.<org.apache.lucene.index.SegmentInfo: boolean hasSingleNormFile> = 0;
+        this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset> = -1;
+        this.<org.apache.lucene.index.SegmentInfo: boolean docStoreIsCompoundFile> = 0;
+        this.<org.apache.lucene.index.SegmentInfo: java.lang.String docStoreSegment> = null;
+        this.<org.apache.lucene.index.SegmentInfo: int delCount> = -1;
+        this.<org.apache.lucene.index.SegmentInfo: boolean hasProx> = 1;
+
+     label21:
+        return;
+    }
+
+    void setNumFields(int)
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        int numFields, i;
+        long[] $r0, $r1;
+        boolean $z0;
+        long tid_setNumFields;
+        java.lang.Thread thread_setNumFields;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        numFields := @parameter0: int;
+        thread_setNumFields = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setNumFields = virtualinvoke thread_setNumFields.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_setNumFields, "org.apache.lucene.index.SegmentInfo", 206, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        if $r0 != null goto label2;
+
+        $r1 = newarray (long)[numFields];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_setNumFields, "org.apache.lucene.index.SegmentInfo", 210, $r1);
+        this.<org.apache.lucene.index.SegmentInfo: long[] normGen> = $r1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 11, tid_setNumFields, "org.apache.lucene.index.SegmentInfo", 212, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean preLockless>;
+        if $z0 == 0 goto label0;
+
+        goto label2;
+
+     label0:
+        i = 0;
+
+     label1:
+        if i >= numFields goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_setNumFields, "org.apache.lucene.index.SegmentInfo", 220, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $r0[i] = -1L;
+        i = i + 1;
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    long sizeInBytes() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        java.util.List files;
+        int size, i, $i2;
+        java.lang.String fileName;
+        long $l0, $l3, $l4, tid_sizeInBytes;
+        byte $b1;
+        java.lang.Object $r0;
+        boolean $z0;
+        org.apache.lucene.store.Directory $r2;
+        java.lang.Thread thread_sizeInBytes;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        thread_sizeInBytes = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_sizeInBytes = virtualinvoke thread_sizeInBytes.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 19, tid_sizeInBytes, "org.apache.lucene.index.SegmentInfo", 229, $l0);
+        $l0 = this.<org.apache.lucene.index.SegmentInfo: long sizeInBytes>;
+        $b1 = $l0 cmp -1L;
+        if $b1 != 0 goto label3;
+
+        files = virtualinvoke this.<org.apache.lucene.index.SegmentInfo: java.util.List files()>();
+        size = interfaceinvoke files.<java.util.List: int size()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 19, tid_sizeInBytes, "org.apache.lucene.index.SegmentInfo", 232, 0L);
+        this.<org.apache.lucene.index.SegmentInfo: long sizeInBytes> = 0L;
+        i = 0;
+
+     label0:
+        if i >= size goto label3;
+
+        $r0 = interfaceinvoke files.<java.util.List: java.lang.Object get(int)>(i);
+        fileName = (java.lang.String) $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 13, tid_sizeInBytes, "org.apache.lucene.index.SegmentInfo", 237, $i2);
+        $i2 = this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset>;
+        if $i2 == -1 goto label1;
+
+        $z0 = staticinvoke <org.apache.lucene.index.IndexFileNames: boolean isDocStoreFile(java.lang.String)>(fileName);
+        if $z0 != 0 goto label2;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 19, tid_sizeInBytes, "org.apache.lucene.index.SegmentInfo", 238, $l3);
+        $l3 = this.<org.apache.lucene.index.SegmentInfo: long sizeInBytes>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_sizeInBytes, "org.apache.lucene.index.SegmentInfo", 238, $r2);
+        $r2 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $l4 = virtualinvoke $r2.<org.apache.lucene.store.Directory: long fileLength(java.lang.String)>(fileName);
+        $l3 = $l3 + $l4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 19, tid_sizeInBytes, "org.apache.lucene.index.SegmentInfo", 238, $l3);
+        this.<org.apache.lucene.index.SegmentInfo: long sizeInBytes> = $l3;
+
+     label2:
+        i = i + 1;
+        goto label0;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 19, tid_sizeInBytes, "org.apache.lucene.index.SegmentInfo", 241, $l0);
+        $l0 = this.<org.apache.lucene.index.SegmentInfo: long sizeInBytes>;
+        return $l0;
+    }
+
+    boolean hasDeletions() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        long $l0, tid_hasDeletions;
+        byte $b1;
+        org.apache.lucene.store.Directory $r0;
+        java.lang.String $r1;
+        boolean $z0;
+        java.lang.Thread thread_hasDeletions;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        thread_hasDeletions = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_hasDeletions = virtualinvoke thread_hasDeletions.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 12, tid_hasDeletions, "org.apache.lucene.index.SegmentInfo", 260, $l0);
+        $l0 = this.<org.apache.lucene.index.SegmentInfo: long delGen>;
+        $b1 = $l0 cmp -1L;
+        if $b1 != 0 goto label0;
+
+        return 0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 12, tid_hasDeletions, "org.apache.lucene.index.SegmentInfo", 262, $l0);
+        $l0 = this.<org.apache.lucene.index.SegmentInfo: long delGen>;
+        $b1 = $l0 cmp 1L;
+        if $b1 < 0 goto label1;
+
+        return 1;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_hasDeletions, "org.apache.lucene.index.SegmentInfo", 265, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $r1 = virtualinvoke this.<org.apache.lucene.index.SegmentInfo: java.lang.String getDelFileName()>();
+        $z0 = virtualinvoke $r0.<org.apache.lucene.store.Directory: boolean fileExists(java.lang.String)>($r1);
+        return $z0;
+    }
+
+    void advanceDelGen()
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        long $l0, $l2, tid_advanceDelGen;
+        byte $b1;
+        java.lang.Thread thread_advanceDelGen;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        thread_advanceDelGen = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_advanceDelGen = virtualinvoke thread_advanceDelGen.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 12, tid_advanceDelGen, "org.apache.lucene.index.SegmentInfo", 271, $l0);
+        $l0 = this.<org.apache.lucene.index.SegmentInfo: long delGen>;
+        $b1 = $l0 cmp -1L;
+        if $b1 != 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 12, tid_advanceDelGen, "org.apache.lucene.index.SegmentInfo", 272, 1L);
+        this.<org.apache.lucene.index.SegmentInfo: long delGen> = 1L;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 12, tid_advanceDelGen, "org.apache.lucene.index.SegmentInfo", 274, $l2);
+        $l2 = this.<org.apache.lucene.index.SegmentInfo: long delGen>;
+        $l2 = $l2 + 1L;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 12, tid_advanceDelGen, "org.apache.lucene.index.SegmentInfo", 274, $l2);
+        this.<org.apache.lucene.index.SegmentInfo: long delGen> = $l2;
+
+     label1:
+        specialinvoke this.<org.apache.lucene.index.SegmentInfo: void clearFiles()>();
+        return;
+    }
+
+    void clearDelGen()
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        long tid_clearDelGen;
+        java.lang.Thread thread_clearDelGen;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        thread_clearDelGen = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clearDelGen = virtualinvoke thread_clearDelGen.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 12, tid_clearDelGen, "org.apache.lucene.index.SegmentInfo", 280, -1L);
+        this.<org.apache.lucene.index.SegmentInfo: long delGen> = -1L;
+        specialinvoke this.<org.apache.lucene.index.SegmentInfo: void clearFiles()>();
+        return;
+    }
+
+    public java.lang.Object clone()
+    {
+        org.apache.lucene.index.SegmentInfo this, $r0, si;
+        java.lang.String $r1, $r6;
+        int $i0, $i3;
+        org.apache.lucene.store.Directory $r2;
+        byte $b1;
+        long $l2, tid_clone;
+        boolean $z0;
+        long[] $r3, $r4;
+        java.lang.Object $r5;
+        java.lang.Thread thread_clone;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        thread_clone = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clone = virtualinvoke thread_clone.<java.lang.Thread: long getId()>();
+        $r0 = new org.apache.lucene.index.SegmentInfo;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_clone, "org.apache.lucene.index.SegmentInfo", 285, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 2, tid_clone, "org.apache.lucene.index.SegmentInfo", 285, $i0);
+        $i0 = this.<org.apache.lucene.index.SegmentInfo: int docCount>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_clone, "org.apache.lucene.index.SegmentInfo", 285, $r2);
+        $r2 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        specialinvoke $r0.<org.apache.lucene.index.SegmentInfo: void <init>(java.lang.String,int,org.apache.lucene.store.Directory)>($r1, $i0, $r2);
+        si = $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 16, tid_clone, "org.apache.lucene.index.SegmentInfo", 286, $b1);
+        $b1 = this.<org.apache.lucene.index.SegmentInfo: byte isCompoundFile>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(si, 16, tid_clone, "org.apache.lucene.index.SegmentInfo", 286, $b1);
+        si.<org.apache.lucene.index.SegmentInfo: byte isCompoundFile> = $b1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 12, tid_clone, "org.apache.lucene.index.SegmentInfo", 287, $l2);
+        $l2 = this.<org.apache.lucene.index.SegmentInfo: long delGen>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(si, 12, tid_clone, "org.apache.lucene.index.SegmentInfo", 287, $l2);
+        si.<org.apache.lucene.index.SegmentInfo: long delGen> = $l2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 18, tid_clone, "org.apache.lucene.index.SegmentInfo", 288, $i3);
+        $i3 = this.<org.apache.lucene.index.SegmentInfo: int delCount>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(si, 18, tid_clone, "org.apache.lucene.index.SegmentInfo", 288, $i3);
+        si.<org.apache.lucene.index.SegmentInfo: int delCount> = $i3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 11, tid_clone, "org.apache.lucene.index.SegmentInfo", 289, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean preLockless>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(si, 11, tid_clone, "org.apache.lucene.index.SegmentInfo", 289, $z0);
+        si.<org.apache.lucene.index.SegmentInfo: boolean preLockless> = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 17, tid_clone, "org.apache.lucene.index.SegmentInfo", 290, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean hasSingleNormFile>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(si, 17, tid_clone, "org.apache.lucene.index.SegmentInfo", 290, $z0);
+        si.<org.apache.lucene.index.SegmentInfo: boolean hasSingleNormFile> = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_clone, "org.apache.lucene.index.SegmentInfo", 291, $r3);
+        $r3 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        if $r3 == null goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_clone, "org.apache.lucene.index.SegmentInfo", 292, $r4);
+        $r4 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $r5 = virtualinvoke $r4.<java.lang.Object: java.lang.Object clone()>();
+        $r4 = (long[]) $r5;
+        $r4 = (long[]) $r4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(si, 15, tid_clone, "org.apache.lucene.index.SegmentInfo", 292, $r4);
+        si.<org.apache.lucene.index.SegmentInfo: long[] normGen> = $r4;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 13, tid_clone, "org.apache.lucene.index.SegmentInfo", 294, $i3);
+        $i3 = this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(si, 13, tid_clone, "org.apache.lucene.index.SegmentInfo", 294, $i3);
+        si.<org.apache.lucene.index.SegmentInfo: int docStoreOffset> = $i3;
+        $r6 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String docStoreSegment>;
+        si.<org.apache.lucene.index.SegmentInfo: java.lang.String docStoreSegment> = $r6;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 14, tid_clone, "org.apache.lucene.index.SegmentInfo", 296, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean docStoreIsCompoundFile>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(si, 14, tid_clone, "org.apache.lucene.index.SegmentInfo", 296, $z0);
+        si.<org.apache.lucene.index.SegmentInfo: boolean docStoreIsCompoundFile> = $z0;
+        return si;
+    }
+
+    java.lang.String getDelFileName()
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        long $l0, $l2, tid_getDelFileName;
+        byte $b1;
+        java.lang.String $r0;
+        java.lang.Thread thread_getDelFileName;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        thread_getDelFileName = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getDelFileName = virtualinvoke thread_getDelFileName.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 12, tid_getDelFileName, "org.apache.lucene.index.SegmentInfo", 301, $l0);
+        $l0 = this.<org.apache.lucene.index.SegmentInfo: long delGen>;
+        $b1 = $l0 cmp -1L;
+        if $b1 != 0 goto label0;
+
+        return null;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_getDelFileName, "org.apache.lucene.index.SegmentInfo", 307, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 12, tid_getDelFileName, "org.apache.lucene.index.SegmentInfo", 307, $l2);
+        $l2 = this.<org.apache.lucene.index.SegmentInfo: long delGen>;
+        $r0 = staticinvoke <org.apache.lucene.index.IndexFileNames: java.lang.String fileNameFromGeneration(java.lang.String,java.lang.String,long)>($r0, ".del", $l2);
+        return $r0;
+    }
+
+    boolean hasSeparateNorms(int) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        int fieldNumber;
+        java.lang.String fileName, $r2;
+        long[] $r0;
+        boolean $z0;
+        long $l0, tid_hasSeparateNorms;
+        byte $b1;
+        java.lang.StringBuffer $r1;
+        org.apache.lucene.store.Directory $r3;
+        java.lang.Thread thread_hasSeparateNorms;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        fieldNumber := @parameter0: int;
+        thread_hasSeparateNorms = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_hasSeparateNorms = virtualinvoke thread_hasSeparateNorms.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 318, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        if $r0 != null goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 11, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 318, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean preLockless>;
+        if $z0 != 0 goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 318, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        if $r0 == null goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 318, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $l0 = $r0[fieldNumber];
+        $b1 = $l0 cmp 0L;
+        if $b1 != 0 goto label2;
+
+     label1:
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 320, $r2);
+        $r2 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".s");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(fieldNumber);
+        fileName = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 321, $r3);
+        $r3 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $z0 = virtualinvoke $r3.<org.apache.lucene.store.Directory: boolean fileExists(java.lang.String)>(fileName);
+        return $z0;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 322, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        if $r0 == null goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 322, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $l0 = $r0[fieldNumber];
+        $b1 = $l0 cmp -1L;
+        if $b1 != 0 goto label4;
+
+     label3:
+        return 0;
+
+     label4:
+        return 1;
+    }
+
+    boolean hasSeparateNorms() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        java.lang.String[] result;
+        java.lang.StringBuffer $r0, $r6;
+        java.lang.String pattern, $r5, $r7, $r8;
+        int patternLength, i, $i0;
+        long[] $r1, $r9;
+        boolean $z0;
+        org.apache.lucene.store.Directory $r2, $r4;
+        java.io.IOException $r3;
+        char $c1;
+        long $l2, tid_hasSeparateNorms;
+        byte $b3;
+        java.lang.Thread thread_hasSeparateNorms;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        thread_hasSeparateNorms = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_hasSeparateNorms = virtualinvoke thread_hasSeparateNorms.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 334, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        if $r1 != null goto label5;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 11, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 335, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean preLockless>;
+        if $z0 != 0 goto label0;
+
+        return 0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 343, $r2);
+        $r2 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        result = virtualinvoke $r2.<org.apache.lucene.store.Directory: java.lang.String[] list()>();
+        if result != null goto label1;
+
+        $r3 = new java.io.IOException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cannot read directory ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 345, $r4);
+        $r4 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r4);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(": list() returned null");
+        $r5 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r5);
+        throw $r3;
+
+     label1:
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 348, $r7);
+        $r7 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r7);
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".s");
+        pattern = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        patternLength = virtualinvoke pattern.<java.lang.String: int length()>();
+        i = 0;
+
+     label2:
+        $i0 = lengthof result;
+        if i >= $i0 goto label4;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(result, 10, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 351, i, $r8);
+        $r8 = result[i];
+        $z0 = virtualinvoke $r8.<java.lang.String: boolean startsWith(java.lang.String)>(pattern);
+        if $z0 == 0 goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(result, 10, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 351, i, $r8);
+        $r8 = result[i];
+        $c1 = virtualinvoke $r8.<java.lang.String: char charAt(int)>(patternLength);
+        $z0 = staticinvoke <java.lang.Character: boolean isDigit(char)>($c1);
+        if $z0 == 0 goto label3;
+
+        return 1;
+
+     label3:
+        i = i + 1;
+        goto label2;
+
+     label4:
+        return 0;
+
+     label5:
+        i = 0;
+
+     label6:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 360, $r9);
+        $r9 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $i0 = lengthof $r9;
+        if i >= $i0 goto label8;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 361, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $l2 = $r1[i];
+        $b3 = $l2 cmp 1L;
+        if $b3 < 0 goto label7;
+
+        return 1;
+
+     label7:
+        i = i + 1;
+        goto label6;
+
+     label8:
+        i = 0;
+
+     label9:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 367, $r9);
+        $r9 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $i0 = lengthof $r9;
+        if i >= $i0 goto label11;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_hasSeparateNorms, "org.apache.lucene.index.SegmentInfo", 368, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $l2 = $r1[i];
+        $b3 = $l2 cmp 0L;
+        if $b3 != 0 goto label10;
+
+        $z0 = virtualinvoke this.<org.apache.lucene.index.SegmentInfo: boolean hasSeparateNorms(int)>(i);
+        if $z0 == 0 goto label10;
+
+        return 1;
+
+     label10:
+        i = i + 1;
+        goto label9;
+
+     label11:
+        return 0;
+    }
+
+    void advanceNormGen(int)
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        int fieldIndex;
+        long[] $r0;
+        long $l0, $l3, tid_advanceNormGen;
+        byte $b1;
+        java.lang.Thread thread_advanceNormGen;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        fieldIndex := @parameter0: int;
+        thread_advanceNormGen = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_advanceNormGen = virtualinvoke thread_advanceNormGen.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_advanceNormGen, "org.apache.lucene.index.SegmentInfo", 386, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $l0 = $r0[fieldIndex];
+        $b1 = $l0 cmp -1L;
+        if $b1 != 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_advanceNormGen, "org.apache.lucene.index.SegmentInfo", 387, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $r0[fieldIndex] = 1L;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_advanceNormGen, "org.apache.lucene.index.SegmentInfo", 389, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $l3 = $r0[fieldIndex];
+        $l3 = $l3 + 1L;
+        $r0[fieldIndex] = $l3;
+
+     label1:
+        specialinvoke this.<org.apache.lucene.index.SegmentInfo: void clearFiles()>();
+        return;
+    }
+
+    java.lang.String getNormFileName(int) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        int number;
+        long gen, tid_getNormFileName;
+        java.lang.String prefix, $r1, $r3;
+        long[] $r0;
+        boolean $z0;
+        java.lang.StringBuffer $r2;
+        java.lang.Thread thread_getNormFileName;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        number := @parameter0: int;
+        thread_getNormFileName = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getNormFileName = virtualinvoke thread_getNormFileName.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_getNormFileName, "org.apache.lucene.index.SegmentInfo", 403, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        if $r0 != null goto label0;
+
+        gen = 0L;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_getNormFileName, "org.apache.lucene.index.SegmentInfo", 406, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        gen = $r0[number];
+
+     label1:
+        $z0 = virtualinvoke this.<org.apache.lucene.index.SegmentInfo: boolean hasSeparateNorms(int)>(number);
+        if $z0 == 0 goto label2;
+
+        prefix = ".s";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_getNormFileName, "org.apache.lucene.index.SegmentInfo", 412, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(prefix);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(number);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        $r1 = staticinvoke <org.apache.lucene.index.IndexFileNames: java.lang.String fileNameFromGeneration(java.lang.String,java.lang.String,long)>($r1, $r3, gen);
+        return $r1;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 17, tid_getNormFileName, "org.apache.lucene.index.SegmentInfo", 415, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean hasSingleNormFile>;
+        if $z0 == 0 goto label3;
+
+        prefix = ".nrm";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_getNormFileName, "org.apache.lucene.index.SegmentInfo", 418, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r1 = staticinvoke <org.apache.lucene.index.IndexFileNames: java.lang.String fileNameFromGeneration(java.lang.String,java.lang.String,long)>($r1, prefix, 0L);
+        return $r1;
+
+     label3:
+        prefix = ".f";
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_getNormFileName, "org.apache.lucene.index.SegmentInfo", 423, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(prefix);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(number);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        $r1 = staticinvoke <org.apache.lucene.index.IndexFileNames: java.lang.String fileNameFromGeneration(java.lang.String,java.lang.String,long)>($r1, $r3, 0L);
+        return $r1;
+    }
+
+    void setUseCompoundFile(boolean)
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        boolean isCompoundFile;
+        long tid_setUseCompoundFile;
+        java.lang.Thread thread_setUseCompoundFile;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        isCompoundFile := @parameter0: boolean;
+        thread_setUseCompoundFile = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setUseCompoundFile = virtualinvoke thread_setUseCompoundFile.<java.lang.Thread: long getId()>();
+        if isCompoundFile == 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 16, tid_setUseCompoundFile, "org.apache.lucene.index.SegmentInfo", 434, 1);
+        this.<org.apache.lucene.index.SegmentInfo: byte isCompoundFile> = 1;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 16, tid_setUseCompoundFile, "org.apache.lucene.index.SegmentInfo", 436, -1);
+        this.<org.apache.lucene.index.SegmentInfo: byte isCompoundFile> = -1;
+
+     label1:
+        specialinvoke this.<org.apache.lucene.index.SegmentInfo: void clearFiles()>();
+        return;
+    }
+
+    boolean getUseCompoundFile() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        byte $b0;
+        org.apache.lucene.store.Directory $r0;
+        java.lang.StringBuffer $r1;
+        java.lang.String $r2, $r3;
+        boolean $z0;
+        long tid_getUseCompoundFile;
+        java.lang.Thread thread_getUseCompoundFile;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        thread_getUseCompoundFile = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getUseCompoundFile = virtualinvoke thread_getUseCompoundFile.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 16, tid_getUseCompoundFile, "org.apache.lucene.index.SegmentInfo", 446, $b0);
+        $b0 = this.<org.apache.lucene.index.SegmentInfo: byte isCompoundFile>;
+        if $b0 != -1 goto label0;
+
+        return 0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 16, tid_getUseCompoundFile, "org.apache.lucene.index.SegmentInfo", 448, $b0);
+        $b0 = this.<org.apache.lucene.index.SegmentInfo: byte isCompoundFile>;
+        if $b0 != 1 goto label1;
+
+        return 1;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_getUseCompoundFile, "org.apache.lucene.index.SegmentInfo", 451, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_getUseCompoundFile, "org.apache.lucene.index.SegmentInfo", 451, $r2);
+        $r2 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cfs");
+        $r3 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+        $z0 = virtualinvoke $r0.<org.apache.lucene.store.Directory: boolean fileExists(java.lang.String)>($r3);
+        return $z0;
+    }
+
+    int getDelCount() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        java.lang.String delFileName;
+        int $i0, $i1;
+        boolean $z0;
+        org.apache.lucene.util.BitVector $r0;
+        org.apache.lucene.store.Directory $r1;
+        java.lang.AssertionError $r2;
+        long tid_getDelCount;
+        java.lang.Thread thread_getDelCount;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        thread_getDelCount = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getDelCount = virtualinvoke thread_getDelCount.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 18, tid_getDelCount, "org.apache.lucene.index.SegmentInfo", 456, $i0);
+        $i0 = this.<org.apache.lucene.index.SegmentInfo: int delCount>;
+        if $i0 != -1 goto label1;
+
+        $z0 = virtualinvoke this.<org.apache.lucene.index.SegmentInfo: boolean hasDeletions()>();
+        if $z0 == 0 goto label0;
+
+        delFileName = virtualinvoke this.<org.apache.lucene.index.SegmentInfo: java.lang.String getDelFileName()>();
+        $r0 = new org.apache.lucene.util.BitVector;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_getDelCount, "org.apache.lucene.index.SegmentInfo", 459, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        specialinvoke $r0.<org.apache.lucene.util.BitVector: void <init>(org.apache.lucene.store.Directory,java.lang.String)>($r1, delFileName);
+        $i1 = virtualinvoke $r0.<org.apache.lucene.util.BitVector: int count()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 18, tid_getDelCount, "org.apache.lucene.index.SegmentInfo", 459, $i1);
+        this.<org.apache.lucene.index.SegmentInfo: int delCount> = $i1;
+        goto label1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 18, tid_getDelCount, "org.apache.lucene.index.SegmentInfo", 461, 0);
+        this.<org.apache.lucene.index.SegmentInfo: int delCount> = 0;
+
+     label1:
+        $z0 = <org.apache.lucene.index.SegmentInfo: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 18, tid_getDelCount, "org.apache.lucene.index.SegmentInfo", 463, $i0);
+        $i0 = this.<org.apache.lucene.index.SegmentInfo: int delCount>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 2, tid_getDelCount, "org.apache.lucene.index.SegmentInfo", 463, $i1);
+        $i1 = this.<org.apache.lucene.index.SegmentInfo: int docCount>;
+        if $i0 <= $i1 goto label2;
+
+        $r2 = new java.lang.AssertionError;
+        specialinvoke $r2.<java.lang.AssertionError: void <init>()>();
+        throw $r2;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 18, tid_getDelCount, "org.apache.lucene.index.SegmentInfo", 464, $i0);
+        $i0 = this.<org.apache.lucene.index.SegmentInfo: int delCount>;
+        return $i0;
+    }
+
+    void setDelCount(int)
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        int delCount, $i0;
+        boolean $z0;
+        java.lang.AssertionError $r0;
+        long tid_setDelCount;
+        java.lang.Thread thread_setDelCount;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        delCount := @parameter0: int;
+        thread_setDelCount = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setDelCount = virtualinvoke thread_setDelCount.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 18, tid_setDelCount, "org.apache.lucene.index.SegmentInfo", 468, delCount);
+        this.<org.apache.lucene.index.SegmentInfo: int delCount> = delCount;
+        $z0 = <org.apache.lucene.index.SegmentInfo: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 2, tid_setDelCount, "org.apache.lucene.index.SegmentInfo", 469, $i0);
+        $i0 = this.<org.apache.lucene.index.SegmentInfo: int docCount>;
+        if delCount <= $i0 goto label0;
+
+        $r0 = new java.lang.AssertionError;
+        specialinvoke $r0.<java.lang.AssertionError: void <init>()>();
+        throw $r0;
+
+     label0:
+        return;
+    }
+
+    int getDocStoreOffset()
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        int $i0;
+        long tid_getDocStoreOffset;
+        java.lang.Thread thread_getDocStoreOffset;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        thread_getDocStoreOffset = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getDocStoreOffset = virtualinvoke thread_getDocStoreOffset.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 13, tid_getDocStoreOffset, "org.apache.lucene.index.SegmentInfo", 473, $i0);
+        $i0 = this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset>;
+        return $i0;
+    }
+
+    boolean getDocStoreIsCompoundFile()
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        boolean $z0;
+        long tid_getDocStoreIsCompoundFile;
+        java.lang.Thread thread_getDocStoreIsCompoundFile;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        thread_getDocStoreIsCompoundFile = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getDocStoreIsCompoundFile = virtualinvoke thread_getDocStoreIsCompoundFile.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 14, tid_getDocStoreIsCompoundFile, "org.apache.lucene.index.SegmentInfo", 477, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean docStoreIsCompoundFile>;
+        return $z0;
+    }
+
+    void setDocStoreIsCompoundFile(boolean)
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        boolean v;
+        long tid_setDocStoreIsCompoundFile;
+        java.lang.Thread thread_setDocStoreIsCompoundFile;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        v := @parameter0: boolean;
+        thread_setDocStoreIsCompoundFile = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setDocStoreIsCompoundFile = virtualinvoke thread_setDocStoreIsCompoundFile.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 14, tid_setDocStoreIsCompoundFile, "org.apache.lucene.index.SegmentInfo", 481, v);
+        this.<org.apache.lucene.index.SegmentInfo: boolean docStoreIsCompoundFile> = v;
+        specialinvoke this.<org.apache.lucene.index.SegmentInfo: void clearFiles()>();
+        return;
+    }
+
+    java.lang.String getDocStoreSegment()
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String docStoreSegment>;
+        return $r0;
+    }
+
+    void setDocStoreOffset(int)
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        int offset;
+        long tid_setDocStoreOffset;
+        java.lang.Thread thread_setDocStoreOffset;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        offset := @parameter0: int;
+        thread_setDocStoreOffset = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setDocStoreOffset = virtualinvoke thread_setDocStoreOffset.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 13, tid_setDocStoreOffset, "org.apache.lucene.index.SegmentInfo", 490, offset);
+        this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset> = offset;
+        specialinvoke this.<org.apache.lucene.index.SegmentInfo: void clearFiles()>();
+        return;
+    }
+
+    void write(org.apache.lucene.store.IndexOutput) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        org.apache.lucene.store.IndexOutput output;
+        int j, $i0, $i2;
+        java.lang.String $r0;
+        long $l1, tid_write;
+        boolean $z0;
+        byte $b3;
+        long[] $r2, $r3;
+        java.lang.Thread thread_write;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        output := @parameter0: org.apache.lucene.store.IndexOutput;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_write, "org.apache.lucene.index.SegmentInfo", 499, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeString(java.lang.String)>($r0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 2, tid_write, "org.apache.lucene.index.SegmentInfo", 500, $i0);
+        $i0 = this.<org.apache.lucene.index.SegmentInfo: int docCount>;
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeInt(int)>($i0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 12, tid_write, "org.apache.lucene.index.SegmentInfo", 501, $l1);
+        $l1 = this.<org.apache.lucene.index.SegmentInfo: long delGen>;
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeLong(long)>($l1);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 13, tid_write, "org.apache.lucene.index.SegmentInfo", 502, $i0);
+        $i0 = this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset>;
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeInt(int)>($i0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 13, tid_write, "org.apache.lucene.index.SegmentInfo", 503, $i2);
+        $i2 = this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset>;
+        if $i2 == -1 goto label2;
+
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String docStoreSegment>;
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeString(java.lang.String)>($r0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 14, tid_write, "org.apache.lucene.index.SegmentInfo", 505, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean docStoreIsCompoundFile>;
+        if $z0 == 0 goto label0;
+
+        $z0 = 1;
+        goto label1;
+
+     label0:
+        $z0 = 0;
+
+     label1:
+        $b3 = (byte) $z0;
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b3);
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 17, tid_write, "org.apache.lucene.index.SegmentInfo", 508, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean hasSingleNormFile>;
+        if $z0 == 0 goto label3;
+
+        $z0 = 1;
+        goto label4;
+
+     label3:
+        $z0 = 0;
+
+     label4:
+        $b3 = (byte) $z0;
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_write, "org.apache.lucene.index.SegmentInfo", 509, $r2);
+        $r2 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        if $r2 != null goto label5;
+
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeInt(int)>(-1);
+        goto label7;
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_write, "org.apache.lucene.index.SegmentInfo", 512, $r3);
+        $r3 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $i0 = lengthof $r3;
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeInt(int)>($i0);
+        j = 0;
+
+     label6:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_write, "org.apache.lucene.index.SegmentInfo", 513, $r3);
+        $r3 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $i0 = lengthof $r3;
+        if j >= $i0 goto label7;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_write, "org.apache.lucene.index.SegmentInfo", 514, $r3);
+        $r3 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $l1 = $r3[j];
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeLong(long)>($l1);
+        j = j + 1;
+        goto label6;
+
+     label7:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 16, tid_write, "org.apache.lucene.index.SegmentInfo", 517, $b3);
+        $b3 = this.<org.apache.lucene.index.SegmentInfo: byte isCompoundFile>;
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 18, tid_write, "org.apache.lucene.index.SegmentInfo", 518, $i0);
+        $i0 = this.<org.apache.lucene.index.SegmentInfo: int delCount>;
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeInt(int)>($i0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean hasProx>;
+        if $z0 == 0 goto label8;
+
+        $z0 = 1;
+        goto label9;
+
+     label8:
+        $z0 = 0;
+
+     label9:
+        $b3 = (byte) $z0;
+        virtualinvoke output.<org.apache.lucene.store.IndexOutput: void writeByte(byte)>($b3);
+        return;
+    }
+
+    void setHasProx(boolean)
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        boolean hasProx;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        hasProx := @parameter0: boolean;
+        this.<org.apache.lucene.index.SegmentInfo: boolean hasProx> = hasProx;
+        specialinvoke this.<org.apache.lucene.index.SegmentInfo: void clearFiles()>();
+        return;
+    }
+
+    boolean getHasProx()
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean hasProx>;
+        return $z0;
+    }
+
+    private void addIfExists(java.util.List, java.lang.String) throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        java.util.List files;
+        java.lang.String fileName;
+        org.apache.lucene.store.Directory $r0;
+        boolean $z0;
+        long tid_addIfExists;
+        java.lang.Thread thread_addIfExists;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        files := @parameter0: java.util.List;
+        fileName := @parameter1: java.lang.String;
+        thread_addIfExists = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_addIfExists = virtualinvoke thread_addIfExists.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_addIfExists, "org.apache.lucene.index.SegmentInfo", 532, $r0);
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.store.Directory: boolean fileExists(java.lang.String)>(fileName);
+        if $z0 == 0 goto label0;
+
+        interfaceinvoke files.<java.util.List: boolean add(java.lang.Object)>(fileName);
+
+     label0:
+        return;
+    }
+
+    public java.util.List files() throws java.io.IOException
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        java.util.ArrayList $r0;
+        boolean useCompoundFile, $z0;
+        java.lang.String[] exts, allFiles;
+        int i, prefixLength, $i0, $i1;
+        java.lang.String delFileName, fileName, prefix, $r3, $r4, $r7, $r8;
+        long gen, $l2, $l3, tid_files;
+        java.util.List $r1, $r5;
+        java.lang.StringBuffer $r2, $r6, $r13;
+        java.lang.AssertionError $r9;
+        byte $b4;
+        org.apache.lucene.store.Directory $r10, $r15;
+        long[] $r11, $r12;
+        java.io.IOException $r14;
+        char $c5;
+        java.lang.Thread thread_files;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        thread_files = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_files = virtualinvoke thread_files.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_files, "org.apache.lucene.index.SegmentInfo", 544, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.util.List files>;
+        if $r1 == null goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_files, "org.apache.lucene.index.SegmentInfo", 546, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.util.List files>;
+        return $r1;
+
+     label0:
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_files, "org.apache.lucene.index.SegmentInfo", 549, $r0);
+        this.<org.apache.lucene.index.SegmentInfo: java.util.List files> = $r0;
+        useCompoundFile = virtualinvoke this.<org.apache.lucene.index.SegmentInfo: boolean getUseCompoundFile()>();
+        if useCompoundFile == 0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_files, "org.apache.lucene.index.SegmentInfo", 554, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.util.List files>;
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_files, "org.apache.lucene.index.SegmentInfo", 554, $r3);
+        $r3 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cfs");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>($r4);
+        goto label3;
+
+     label1:
+        exts = <org.apache.lucene.index.IndexFileNames: java.lang.String[] NON_STORE_INDEX_EXTENSIONS>;
+        i = 0;
+
+     label2:
+        $i0 = lengthof exts;
+        if i >= $i0 goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_files, "org.apache.lucene.index.SegmentInfo", 558, $r5);
+        $r5 = this.<org.apache.lucene.index.SegmentInfo: java.util.List files>;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_files, "org.apache.lucene.index.SegmentInfo", 558, $r7);
+        $r7 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r7);
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(exts, 10, tid_files, "org.apache.lucene.index.SegmentInfo", 558, i, $r7);
+        $r7 = exts[i];
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r7);
+        $r3 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke this.<org.apache.lucene.index.SegmentInfo: void addIfExists(java.util.List,java.lang.String)>($r5, $r3);
+        i = i + 1;
+        goto label2;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 13, tid_files, "org.apache.lucene.index.SegmentInfo", 561, $i1);
+        $i1 = this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset>;
+        if $i1 == -1 goto label8;
+
+        $z0 = <org.apache.lucene.index.SegmentInfo: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label4;
+
+        $r8 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String docStoreSegment>;
+        if $r8 != null goto label4;
+
+        $r9 = new java.lang.AssertionError;
+        specialinvoke $r9.<java.lang.AssertionError: void <init>()>();
+        throw $r9;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 14, tid_files, "org.apache.lucene.index.SegmentInfo", 565, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean docStoreIsCompoundFile>;
+        if $z0 == 0 goto label5;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_files, "org.apache.lucene.index.SegmentInfo", 566, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.util.List files>;
+        $r2 = new java.lang.StringBuffer;
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+        $r3 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String docStoreSegment>;
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r3);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r2 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cfx");
+        $r4 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>($r4);
+        goto label10;
+
+     label5:
+        exts = <org.apache.lucene.index.IndexFileNames: java.lang.String[] STORE_INDEX_EXTENSIONS>;
+        i = 0;
+
+     label6:
+        $i0 = lengthof exts;
+        if i >= $i0 goto label7;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_files, "org.apache.lucene.index.SegmentInfo", 570, $r5);
+        $r5 = this.<org.apache.lucene.index.SegmentInfo: java.util.List files>;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        $r7 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String docStoreSegment>;
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r7);
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(exts, 10, tid_files, "org.apache.lucene.index.SegmentInfo", 570, i, $r7);
+        $r7 = exts[i];
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r7);
+        $r3 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke this.<org.apache.lucene.index.SegmentInfo: void addIfExists(java.util.List,java.lang.String)>($r5, $r3);
+        i = i + 1;
+        goto label6;
+
+     label7:
+        goto label10;
+
+     label8:
+        if useCompoundFile != 0 goto label10;
+
+        exts = <org.apache.lucene.index.IndexFileNames: java.lang.String[] STORE_INDEX_EXTENSIONS>;
+        i = 0;
+
+     label9:
+        $i0 = lengthof exts;
+        if i >= $i0 goto label10;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_files, "org.apache.lucene.index.SegmentInfo", 577, $r5);
+        $r5 = this.<org.apache.lucene.index.SegmentInfo: java.util.List files>;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_files, "org.apache.lucene.index.SegmentInfo", 577, $r7);
+        $r7 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r7);
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(exts, 10, tid_files, "org.apache.lucene.index.SegmentInfo", 577, i, $r7);
+        $r7 = exts[i];
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r7);
+        $r3 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke this.<org.apache.lucene.index.SegmentInfo: void addIfExists(java.util.List,java.lang.String)>($r5, $r3);
+        i = i + 1;
+        goto label9;
+
+     label10:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_files, "org.apache.lucene.index.SegmentInfo", 580, $r8);
+        $r8 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 12, tid_files, "org.apache.lucene.index.SegmentInfo", 580, $l2);
+        $l2 = this.<org.apache.lucene.index.SegmentInfo: long delGen>;
+        delFileName = staticinvoke <org.apache.lucene.index.IndexFileNames: java.lang.String fileNameFromGeneration(java.lang.String,java.lang.String,long)>($r8, ".del", $l2);
+        if delFileName == null goto label12;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 12, tid_files, "org.apache.lucene.index.SegmentInfo", 581, $l3);
+        $l3 = this.<org.apache.lucene.index.SegmentInfo: long delGen>;
+        $b4 = $l3 cmp 1L;
+        if $b4 >= 0 goto label11;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_files, "org.apache.lucene.index.SegmentInfo", 581, $r10);
+        $r10 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $z0 = virtualinvoke $r10.<org.apache.lucene.store.Directory: boolean fileExists(java.lang.String)>(delFileName);
+        if $z0 == 0 goto label12;
+
+     label11:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_files, "org.apache.lucene.index.SegmentInfo", 582, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.util.List files>;
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>(delFileName);
+
+     label12:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_files, "org.apache.lucene.index.SegmentInfo", 586, $r11);
+        $r11 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        if $r11 == null goto label21;
+
+        i = 0;
+
+     label13:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_files, "org.apache.lucene.index.SegmentInfo", 587, $r12);
+        $r12 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        $i0 = lengthof $r12;
+        if i >= $i0 goto label20;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 15, tid_files, "org.apache.lucene.index.SegmentInfo", 588, $r11);
+        $r11 = this.<org.apache.lucene.index.SegmentInfo: long[] normGen>;
+        gen = $r11[i];
+        $b4 = gen cmp 1L;
+        if $b4 < 0 goto label14;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_files, "org.apache.lucene.index.SegmentInfo", 591, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.util.List files>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_files, "org.apache.lucene.index.SegmentInfo", 591, $r4);
+        $r4 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".s");
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(i);
+        $r3 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        $r4 = staticinvoke <org.apache.lucene.index.IndexFileNames: java.lang.String fileNameFromGeneration(java.lang.String,java.lang.String,long)>($r4, $r3, gen);
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>($r4);
+        goto label19;
+
+     label14:
+        $b4 = -1L cmp gen;
+        if $b4 != 0 goto label16;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 17, tid_files, "org.apache.lucene.index.SegmentInfo", 595, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean hasSingleNormFile>;
+        if $z0 != 0 goto label19;
+
+        if useCompoundFile != 0 goto label19;
+
+        $r13 = new java.lang.StringBuffer;
+        specialinvoke $r13.<java.lang.StringBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_files, "org.apache.lucene.index.SegmentInfo", 596, $r4);
+        $r4 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("f");
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(i);
+        fileName = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.String toString()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_files, "org.apache.lucene.index.SegmentInfo", 597, $r10);
+        $r10 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $z0 = virtualinvoke $r10.<org.apache.lucene.store.Directory: boolean fileExists(java.lang.String)>(fileName);
+        if $z0 == 0 goto label15;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_files, "org.apache.lucene.index.SegmentInfo", 598, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.util.List files>;
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>(fileName);
+
+     label15:
+        goto label19;
+
+     label16:
+        $b4 = 0L cmp gen;
+        if $b4 != 0 goto label19;
+
+        fileName = null;
+        if useCompoundFile == 0 goto label17;
+
+        $r13 = new java.lang.StringBuffer;
+        specialinvoke $r13.<java.lang.StringBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_files, "org.apache.lucene.index.SegmentInfo", 605, $r4);
+        $r4 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("s");
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(i);
+        fileName = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.String toString()>();
+        goto label18;
+
+     label17:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 17, tid_files, "org.apache.lucene.index.SegmentInfo", 606, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean hasSingleNormFile>;
+        if $z0 != 0 goto label18;
+
+        $r13 = new java.lang.StringBuffer;
+        specialinvoke $r13.<java.lang.StringBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_files, "org.apache.lucene.index.SegmentInfo", 607, $r4);
+        $r4 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("f");
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(i);
+        fileName = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.String toString()>();
+
+     label18:
+        if fileName == null goto label19;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_files, "org.apache.lucene.index.SegmentInfo", 609, $r10);
+        $r10 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $z0 = virtualinvoke $r10.<org.apache.lucene.store.Directory: boolean fileExists(java.lang.String)>(fileName);
+        if $z0 == 0 goto label19;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_files, "org.apache.lucene.index.SegmentInfo", 610, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.util.List files>;
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>(fileName);
+
+     label19:
+        i = i + 1;
+        goto label13;
+
+     label20:
+        goto label28;
+
+     label21:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 11, tid_files, "org.apache.lucene.index.SegmentInfo", 614, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean preLockless>;
+        if $z0 != 0 goto label22;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 17, tid_files, "org.apache.lucene.index.SegmentInfo", 614, $z0);
+        $z0 = this.<org.apache.lucene.index.SegmentInfo: boolean hasSingleNormFile>;
+        if $z0 != 0 goto label28;
+
+        if useCompoundFile != 0 goto label28;
+
+     label22:
+        if useCompoundFile == 0 goto label23;
+
+        $r13 = new java.lang.StringBuffer;
+        specialinvoke $r13.<java.lang.StringBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_files, "org.apache.lucene.index.SegmentInfo", 619, $r4);
+        $r4 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("s");
+        prefix = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.String toString()>();
+        goto label24;
+
+     label23:
+        $r13 = new java.lang.StringBuffer;
+        specialinvoke $r13.<java.lang.StringBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_files, "org.apache.lucene.index.SegmentInfo", 621, $r4);
+        $r4 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(".");
+        $r13 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("f");
+        prefix = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.String toString()>();
+
+     label24:
+        prefixLength = virtualinvoke prefix.<java.lang.String: int length()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_files, "org.apache.lucene.index.SegmentInfo", 623, $r10);
+        $r10 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        allFiles = virtualinvoke $r10.<org.apache.lucene.store.Directory: java.lang.String[] list()>();
+        if allFiles != null goto label25;
+
+        $r14 = new java.io.IOException;
+        $r6 = new java.lang.StringBuffer;
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("cannot read directory ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_files, "org.apache.lucene.index.SegmentInfo", 625, $r15);
+        $r15 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r15);
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(": list() returned null");
+        $r3 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r14.<java.io.IOException: void <init>(java.lang.String)>($r3);
+        throw $r14;
+
+     label25:
+        i = 0;
+
+     label26:
+        $i0 = lengthof allFiles;
+        if i >= $i0 goto label28;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(allFiles, 10, tid_files, "org.apache.lucene.index.SegmentInfo", 627, i, fileName);
+        fileName = allFiles[i];
+        $i1 = virtualinvoke fileName.<java.lang.String: int length()>();
+        if $i1 <= prefixLength goto label27;
+
+        $c5 = virtualinvoke fileName.<java.lang.String: char charAt(int)>(prefixLength);
+        $z0 = staticinvoke <java.lang.Character: boolean isDigit(char)>($c5);
+        if $z0 == 0 goto label27;
+
+        $z0 = virtualinvoke fileName.<java.lang.String: boolean startsWith(java.lang.String)>(prefix);
+        if $z0 == 0 goto label27;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_files, "org.apache.lucene.index.SegmentInfo", 629, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.util.List files>;
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>(fileName);
+
+     label27:
+        i = i + 1;
+        goto label26;
+
+     label28:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_files, "org.apache.lucene.index.SegmentInfo", 633, $r1);
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.util.List files>;
+        return $r1;
+    }
+
+    private void clearFiles()
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        long tid_clearFiles;
+        java.lang.Thread thread_clearFiles;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        thread_clearFiles = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clearFiles = virtualinvoke thread_clearFiles.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 20, tid_clearFiles, "org.apache.lucene.index.SegmentInfo", 639, null);
+        this.<org.apache.lucene.index.SegmentInfo: java.util.List files> = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>(this, 19, tid_clearFiles, "org.apache.lucene.index.SegmentInfo", 640, -1L);
+        this.<org.apache.lucene.index.SegmentInfo: long sizeInBytes> = -1L;
+        return;
+    }
+
+    public java.lang.String segString(org.apache.lucene.store.Directory)
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        org.apache.lucene.store.Directory dir, $r3;
+        java.lang.String cfs, docStore, $r2, $r4;
+        java.io.IOException ioe, $r0;
+        boolean $z0;
+        int $i0, $i1;
+        java.lang.StringBuffer $r1;
+        long tid_segString;
+        java.lang.Thread thread_segString;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        dir := @parameter0: org.apache.lucene.store.Directory;
+        thread_segString = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_segString = virtualinvoke thread_segString.<java.lang.Thread: long getId()>();
+
+     label0:
+        $z0 = virtualinvoke this.<org.apache.lucene.index.SegmentInfo: boolean getUseCompoundFile()>();
+        if $z0 == 0 goto label1;
+
+        cfs = "c";
+        goto label2;
+
+     label1:
+        cfs = "C";
+
+     label2:
+        goto label4;
+
+     label3:
+        $r0 := @caughtexception;
+        ioe = $r0;
+        cfs = "?";
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 13, tid_segString, "org.apache.lucene.index.SegmentInfo", 657, $i0);
+        $i0 = this.<org.apache.lucene.index.SegmentInfo: int docStoreOffset>;
+        if $i0 == -1 goto label5;
+
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("->");
+        $r2 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String docStoreSegment>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        docStore = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+        goto label6;
+
+     label5:
+        docStore = "";
+
+     label6:
+        $r1 = new java.lang.StringBuffer;
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_segString, "org.apache.lucene.index.SegmentInfo", 662, $r2);
+        $r2 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(":");
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(cfs);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_segString, "org.apache.lucene.index.SegmentInfo", 662, $r3);
+        $r3 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        if $r3 != dir goto label7;
+
+        $r2 = "";
+        goto label8;
+
+     label7:
+        $r2 = "x";
+
+     label8:
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 2, tid_segString, "org.apache.lucene.index.SegmentInfo", 662, $i1);
+        $i1 = this.<org.apache.lucene.index.SegmentInfo: int docCount>;
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i1);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(docStore);
+        $r4 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r4;
+
+        catch java.io.IOException from label0 to label2 with label3;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        org.apache.lucene.index.SegmentInfo this, other;
+        java.lang.Object obj;
+        java.lang.ClassCastException cce, $r0;
+        org.apache.lucene.store.Directory $r1, $r2;
+        java.lang.String $r3, $r4;
+        boolean $z0;
+        long tid_equals;
+        java.lang.Thread thread_equals;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        obj := @parameter0: java.lang.Object;
+        thread_equals = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_equals = virtualinvoke thread_equals.<java.lang.Thread: long getId()>();
+
+     label0:
+        other = (org.apache.lucene.index.SegmentInfo) obj;
+
+     label1:
+        goto label3;
+
+     label2:
+        $r0 := @caughtexception;
+        cce = $r0;
+        return 0;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(other, 0, tid_equals, "org.apache.lucene.index.SegmentInfo", 677, $r1);
+        $r1 = other.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 0, tid_equals, "org.apache.lucene.index.SegmentInfo", 677, $r2);
+        $r2 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        if $r1 != $r2 goto label4;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(other, 1, tid_equals, "org.apache.lucene.index.SegmentInfo", 677, $r3);
+        $r3 = other.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 1, tid_equals, "org.apache.lucene.index.SegmentInfo", 677, $r4);
+        $r4 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+        if $z0 == 0 goto label4;
+
+        $z0 = 1;
+        goto label5;
+
+     label4:
+        $z0 = 0;
+
+     label5:
+        return $z0;
+
+        catch java.lang.ClassCastException from label0 to label1 with label2;
+    }
+
+    public int hashCode()
+    {
+        org.apache.lucene.index.SegmentInfo this;
+        org.apache.lucene.store.Directory $r0;
+        int $i0, $i1;
+        java.lang.String $r1;
+
+        this := @this: org.apache.lucene.index.SegmentInfo;
+        $r0 = this.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        $i0 = virtualinvoke $r0.<java.lang.Object: int hashCode()>();
+        $r1 = this.<org.apache.lucene.index.SegmentInfo: java.lang.String name>;
+        $i1 = virtualinvoke $r1.<java.lang.String: int hashCode()>();
+        $i0 = $i0 + $i1;
+        return $i0;
+    }
+
+    static java.lang.Class class$(java.lang.String)
+    {
+        java.lang.String x0;
+        java.lang.ClassNotFoundException x1, $r1;
+        java.lang.Class $r0;
+        java.lang.NoClassDefFoundError $r2;
+        java.lang.Throwable $r3;
+
+        x0 := @parameter0: java.lang.String;
+
+     label0:
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(x0);
+
+     label1:
+        return $r0;
+
+     label2:
+        $r1 := @caughtexception;
+        x1 = $r1;
+        $r2 = new java.lang.NoClassDefFoundError;
+        specialinvoke $r2.<java.lang.NoClassDefFoundError: void <init>()>();
+        $r3 = virtualinvoke $r2.<java.lang.NoClassDefFoundError: java.lang.Throwable initCause(java.lang.Throwable)>(x1);
+        throw $r3;
+
+        catch java.lang.ClassNotFoundException from label0 to label1 with label2;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        boolean $z0;
+
+        $r0 = <org.apache.lucene.index.SegmentInfo: java.lang.Class class$org$apache$lucene$index$SegmentInfo>;
+        if $r0 != null goto label0;
+
+        $r0 = staticinvoke <org.apache.lucene.index.SegmentInfo: java.lang.Class class$(java.lang.String)>("org.apache.lucene.index.SegmentInfo");
+        <org.apache.lucene.index.SegmentInfo: java.lang.Class class$org$apache$lucene$index$SegmentInfo> = $r0;
+        goto label1;
+
+     label0:
+        $r0 = <org.apache.lucene.index.SegmentInfo: java.lang.Class class$org$apache$lucene$index$SegmentInfo>;
+
+     label1:
+        $z0 = virtualinvoke $r0.<java.lang.Class: boolean desiredAssertionStatus()>();
+        if $z0 != 0 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        <org.apache.lucene.index.SegmentInfo: boolean $assertionsDisabled> = $z0;
+        return;
+    }
+}

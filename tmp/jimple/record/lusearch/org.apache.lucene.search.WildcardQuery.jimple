@@ -1,0 +1,92 @@
+public class org.apache.lucene.search.WildcardQuery extends org.apache.lucene.search.MultiTermQuery
+{
+    private boolean termContainsWildcard;
+
+    public void <init>(org.apache.lucene.index.Term)
+    {
+        org.apache.lucene.search.WildcardQuery this;
+        org.apache.lucene.index.Term term;
+        java.lang.String $r1;
+        int $i0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.WildcardQuery;
+        term := @parameter0: org.apache.lucene.index.Term;
+        specialinvoke this.<org.apache.lucene.search.MultiTermQuery: void <init>(org.apache.lucene.index.Term)>(term);
+        $r1 = virtualinvoke term.<org.apache.lucene.index.Term: java.lang.String text()>();
+        $i0 = virtualinvoke $r1.<java.lang.String: int indexOf(int)>(42);
+        if $i0 != -1 goto label0;
+
+        $r1 = virtualinvoke term.<org.apache.lucene.index.Term: java.lang.String text()>();
+        $i0 = virtualinvoke $r1.<java.lang.String: int indexOf(int)>(63);
+        if $i0 == -1 goto label1;
+
+     label0:
+        $z0 = 1;
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        this.<org.apache.lucene.search.WildcardQuery: boolean termContainsWildcard> = $z0;
+        return;
+    }
+
+    protected org.apache.lucene.search.FilteredTermEnum getEnum(org.apache.lucene.index.IndexReader) throws java.io.IOException
+    {
+        org.apache.lucene.search.WildcardQuery this;
+        org.apache.lucene.index.IndexReader reader;
+        org.apache.lucene.search.WildcardTermEnum $r0;
+        org.apache.lucene.index.Term $r1;
+
+        this := @this: org.apache.lucene.search.WildcardQuery;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        $r0 = new org.apache.lucene.search.WildcardTermEnum;
+        $r1 = virtualinvoke this.<org.apache.lucene.search.WildcardQuery: org.apache.lucene.index.Term getTerm()>();
+        specialinvoke $r0.<org.apache.lucene.search.WildcardTermEnum: void <init>(org.apache.lucene.index.IndexReader,org.apache.lucene.index.Term)>(reader, $r1);
+        return $r0;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        org.apache.lucene.search.WildcardQuery this;
+        java.lang.Object o;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.WildcardQuery;
+        o := @parameter0: java.lang.Object;
+        $z0 = o instanceof org.apache.lucene.search.WildcardQuery;
+        if $z0 == 0 goto label0;
+
+        $z0 = specialinvoke this.<org.apache.lucene.search.MultiTermQuery: boolean equals(java.lang.Object)>(o);
+        return $z0;
+
+     label0:
+        return 0;
+    }
+
+    public org.apache.lucene.search.Query rewrite(org.apache.lucene.index.IndexReader) throws java.io.IOException
+    {
+        org.apache.lucene.search.WildcardQuery this;
+        org.apache.lucene.index.IndexReader reader;
+        boolean $z0;
+        org.apache.lucene.search.Query $r0;
+        org.apache.lucene.search.TermQuery $r1;
+        org.apache.lucene.index.Term $r2;
+
+        this := @this: org.apache.lucene.search.WildcardQuery;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        $z0 = this.<org.apache.lucene.search.WildcardQuery: boolean termContainsWildcard>;
+        if $z0 == 0 goto label0;
+
+        $r0 = specialinvoke this.<org.apache.lucene.search.MultiTermQuery: org.apache.lucene.search.Query rewrite(org.apache.lucene.index.IndexReader)>(reader);
+        return $r0;
+
+     label0:
+        $r1 = new org.apache.lucene.search.TermQuery;
+        $r2 = virtualinvoke this.<org.apache.lucene.search.WildcardQuery: org.apache.lucene.index.Term getTerm()>();
+        specialinvoke $r1.<org.apache.lucene.search.TermQuery: void <init>(org.apache.lucene.index.Term)>($r2);
+        return $r1;
+    }
+}

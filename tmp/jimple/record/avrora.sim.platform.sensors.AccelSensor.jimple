@@ -1,0 +1,98 @@
+public class avrora.sim.platform.sensors.AccelSensor extends avrora.sim.platform.sensors.Sensor
+{
+    protected final avrora.sim.mcu.AtmelMicrocontroller mcu;
+    protected final int channel;
+    protected final avrora.sim.FiniteStateMachine fsm;
+    protected static final java.lang.String[] names;
+    protected boolean power;
+    protected boolean on;
+    public avrora.sim.mcu.ADC adcDevice;
+
+    public void <init>(avrora.sim.mcu.AtmelMicrocontroller, int, java.lang.String)
+    {
+        avrora.sim.platform.sensors.AccelSensor this;
+        avrora.sim.mcu.AtmelMicrocontroller m, $r1, $r5, $r8;
+        int adcChannel, $i0;
+        java.lang.String onPin;
+        java.lang.String[] $r0;
+        avrora.sim.mcu.Microcontroller$Pin $r2;
+        avrora.sim.platform.sensors.AccelSensor$OnPin $r3;
+        avrora.sim.FiniteStateMachine $r4;
+        avrora.sim.clock.ClockDomain $r6;
+        avrora.sim.clock.MainClock $r7;
+        avrora.sim.mcu.AtmelInternalDevice $r9;
+        avrora.sim.mcu.ADC $r10, $r11;
+        avrora.sim.platform.sensors.AccelSensor$ADCInput $r12;
+
+        this := @this: avrora.sim.platform.sensors.AccelSensor;
+        m := @parameter0: avrora.sim.mcu.AtmelMicrocontroller;
+        adcChannel := @parameter1: int;
+        onPin := @parameter2: java.lang.String;
+        specialinvoke this.<avrora.sim.platform.sensors.Sensor: void <init>()>();
+        this.<avrora.sim.platform.sensors.AccelSensor: avrora.sim.mcu.AtmelMicrocontroller mcu> = m;
+        this.<avrora.sim.platform.sensors.AccelSensor: int channel> = adcChannel;
+        $r1 = this.<avrora.sim.platform.sensors.AccelSensor: avrora.sim.mcu.AtmelMicrocontroller mcu>;
+        $r2 = virtualinvoke $r1.<avrora.sim.mcu.AtmelMicrocontroller: avrora.sim.mcu.Microcontroller$Pin getPin(java.lang.String)>(onPin);
+        $r3 = new avrora.sim.platform.sensors.AccelSensor$OnPin;
+        specialinvoke $r3.<avrora.sim.platform.sensors.AccelSensor$OnPin: void <init>(avrora.sim.platform.sensors.AccelSensor)>(this);
+        interfaceinvoke $r2.<avrora.sim.mcu.Microcontroller$Pin: void connectOutput(avrora.sim.mcu.Microcontroller$Pin$Output)>($r3);
+        $r4 = new avrora.sim.FiniteStateMachine;
+        $r5 = this.<avrora.sim.platform.sensors.AccelSensor: avrora.sim.mcu.AtmelMicrocontroller mcu>;
+        $r6 = virtualinvoke $r5.<avrora.sim.mcu.AtmelMicrocontroller: avrora.sim.clock.ClockDomain getClockDomain()>();
+        $r7 = virtualinvoke $r6.<avrora.sim.clock.ClockDomain: avrora.sim.clock.MainClock getMainClock()>();
+        $r0 = <avrora.sim.platform.sensors.AccelSensor: java.lang.String[] names>;
+        specialinvoke $r4.<avrora.sim.FiniteStateMachine: void <init>(avrora.sim.clock.Clock,int,java.lang.String[],int)>($r7, 0, $r0, 0);
+        this.<avrora.sim.platform.sensors.AccelSensor: avrora.sim.FiniteStateMachine fsm> = $r4;
+        $r8 = this.<avrora.sim.platform.sensors.AccelSensor: avrora.sim.mcu.AtmelMicrocontroller mcu>;
+        $r9 = virtualinvoke $r8.<avrora.sim.mcu.AtmelMicrocontroller: avrora.sim.mcu.AtmelInternalDevice getDevice(java.lang.String)>("adc");
+        $r10 = (avrora.sim.mcu.ADC) $r9;
+        this.<avrora.sim.platform.sensors.AccelSensor: avrora.sim.mcu.ADC adcDevice> = $r10;
+        $r11 = this.<avrora.sim.platform.sensors.AccelSensor: avrora.sim.mcu.ADC adcDevice>;
+        $r12 = new avrora.sim.platform.sensors.AccelSensor$ADCInput;
+        specialinvoke $r12.<avrora.sim.platform.sensors.AccelSensor$ADCInput: void <init>(avrora.sim.platform.sensors.AccelSensor)>(this);
+        $i0 = this.<avrora.sim.platform.sensors.AccelSensor: int channel>;
+        virtualinvoke $r11.<avrora.sim.mcu.ADC: void connectADCInput(avrora.sim.mcu.ADC$ADCInput,int)>($r12, $i0);
+        return;
+    }
+
+    private int state()
+    {
+        avrora.sim.platform.sensors.AccelSensor this;
+        boolean $z0;
+        long tid_state;
+        java.lang.Thread thread_state;
+
+        this := @this: avrora.sim.platform.sensors.AccelSensor;
+        thread_state = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_state = virtualinvoke thread_state.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 58, tid_state, "avrora.sim.platform.sensors.AccelSensor", 73, $z0);
+        $z0 = this.<avrora.sim.platform.sensors.AccelSensor: boolean on>;
+        if $z0 != 0 goto label0;
+
+        return 0;
+
+     label0:
+        return 1;
+    }
+
+    static int access$000(avrora.sim.platform.sensors.AccelSensor)
+    {
+        avrora.sim.platform.sensors.AccelSensor x0;
+        int $i0;
+
+        x0 := @parameter0: avrora.sim.platform.sensors.AccelSensor;
+        $i0 = specialinvoke x0.<avrora.sim.platform.sensors.AccelSensor: int state()>();
+        return $i0;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String[] $r0;
+
+        $r0 = newarray (java.lang.String)[2];
+        $r0[0] = "power down";
+        $r0[1] = "on";
+        <avrora.sim.platform.sensors.AccelSensor: java.lang.String[] names> = $r0;
+        return;
+    }
+}

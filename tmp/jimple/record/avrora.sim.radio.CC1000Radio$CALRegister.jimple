@@ -1,0 +1,159 @@
+public class avrora.sim.radio.CC1000Radio$CALRegister extends avrora.sim.radio.CC1000Radio$RadioRegister
+{
+    static final int CAL_START;
+    static final int CAL_DUAL;
+    static final int CAL_WAIT;
+    static final int CAL_CURRENT;
+    static final int CAL_COMPLETE;
+    boolean calStart;
+    boolean calDual;
+    boolean calWait;
+    boolean calCurrent;
+    boolean calComplete;
+    static final int CAL_ITERATE_NORMAL;
+    int calIterate;
+    avrora.sim.radio.CC1000Radio$CALRegister$Calibrate calibrate;
+    boolean calibrating;
+    final avrora.sim.radio.CC1000Radio this$0;
+
+    void <init>(avrora.sim.radio.CC1000Radio)
+    {
+        avrora.sim.radio.CC1000Radio$CALRegister this;
+        avrora.sim.radio.CC1000Radio l1;
+        avrora.sim.radio.CC1000Radio$CALRegister$Calibrate $r0;
+
+        this := @this: avrora.sim.radio.CC1000Radio$CALRegister;
+        l1 := @parameter0: avrora.sim.radio.CC1000Radio;
+        this.<avrora.sim.radio.CC1000Radio$CALRegister: avrora.sim.radio.CC1000Radio this$0> = l1;
+        specialinvoke this.<avrora.sim.radio.CC1000Radio$RadioRegister: void <init>(avrora.sim.radio.CC1000Radio,java.lang.String,byte)>(l1, "CAL", 5);
+        $r0 = new avrora.sim.radio.CC1000Radio$CALRegister$Calibrate;
+        specialinvoke $r0.<avrora.sim.radio.CC1000Radio$CALRegister$Calibrate: void <init>(avrora.sim.radio.CC1000Radio$CALRegister)>(this);
+        this.<avrora.sim.radio.CC1000Radio$CALRegister: avrora.sim.radio.CC1000Radio$CALRegister$Calibrate calibrate> = $r0;
+        return;
+    }
+
+    protected void decode(byte)
+    {
+        avrora.sim.radio.CC1000Radio$CALRegister this;
+        byte val, $b0;
+        boolean oldCalStart, $z0, $z1;
+        double calMs, $d0;
+        avrora.sim.radio.CC1000Radio $r0, $r2;
+        avrora.sim.radio.CC1000Radio$PLLRegister $r1;
+        int $i1;
+        avrora.sim.clock.Clock $r3, $r5;
+        avrora.sim.radio.CC1000Radio$CALRegister$Calibrate $r4;
+        long $l2, tid_decode;
+        java.lang.Thread thread_decode;
+
+        this := @this: avrora.sim.radio.CC1000Radio$CALRegister;
+        val := @parameter0: byte;
+        thread_decode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_decode = virtualinvoke thread_decode.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 143, tid_decode, "avrora.sim.radio.CC1000Radio$CALRegister", 665, oldCalStart);
+        oldCalStart = this.<avrora.sim.radio.CC1000Radio$CALRegister: boolean calStart>;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 7);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 143, tid_decode, "avrora.sim.radio.CC1000Radio$CALRegister", 666, $z0);
+        this.<avrora.sim.radio.CC1000Radio$CALRegister: boolean calStart> = $z0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 6);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 144, tid_decode, "avrora.sim.radio.CC1000Radio$CALRegister", 667, $z0);
+        this.<avrora.sim.radio.CC1000Radio$CALRegister: boolean calDual> = $z0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 5);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 145, tid_decode, "avrora.sim.radio.CC1000Radio$CALRegister", 668, $z0);
+        this.<avrora.sim.radio.CC1000Radio$CALRegister: boolean calWait> = $z0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 4);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 146, tid_decode, "avrora.sim.radio.CC1000Radio$CALRegister", 669, $z0);
+        this.<avrora.sim.radio.CC1000Radio$CALRegister: boolean calCurrent> = $z0;
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 147, tid_decode, "avrora.sim.radio.CC1000Radio$CALRegister", 670, $z0);
+        this.<avrora.sim.radio.CC1000Radio$CALRegister: boolean calComplete> = $z0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 64, tid_decode, "avrora.sim.radio.CC1000Radio$CALRegister", 672, $b0);
+        $b0 = this.<avrora.sim.radio.CC1000Radio$CALRegister: byte value>;
+        $b0 = $b0 & 7;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 148, tid_decode, "avrora.sim.radio.CC1000Radio$CALRegister", 672, $b0);
+        this.<avrora.sim.radio.CC1000Radio$CALRegister: int calIterate> = $b0;
+        if oldCalStart != 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 143, tid_decode, "avrora.sim.radio.CC1000Radio$CALRegister", 674, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$CALRegister: boolean calStart>;
+        if $z1 == 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 149, tid_decode, "avrora.sim.radio.CC1000Radio$CALRegister", 674, $z1);
+        $z1 = this.<avrora.sim.radio.CC1000Radio$CALRegister: boolean calibrating>;
+        if $z1 != 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 149, tid_decode, "avrora.sim.radio.CC1000Radio$CALRegister", 675, 1);
+        this.<avrora.sim.radio.CC1000Radio$CALRegister: boolean calibrating> = 1;
+        $r0 = this.<avrora.sim.radio.CC1000Radio$CALRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r1 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.radio.CC1000Radio$PLLRegister PLL_reg>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r1, 36, tid_decode, "avrora.sim.radio.CC1000Radio$CALRegister", 684, $i1);
+        $i1 = $r1.<avrora.sim.radio.CC1000Radio$PLLRegister: int refDiv>;
+        $d0 = (double) $i1;
+        calMs = 2.3057725694444446 * $d0;
+        $r2 = this.<avrora.sim.radio.CC1000Radio$CALRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r3 = $r2.<avrora.sim.radio.CC1000Radio: avrora.sim.clock.Clock clock>;
+        $r4 = this.<avrora.sim.radio.CC1000Radio$CALRegister: avrora.sim.radio.CC1000Radio$CALRegister$Calibrate calibrate>;
+        $r0 = this.<avrora.sim.radio.CC1000Radio$CALRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r5 = $r0.<avrora.sim.radio.CC1000Radio: avrora.sim.clock.Clock clock>;
+        $l2 = virtualinvoke $r5.<avrora.sim.clock.Clock: long millisToCycles(double)>(calMs);
+        virtualinvoke $r3.<avrora.sim.clock.Clock: void insertEvent(avrora.sim.Simulator$Event,long)>($r4, $l2);
+
+     label0:
+        return;
+    }
+
+    protected void printStatus()
+    {
+        avrora.sim.radio.CC1000Radio$CALRegister this;
+        java.lang.StringBuffer $r0, buf;
+        boolean $z0;
+        char $c0;
+        int $i1;
+        avrora.sim.radio.CC1000Radio $r1;
+        avrora.sim.output.SimPrinter $r2;
+        java.lang.String $r3;
+        long tid_printStatus;
+        java.lang.Thread thread_printStatus;
+
+        this := @this: avrora.sim.radio.CC1000Radio$CALRegister;
+        thread_printStatus = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_printStatus = virtualinvoke thread_printStatus.<java.lang.Thread: long getId()>();
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>(int)>(100);
+        buf = $r0;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("CC1000[CAL]: cal start: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 143, tid_printStatus, "avrora.sim.radio.CC1000Radio$CALRegister", 693, $z0);
+        $z0 = this.<avrora.sim.radio.CC1000Radio$CALRegister: boolean calStart>;
+        $c0 = staticinvoke <cck.text.StringUtil: char toBit(boolean)>($z0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", dual: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 144, tid_printStatus, "avrora.sim.radio.CC1000Radio$CALRegister", 695, $z0);
+        $z0 = this.<avrora.sim.radio.CC1000Radio$CALRegister: boolean calDual>;
+        $c0 = staticinvoke <cck.text.StringUtil: char toBit(boolean)>($z0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", wait: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 145, tid_printStatus, "avrora.sim.radio.CC1000Radio$CALRegister", 697, $z0);
+        $z0 = this.<avrora.sim.radio.CC1000Radio$CALRegister: boolean calWait>;
+        $c0 = staticinvoke <cck.text.StringUtil: char toBit(boolean)>($z0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", current: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 146, tid_printStatus, "avrora.sim.radio.CC1000Radio$CALRegister", 699, $z0);
+        $z0 = this.<avrora.sim.radio.CC1000Radio$CALRegister: boolean calCurrent>;
+        $c0 = staticinvoke <cck.text.StringUtil: char toBit(boolean)>($z0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", complete: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 147, tid_printStatus, "avrora.sim.radio.CC1000Radio$CALRegister", 701, $z0);
+        $z0 = this.<avrora.sim.radio.CC1000Radio$CALRegister: boolean calComplete>;
+        $c0 = staticinvoke <cck.text.StringUtil: char toBit(boolean)>($z0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c0);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(", iterate: ");
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 148, tid_printStatus, "avrora.sim.radio.CC1000Radio$CALRegister", 703, $i1);
+        $i1 = this.<avrora.sim.radio.CC1000Radio$CALRegister: int calIterate>;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i1);
+        $r1 = this.<avrora.sim.radio.CC1000Radio$CALRegister: avrora.sim.radio.CC1000Radio this$0>;
+        $r2 = $r1.<avrora.sim.radio.CC1000Radio: avrora.sim.output.SimPrinter radioPrinter>;
+        $r3 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke $r2.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r3);
+        return;
+    }
+}

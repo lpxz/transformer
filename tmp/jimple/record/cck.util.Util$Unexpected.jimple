@@ -1,0 +1,52 @@
+public class cck.util.Util$Unexpected extends cck.util.Util$Error
+{
+    public final java.lang.Throwable thrown;
+
+    public void <init>(java.lang.Throwable)
+    {
+        cck.util.Util$Unexpected this;
+        java.lang.Throwable t;
+        java.lang.Class $r0;
+        java.lang.String $r1;
+
+        this := @this: cck.util.Util$Unexpected;
+        t := @parameter0: java.lang.Throwable;
+        $r0 = virtualinvoke t.<java.lang.Object: java.lang.Class getClass()>();
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>($r0);
+        specialinvoke this.<cck.util.Util$Error: void <init>(java.lang.String)>($r1);
+        this.<cck.util.Util$Unexpected: java.lang.Throwable thrown> = t;
+        return;
+    }
+
+    public void report()
+    {
+        cck.util.Util$Unexpected this;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1, $r2;
+        java.lang.Throwable $r3;
+
+        this := @this: cck.util.Util$Unexpected;
+        staticinvoke <cck.text.Terminal: void print(int,java.lang.String)>(1, "Unexpected exception");
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+        $r1 = this.<cck.util.Util$Unexpected: java.lang.String param>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(10);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>($r2);
+        $r3 = this.<cck.util.Util$Unexpected: java.lang.Throwable thrown>;
+        virtualinvoke $r3.<java.lang.Throwable: void printStackTrace()>();
+        return;
+    }
+
+    public void rethrow() throws java.lang.Throwable
+    {
+        cck.util.Util$Unexpected this;
+        java.lang.Throwable $r0;
+
+        this := @this: cck.util.Util$Unexpected;
+        $r0 = this.<cck.util.Util$Unexpected: java.lang.Throwable thrown>;
+        throw $r0;
+    }
+}

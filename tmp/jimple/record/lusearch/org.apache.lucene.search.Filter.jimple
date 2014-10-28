@@ -1,0 +1,37 @@
+public abstract class org.apache.lucene.search.Filter extends java.lang.Object implements java.io.Serializable
+{
+
+    public void <init>()
+    {
+        org.apache.lucene.search.Filter this;
+
+        this := @this: org.apache.lucene.search.Filter;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public java.util.BitSet bits(org.apache.lucene.index.IndexReader) throws java.io.IOException
+    {
+        org.apache.lucene.search.Filter this;
+        org.apache.lucene.index.IndexReader reader;
+
+        this := @this: org.apache.lucene.search.Filter;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        return null;
+    }
+
+    public org.apache.lucene.search.DocIdSet getDocIdSet(org.apache.lucene.index.IndexReader) throws java.io.IOException
+    {
+        org.apache.lucene.search.Filter this;
+        org.apache.lucene.index.IndexReader reader;
+        org.apache.lucene.util.DocIdBitSet $r0;
+        java.util.BitSet $r1;
+
+        this := @this: org.apache.lucene.search.Filter;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        $r0 = new org.apache.lucene.util.DocIdBitSet;
+        $r1 = virtualinvoke this.<org.apache.lucene.search.Filter: java.util.BitSet bits(org.apache.lucene.index.IndexReader)>(reader);
+        specialinvoke $r0.<org.apache.lucene.util.DocIdBitSet: void <init>(java.util.BitSet)>($r1);
+        return $r0;
+    }
+}

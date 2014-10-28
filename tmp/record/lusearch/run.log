@@ -1,0 +1,1 @@
+nice -n 19 java -Xmx10G -Xbootclasspath/p:/home/lpxz/eclipse/workspacePA_icse/leap/recorder/bin -cp dacapo-9.12-bach.jar:./bin -noverify -javaagent:pia.jar Harness --scratch-directory /tmp/dacaposcratch lusearch -s small -t 8

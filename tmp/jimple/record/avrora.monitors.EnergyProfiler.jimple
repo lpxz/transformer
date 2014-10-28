@@ -1,0 +1,27 @@
+public class avrora.monitors.EnergyProfiler extends avrora.monitors.MonitorFactory
+{
+
+    public void <init>()
+    {
+        avrora.monitors.EnergyProfiler this;
+
+        this := @this: avrora.monitors.EnergyProfiler;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"energy profile\" monitor tracks the power consumption of procedures and displays a report at the end of execution.");
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.EnergyProfiler this;
+        avrora.sim.Simulator s;
+        avrora.monitors.EnergyProfiler$Monitor tmp$554229387;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.EnergyProfiler;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$554229387 = new avrora.monitors.EnergyProfiler$Monitor;
+        specialinvoke tmp$554229387.<avrora.monitors.EnergyProfiler$Monitor: void <init>(avrora.monitors.EnergyProfiler,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$554229387;
+        return tmp;
+    }
+}

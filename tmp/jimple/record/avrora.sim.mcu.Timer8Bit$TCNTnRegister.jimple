@@ -1,0 +1,36 @@
+public class avrora.sim.mcu.Timer8Bit$TCNTnRegister extends avrora.sim.RWRegister
+{
+    final avrora.sim.mcu.Timer8Bit this$0;
+
+    protected void <init>(avrora.sim.mcu.Timer8Bit)
+    {
+        avrora.sim.mcu.Timer8Bit$TCNTnRegister this;
+        avrora.sim.mcu.Timer8Bit l1;
+
+        this := @this: avrora.sim.mcu.Timer8Bit$TCNTnRegister;
+        l1 := @parameter0: avrora.sim.mcu.Timer8Bit;
+        this.<avrora.sim.mcu.Timer8Bit$TCNTnRegister: avrora.sim.mcu.Timer8Bit this$0> = l1;
+        specialinvoke this.<avrora.sim.RWRegister: void <init>()>();
+        return;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.mcu.Timer8Bit$TCNTnRegister this;
+        byte val;
+        avrora.sim.mcu.Timer8Bit $r0;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.mcu.Timer8Bit$TCNTnRegister;
+        val := @parameter0: byte;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.mcu.Timer8Bit$TCNTnRegister", 148, val);
+        this.<avrora.sim.mcu.Timer8Bit$TCNTnRegister: byte value> = val;
+        $r0 = this.<avrora.sim.mcu.Timer8Bit$TCNTnRegister: avrora.sim.mcu.Timer8Bit this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>($r0, 85, tid_write, "avrora.sim.mcu.Timer8Bit$TCNTnRegister", 149, 1);
+        $r0.<avrora.sim.mcu.Timer8Bit: boolean blockCompareMatch> = 1;
+        return;
+    }
+}

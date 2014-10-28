@@ -1,0 +1,164 @@
+public abstract class avrora.sim.mcu.DefaultMCU extends java.lang.Object implements avrora.sim.mcu.Microcontroller
+{
+    protected final avrora.sim.mcu.Microcontroller$Pin[] pins;
+    protected final avrora.sim.mcu.RegisterSet registers;
+    protected avrora.sim.platform.Platform platform;
+    protected avrora.sim.Simulator simulator;
+    protected avrora.sim.output.SimPrinter pinPrinter;
+    protected final avrora.sim.clock.ClockDomain clockDomain;
+    protected final avrora.sim.FiniteStateMachine sleepState;
+    private boolean pinPrinterInit;
+
+    protected void <init>(avrora.sim.clock.ClockDomain, int, avrora.sim.mcu.RegisterSet, avrora.sim.FiniteStateMachine)
+    {
+        avrora.sim.mcu.DefaultMCU this;
+        avrora.sim.clock.ClockDomain cd;
+        int np;
+        avrora.sim.mcu.RegisterSet regs;
+        avrora.sim.FiniteStateMachine sleep;
+        avrora.sim.mcu.Microcontroller$Pin[] $r0;
+
+        this := @this: avrora.sim.mcu.DefaultMCU;
+        cd := @parameter0: avrora.sim.clock.ClockDomain;
+        np := @parameter1: int;
+        regs := @parameter2: avrora.sim.mcu.RegisterSet;
+        sleep := @parameter3: avrora.sim.FiniteStateMachine;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.mcu.DefaultMCU: avrora.sim.clock.ClockDomain clockDomain> = cd;
+        $r0 = newarray (avrora.sim.mcu.Microcontroller$Pin)[np];
+        this.<avrora.sim.mcu.DefaultMCU: avrora.sim.mcu.Microcontroller$Pin[] pins> = $r0;
+        this.<avrora.sim.mcu.DefaultMCU: avrora.sim.FiniteStateMachine sleepState> = sleep;
+        this.<avrora.sim.mcu.DefaultMCU: avrora.sim.mcu.RegisterSet registers> = regs;
+        return;
+    }
+
+    public avrora.sim.FiniteStateMachine getFSM()
+    {
+        avrora.sim.mcu.DefaultMCU this;
+        avrora.sim.FiniteStateMachine $r0;
+
+        this := @this: avrora.sim.mcu.DefaultMCU;
+        $r0 = this.<avrora.sim.mcu.DefaultMCU: avrora.sim.FiniteStateMachine sleepState>;
+        return $r0;
+    }
+
+    public avrora.sim.mcu.RegisterSet getRegisterSet()
+    {
+        avrora.sim.mcu.DefaultMCU this;
+        avrora.sim.mcu.RegisterSet $r0;
+
+        this := @this: avrora.sim.mcu.DefaultMCU;
+        $r0 = this.<avrora.sim.mcu.DefaultMCU: avrora.sim.mcu.RegisterSet registers>;
+        return $r0;
+    }
+
+    public avrora.sim.mcu.Microcontroller$Pin getPin(int)
+    {
+        avrora.sim.mcu.DefaultMCU this;
+        int num, $i0;
+        avrora.sim.mcu.Microcontroller$Pin[] $r0, $r1;
+        avrora.sim.mcu.Microcontroller$Pin $r2;
+
+        this := @this: avrora.sim.mcu.DefaultMCU;
+        num := @parameter0: int;
+        if num < 0 goto label0;
+
+        $r0 = this.<avrora.sim.mcu.DefaultMCU: avrora.sim.mcu.Microcontroller$Pin[] pins>;
+        $i0 = lengthof $r0;
+        if num <= $i0 goto label1;
+
+     label0:
+        return null;
+
+     label1:
+        $r1 = this.<avrora.sim.mcu.DefaultMCU: avrora.sim.mcu.Microcontroller$Pin[] pins>;
+        $r2 = $r1[num];
+        return $r2;
+    }
+
+    public avrora.sim.clock.Clock getClock(java.lang.String)
+    {
+        avrora.sim.mcu.DefaultMCU this;
+        java.lang.String name;
+        avrora.sim.clock.ClockDomain $r0;
+        avrora.sim.clock.Clock $r1;
+
+        this := @this: avrora.sim.mcu.DefaultMCU;
+        name := @parameter0: java.lang.String;
+        $r0 = this.<avrora.sim.mcu.DefaultMCU: avrora.sim.clock.ClockDomain clockDomain>;
+        $r1 = virtualinvoke $r0.<avrora.sim.clock.ClockDomain: avrora.sim.clock.Clock getClock(java.lang.String)>(name);
+        return $r1;
+    }
+
+    public avrora.sim.Simulator getSimulator()
+    {
+        avrora.sim.mcu.DefaultMCU this;
+        avrora.sim.Simulator $r0;
+
+        this := @this: avrora.sim.mcu.DefaultMCU;
+        $r0 = this.<avrora.sim.mcu.DefaultMCU: avrora.sim.Simulator simulator>;
+        return $r0;
+    }
+
+    public avrora.sim.platform.Platform getPlatform()
+    {
+        avrora.sim.mcu.DefaultMCU this;
+        avrora.sim.platform.Platform $r0;
+
+        this := @this: avrora.sim.mcu.DefaultMCU;
+        $r0 = this.<avrora.sim.mcu.DefaultMCU: avrora.sim.platform.Platform platform>;
+        return $r0;
+    }
+
+    public void setPlatform(avrora.sim.platform.Platform)
+    {
+        avrora.sim.mcu.DefaultMCU this;
+        avrora.sim.platform.Platform p;
+
+        this := @this: avrora.sim.mcu.DefaultMCU;
+        p := @parameter0: avrora.sim.platform.Platform;
+        this.<avrora.sim.mcu.DefaultMCU: avrora.sim.platform.Platform platform> = p;
+        return;
+    }
+
+    public avrora.sim.clock.ClockDomain getClockDomain()
+    {
+        avrora.sim.mcu.DefaultMCU this;
+        avrora.sim.clock.ClockDomain $r0;
+
+        this := @this: avrora.sim.mcu.DefaultMCU;
+        $r0 = this.<avrora.sim.mcu.DefaultMCU: avrora.sim.clock.ClockDomain clockDomain>;
+        return $r0;
+    }
+
+    static boolean access$000(avrora.sim.mcu.DefaultMCU)
+    {
+        avrora.sim.mcu.DefaultMCU x0;
+        boolean $z0;
+        long tid_access$000;
+        java.lang.Thread thread_access$000;
+
+        x0 := @parameter0: avrora.sim.mcu.DefaultMCU;
+        thread_access$000 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_access$000 = virtualinvoke thread_access$000.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(x0, 34, tid_access$000, "avrora.sim.mcu.DefaultMCU", 47, $z0);
+        $z0 = x0.<avrora.sim.mcu.DefaultMCU: boolean pinPrinterInit>;
+        return $z0;
+    }
+
+    static boolean access$002(avrora.sim.mcu.DefaultMCU, boolean)
+    {
+        avrora.sim.mcu.DefaultMCU x0;
+        boolean x1;
+        long tid_access$002;
+        java.lang.Thread thread_access$002;
+
+        x0 := @parameter0: avrora.sim.mcu.DefaultMCU;
+        x1 := @parameter1: boolean;
+        thread_access$002 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_access$002 = virtualinvoke thread_access$002.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(x0, 34, tid_access$002, "avrora.sim.mcu.DefaultMCU", 47, x1);
+        x0.<avrora.sim.mcu.DefaultMCU: boolean pinPrinterInit> = x1;
+        return x1;
+    }
+}

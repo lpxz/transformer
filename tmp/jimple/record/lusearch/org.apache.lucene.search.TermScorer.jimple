@@ -1,0 +1,489 @@
+final class org.apache.lucene.search.TermScorer extends org.apache.lucene.search.Scorer
+{
+    private org.apache.lucene.search.Weight weight;
+    private org.apache.lucene.index.TermDocs termDocs;
+    private byte[] norms;
+    private float weightValue;
+    private int doc;
+    private final int[] docs;
+    private final int[] freqs;
+    private int pointer;
+    private int pointerMax;
+    private static final int SCORE_CACHE_SIZE;
+    private float[] scoreCache;
+
+    void <init>(org.apache.lucene.search.Weight, org.apache.lucene.index.TermDocs, org.apache.lucene.search.Similarity, byte[])
+    {
+        org.apache.lucene.search.TermScorer this;
+        org.apache.lucene.search.Weight weight;
+        org.apache.lucene.index.TermDocs td;
+        org.apache.lucene.search.Similarity similarity, $r3;
+        byte[] norms;
+        int i;
+        int[] $r0;
+        float[] $r1, $r2;
+        float $f0, $f1, $f2;
+
+        this := @this: org.apache.lucene.search.TermScorer;
+        weight := @parameter0: org.apache.lucene.search.Weight;
+        td := @parameter1: org.apache.lucene.index.TermDocs;
+        similarity := @parameter2: org.apache.lucene.search.Similarity;
+        norms := @parameter3: byte[];
+        specialinvoke this.<org.apache.lucene.search.Scorer: void <init>(org.apache.lucene.search.Similarity)>(similarity);
+        $r0 = newarray (int)[32];
+        this.<org.apache.lucene.search.TermScorer: int[] docs> = $r0;
+        $r0 = newarray (int)[32];
+        this.<org.apache.lucene.search.TermScorer: int[] freqs> = $r0;
+        $r1 = newarray (float)[32];
+        this.<org.apache.lucene.search.TermScorer: float[] scoreCache> = $r1;
+        this.<org.apache.lucene.search.TermScorer: org.apache.lucene.search.Weight weight> = weight;
+        this.<org.apache.lucene.search.TermScorer: org.apache.lucene.index.TermDocs termDocs> = td;
+        this.<org.apache.lucene.search.TermScorer: byte[] norms> = norms;
+        $f0 = interfaceinvoke weight.<org.apache.lucene.search.Weight: float getValue()>();
+        this.<org.apache.lucene.search.TermScorer: float weightValue> = $f0;
+        i = 0;
+
+     label0:
+        if i >= 32 goto label1;
+
+        $r2 = this.<org.apache.lucene.search.TermScorer: float[] scoreCache>;
+        $r3 = virtualinvoke this.<org.apache.lucene.search.TermScorer: org.apache.lucene.search.Similarity getSimilarity()>();
+        $f1 = virtualinvoke $r3.<org.apache.lucene.search.Similarity: float tf(int)>(i);
+        $f2 = this.<org.apache.lucene.search.TermScorer: float weightValue>;
+        $f1 = $f1 * $f2;
+        $r2[i] = $f1;
+        i = i + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    public void score(org.apache.lucene.search.HitCollector) throws java.io.IOException
+    {
+        org.apache.lucene.search.TermScorer this;
+        org.apache.lucene.search.HitCollector hc;
+
+        this := @this: org.apache.lucene.search.TermScorer;
+        hc := @parameter0: org.apache.lucene.search.HitCollector;
+        virtualinvoke this.<org.apache.lucene.search.TermScorer: boolean next()>();
+        virtualinvoke this.<org.apache.lucene.search.TermScorer: boolean score(org.apache.lucene.search.HitCollector,int)>(hc, 2147483647);
+        return;
+    }
+
+    protected boolean score(org.apache.lucene.search.HitCollector, int) throws java.io.IOException
+    {
+        org.apache.lucene.search.TermScorer this;
+        org.apache.lucene.search.HitCollector c;
+        int end, f, $i0, $i1, $i2, $i5;
+        org.apache.lucene.search.Similarity similarity;
+        float[] normDecoder, $r1;
+        float score, $f0, $f1;
+        int[] $r0, $r5, $r6, $r8;
+        byte[] $r2;
+        byte $b3;
+        short $s4;
+        org.apache.lucene.index.TermDocs $r4, $r7;
+        long tid_score;
+        java.lang.Thread thread_score;
+
+        this := @this: org.apache.lucene.search.TermScorer;
+        c := @parameter0: org.apache.lucene.search.HitCollector;
+        end := @parameter1: int;
+        thread_score = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_score = virtualinvoke thread_score.<java.lang.Thread: long getId()>();
+        similarity = virtualinvoke this.<org.apache.lucene.search.TermScorer: org.apache.lucene.search.Similarity getSimilarity()>();
+        normDecoder = staticinvoke <org.apache.lucene.search.Similarity: float[] getNormDecoder()>();
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 163, tid_score, "org.apache.lucene.search.TermScorer", 67, $i0);
+        $i0 = this.<org.apache.lucene.search.TermScorer: int doc>;
+        if $i0 >= end goto label5;
+
+        $r0 = this.<org.apache.lucene.search.TermScorer: int[] freqs>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_score, "org.apache.lucene.search.TermScorer", 68, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r0, 22, tid_score, "org.apache.lucene.search.TermScorer", 68, $i1, f);
+        f = $r0[$i1];
+        if f >= 32 goto label1;
+
+        $r1 = this.<org.apache.lucene.search.TermScorer: float[] scoreCache>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,float)>($r1, 50, tid_score, "org.apache.lucene.search.TermScorer", 69, f, $f0);
+        $f0 = $r1[f];
+        goto label2;
+
+     label1:
+        $f0 = virtualinvoke similarity.<org.apache.lucene.search.Similarity: float tf(int)>(f);
+        $f1 = this.<org.apache.lucene.search.TermScorer: float weightValue>;
+        $f0 = $f0 * $f1;
+
+     label2:
+        score = $f0;
+        $r2 = this.<org.apache.lucene.search.TermScorer: byte[] norms>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 163, tid_score, "org.apache.lucene.search.TermScorer", 74, $i2);
+        $i2 = this.<org.apache.lucene.search.TermScorer: int doc>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r2, 4, tid_score, "org.apache.lucene.search.TermScorer", 74, $i2, $b3);
+        $b3 = $r2[$i2];
+        $s4 = $b3 & 255;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,float)>(normDecoder, 50, tid_score, "org.apache.lucene.search.TermScorer", 74, $s4, $f1);
+        $f1 = normDecoder[$s4];
+        score = score * $f1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 163, tid_score, "org.apache.lucene.search.TermScorer", 76, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int doc>;
+        virtualinvoke c.<org.apache.lucene.search.HitCollector: void collect(int,float)>($i1, score);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_score, "org.apache.lucene.search.TermScorer", 78, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        $i5 = $i1 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_score, "org.apache.lucene.search.TermScorer", 78, $i5);
+        this.<org.apache.lucene.search.TermScorer: int pointer> = $i5;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 165, tid_score, "org.apache.lucene.search.TermScorer", 78, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointerMax>;
+        if $i5 < $i1 goto label4;
+
+        $r4 = this.<org.apache.lucene.search.TermScorer: org.apache.lucene.index.TermDocs termDocs>;
+        $r5 = this.<org.apache.lucene.search.TermScorer: int[] docs>;
+        $r6 = this.<org.apache.lucene.search.TermScorer: int[] freqs>;
+        $i1 = interfaceinvoke $r4.<org.apache.lucene.index.TermDocs: int read(int[],int[])>($r5, $r6);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 165, tid_score, "org.apache.lucene.search.TermScorer", 79, $i1);
+        this.<org.apache.lucene.search.TermScorer: int pointerMax> = $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 165, tid_score, "org.apache.lucene.search.TermScorer", 80, $i0);
+        $i0 = this.<org.apache.lucene.search.TermScorer: int pointerMax>;
+        if $i0 == 0 goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_score, "org.apache.lucene.search.TermScorer", 81, 0);
+        this.<org.apache.lucene.search.TermScorer: int pointer> = 0;
+        goto label4;
+
+     label3:
+        $r7 = this.<org.apache.lucene.search.TermScorer: org.apache.lucene.index.TermDocs termDocs>;
+        interfaceinvoke $r7.<org.apache.lucene.index.TermDocs: void close()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 163, tid_score, "org.apache.lucene.search.TermScorer", 84, 2147483647);
+        this.<org.apache.lucene.search.TermScorer: int doc> = 2147483647;
+        return 0;
+
+     label4:
+        $r8 = this.<org.apache.lucene.search.TermScorer: int[] docs>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_score, "org.apache.lucene.search.TermScorer", 88, $i5);
+        $i5 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r8, 22, tid_score, "org.apache.lucene.search.TermScorer", 88, $i5, $i1);
+        $i1 = $r8[$i5];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 163, tid_score, "org.apache.lucene.search.TermScorer", 88, $i1);
+        this.<org.apache.lucene.search.TermScorer: int doc> = $i1;
+        goto label0;
+
+     label5:
+        return 1;
+    }
+
+    public int doc()
+    {
+        org.apache.lucene.search.TermScorer this;
+        int $i0;
+        long tid_doc;
+        java.lang.Thread thread_doc;
+
+        this := @this: org.apache.lucene.search.TermScorer;
+        thread_doc = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_doc = virtualinvoke thread_doc.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 163, tid_doc, "org.apache.lucene.search.TermScorer", 96, $i0);
+        $i0 = this.<org.apache.lucene.search.TermScorer: int doc>;
+        return $i0;
+    }
+
+    public boolean next() throws java.io.IOException
+    {
+        org.apache.lucene.search.TermScorer this;
+        int $i0, $i1, $i2;
+        org.apache.lucene.index.TermDocs $r1, $r4;
+        int[] $r2, $r3, $r5;
+        long tid_next;
+        java.lang.Thread thread_next;
+
+        this := @this: org.apache.lucene.search.TermScorer;
+        thread_next = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_next = virtualinvoke thread_next.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_next, "org.apache.lucene.search.TermScorer", 104, $i0);
+        $i0 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        $i0 = $i0 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_next, "org.apache.lucene.search.TermScorer", 104, $i0);
+        this.<org.apache.lucene.search.TermScorer: int pointer> = $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_next, "org.apache.lucene.search.TermScorer", 105, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 165, tid_next, "org.apache.lucene.search.TermScorer", 105, $i0);
+        $i0 = this.<org.apache.lucene.search.TermScorer: int pointerMax>;
+        if $i1 < $i0 goto label1;
+
+        $r1 = this.<org.apache.lucene.search.TermScorer: org.apache.lucene.index.TermDocs termDocs>;
+        $r2 = this.<org.apache.lucene.search.TermScorer: int[] docs>;
+        $r3 = this.<org.apache.lucene.search.TermScorer: int[] freqs>;
+        $i0 = interfaceinvoke $r1.<org.apache.lucene.index.TermDocs: int read(int[],int[])>($r2, $r3);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 165, tid_next, "org.apache.lucene.search.TermScorer", 106, $i0);
+        this.<org.apache.lucene.search.TermScorer: int pointerMax> = $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 165, tid_next, "org.apache.lucene.search.TermScorer", 107, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointerMax>;
+        if $i1 == 0 goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_next, "org.apache.lucene.search.TermScorer", 108, 0);
+        this.<org.apache.lucene.search.TermScorer: int pointer> = 0;
+        goto label1;
+
+     label0:
+        $r4 = this.<org.apache.lucene.search.TermScorer: org.apache.lucene.index.TermDocs termDocs>;
+        interfaceinvoke $r4.<org.apache.lucene.index.TermDocs: void close()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 163, tid_next, "org.apache.lucene.search.TermScorer", 111, 2147483647);
+        this.<org.apache.lucene.search.TermScorer: int doc> = 2147483647;
+        return 0;
+
+     label1:
+        $r5 = this.<org.apache.lucene.search.TermScorer: int[] docs>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_next, "org.apache.lucene.search.TermScorer", 115, $i2);
+        $i2 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r5, 22, tid_next, "org.apache.lucene.search.TermScorer", 115, $i2, $i0);
+        $i0 = $r5[$i2];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 163, tid_next, "org.apache.lucene.search.TermScorer", 115, $i0);
+        this.<org.apache.lucene.search.TermScorer: int doc> = $i0;
+        return 1;
+    }
+
+    public float score()
+    {
+        org.apache.lucene.search.TermScorer this;
+        int f, $i0, $i1;
+        float raw, $f0, $f1;
+        int[] $r0;
+        float[] $r1;
+        org.apache.lucene.search.Similarity $r2;
+        byte[] $r3;
+        byte $b2;
+        long tid_score;
+        java.lang.Thread thread_score;
+
+        this := @this: org.apache.lucene.search.TermScorer;
+        thread_score = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_score = virtualinvoke thread_score.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.search.TermScorer: int[] freqs>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_score, "org.apache.lucene.search.TermScorer", 120, $i0);
+        $i0 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r0, 22, tid_score, "org.apache.lucene.search.TermScorer", 120, $i0, f);
+        f = $r0[$i0];
+        if f >= 32 goto label0;
+
+        $r1 = this.<org.apache.lucene.search.TermScorer: float[] scoreCache>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,float)>($r1, 50, tid_score, "org.apache.lucene.search.TermScorer", 121, f, $f0);
+        $f0 = $r1[f];
+        goto label1;
+
+     label0:
+        $r2 = virtualinvoke this.<org.apache.lucene.search.TermScorer: org.apache.lucene.search.Similarity getSimilarity()>();
+        $f0 = virtualinvoke $r2.<org.apache.lucene.search.Similarity: float tf(int)>(f);
+        $f1 = this.<org.apache.lucene.search.TermScorer: float weightValue>;
+        $f0 = $f0 * $f1;
+
+     label1:
+        raw = $f0;
+        $r3 = this.<org.apache.lucene.search.TermScorer: byte[] norms>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 163, tid_score, "org.apache.lucene.search.TermScorer", 126, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int doc>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r3, 4, tid_score, "org.apache.lucene.search.TermScorer", 126, $i1, $b2);
+        $b2 = $r3[$i1];
+        $f1 = staticinvoke <org.apache.lucene.search.Similarity: float decodeNorm(byte)>($b2);
+        $f0 = raw * $f1;
+        return $f0;
+    }
+
+    public boolean skipTo(int) throws java.io.IOException
+    {
+        org.apache.lucene.search.TermScorer this;
+        int target, $i0, $i1, $i2, $i3;
+        boolean result;
+        int[] $r1, $r2;
+        org.apache.lucene.index.TermDocs $r3, $r4, $r5;
+        long tid_skipTo;
+        java.lang.Thread thread_skipTo;
+
+        this := @this: org.apache.lucene.search.TermScorer;
+        target := @parameter0: int;
+        thread_skipTo = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_skipTo = virtualinvoke thread_skipTo.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_skipTo, "org.apache.lucene.search.TermScorer", 137, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        $i1 = $i1 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_skipTo, "org.apache.lucene.search.TermScorer", 137, $i1);
+        this.<org.apache.lucene.search.TermScorer: int pointer> = $i1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_skipTo, "org.apache.lucene.search.TermScorer", 137, $i2);
+        $i2 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 165, tid_skipTo, "org.apache.lucene.search.TermScorer", 137, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointerMax>;
+        if $i2 >= $i1 goto label2;
+
+        $r1 = this.<org.apache.lucene.search.TermScorer: int[] docs>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_skipTo, "org.apache.lucene.search.TermScorer", 138, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r1, 22, tid_skipTo, "org.apache.lucene.search.TermScorer", 138, $i1, $i2);
+        $i2 = $r1[$i1];
+        if $i2 < target goto label1;
+
+        $r2 = this.<org.apache.lucene.search.TermScorer: int[] docs>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_skipTo, "org.apache.lucene.search.TermScorer", 139, $i3);
+        $i3 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r2, 22, tid_skipTo, "org.apache.lucene.search.TermScorer", 139, $i3, $i1);
+        $i1 = $r2[$i3];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 163, tid_skipTo, "org.apache.lucene.search.TermScorer", 139, $i1);
+        this.<org.apache.lucene.search.TermScorer: int doc> = $i1;
+        return 1;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_skipTo, "org.apache.lucene.search.TermScorer", 137, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        $i1 = $i1 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_skipTo, "org.apache.lucene.search.TermScorer", 137, $i1);
+        this.<org.apache.lucene.search.TermScorer: int pointer> = $i1;
+        goto label0;
+
+     label2:
+        $r3 = this.<org.apache.lucene.search.TermScorer: org.apache.lucene.index.TermDocs termDocs>;
+        result = interfaceinvoke $r3.<org.apache.lucene.index.TermDocs: boolean skipTo(int)>(target);
+        if result == 0 goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 165, tid_skipTo, "org.apache.lucene.search.TermScorer", 147, 1);
+        this.<org.apache.lucene.search.TermScorer: int pointerMax> = 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_skipTo, "org.apache.lucene.search.TermScorer", 148, 0);
+        this.<org.apache.lucene.search.TermScorer: int pointer> = 0;
+        $r1 = this.<org.apache.lucene.search.TermScorer: int[] docs>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_skipTo, "org.apache.lucene.search.TermScorer", 149, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        $r4 = this.<org.apache.lucene.search.TermScorer: org.apache.lucene.index.TermDocs termDocs>;
+        $i0 = interfaceinvoke $r4.<org.apache.lucene.index.TermDocs: int doc()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 163, tid_skipTo, "org.apache.lucene.search.TermScorer", 149, $i0);
+        this.<org.apache.lucene.search.TermScorer: int doc> = $i0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r1, 22, tid_skipTo, "org.apache.lucene.search.TermScorer", 149, $i1, $i0);
+        $r1[$i1] = $i0;
+        $r1 = this.<org.apache.lucene.search.TermScorer: int[] freqs>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_skipTo, "org.apache.lucene.search.TermScorer", 150, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        $r5 = this.<org.apache.lucene.search.TermScorer: org.apache.lucene.index.TermDocs termDocs>;
+        $i3 = interfaceinvoke $r5.<org.apache.lucene.index.TermDocs: int freq()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r1, 22, tid_skipTo, "org.apache.lucene.search.TermScorer", 150, $i1, $i3);
+        $r1[$i1] = $i3;
+        goto label4;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 163, tid_skipTo, "org.apache.lucene.search.TermScorer", 152, 2147483647);
+        this.<org.apache.lucene.search.TermScorer: int doc> = 2147483647;
+
+     label4:
+        return result;
+    }
+
+    public org.apache.lucene.search.Explanation explain(int) throws java.io.IOException
+    {
+        org.apache.lucene.search.TermScorer this;
+        int doc, tf, $i0, $i1;
+        org.apache.lucene.search.TermQuery query;
+        org.apache.lucene.search.Explanation tfExplanation, $r2;
+        org.apache.lucene.search.Weight $r0;
+        org.apache.lucene.search.Query $r1;
+        int[] $r3;
+        org.apache.lucene.index.TermDocs $r5;
+        boolean $z0;
+        org.apache.lucene.search.Similarity $r6;
+        float $f0;
+        java.lang.StringBuffer $r7;
+        org.apache.lucene.index.Term $r8;
+        java.lang.String $r9;
+        long tid_explain;
+        java.lang.Thread thread_explain;
+
+        this := @this: org.apache.lucene.search.TermScorer;
+        doc := @parameter0: int;
+        thread_explain = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_explain = virtualinvoke thread_explain.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.search.TermScorer: org.apache.lucene.search.Weight weight>;
+        $r1 = interfaceinvoke $r0.<org.apache.lucene.search.Weight: org.apache.lucene.search.Query getQuery()>();
+        query = (org.apache.lucene.search.TermQuery) $r1;
+        $r2 = new org.apache.lucene.search.Explanation;
+        specialinvoke $r2.<org.apache.lucene.search.Explanation: void <init>()>();
+        tfExplanation = $r2;
+        tf = 0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_explain, "org.apache.lucene.search.TermScorer", 166, $i0);
+        $i0 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 165, tid_explain, "org.apache.lucene.search.TermScorer", 166, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointerMax>;
+        if $i0 >= $i1 goto label2;
+
+        $r3 = this.<org.apache.lucene.search.TermScorer: int[] docs>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_explain, "org.apache.lucene.search.TermScorer", 167, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r3, 22, tid_explain, "org.apache.lucene.search.TermScorer", 167, $i1, $i0);
+        $i0 = $r3[$i1];
+        if $i0 != doc goto label1;
+
+        $r3 = this.<org.apache.lucene.search.TermScorer: int[] freqs>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_explain, "org.apache.lucene.search.TermScorer", 168, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r3, 22, tid_explain, "org.apache.lucene.search.TermScorer", 168, $i1, tf);
+        tf = $r3[$i1];
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_explain, "org.apache.lucene.search.TermScorer", 169, $i1);
+        $i1 = this.<org.apache.lucene.search.TermScorer: int pointer>;
+        $i1 = $i1 + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 164, tid_explain, "org.apache.lucene.search.TermScorer", 169, $i1);
+        this.<org.apache.lucene.search.TermScorer: int pointer> = $i1;
+        goto label0;
+
+     label2:
+        if tf != 0 goto label3;
+
+        $r5 = this.<org.apache.lucene.search.TermScorer: org.apache.lucene.index.TermDocs termDocs>;
+        $z0 = interfaceinvoke $r5.<org.apache.lucene.index.TermDocs: boolean skipTo(int)>(doc);
+        if $z0 == 0 goto label3;
+
+        $r5 = this.<org.apache.lucene.search.TermScorer: org.apache.lucene.index.TermDocs termDocs>;
+        $i0 = interfaceinvoke $r5.<org.apache.lucene.index.TermDocs: int doc()>();
+        if $i0 != doc goto label3;
+
+        $r5 = this.<org.apache.lucene.search.TermScorer: org.apache.lucene.index.TermDocs termDocs>;
+        tf = interfaceinvoke $r5.<org.apache.lucene.index.TermDocs: int freq()>();
+
+     label3:
+        $r5 = this.<org.apache.lucene.search.TermScorer: org.apache.lucene.index.TermDocs termDocs>;
+        interfaceinvoke $r5.<org.apache.lucene.index.TermDocs: void close()>();
+        $r6 = virtualinvoke this.<org.apache.lucene.search.TermScorer: org.apache.lucene.search.Similarity getSimilarity()>();
+        $f0 = virtualinvoke $r6.<org.apache.lucene.search.Similarity: float tf(int)>(tf);
+        virtualinvoke tfExplanation.<org.apache.lucene.search.Explanation: void setValue(float)>($f0);
+        $r7 = new java.lang.StringBuffer;
+        specialinvoke $r7.<java.lang.StringBuffer: void <init>()>();
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("tf(termFreq(");
+        $r8 = virtualinvoke query.<org.apache.lucene.search.TermQuery: org.apache.lucene.index.Term getTerm()>();
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r8);
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(")=");
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>(tf);
+        $r7 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(")");
+        $r9 = virtualinvoke $r7.<java.lang.StringBuffer: java.lang.String toString()>();
+        virtualinvoke tfExplanation.<org.apache.lucene.search.Explanation: void setDescription(java.lang.String)>($r9);
+        return tfExplanation;
+    }
+
+    public java.lang.String toString()
+    {
+        org.apache.lucene.search.TermScorer this;
+        java.lang.StringBuffer $r0;
+        org.apache.lucene.search.Weight $r1;
+        java.lang.String $r2;
+
+        this := @this: org.apache.lucene.search.TermScorer;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("scorer(");
+        $r1 = this.<org.apache.lucene.search.TermScorer: org.apache.lucene.search.Weight weight>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r1);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(")");
+        $r2 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r2;
+    }
+}

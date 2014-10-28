@@ -1,0 +1,35 @@
+public class avrora.sim.radio.CC1000Radio$FSCTRLRegister extends avrora.sim.radio.CC1000Radio$RadioRegister
+{
+    boolean fsResetN;
+    final avrora.sim.radio.CC1000Radio this$0;
+
+    void <init>(avrora.sim.radio.CC1000Radio)
+    {
+        avrora.sim.radio.CC1000Radio$FSCTRLRegister this;
+        avrora.sim.radio.CC1000Radio l1;
+
+        this := @this: avrora.sim.radio.CC1000Radio$FSCTRLRegister;
+        l1 := @parameter0: avrora.sim.radio.CC1000Radio;
+        this.<avrora.sim.radio.CC1000Radio$FSCTRLRegister: avrora.sim.radio.CC1000Radio this$0> = l1;
+        specialinvoke this.<avrora.sim.radio.CC1000Radio$RadioRegister: void <init>(avrora.sim.radio.CC1000Radio,java.lang.String,byte)>(l1, "FSCTRL", 1);
+        return;
+    }
+
+    protected void decode(byte)
+    {
+        avrora.sim.radio.CC1000Radio$FSCTRLRegister this;
+        byte val;
+        boolean $z0;
+        long tid_decode;
+        java.lang.Thread thread_decode;
+
+        this := @this: avrora.sim.radio.CC1000Radio$FSCTRLRegister;
+        val := @parameter0: byte;
+        thread_decode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_decode = virtualinvoke thread_decode.<java.lang.Thread: long getId()>();
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>(val, 0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 163, tid_decode, "avrora.sim.radio.CC1000Radio$FSCTRLRegister", 849, $z0);
+        this.<avrora.sim.radio.CC1000Radio$FSCTRLRegister: boolean fsResetN> = $z0;
+        return;
+    }
+}

@@ -1,0 +1,26 @@
+public class org.apache.lucene.analysis.LetterTokenizer extends org.apache.lucene.analysis.CharTokenizer
+{
+
+    public void <init>(java.io.Reader)
+    {
+        org.apache.lucene.analysis.LetterTokenizer this;
+        java.io.Reader in;
+
+        this := @this: org.apache.lucene.analysis.LetterTokenizer;
+        in := @parameter0: java.io.Reader;
+        specialinvoke this.<org.apache.lucene.analysis.CharTokenizer: void <init>(java.io.Reader)>(in);
+        return;
+    }
+
+    protected boolean isTokenChar(char)
+    {
+        org.apache.lucene.analysis.LetterTokenizer this;
+        char c;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.analysis.LetterTokenizer;
+        c := @parameter0: char;
+        $z0 = staticinvoke <java.lang.Character: boolean isLetter(char)>(c);
+        return $z0;
+    }
+}

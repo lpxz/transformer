@@ -1,0 +1,145 @@
+class org.apache.lucene.index.DirectoryIndexReader$ReaderCommit extends org.apache.lucene.index.IndexCommit
+{
+    private java.lang.String segmentsFileName;
+    java.util.Collection files;
+    org.apache.lucene.store.Directory dir;
+    long generation;
+    long version;
+    final boolean isOptimized;
+
+    void <init>(org.apache.lucene.index.SegmentInfos, org.apache.lucene.store.Directory) throws java.io.IOException
+    {
+        org.apache.lucene.index.DirectoryIndexReader$ReaderCommit this;
+        org.apache.lucene.index.SegmentInfos infos;
+        org.apache.lucene.store.Directory dir, $r3;
+        int size, i, $i1;
+        org.apache.lucene.index.SegmentInfo info, $r6;
+        java.lang.String $r0;
+        java.util.ArrayList $r1;
+        java.util.Collection $r2;
+        java.util.List $r4;
+        long $l0;
+        boolean $z1;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader$ReaderCommit;
+        infos := @parameter0: org.apache.lucene.index.SegmentInfos;
+        dir := @parameter1: org.apache.lucene.store.Directory;
+        specialinvoke this.<org.apache.lucene.index.IndexCommit: void <init>()>();
+        $r0 = virtualinvoke infos.<org.apache.lucene.index.SegmentInfos: java.lang.String getCurrentSegmentFileName()>();
+        this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: java.lang.String segmentsFileName> = $r0;
+        this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: org.apache.lucene.store.Directory dir> = dir;
+        size = virtualinvoke infos.<org.apache.lucene.index.SegmentInfos: int size()>();
+        $r1 = new java.util.ArrayList;
+        specialinvoke $r1.<java.util.ArrayList: void <init>(int)>(size);
+        this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: java.util.Collection files> = $r1;
+        $r2 = this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: java.util.Collection files>;
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: java.lang.String segmentsFileName>;
+        interfaceinvoke $r2.<java.util.Collection: boolean add(java.lang.Object)>($r0);
+        i = 0;
+
+     label0:
+        if i >= size goto label2;
+
+        info = virtualinvoke infos.<org.apache.lucene.index.SegmentInfos: org.apache.lucene.index.SegmentInfo info(int)>(i);
+        $r3 = info.<org.apache.lucene.index.SegmentInfo: org.apache.lucene.store.Directory dir>;
+        if $r3 != dir goto label1;
+
+        $r2 = this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: java.util.Collection files>;
+        $r4 = virtualinvoke info.<org.apache.lucene.index.SegmentInfo: java.util.List files()>();
+        interfaceinvoke $r2.<java.util.Collection: boolean addAll(java.util.Collection)>($r4);
+
+     label1:
+        i = i + 1;
+        goto label0;
+
+     label2:
+        $l0 = virtualinvoke infos.<org.apache.lucene.index.SegmentInfos: long getVersion()>();
+        this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: long version> = $l0;
+        $l0 = virtualinvoke infos.<org.apache.lucene.index.SegmentInfos: long getGeneration()>();
+        this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: long generation> = $l0;
+        $i1 = virtualinvoke infos.<org.apache.lucene.index.SegmentInfos: int size()>();
+        if $i1 != 1 goto label3;
+
+        $r6 = virtualinvoke infos.<org.apache.lucene.index.SegmentInfos: org.apache.lucene.index.SegmentInfo info(int)>(0);
+        $z1 = virtualinvoke $r6.<org.apache.lucene.index.SegmentInfo: boolean hasDeletions()>();
+        if $z1 != 0 goto label3;
+
+        $z1 = 1;
+        goto label4;
+
+     label3:
+        $z1 = 0;
+
+     label4:
+        this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: boolean isOptimized> = $z1;
+        return;
+    }
+
+    public boolean isOptimized()
+    {
+        org.apache.lucene.index.DirectoryIndexReader$ReaderCommit this;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader$ReaderCommit;
+        $z0 = this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: boolean isOptimized>;
+        return $z0;
+    }
+
+    public java.lang.String getSegmentsFileName()
+    {
+        org.apache.lucene.index.DirectoryIndexReader$ReaderCommit this;
+        java.lang.String $r0;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader$ReaderCommit;
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: java.lang.String segmentsFileName>;
+        return $r0;
+    }
+
+    public java.util.Collection getFileNames()
+    {
+        org.apache.lucene.index.DirectoryIndexReader$ReaderCommit this;
+        java.util.Collection $r0;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader$ReaderCommit;
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: java.util.Collection files>;
+        return $r0;
+    }
+
+    public org.apache.lucene.store.Directory getDirectory()
+    {
+        org.apache.lucene.index.DirectoryIndexReader$ReaderCommit this;
+        org.apache.lucene.store.Directory $r0;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader$ReaderCommit;
+        $r0 = this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: org.apache.lucene.store.Directory dir>;
+        return $r0;
+    }
+
+    public long getVersion()
+    {
+        org.apache.lucene.index.DirectoryIndexReader$ReaderCommit this;
+        long $l0;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader$ReaderCommit;
+        $l0 = this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: long version>;
+        return $l0;
+    }
+
+    public long getGeneration()
+    {
+        org.apache.lucene.index.DirectoryIndexReader$ReaderCommit this;
+        long $l0;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader$ReaderCommit;
+        $l0 = this.<org.apache.lucene.index.DirectoryIndexReader$ReaderCommit: long generation>;
+        return $l0;
+    }
+
+    public boolean isDeleted()
+    {
+        org.apache.lucene.index.DirectoryIndexReader$ReaderCommit this;
+
+        this := @this: org.apache.lucene.index.DirectoryIndexReader$ReaderCommit;
+        return 0;
+    }
+}

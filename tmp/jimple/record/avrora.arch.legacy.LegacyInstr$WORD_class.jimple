@@ -1,0 +1,94 @@
+public abstract class avrora.arch.legacy.LegacyInstr$WORD_class extends avrora.arch.legacy.LegacyInstr
+{
+    public final int imm1;
+
+    void <init>(avrora.arch.legacy.LegacyInstrProperties, int)
+    {
+        avrora.arch.legacy.LegacyInstr$WORD_class this;
+        avrora.arch.legacy.LegacyInstrProperties p;
+        int i1;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$WORD_class;
+        p := @parameter0: avrora.arch.legacy.LegacyInstrProperties;
+        i1 := @parameter1: int;
+        specialinvoke this.<avrora.arch.legacy.LegacyInstr: void <init>(avrora.arch.legacy.LegacyInstrProperties)>(p);
+        this.<avrora.arch.legacy.LegacyInstr$WORD_class: int imm1> = i1;
+        return;
+    }
+
+    public java.lang.String getOperands()
+    {
+        avrora.arch.legacy.LegacyInstr$WORD_class this;
+        java.lang.StringBuilder $r0;
+        int $i0;
+        java.lang.String $r1;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$WORD_class;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("");
+        $i0 = this.<avrora.arch.legacy.LegacyInstr$WORD_class: int imm1>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public avrora.arch.legacy.LegacyInstr build(int, avrora.arch.legacy.LegacyOperand[])
+    {
+        avrora.arch.legacy.LegacyInstr$WORD_class this;
+        int pc, $i0;
+        avrora.arch.legacy.LegacyOperand[] ops;
+        avrora.arch.legacy.LegacyOperand $r0;
+        avrora.arch.legacy.LegacyInstr $r1;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$WORD_class;
+        pc := @parameter0: int;
+        ops := @parameter1: avrora.arch.legacy.LegacyOperand[];
+        staticinvoke <avrora.arch.legacy.LegacyInstr: void access$000(int,avrora.arch.legacy.LegacyOperand[])>(1, ops);
+        $r0 = ops[0];
+        $i0 = staticinvoke <avrora.arch.legacy.LegacyInstr: int access$300(avrora.arch.legacy.LegacyOperand)>($r0);
+        $r1 = virtualinvoke this.<avrora.arch.legacy.LegacyInstr$WORD_class: avrora.arch.legacy.LegacyInstr allocate(int,int)>(pc, $i0);
+        return $r1;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        avrora.arch.legacy.LegacyInstr$WORD_class this, i;
+        java.lang.Object o;
+        boolean $z0;
+        avrora.arch.legacy.LegacyInstrProperties $r0, $r1;
+        int $i0, $i1;
+
+        this := @this: avrora.arch.legacy.LegacyInstr$WORD_class;
+        o := @parameter0: java.lang.Object;
+        if o != this goto label0;
+
+        return 1;
+
+     label0:
+        $z0 = o instanceof avrora.arch.legacy.LegacyInstr$WORD_class;
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        i = (avrora.arch.legacy.LegacyInstr$WORD_class) o;
+        $r0 = i.<avrora.arch.legacy.LegacyInstr$WORD_class: avrora.arch.legacy.LegacyInstrProperties properties>;
+        $r1 = this.<avrora.arch.legacy.LegacyInstr$WORD_class: avrora.arch.legacy.LegacyInstrProperties properties>;
+        if $r0 == $r1 goto label2;
+
+        return 0;
+
+     label2:
+        $i0 = i.<avrora.arch.legacy.LegacyInstr$WORD_class: int imm1>;
+        $i1 = this.<avrora.arch.legacy.LegacyInstr$WORD_class: int imm1>;
+        if $i0 == $i1 goto label3;
+
+        return 0;
+
+     label3:
+        return 1;
+    }
+
+    abstract avrora.arch.legacy.LegacyInstr allocate(int, int);
+}

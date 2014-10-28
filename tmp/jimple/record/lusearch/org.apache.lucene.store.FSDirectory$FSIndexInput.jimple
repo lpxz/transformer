@@ -1,0 +1,194 @@
+public class org.apache.lucene.store.FSDirectory$FSIndexInput extends org.apache.lucene.store.BufferedIndexInput
+{
+    protected final org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor file;
+    boolean isClone;
+
+    public void <init>(java.io.File) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexInput this;
+        java.io.File path;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexInput;
+        path := @parameter0: java.io.File;
+        specialinvoke this.<org.apache.lucene.store.FSDirectory$FSIndexInput: void <init>(java.io.File,int)>(path, 1024);
+        return;
+    }
+
+    public void <init>(java.io.File, int) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexInput this;
+        java.io.File path;
+        int bufferSize;
+        org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor $r0;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexInput;
+        path := @parameter0: java.io.File;
+        bufferSize := @parameter1: int;
+        specialinvoke this.<org.apache.lucene.store.BufferedIndexInput: void <init>(int)>(bufferSize);
+        $r0 = new org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor;
+        specialinvoke $r0.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: void <init>(java.io.File,java.lang.String)>(path, "r");
+        this.<org.apache.lucene.store.FSDirectory$FSIndexInput: org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor file> = $r0;
+        return;
+    }
+
+    protected void readInternal(byte[], int, int) throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexInput this;
+        byte[] b;
+        int offset, len, total, i, $i2, $i3;
+        org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor l4, $r0, $r1;
+        long position, $l0, $l4, $l5, tid_readInternal;
+        java.lang.Throwable l9, $r3;
+        byte $b1;
+        java.io.IOException $r2;
+        java.lang.Thread thread_readInternal;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexInput;
+        b := @parameter0: byte[];
+        offset := @parameter1: int;
+        len := @parameter2: int;
+        thread_readInternal = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_readInternal = virtualinvoke thread_readInternal.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.store.FSDirectory$FSIndexInput: org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor file>;
+        l4 = $r0;
+        entermonitor $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void enterMonitorAfter(java.lang.Object,int,long)>($r0, 5, tid_readInternal);
+
+     label0:
+        position = virtualinvoke this.<org.apache.lucene.store.FSDirectory$FSIndexInput: long getFilePointer()>();
+        $r1 = this.<org.apache.lucene.store.FSDirectory$FSIndexInput: org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor file>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>($r1, 62, tid_readInternal, "org.apache.lucene.store.FSDirectory$FSIndexInput", 590, $l0);
+        $l0 = $r1.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: long position>;
+        $b1 = position cmp $l0;
+        if $b1 == 0 goto label1;
+
+        $r0 = this.<org.apache.lucene.store.FSDirectory$FSIndexInput: org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor file>;
+        virtualinvoke $r0.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: void seek(long)>(position);
+        $r0 = this.<org.apache.lucene.store.FSDirectory$FSIndexInput: org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor file>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>($r0, 62, tid_readInternal, "org.apache.lucene.store.FSDirectory$FSIndexInput", 592, position);
+        $r0.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: long position> = position;
+
+     label1:
+        total = 0;
+
+     label2:
+        $r0 = this.<org.apache.lucene.store.FSDirectory$FSIndexInput: org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor file>;
+        $i2 = offset + total;
+        $i3 = len - total;
+        i = virtualinvoke $r0.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: int read(byte[],int,int)>(b, $i2, $i3);
+        if i != -1 goto label3;
+
+        $r2 = new java.io.IOException;
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("read past EOF");
+        throw $r2;
+
+     label3:
+        $r0 = this.<org.apache.lucene.store.FSDirectory$FSIndexInput: org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor file>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>($r0, 62, tid_readInternal, "org.apache.lucene.store.FSDirectory$FSIndexInput", 599, $l4);
+        $l4 = $r0.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: long position>;
+        $l5 = (long) i;
+        $l4 = $l4 + $l5;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,long)>($r0, 62, tid_readInternal, "org.apache.lucene.store.FSDirectory$FSIndexInput", 599, $l4);
+        $r0.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: long position> = $l4;
+        total = total + i;
+        if total < len goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l4, 5, tid_readInternal);
+        exitmonitor l4;
+
+     label4:
+        goto label8;
+
+     label5:
+        $r3 := @caughtexception;
+
+     label6:
+        l9 = $r3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void exitMonitorBefore(java.lang.Object,int,long)>(l4, 5, tid_readInternal);
+        exitmonitor l4;
+
+     label7:
+        throw l9;
+
+     label8:
+        return;
+
+        catch java.lang.Throwable from label0 to label4 with label5;
+        catch java.lang.Throwable from label6 to label7 with label5;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexInput this;
+        boolean $z0;
+        org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor $r0;
+        long tid_close;
+        java.lang.Thread thread_close;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexInput;
+        thread_close = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_close = virtualinvoke thread_close.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>(this, 63, tid_close, "org.apache.lucene.store.FSDirectory$FSIndexInput", 607, $z0);
+        $z0 = this.<org.apache.lucene.store.FSDirectory$FSIndexInput: boolean isClone>;
+        if $z0 != 0 goto label0;
+
+        $r0 = this.<org.apache.lucene.store.FSDirectory$FSIndexInput: org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor file>;
+        virtualinvoke $r0.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: void close()>();
+
+     label0:
+        return;
+    }
+
+    protected void seekInternal(long)
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexInput this;
+        long position;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexInput;
+        position := @parameter0: long;
+        return;
+    }
+
+    public long length()
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexInput this;
+        org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor $r0;
+        long $l0;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexInput;
+        $r0 = this.<org.apache.lucene.store.FSDirectory$FSIndexInput: org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor file>;
+        $l0 = $r0.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: long length>;
+        return $l0;
+    }
+
+    public java.lang.Object clone()
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexInput this, clone;
+        java.lang.Object $r0;
+        long tid_clone;
+        java.lang.Thread thread_clone;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexInput;
+        thread_clone = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clone = virtualinvoke thread_clone.<java.lang.Thread: long getId()>();
+        $r0 = specialinvoke this.<org.apache.lucene.store.BufferedIndexInput: java.lang.Object clone()>();
+        clone = (org.apache.lucene.store.FSDirectory$FSIndexInput) $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(clone, 63, tid_clone, "org.apache.lucene.store.FSDirectory$FSIndexInput", 619, 1);
+        clone.<org.apache.lucene.store.FSDirectory$FSIndexInput: boolean isClone> = 1;
+        return clone;
+    }
+
+    boolean isFDValid() throws java.io.IOException
+    {
+        org.apache.lucene.store.FSDirectory$FSIndexInput this;
+        org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor $r0;
+        java.io.FileDescriptor $r1;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.store.FSDirectory$FSIndexInput;
+        $r0 = this.<org.apache.lucene.store.FSDirectory$FSIndexInput: org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor file>;
+        $r1 = virtualinvoke $r0.<org.apache.lucene.store.FSDirectory$FSIndexInput$Descriptor: java.io.FileDescriptor getFD()>();
+        $z0 = virtualinvoke $r1.<java.io.FileDescriptor: boolean valid()>();
+        return $z0;
+    }
+}

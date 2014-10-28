@@ -1,0 +1,33 @@
+class org.dacapo.lusearch.Search$OneNormsReader extends org.apache.lucene.index.FilterIndexReader
+{
+    private java.lang.String field;
+
+    public void <init>(org.apache.lucene.index.IndexReader, java.lang.String)
+    {
+        org.dacapo.lusearch.Search$OneNormsReader this;
+        org.apache.lucene.index.IndexReader in;
+        java.lang.String field;
+
+        this := @this: org.dacapo.lusearch.Search$OneNormsReader;
+        in := @parameter0: org.apache.lucene.index.IndexReader;
+        field := @parameter1: java.lang.String;
+        specialinvoke this.<org.apache.lucene.index.FilterIndexReader: void <init>(org.apache.lucene.index.IndexReader)>(in);
+        this.<org.dacapo.lusearch.Search$OneNormsReader: java.lang.String field> = field;
+        return;
+    }
+
+    public byte[] norms(java.lang.String) throws java.io.IOException
+    {
+        org.dacapo.lusearch.Search$OneNormsReader this;
+        java.lang.String field, $r1;
+        org.apache.lucene.index.IndexReader $r0;
+        byte[] $r2;
+
+        this := @this: org.dacapo.lusearch.Search$OneNormsReader;
+        field := @parameter0: java.lang.String;
+        $r0 = this.<org.dacapo.lusearch.Search$OneNormsReader: org.apache.lucene.index.IndexReader in>;
+        $r1 = this.<org.dacapo.lusearch.Search$OneNormsReader: java.lang.String field>;
+        $r2 = virtualinvoke $r0.<org.apache.lucene.index.IndexReader: byte[] norms(java.lang.String)>($r1);
+        return $r2;
+    }
+}

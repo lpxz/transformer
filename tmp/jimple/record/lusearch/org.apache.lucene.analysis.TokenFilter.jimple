@@ -1,0 +1,39 @@
+public abstract class org.apache.lucene.analysis.TokenFilter extends org.apache.lucene.analysis.TokenStream
+{
+    protected org.apache.lucene.analysis.TokenStream input;
+
+    protected void <init>(org.apache.lucene.analysis.TokenStream)
+    {
+        org.apache.lucene.analysis.TokenFilter this;
+        org.apache.lucene.analysis.TokenStream input;
+
+        this := @this: org.apache.lucene.analysis.TokenFilter;
+        input := @parameter0: org.apache.lucene.analysis.TokenStream;
+        specialinvoke this.<org.apache.lucene.analysis.TokenStream: void <init>()>();
+        this.<org.apache.lucene.analysis.TokenFilter: org.apache.lucene.analysis.TokenStream input> = input;
+        return;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        org.apache.lucene.analysis.TokenFilter this;
+        org.apache.lucene.analysis.TokenStream $r0;
+
+        this := @this: org.apache.lucene.analysis.TokenFilter;
+        $r0 = this.<org.apache.lucene.analysis.TokenFilter: org.apache.lucene.analysis.TokenStream input>;
+        virtualinvoke $r0.<org.apache.lucene.analysis.TokenStream: void close()>();
+        return;
+    }
+
+    public void reset() throws java.io.IOException
+    {
+        org.apache.lucene.analysis.TokenFilter this;
+        org.apache.lucene.analysis.TokenStream $r0;
+
+        this := @this: org.apache.lucene.analysis.TokenFilter;
+        specialinvoke this.<org.apache.lucene.analysis.TokenStream: void reset()>();
+        $r0 = this.<org.apache.lucene.analysis.TokenFilter: org.apache.lucene.analysis.TokenStream input>;
+        virtualinvoke $r0.<org.apache.lucene.analysis.TokenStream: void reset()>();
+        return;
+    }
+}

@@ -1,0 +1,40 @@
+public class avrora.sim.radio.CC1000Radio$MatchRegister extends avrora.sim.radio.CC1000Radio$RadioRegister
+{
+    int rxMatch;
+    int txMatch;
+    final avrora.sim.radio.CC1000Radio this$0;
+
+    void <init>(avrora.sim.radio.CC1000Radio)
+    {
+        avrora.sim.radio.CC1000Radio$MatchRegister this;
+        avrora.sim.radio.CC1000Radio l1;
+
+        this := @this: avrora.sim.radio.CC1000Radio$MatchRegister;
+        l1 := @parameter0: avrora.sim.radio.CC1000Radio;
+        this.<avrora.sim.radio.CC1000Radio$MatchRegister: avrora.sim.radio.CC1000Radio this$0> = l1;
+        specialinvoke this.<avrora.sim.radio.CC1000Radio$RadioRegister: void <init>(avrora.sim.radio.CC1000Radio,java.lang.String,byte)>(l1, "MATCH", 0);
+        return;
+    }
+
+    protected void decode(byte)
+    {
+        avrora.sim.radio.CC1000Radio$MatchRegister this;
+        byte val, $b1;
+        short $s0;
+        long tid_decode;
+        java.lang.Thread thread_decode;
+
+        this := @this: avrora.sim.radio.CC1000Radio$MatchRegister;
+        val := @parameter0: byte;
+        thread_decode = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_decode = virtualinvoke thread_decode.<java.lang.Thread: long getId()>();
+        $s0 = val & 240;
+        $s0 = $s0 >> 4;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,short)>(this, 161, tid_decode, "avrora.sim.radio.CC1000Radio$MatchRegister", 833, $s0);
+        this.<avrora.sim.radio.CC1000Radio$MatchRegister: int rxMatch> = $s0;
+        $b1 = val & 15;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 162, tid_decode, "avrora.sim.radio.CC1000Radio$MatchRegister", 834, $b1);
+        this.<avrora.sim.radio.CC1000Radio$MatchRegister: int txMatch> = $b1;
+        return;
+    }
+}

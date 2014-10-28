@@ -1,0 +1,25 @@
+final class org.apache.lucene.index.CompoundFileReader$FileEntry extends java.lang.Object
+{
+    long offset;
+    long length;
+
+    private void <init>()
+    {
+        org.apache.lucene.index.CompoundFileReader$FileEntry this;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader$FileEntry;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    void <init>(org.apache.lucene.index.CompoundFileReader$1)
+    {
+        org.apache.lucene.index.CompoundFileReader$FileEntry this;
+        org.apache.lucene.index.CompoundFileReader$1 x0;
+
+        this := @this: org.apache.lucene.index.CompoundFileReader$FileEntry;
+        x0 := @parameter0: org.apache.lucene.index.CompoundFileReader$1;
+        specialinvoke this.<org.apache.lucene.index.CompoundFileReader$FileEntry: void <init>()>();
+        return;
+    }
+}

@@ -1,0 +1,159 @@
+public class cck.text.Verbose$Printer extends cck.text.Printer
+{
+    public boolean enabled;
+
+    void <init>()
+    {
+        cck.text.Verbose$Printer this;
+        java.io.PrintStream $r0;
+        boolean $z0;
+
+        this := @this: cck.text.Verbose$Printer;
+        $r0 = <java.lang.System: java.io.PrintStream out>;
+        specialinvoke this.<cck.text.Printer: void <init>(java.io.PrintStream)>($r0);
+        $z0 = <cck.text.Verbose: boolean ALL>;
+        this.<cck.text.Verbose$Printer: boolean enabled> = $z0;
+        return;
+    }
+
+    public void println(java.lang.String)
+    {
+        cck.text.Verbose$Printer this;
+        java.lang.String s;
+        boolean $z0;
+
+        this := @this: cck.text.Verbose$Printer;
+        s := @parameter0: java.lang.String;
+        $z0 = this.<cck.text.Verbose$Printer: boolean enabled>;
+        if $z0 == 0 goto label0;
+
+        specialinvoke this.<cck.text.Printer: void println(java.lang.String)>(s);
+
+     label0:
+        return;
+    }
+
+    public void print(java.lang.String)
+    {
+        cck.text.Verbose$Printer this;
+        java.lang.String s;
+        boolean $z0;
+
+        this := @this: cck.text.Verbose$Printer;
+        s := @parameter0: java.lang.String;
+        $z0 = this.<cck.text.Verbose$Printer: boolean enabled>;
+        if $z0 == 0 goto label0;
+
+        specialinvoke this.<cck.text.Printer: void print(java.lang.String)>(s);
+
+     label0:
+        return;
+    }
+
+    public void nextln()
+    {
+        cck.text.Verbose$Printer this;
+        boolean $z0;
+
+        this := @this: cck.text.Verbose$Printer;
+        $z0 = this.<cck.text.Verbose$Printer: boolean enabled>;
+        if $z0 == 0 goto label0;
+
+        specialinvoke this.<cck.text.Printer: void nextln()>();
+
+     label0:
+        return;
+    }
+
+    public void indent()
+    {
+        cck.text.Verbose$Printer this;
+        boolean $z0;
+
+        this := @this: cck.text.Verbose$Printer;
+        $z0 = this.<cck.text.Verbose$Printer: boolean enabled>;
+        if $z0 == 0 goto label0;
+
+        specialinvoke this.<cck.text.Printer: void indent()>();
+
+     label0:
+        return;
+    }
+
+    public void spaces()
+    {
+        cck.text.Verbose$Printer this;
+        boolean $z0;
+
+        this := @this: cck.text.Verbose$Printer;
+        $z0 = this.<cck.text.Verbose$Printer: boolean enabled>;
+        if $z0 == 0 goto label0;
+
+        specialinvoke this.<cck.text.Printer: void spaces()>();
+
+     label0:
+        return;
+    }
+
+    public void unindent()
+    {
+        cck.text.Verbose$Printer this;
+        boolean $z0;
+
+        this := @this: cck.text.Verbose$Printer;
+        $z0 = this.<cck.text.Verbose$Printer: boolean enabled>;
+        if $z0 == 0 goto label0;
+
+        specialinvoke this.<cck.text.Printer: void unindent()>();
+
+     label0:
+        return;
+    }
+
+    public void startblock()
+    {
+        cck.text.Verbose$Printer this;
+        boolean $z0;
+
+        this := @this: cck.text.Verbose$Printer;
+        $z0 = this.<cck.text.Verbose$Printer: boolean enabled>;
+        if $z0 == 0 goto label0;
+
+        specialinvoke this.<cck.text.Printer: void startblock()>();
+
+     label0:
+        return;
+    }
+
+    public void startblock(java.lang.String)
+    {
+        cck.text.Verbose$Printer this;
+        java.lang.String name;
+        boolean $z0;
+
+        this := @this: cck.text.Verbose$Printer;
+        name := @parameter0: java.lang.String;
+        $z0 = this.<cck.text.Verbose$Printer: boolean enabled>;
+        if $z0 == 0 goto label0;
+
+        specialinvoke this.<cck.text.Printer: void startblock(java.lang.String)>(name);
+
+     label0:
+        return;
+    }
+
+    public void endblock()
+    {
+        cck.text.Verbose$Printer this;
+        boolean $z0;
+
+        this := @this: cck.text.Verbose$Printer;
+        $z0 = this.<cck.text.Verbose$Printer: boolean enabled>;
+        if $z0 == 0 goto label0;
+
+        specialinvoke this.<cck.text.Printer: void endblock()>();
+
+     label0:
+        return;
+    }
+}

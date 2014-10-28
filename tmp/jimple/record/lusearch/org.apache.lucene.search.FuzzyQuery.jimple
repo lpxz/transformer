@@ -1,0 +1,347 @@
+public class org.apache.lucene.search.FuzzyQuery extends org.apache.lucene.search.MultiTermQuery
+{
+    public static final float defaultMinSimilarity;
+    public static final int defaultPrefixLength;
+    private float minimumSimilarity;
+    private int prefixLength;
+
+    public void <init>(org.apache.lucene.index.Term, float, int) throws java.lang.IllegalArgumentException
+    {
+        org.apache.lucene.search.FuzzyQuery this;
+        org.apache.lucene.index.Term term;
+        float minimumSimilarity;
+        int prefixLength;
+        byte $b0;
+        java.lang.IllegalArgumentException $r0;
+
+        this := @this: org.apache.lucene.search.FuzzyQuery;
+        term := @parameter0: org.apache.lucene.index.Term;
+        minimumSimilarity := @parameter1: float;
+        prefixLength := @parameter2: int;
+        specialinvoke this.<org.apache.lucene.search.MultiTermQuery: void <init>(org.apache.lucene.index.Term)>(term);
+        $b0 = minimumSimilarity cmpl 1.0F;
+        if $b0 < 0 goto label0;
+
+        $r0 = new java.lang.IllegalArgumentException;
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("minimumSimilarity >= 1");
+        throw $r0;
+
+     label0:
+        $b0 = minimumSimilarity cmpg 0.0F;
+        if $b0 >= 0 goto label1;
+
+        $r0 = new java.lang.IllegalArgumentException;
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("minimumSimilarity < 0");
+        throw $r0;
+
+     label1:
+        if prefixLength >= 0 goto label2;
+
+        $r0 = new java.lang.IllegalArgumentException;
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("prefixLength < 0");
+        throw $r0;
+
+     label2:
+        this.<org.apache.lucene.search.FuzzyQuery: float minimumSimilarity> = minimumSimilarity;
+        this.<org.apache.lucene.search.FuzzyQuery: int prefixLength> = prefixLength;
+        return;
+    }
+
+    public void <init>(org.apache.lucene.index.Term, float) throws java.lang.IllegalArgumentException
+    {
+        org.apache.lucene.search.FuzzyQuery this;
+        org.apache.lucene.index.Term term;
+        float minimumSimilarity;
+
+        this := @this: org.apache.lucene.search.FuzzyQuery;
+        term := @parameter0: org.apache.lucene.index.Term;
+        minimumSimilarity := @parameter1: float;
+        specialinvoke this.<org.apache.lucene.search.FuzzyQuery: void <init>(org.apache.lucene.index.Term,float,int)>(term, minimumSimilarity, 0);
+        return;
+    }
+
+    public void <init>(org.apache.lucene.index.Term)
+    {
+        org.apache.lucene.search.FuzzyQuery this;
+        org.apache.lucene.index.Term term;
+
+        this := @this: org.apache.lucene.search.FuzzyQuery;
+        term := @parameter0: org.apache.lucene.index.Term;
+        specialinvoke this.<org.apache.lucene.search.FuzzyQuery: void <init>(org.apache.lucene.index.Term,float,int)>(term, 0.5F, 0);
+        return;
+    }
+
+    public float getMinSimilarity()
+    {
+        org.apache.lucene.search.FuzzyQuery this;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.FuzzyQuery;
+        $f0 = this.<org.apache.lucene.search.FuzzyQuery: float minimumSimilarity>;
+        return $f0;
+    }
+
+    public int getPrefixLength()
+    {
+        org.apache.lucene.search.FuzzyQuery this;
+        int $i0;
+
+        this := @this: org.apache.lucene.search.FuzzyQuery;
+        $i0 = this.<org.apache.lucene.search.FuzzyQuery: int prefixLength>;
+        return $i0;
+    }
+
+    protected org.apache.lucene.search.FilteredTermEnum getEnum(org.apache.lucene.index.IndexReader) throws java.io.IOException
+    {
+        org.apache.lucene.search.FuzzyQuery this;
+        org.apache.lucene.index.IndexReader reader;
+        org.apache.lucene.search.FuzzyTermEnum $r0;
+        org.apache.lucene.index.Term $r1;
+        float $f0;
+        int $i0;
+
+        this := @this: org.apache.lucene.search.FuzzyQuery;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        $r0 = new org.apache.lucene.search.FuzzyTermEnum;
+        $r1 = virtualinvoke this.<org.apache.lucene.search.FuzzyQuery: org.apache.lucene.index.Term getTerm()>();
+        $f0 = this.<org.apache.lucene.search.FuzzyQuery: float minimumSimilarity>;
+        $i0 = this.<org.apache.lucene.search.FuzzyQuery: int prefixLength>;
+        specialinvoke $r0.<org.apache.lucene.search.FuzzyTermEnum: void <init>(org.apache.lucene.index.IndexReader,org.apache.lucene.index.Term,float,int)>(reader, $r1, $f0, $i0);
+        return $r0;
+    }
+
+    public org.apache.lucene.search.Query rewrite(org.apache.lucene.index.IndexReader) throws java.io.IOException
+    {
+        org.apache.lucene.search.FuzzyQuery this;
+        org.apache.lucene.index.IndexReader reader;
+        org.apache.lucene.search.FilteredTermEnum enumerator;
+        int maxClauseCount, size, i;
+        org.apache.lucene.search.FuzzyQuery$ScoreTermQueue stQueue, $r0;
+        org.apache.lucene.search.FuzzyQuery$ScoreTerm reusableST, st, $r1;
+        float score, $f0, $f1;
+        org.apache.lucene.index.Term t, $r6;
+        java.lang.Throwable l8, $r3;
+        org.apache.lucene.search.BooleanQuery query, $r4;
+        org.apache.lucene.search.TermQuery tq, $r5;
+        byte $b0;
+        java.lang.Object $r2;
+        boolean $z0;
+        org.apache.lucene.search.BooleanClause$Occur $r7;
+        long tid_rewrite;
+        java.lang.Thread thread_rewrite;
+
+        this := @this: org.apache.lucene.search.FuzzyQuery;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        thread_rewrite = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_rewrite = virtualinvoke thread_rewrite.<java.lang.Thread: long getId()>();
+        enumerator = virtualinvoke this.<org.apache.lucene.search.FuzzyQuery: org.apache.lucene.search.FilteredTermEnum getEnum(org.apache.lucene.index.IndexReader)>(reader);
+        maxClauseCount = staticinvoke <org.apache.lucene.search.BooleanQuery: int getMaxClauseCount()>();
+        $r0 = new org.apache.lucene.search.FuzzyQuery$ScoreTermQueue;
+        specialinvoke $r0.<org.apache.lucene.search.FuzzyQuery$ScoreTermQueue: void <init>(int)>(maxClauseCount);
+        stQueue = $r0;
+        reusableST = null;
+
+     label0:
+        score = 0.0F;
+        t = virtualinvoke enumerator.<org.apache.lucene.search.FilteredTermEnum: org.apache.lucene.index.Term term()>();
+        if t == null goto label3;
+
+        score = virtualinvoke enumerator.<org.apache.lucene.search.FilteredTermEnum: float difference()>();
+        if reusableST != null goto label1;
+
+        $r1 = new org.apache.lucene.search.FuzzyQuery$ScoreTerm;
+        specialinvoke $r1.<org.apache.lucene.search.FuzzyQuery$ScoreTerm: void <init>(org.apache.lucene.index.Term,float)>(t, score);
+        reusableST = $r1;
+        goto label2;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(reusableST, 153, tid_rewrite, "org.apache.lucene.search.FuzzyQuery", 117, $f0);
+        $f0 = reusableST.<org.apache.lucene.search.FuzzyQuery$ScoreTerm: float score>;
+        $b0 = score cmpl $f0;
+        if $b0 < 0 goto label3;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(reusableST, 153, tid_rewrite, "org.apache.lucene.search.FuzzyQuery", 121, score);
+        reusableST.<org.apache.lucene.search.FuzzyQuery$ScoreTerm: float score> = score;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(reusableST, 154, tid_rewrite, "org.apache.lucene.search.FuzzyQuery", 122, t);
+        reusableST.<org.apache.lucene.search.FuzzyQuery$ScoreTerm: org.apache.lucene.index.Term term> = t;
+
+     label2:
+        $r2 = virtualinvoke stQueue.<org.apache.lucene.search.FuzzyQuery$ScoreTermQueue: java.lang.Object insertWithOverflow(java.lang.Object)>(reusableST);
+        reusableST = (org.apache.lucene.search.FuzzyQuery$ScoreTerm) $r2;
+
+     label3:
+        $z0 = virtualinvoke enumerator.<org.apache.lucene.search.FilteredTermEnum: boolean next()>();
+        if $z0 != 0 goto label0;
+
+        goto label11;
+
+     label4:
+        goto label8;
+
+     label5:
+        $r3 := @caughtexception;
+
+     label6:
+        l8 = $r3;
+        goto label12;
+
+     label7:
+        throw l8;
+
+     label8:
+        $r4 = new org.apache.lucene.search.BooleanQuery;
+        specialinvoke $r4.<org.apache.lucene.search.BooleanQuery: void <init>(boolean)>(1);
+        query = $r4;
+        size = virtualinvoke stQueue.<org.apache.lucene.search.FuzzyQuery$ScoreTermQueue: int size()>();
+        i = 0;
+
+     label9:
+        if i >= size goto label10;
+
+        $r2 = virtualinvoke stQueue.<org.apache.lucene.search.FuzzyQuery$ScoreTermQueue: java.lang.Object pop()>();
+        st = (org.apache.lucene.search.FuzzyQuery$ScoreTerm) $r2;
+        $r5 = new org.apache.lucene.search.TermQuery;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(st, 154, tid_rewrite, "org.apache.lucene.search.FuzzyQuery", 138, $r6);
+        $r6 = st.<org.apache.lucene.search.FuzzyQuery$ScoreTerm: org.apache.lucene.index.Term term>;
+        specialinvoke $r5.<org.apache.lucene.search.TermQuery: void <init>(org.apache.lucene.index.Term)>($r6);
+        tq = $r5;
+        $f0 = virtualinvoke this.<org.apache.lucene.search.FuzzyQuery: float getBoost()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,float)>(st, 153, tid_rewrite, "org.apache.lucene.search.FuzzyQuery", 139, $f1);
+        $f1 = st.<org.apache.lucene.search.FuzzyQuery$ScoreTerm: float score>;
+        $f0 = $f0 * $f1;
+        virtualinvoke tq.<org.apache.lucene.search.TermQuery: void setBoost(float)>($f0);
+        $r7 = <org.apache.lucene.search.BooleanClause$Occur: org.apache.lucene.search.BooleanClause$Occur SHOULD>;
+        virtualinvoke query.<org.apache.lucene.search.BooleanQuery: void add(org.apache.lucene.search.Query,org.apache.lucene.search.BooleanClause$Occur)>(tq, $r7);
+        i = i + 1;
+        goto label9;
+
+     label10:
+        return query;
+
+     label11:
+        virtualinvoke enumerator.<org.apache.lucene.search.FilteredTermEnum: void close()>();
+        goto label4;
+
+     label12:
+        virtualinvoke enumerator.<org.apache.lucene.search.FilteredTermEnum: void close()>();
+        goto label7;
+
+        catch java.lang.Throwable from label0 to label4 with label5;
+        catch java.lang.Throwable from label6 to label7 with label5;
+    }
+
+    public java.lang.String toString(java.lang.String)
+    {
+        org.apache.lucene.search.FuzzyQuery this;
+        java.lang.String field, $r1, $r2;
+        java.lang.StringBuffer $r0, buffer;
+        org.apache.lucene.index.Term term;
+        boolean $z0;
+        float $f0;
+
+        this := @this: org.apache.lucene.search.FuzzyQuery;
+        field := @parameter0: java.lang.String;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buffer = $r0;
+        term = virtualinvoke this.<org.apache.lucene.search.FuzzyQuery: org.apache.lucene.index.Term getTerm()>();
+        $r1 = virtualinvoke term.<org.apache.lucene.index.Term: java.lang.String field()>();
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>(field);
+        if $z0 != 0 goto label0;
+
+        $r2 = virtualinvoke term.<org.apache.lucene.index.Term: java.lang.String field()>();
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(":");
+
+     label0:
+        $r2 = virtualinvoke term.<org.apache.lucene.index.Term: java.lang.String text()>();
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(126);
+        $f0 = this.<org.apache.lucene.search.FuzzyQuery: float minimumSimilarity>;
+        $r2 = staticinvoke <java.lang.Float: java.lang.String toString(float)>($f0);
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $f0 = virtualinvoke this.<org.apache.lucene.search.FuzzyQuery: float getBoost()>();
+        $r2 = staticinvoke <org.apache.lucene.util.ToStringUtils: java.lang.String boost(float)>($f0);
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        $r1 = virtualinvoke buffer.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r1;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        org.apache.lucene.search.FuzzyQuery this, fuzzyQuery;
+        java.lang.Object o;
+        boolean $z0;
+        float $f0, $f1;
+        byte $b0;
+        int $i1, $i2;
+
+        this := @this: org.apache.lucene.search.FuzzyQuery;
+        o := @parameter0: java.lang.Object;
+        if this != o goto label0;
+
+        return 1;
+
+     label0:
+        $z0 = o instanceof org.apache.lucene.search.FuzzyQuery;
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $z0 = specialinvoke this.<org.apache.lucene.search.MultiTermQuery: boolean equals(java.lang.Object)>(o);
+        if $z0 != 0 goto label2;
+
+        return 0;
+
+     label2:
+        fuzzyQuery = (org.apache.lucene.search.FuzzyQuery) o;
+        $f0 = this.<org.apache.lucene.search.FuzzyQuery: float minimumSimilarity>;
+        $f1 = fuzzyQuery.<org.apache.lucene.search.FuzzyQuery: float minimumSimilarity>;
+        $b0 = $f0 cmpl $f1;
+        if $b0 == 0 goto label3;
+
+        return 0;
+
+     label3:
+        $i1 = this.<org.apache.lucene.search.FuzzyQuery: int prefixLength>;
+        $i2 = fuzzyQuery.<org.apache.lucene.search.FuzzyQuery: int prefixLength>;
+        if $i1 == $i2 goto label4;
+
+        return 0;
+
+     label4:
+        return 1;
+    }
+
+    public int hashCode()
+    {
+        org.apache.lucene.search.FuzzyQuery this;
+        int result, $i0, $i2;
+        float $f0, $f1;
+        byte $b1;
+
+        this := @this: org.apache.lucene.search.FuzzyQuery;
+        result = specialinvoke this.<org.apache.lucene.search.MultiTermQuery: int hashCode()>();
+        $i0 = 29 * result;
+        $f0 = (float) $i0;
+        $f1 = this.<org.apache.lucene.search.FuzzyQuery: float minimumSimilarity>;
+        $f0 = $f0 + $f1;
+        $b1 = $f0 cmpl 0.0F;
+        if $b1 == 0 goto label0;
+
+        $f0 = this.<org.apache.lucene.search.FuzzyQuery: float minimumSimilarity>;
+        $i0 = staticinvoke <java.lang.Float: int floatToIntBits(float)>($f0);
+        goto label1;
+
+     label0:
+        $i0 = 0;
+
+     label1:
+        result = $i0;
+        $i0 = 29 * result;
+        $i2 = this.<org.apache.lucene.search.FuzzyQuery: int prefixLength>;
+        result = $i0 + $i2;
+        return result;
+    }
+}

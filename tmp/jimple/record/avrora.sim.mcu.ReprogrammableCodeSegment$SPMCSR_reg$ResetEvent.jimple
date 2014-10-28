@@ -1,0 +1,40 @@
+class avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent extends java.lang.Object implements avrora.sim.Simulator$Event
+{
+    final avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg this$1;
+
+    void <init>(avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent this;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg l1;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent;
+        l1 := @parameter0: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg;
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg this$1> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public void fire()
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent this;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg $r0;
+        avrora.sim.mcu.ReprogrammableCodeSegment $r1;
+        avrora.sim.output.SimPrinter $r2;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent;
+        $r0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg this$1>;
+        $r1 = $r0.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment this$0>;
+        $r2 = $r1.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.output.SimPrinter flashPrinter>;
+        if $r2 == null goto label0;
+
+        $r0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg this$1>;
+        $r1 = $r0.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment this$0>;
+        $r2 = $r1.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.output.SimPrinter flashPrinter>;
+        virtualinvoke $r2.<avrora.sim.output.SimPrinter: void println(java.lang.String)>("FLASH: write to SPMCSR timed out after 4 cycles");
+
+     label0:
+        $r0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg this$1>;
+        virtualinvoke $r0.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: void reset()>();
+        return;
+    }
+}

@@ -106,6 +106,98 @@ public class RecordMonitor {
     }
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public static void readBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key,boolean value) {		
+    }
+    public static void writeBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key, boolean value) {
+    }
+    
+    public static void readBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key,byte value) {		
+    }
+    public static void writeBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key, byte value) {
+    }
+    
+    public static void readBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key,char value) {		
+    }
+    public static void writeBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key, char value) {
+    }
+    
+    public static void readBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key,double value) {		
+    }
+    public static void writeBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key, double value) {
+    }
+    
+    public static void readBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key,float value) {		
+    }
+    public static void writeBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key, float value) {
+    }
+    
+    public static void readBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key,int value) {		
+    }
+    public static void writeBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key, int value) {
+    }
+    
+    public static void readBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key,long value) {		
+    }
+    public static void writeBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key, long value) {
+    }
+    
+    public static void readBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key,short value) {		
+    }
+    public static void writeBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key, short value) {
+    }
+    
+    public static void readBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key,Object value) {		
+    }
+    public static void writeBeforeDSElem(Object o, int iid,long id, String classname, int lineNO, Object key,  Object value) {
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
   
     // deprecated
 //    public static void readBeforeInstance(Object o, int iid,long id, String classname, int lineNO) {		

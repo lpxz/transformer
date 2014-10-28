@@ -1,0 +1,28 @@
+public class avrora.monitors.RealTimeMonitor extends avrora.monitors.MonitorFactory
+{
+
+    public void <init>()
+    {
+        avrora.monitors.RealTimeMonitor this;
+
+        this := @this: avrora.monitors.RealTimeMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"real-time\" monitor slows down the simulation so that it runs as close as possible to real-time.");
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.RealTimeMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.RealTimeMonitor$ThrottleEvent tmp$550389631;
+        avrora.sim.Simulator$Event tmp;
+
+        this := @this: avrora.monitors.RealTimeMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$550389631 = new avrora.monitors.RealTimeMonitor$ThrottleEvent;
+        specialinvoke tmp$550389631.<avrora.monitors.RealTimeMonitor$ThrottleEvent: void <init>(avrora.monitors.RealTimeMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.sim.Simulator$Event) tmp$550389631;
+        virtualinvoke s.<avrora.sim.Simulator: void insertEvent(avrora.sim.Simulator$Event,long)>(tmp, 1L);
+        return null;
+    }
+}

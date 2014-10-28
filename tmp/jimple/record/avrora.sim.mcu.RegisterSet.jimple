@@ -1,0 +1,290 @@
+public class avrora.sim.mcu.RegisterSet extends java.lang.Object
+{
+    protected final java.util.HashMap fields;
+    protected final avrora.sim.ActiveRegister[] registers;
+    protected final avrora.sim.mcu.RegisterLayout layout;
+
+    public void <init>(avrora.sim.mcu.RegisterLayout)
+    {
+        avrora.sim.mcu.RegisterSet this;
+        avrora.sim.mcu.RegisterLayout rl;
+        java.util.HashMap $r0, $r2;
+        java.util.Iterator i;
+        avrora.sim.mcu.RegisterLayout$Field f;
+        avrora.sim.mcu.RegisterSet$FieldWriter fw, $r5;
+        int ior, $i0;
+        avrora.sim.mcu.RegisterLayout$RegisterInfo ri;
+        avrora.sim.ActiveRegister[] $r1, $r10;
+        java.util.Collection $r3;
+        boolean $z0;
+        java.lang.Object $r4;
+        avrora.sim.mcu.RegisterSet$Field $r6;
+        java.lang.String $r7;
+        avrora.sim.mcu.RegisterLayout$RegisterInfo[] $r8;
+        avrora.sim.mcu.RegisterLayout$SubField[] $r9;
+        avrora.sim.RWRegister $r11;
+        avrora.sim.mcu.RegisterSet$MultiFieldRegister $r12;
+
+        this := @this: avrora.sim.mcu.RegisterSet;
+        rl := @parameter0: avrora.sim.mcu.RegisterLayout;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        this.<avrora.sim.mcu.RegisterSet: java.util.HashMap fields> = $r0;
+        $i0 = rl.<avrora.sim.mcu.RegisterLayout: int ioreg_size>;
+        $r1 = newarray (avrora.sim.ActiveRegister)[$i0];
+        this.<avrora.sim.mcu.RegisterSet: avrora.sim.ActiveRegister[] registers> = $r1;
+        this.<avrora.sim.mcu.RegisterSet: avrora.sim.mcu.RegisterLayout layout> = rl;
+        $r2 = rl.<avrora.sim.mcu.RegisterLayout: java.util.HashMap fields>;
+        $r3 = virtualinvoke $r2.<java.util.HashMap: java.util.Collection values()>();
+        i = interfaceinvoke $r3.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r4 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        f = (avrora.sim.mcu.RegisterLayout$Field) $r4;
+        $r5 = new avrora.sim.mcu.RegisterSet$FieldWriter;
+        specialinvoke $r5.<avrora.sim.mcu.RegisterSet$FieldWriter: void <init>()>();
+        fw = $r5;
+        $r6 = new avrora.sim.mcu.RegisterSet$Field;
+        specialinvoke $r6.<avrora.sim.mcu.RegisterSet$Field: void <init>()>();
+        fw.<avrora.sim.mcu.RegisterSet$FieldWriter: avrora.sim.mcu.RegisterSet$Field fobject> = $r6;
+        $r2 = this.<avrora.sim.mcu.RegisterSet: java.util.HashMap fields>;
+        $r7 = f.<avrora.sim.mcu.RegisterLayout$Field: java.lang.String name>;
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r7, fw);
+        goto label0;
+
+     label1:
+        ior = 0;
+
+     label2:
+        $i0 = rl.<avrora.sim.mcu.RegisterLayout: int ioreg_size>;
+        if ior >= $i0 goto label6;
+
+        $r8 = rl.<avrora.sim.mcu.RegisterLayout: avrora.sim.mcu.RegisterLayout$RegisterInfo[] info>;
+        ri = $r8[ior];
+        if ri == null goto label3;
+
+        $r9 = ri.<avrora.sim.mcu.RegisterLayout$RegisterInfo: avrora.sim.mcu.RegisterLayout$SubField[] subfields>;
+        if $r9 != null goto label4;
+
+     label3:
+        $r10 = this.<avrora.sim.mcu.RegisterSet: avrora.sim.ActiveRegister[] registers>;
+        $r11 = new avrora.sim.RWRegister;
+        specialinvoke $r11.<avrora.sim.RWRegister: void <init>()>();
+        $r10[ior] = $r11;
+        goto label5;
+
+     label4:
+        $r10 = this.<avrora.sim.mcu.RegisterSet: avrora.sim.ActiveRegister[] registers>;
+        $r12 = specialinvoke this.<avrora.sim.mcu.RegisterSet: avrora.sim.mcu.RegisterSet$MultiFieldRegister createMultiFieldRegister(avrora.sim.mcu.RegisterLayout$RegisterInfo)>(ri);
+        $r10[ior] = $r12;
+
+     label5:
+        ior = ior + 1;
+        goto label2;
+
+     label6:
+        return;
+    }
+
+    private avrora.sim.mcu.RegisterSet$MultiFieldRegister createMultiFieldRegister(avrora.sim.mcu.RegisterLayout$RegisterInfo)
+    {
+        avrora.sim.mcu.RegisterSet this;
+        avrora.sim.mcu.RegisterLayout$RegisterInfo ri;
+        avrora.sim.mcu.RegisterSet$SubRegWriter[] srw;
+        int cntr, $i0, $i1;
+        avrora.sim.mcu.RegisterLayout$SubField[] $r0;
+        avrora.sim.mcu.RegisterSet$MultiFieldRegister $r1;
+
+        this := @this: avrora.sim.mcu.RegisterSet;
+        ri := @parameter0: avrora.sim.mcu.RegisterLayout$RegisterInfo;
+        $r0 = ri.<avrora.sim.mcu.RegisterLayout$RegisterInfo: avrora.sim.mcu.RegisterLayout$SubField[] subfields>;
+        $i0 = lengthof $r0;
+        srw = newarray (avrora.sim.mcu.RegisterSet$SubRegWriter)[$i0];
+        cntr = 0;
+
+     label0:
+        $i1 = lengthof srw;
+        if cntr >= $i1 goto label1;
+
+        specialinvoke this.<avrora.sim.mcu.RegisterSet: void createSubRegWriter(avrora.sim.mcu.RegisterLayout$RegisterInfo,int,avrora.sim.mcu.RegisterSet$SubRegWriter[])>(ri, cntr, srw);
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        $r1 = new avrora.sim.mcu.RegisterSet$MultiFieldRegister;
+        specialinvoke $r1.<avrora.sim.mcu.RegisterSet$MultiFieldRegister: void <init>(avrora.sim.mcu.RegisterSet,avrora.sim.mcu.RegisterSet$SubRegWriter[])>(this, srw);
+        return $r1;
+    }
+
+    private void createSubRegWriter(avrora.sim.mcu.RegisterLayout$RegisterInfo, int, avrora.sim.mcu.RegisterSet$SubRegWriter[])
+    {
+        avrora.sim.mcu.RegisterSet this;
+        avrora.sim.mcu.RegisterLayout$RegisterInfo ri;
+        int cntr, $i0;
+        java.lang.Object[] srw;
+        avrora.sim.mcu.RegisterLayout$SubField sf;
+        avrora.sim.mcu.RegisterLayout$Field field, $r2, $r3;
+        avrora.sim.mcu.RegisterSet$ReservedWriter $r0;
+        avrora.sim.mcu.RegisterLayout$SubField[] $r1;
+        avrora.sim.mcu.RegisterSet$UnusedWriter $r4;
+        avrora.sim.mcu.RegisterSet$TotalFieldWriter $r5;
+        java.util.HashMap $r6;
+        java.lang.String $r7;
+        java.lang.Object $r8;
+        avrora.sim.mcu.RegisterSet$FieldWriter $r9;
+        avrora.sim.mcu.RegisterSet$SubFieldWriter $r10;
+        long tid_createSubRegWriter;
+        java.lang.Thread thread_createSubRegWriter;
+
+        this := @this: avrora.sim.mcu.RegisterSet;
+        ri := @parameter0: avrora.sim.mcu.RegisterLayout$RegisterInfo;
+        cntr := @parameter1: int;
+        srw := @parameter2: avrora.sim.mcu.RegisterSet$SubRegWriter[];
+        thread_createSubRegWriter = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_createSubRegWriter = virtualinvoke thread_createSubRegWriter.<java.lang.Thread: long getId()>();
+        $r1 = ri.<avrora.sim.mcu.RegisterLayout$RegisterInfo: avrora.sim.mcu.RegisterLayout$SubField[] subfields>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r1, 22, tid_createSubRegWriter, "avrora.sim.mcu.RegisterSet", 243, cntr, sf);
+        sf = $r1[cntr];
+        field = sf.<avrora.sim.mcu.RegisterLayout$SubField: avrora.sim.mcu.RegisterLayout$Field field>;
+        $r2 = sf.<avrora.sim.mcu.RegisterLayout$SubField: avrora.sim.mcu.RegisterLayout$Field field>;
+        $r3 = <avrora.sim.mcu.RegisterLayout: avrora.sim.mcu.RegisterLayout$Field RESERVED>;
+        if $r2 != $r3 goto label0;
+
+        $r0 = new avrora.sim.mcu.RegisterSet$ReservedWriter;
+        specialinvoke $r0.<avrora.sim.mcu.RegisterSet$ReservedWriter: void <init>(avrora.sim.mcu.RegisterLayout$SubField)>(sf);
+        srw[cntr] = $r0;
+        goto label3;
+
+     label0:
+        $r2 = sf.<avrora.sim.mcu.RegisterLayout$SubField: avrora.sim.mcu.RegisterLayout$Field field>;
+        $r3 = <avrora.sim.mcu.RegisterLayout: avrora.sim.mcu.RegisterLayout$Field UNUSED>;
+        if $r2 != $r3 goto label1;
+
+        $r4 = new avrora.sim.mcu.RegisterSet$UnusedWriter;
+        specialinvoke $r4.<avrora.sim.mcu.RegisterSet$UnusedWriter: void <init>(avrora.sim.mcu.RegisterLayout$SubField)>(sf);
+        srw[cntr] = $r4;
+        goto label3;
+
+     label1:
+        $r2 = sf.<avrora.sim.mcu.RegisterLayout$SubField: avrora.sim.mcu.RegisterLayout$Field field>;
+        $r1 = $r2.<avrora.sim.mcu.RegisterLayout$Field: avrora.sim.mcu.RegisterLayout$SubField[] subfields>;
+        $i0 = lengthof $r1;
+        if $i0 != 1 goto label2;
+
+        $r5 = new avrora.sim.mcu.RegisterSet$TotalFieldWriter;
+        $r6 = this.<avrora.sim.mcu.RegisterSet: java.util.HashMap fields>;
+        $r7 = field.<avrora.sim.mcu.RegisterLayout$Field: java.lang.String name>;
+        $r8 = virtualinvoke $r6.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r7);
+        $r9 = (avrora.sim.mcu.RegisterSet$FieldWriter) $r8;
+        specialinvoke $r5.<avrora.sim.mcu.RegisterSet$TotalFieldWriter: void <init>(avrora.sim.mcu.RegisterLayout$SubField,avrora.sim.mcu.RegisterSet$FieldWriter)>(sf, $r9);
+        srw[cntr] = $r5;
+        goto label3;
+
+     label2:
+        $r10 = new avrora.sim.mcu.RegisterSet$SubFieldWriter;
+        $r6 = this.<avrora.sim.mcu.RegisterSet: java.util.HashMap fields>;
+        $r7 = field.<avrora.sim.mcu.RegisterLayout$Field: java.lang.String name>;
+        $r8 = virtualinvoke $r6.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r7);
+        $r9 = (avrora.sim.mcu.RegisterSet$FieldWriter) $r8;
+        specialinvoke $r10.<avrora.sim.mcu.RegisterSet$SubFieldWriter: void <init>(avrora.sim.mcu.RegisterLayout$SubField,avrora.sim.mcu.RegisterSet$FieldWriter)>(sf, $r9);
+        srw[cntr] = $r10;
+
+     label3:
+        return;
+    }
+
+    public int getSize()
+    {
+        avrora.sim.mcu.RegisterSet this;
+        avrora.sim.ActiveRegister[] $r0;
+        int $i0;
+
+        this := @this: avrora.sim.mcu.RegisterSet;
+        $r0 = this.<avrora.sim.mcu.RegisterSet: avrora.sim.ActiveRegister[] registers>;
+        $i0 = lengthof $r0;
+        return $i0;
+    }
+
+    public avrora.sim.mcu.RegisterLayout getRegisterLayout()
+    {
+        avrora.sim.mcu.RegisterSet this;
+        avrora.sim.mcu.RegisterLayout $r0;
+
+        this := @this: avrora.sim.mcu.RegisterSet;
+        $r0 = this.<avrora.sim.mcu.RegisterSet: avrora.sim.mcu.RegisterLayout layout>;
+        return $r0;
+    }
+
+    public avrora.sim.ActiveRegister[] share()
+    {
+        avrora.sim.mcu.RegisterSet this;
+        avrora.sim.ActiveRegister[] $r0;
+
+        this := @this: avrora.sim.mcu.RegisterSet;
+        $r0 = this.<avrora.sim.mcu.RegisterSet: avrora.sim.ActiveRegister[] registers>;
+        return $r0;
+    }
+
+    public avrora.sim.mcu.RegisterSet$Field getField(java.lang.String)
+    {
+        avrora.sim.mcu.RegisterSet this;
+        java.lang.String fname;
+        avrora.sim.mcu.RegisterSet$FieldWriter fwriter;
+        avrora.sim.mcu.RegisterSet$Field $r0;
+
+        this := @this: avrora.sim.mcu.RegisterSet;
+        fname := @parameter0: java.lang.String;
+        fwriter = specialinvoke this.<avrora.sim.mcu.RegisterSet: avrora.sim.mcu.RegisterSet$FieldWriter getFieldWriter(java.lang.String)>(fname);
+        $r0 = fwriter.<avrora.sim.mcu.RegisterSet$FieldWriter: avrora.sim.mcu.RegisterSet$Field fobject>;
+        return $r0;
+    }
+
+    private avrora.sim.mcu.RegisterSet$FieldWriter getFieldWriter(java.lang.String)
+    {
+        avrora.sim.mcu.RegisterSet this;
+        java.lang.String fname, $r3, $r4;
+        avrora.sim.mcu.RegisterSet$FieldWriter fwriter;
+        java.util.HashMap $r0;
+        java.lang.Object $r1;
+        java.lang.StringBuilder $r2;
+        cck.util.Util$InternalError $r5;
+
+        this := @this: avrora.sim.mcu.RegisterSet;
+        fname := @parameter0: java.lang.String;
+        $r0 = this.<avrora.sim.mcu.RegisterSet: java.util.HashMap fields>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(fname);
+        fwriter = (avrora.sim.mcu.RegisterSet$FieldWriter) $r1;
+        if fwriter != null goto label0;
+
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Field not found in RegisterSet: ");
+        $r3 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>(fname);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r5 = staticinvoke <cck.util.Util: cck.util.Util$InternalError failure(java.lang.String)>($r4);
+        throw $r5;
+
+     label0:
+        return fwriter;
+    }
+
+    public avrora.sim.mcu.RegisterSet$Field installField(java.lang.String, avrora.sim.mcu.RegisterSet$Field)
+    {
+        avrora.sim.mcu.RegisterSet this;
+        java.lang.String fname;
+        avrora.sim.mcu.RegisterSet$Field fo;
+        avrora.sim.mcu.RegisterSet$FieldWriter fwriter;
+
+        this := @this: avrora.sim.mcu.RegisterSet;
+        fname := @parameter0: java.lang.String;
+        fo := @parameter1: avrora.sim.mcu.RegisterSet$Field;
+        fwriter = specialinvoke this.<avrora.sim.mcu.RegisterSet: avrora.sim.mcu.RegisterSet$FieldWriter getFieldWriter(java.lang.String)>(fname);
+        fwriter.<avrora.sim.mcu.RegisterSet$FieldWriter: avrora.sim.mcu.RegisterSet$Field fobject> = fo;
+        return fo;
+    }
+}

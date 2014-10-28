@@ -1,0 +1,14 @@
+public class org.apache.lucene.index.StaleReaderException extends java.io.IOException
+{
+
+    public void <init>(java.lang.String)
+    {
+        org.apache.lucene.index.StaleReaderException this;
+        java.lang.String message;
+
+        this := @this: org.apache.lucene.index.StaleReaderException;
+        message := @parameter0: java.lang.String;
+        specialinvoke this.<java.io.IOException: void <init>(java.lang.String)>(message);
+        return;
+    }
+}

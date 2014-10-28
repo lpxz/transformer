@@ -1,0 +1,677 @@
+public class org.apache.lucene.search.BooleanQuery extends org.apache.lucene.search.Query
+{
+    private static int maxClauseCount;
+    private java.util.ArrayList clauses;
+    private boolean disableCoord;
+    protected int minNrShouldMatch;
+    private static boolean allowDocsOutOfOrder;
+
+    public static int getMaxClauseCount()
+    {
+        int $i0;
+        long tid_getMaxClauseCount;
+        java.lang.Thread thread_getMaxClauseCount;
+
+        thread_getMaxClauseCount = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getMaxClauseCount = virtualinvoke thread_getMaxClauseCount.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(79, tid_getMaxClauseCount, "org.apache.lucene.searchorg.apache.lucene.search.BooleanQuery", 53, $i0);
+        $i0 = <org.apache.lucene.search.BooleanQuery: int maxClauseCount>;
+        return $i0;
+    }
+
+    public static void setMaxClauseCount(int)
+    {
+        int maxClauseCount;
+        java.lang.IllegalArgumentException $r0;
+        long tid_setMaxClauseCount;
+        java.lang.Thread thread_setMaxClauseCount;
+
+        maxClauseCount := @parameter0: int;
+        thread_setMaxClauseCount = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setMaxClauseCount = virtualinvoke thread_setMaxClauseCount.<java.lang.Thread: long getId()>();
+        if maxClauseCount >= 1 goto label0;
+
+        $r0 = new java.lang.IllegalArgumentException;
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("maxClauseCount must be >= 1");
+        throw $r0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,int)>(79, tid_setMaxClauseCount, "org.apache.lucene.searchorg.apache.lucene.search.BooleanQuery", 71, maxClauseCount);
+        <org.apache.lucene.search.BooleanQuery: int maxClauseCount> = maxClauseCount;
+        return;
+    }
+
+    public void <init>()
+    {
+        org.apache.lucene.search.BooleanQuery this;
+        java.util.ArrayList $r0;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        specialinvoke this.<org.apache.lucene.search.Query: void <init>()>();
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+        this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses> = $r0;
+        this.<org.apache.lucene.search.BooleanQuery: int minNrShouldMatch> = 0;
+        return;
+    }
+
+    public void <init>(boolean)
+    {
+        org.apache.lucene.search.BooleanQuery this;
+        boolean disableCoord;
+        java.util.ArrayList $r0;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        disableCoord := @parameter0: boolean;
+        specialinvoke this.<org.apache.lucene.search.Query: void <init>()>();
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+        this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses> = $r0;
+        this.<org.apache.lucene.search.BooleanQuery: int minNrShouldMatch> = 0;
+        this.<org.apache.lucene.search.BooleanQuery: boolean disableCoord> = disableCoord;
+        return;
+    }
+
+    public boolean isCoordDisabled()
+    {
+        org.apache.lucene.search.BooleanQuery this;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        $z0 = this.<org.apache.lucene.search.BooleanQuery: boolean disableCoord>;
+        return $z0;
+    }
+
+    public org.apache.lucene.search.Similarity getSimilarity(org.apache.lucene.search.Searcher)
+    {
+        org.apache.lucene.search.BooleanQuery this;
+        org.apache.lucene.search.Searcher searcher;
+        org.apache.lucene.search.Similarity result;
+        boolean $z0;
+        org.apache.lucene.search.BooleanQuery$1 $r0;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        searcher := @parameter0: org.apache.lucene.search.Searcher;
+        result = specialinvoke this.<org.apache.lucene.search.Query: org.apache.lucene.search.Similarity getSimilarity(org.apache.lucene.search.Searcher)>(searcher);
+        $z0 = this.<org.apache.lucene.search.BooleanQuery: boolean disableCoord>;
+        if $z0 == 0 goto label0;
+
+        $r0 = new org.apache.lucene.search.BooleanQuery$1;
+        specialinvoke $r0.<org.apache.lucene.search.BooleanQuery$1: void <init>(org.apache.lucene.search.BooleanQuery,org.apache.lucene.search.Similarity)>(this, result);
+        result = $r0;
+
+     label0:
+        return result;
+    }
+
+    public void setMinimumNumberShouldMatch(int)
+    {
+        org.apache.lucene.search.BooleanQuery this;
+        int min;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        min := @parameter0: int;
+        this.<org.apache.lucene.search.BooleanQuery: int minNrShouldMatch> = min;
+        return;
+    }
+
+    public int getMinimumNumberShouldMatch()
+    {
+        org.apache.lucene.search.BooleanQuery this;
+        int $i0;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        $i0 = this.<org.apache.lucene.search.BooleanQuery: int minNrShouldMatch>;
+        return $i0;
+    }
+
+    public void add(org.apache.lucene.search.Query, org.apache.lucene.search.BooleanClause$Occur)
+    {
+        org.apache.lucene.search.BooleanQuery this;
+        org.apache.lucene.search.Query query;
+        org.apache.lucene.search.BooleanClause$Occur occur;
+        org.apache.lucene.search.BooleanClause $r0;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        query := @parameter0: org.apache.lucene.search.Query;
+        occur := @parameter1: org.apache.lucene.search.BooleanClause$Occur;
+        $r0 = new org.apache.lucene.search.BooleanClause;
+        specialinvoke $r0.<org.apache.lucene.search.BooleanClause: void <init>(org.apache.lucene.search.Query,org.apache.lucene.search.BooleanClause$Occur)>(query, occur);
+        virtualinvoke this.<org.apache.lucene.search.BooleanQuery: void add(org.apache.lucene.search.BooleanClause)>($r0);
+        return;
+    }
+
+    public void add(org.apache.lucene.search.BooleanClause)
+    {
+        org.apache.lucene.search.BooleanQuery this;
+        org.apache.lucene.search.BooleanClause clause;
+        int $i0, $i1;
+        java.util.ArrayList $r0;
+        org.apache.lucene.search.BooleanQuery$TooManyClauses $r1;
+        long tid_add;
+        java.lang.Thread thread_add;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        clause := @parameter0: org.apache.lucene.search.BooleanClause;
+        thread_add = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_add = virtualinvoke thread_add.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_add, "org.apache.lucene.search.BooleanQuery", 162, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        $i1 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(79, tid_add, "org.apache.lucene.searchorg.apache.lucene.search.BooleanQuery", 162, $i0);
+        $i0 = <org.apache.lucene.search.BooleanQuery: int maxClauseCount>;
+        if $i1 < $i0 goto label0;
+
+        $r1 = new org.apache.lucene.search.BooleanQuery$TooManyClauses;
+        specialinvoke $r1.<org.apache.lucene.search.BooleanQuery$TooManyClauses: void <init>()>();
+        throw $r1;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_add, "org.apache.lucene.search.BooleanQuery", 165, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        virtualinvoke $r0.<java.util.ArrayList: boolean add(java.lang.Object)>(clause);
+        return;
+    }
+
+    public org.apache.lucene.search.BooleanClause[] getClauses()
+    {
+        org.apache.lucene.search.BooleanQuery this;
+        java.util.ArrayList $r0, $r1;
+        int $i0;
+        org.apache.lucene.search.BooleanClause[] $r2, $r4;
+        java.lang.Object[] $r3;
+        long tid_getClauses;
+        java.lang.Thread thread_getClauses;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        thread_getClauses = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getClauses = virtualinvoke thread_getClauses.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_getClauses, "org.apache.lucene.search.BooleanQuery", 170, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_getClauses, "org.apache.lucene.search.BooleanQuery", 170, $r1);
+        $r1 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        $i0 = virtualinvoke $r1.<java.util.ArrayList: int size()>();
+        $r2 = newarray (org.apache.lucene.search.BooleanClause)[$i0];
+        $r3 = virtualinvoke $r0.<java.util.ArrayList: java.lang.Object[] toArray(java.lang.Object[])>($r2);
+        $r4 = (org.apache.lucene.search.BooleanClause[]) $r3;
+        $r4 = (org.apache.lucene.search.BooleanClause[]) $r4;
+        return $r4;
+    }
+
+    public java.util.List clauses()
+    {
+        org.apache.lucene.search.BooleanQuery this;
+        java.util.ArrayList $r0;
+        long tid_clauses;
+        java.lang.Thread thread_clauses;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        thread_clauses = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clauses = virtualinvoke thread_clauses.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_clauses, "org.apache.lucene.search.BooleanQuery", 174, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        return $r0;
+    }
+
+    public static void setAllowDocsOutOfOrder(boolean)
+    {
+        boolean allow;
+        long tid_setAllowDocsOutOfOrder;
+        java.lang.Thread thread_setAllowDocsOutOfOrder;
+
+        allow := @parameter0: boolean;
+        thread_setAllowDocsOutOfOrder = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setAllowDocsOutOfOrder = virtualinvoke thread_setAllowDocsOutOfOrder.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeStatic(int,long,java.lang.String,int,boolean)>(81, tid_setAllowDocsOutOfOrder, "org.apache.lucene.searchorg.apache.lucene.search.BooleanQuery", 334, allow);
+        <org.apache.lucene.search.BooleanQuery: boolean allowDocsOutOfOrder> = allow;
+        return;
+    }
+
+    public static boolean getAllowDocsOutOfOrder()
+    {
+        boolean $z0;
+        long tid_getAllowDocsOutOfOrder;
+        java.lang.Thread thread_getAllowDocsOutOfOrder;
+
+        thread_getAllowDocsOutOfOrder = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getAllowDocsOutOfOrder = virtualinvoke thread_getAllowDocsOutOfOrder.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(81, tid_getAllowDocsOutOfOrder, "org.apache.lucene.searchorg.apache.lucene.search.BooleanQuery", 342, $z0);
+        $z0 = <org.apache.lucene.search.BooleanQuery: boolean allowDocsOutOfOrder>;
+        return $z0;
+    }
+
+    public static void setUseScorer14(boolean)
+    {
+        boolean use14;
+
+        use14 := @parameter0: boolean;
+        staticinvoke <org.apache.lucene.search.BooleanQuery: void setAllowDocsOutOfOrder(boolean)>(use14);
+        return;
+    }
+
+    public static boolean getUseScorer14()
+    {
+        boolean $z0;
+
+        nop;
+        $z0 = staticinvoke <org.apache.lucene.search.BooleanQuery: boolean getAllowDocsOutOfOrder()>();
+        return $z0;
+    }
+
+    protected org.apache.lucene.search.Weight createWeight(org.apache.lucene.search.Searcher) throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanQuery this;
+        org.apache.lucene.search.Searcher searcher;
+        org.apache.lucene.search.BooleanQuery$BooleanWeight $r0;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        searcher := @parameter0: org.apache.lucene.search.Searcher;
+        $r0 = new org.apache.lucene.search.BooleanQuery$BooleanWeight;
+        specialinvoke $r0.<org.apache.lucene.search.BooleanQuery$BooleanWeight: void <init>(org.apache.lucene.search.BooleanQuery,org.apache.lucene.search.Searcher)>(this, searcher);
+        return $r0;
+    }
+
+    public org.apache.lucene.search.Query rewrite(org.apache.lucene.index.IndexReader) throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanQuery this, clone;
+        org.apache.lucene.index.IndexReader reader;
+        org.apache.lucene.search.BooleanClause c, $r5;
+        org.apache.lucene.search.Query query, $r2, $r3;
+        int i, $i0, $i2;
+        java.util.ArrayList $r0, $r4;
+        java.lang.Object $r1;
+        boolean $z0;
+        float $f0, $f1, $f2;
+        byte $b1;
+        org.apache.lucene.search.BooleanClause$Occur $r6;
+        long tid_rewrite;
+        java.lang.Thread thread_rewrite;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        reader := @parameter0: org.apache.lucene.index.IndexReader;
+        thread_rewrite = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_rewrite = virtualinvoke thread_rewrite.<java.lang.Thread: long getId()>();
+        $i0 = this.<org.apache.lucene.search.BooleanQuery: int minNrShouldMatch>;
+        if $i0 != 0 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_rewrite, "org.apache.lucene.search.BooleanQuery", 364, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        if $i0 != 1 goto label2;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_rewrite, "org.apache.lucene.search.BooleanQuery", 365, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        $r1 = virtualinvoke $r0.<java.util.ArrayList: java.lang.Object get(int)>(0);
+        c = (org.apache.lucene.search.BooleanClause) $r1;
+        $z0 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: boolean isProhibited()>();
+        if $z0 != 0 goto label2;
+
+        $r2 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query getQuery()>();
+        query = virtualinvoke $r2.<org.apache.lucene.search.Query: org.apache.lucene.search.Query rewrite(org.apache.lucene.index.IndexReader)>(reader);
+        $f0 = virtualinvoke this.<org.apache.lucene.search.BooleanQuery: float getBoost()>();
+        $b1 = $f0 cmpl 1.0F;
+        if $b1 == 0 goto label1;
+
+        $r3 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query getQuery()>();
+        if query != $r3 goto label0;
+
+        $r1 = virtualinvoke query.<org.apache.lucene.search.Query: java.lang.Object clone()>();
+        query = (org.apache.lucene.search.Query) $r1;
+
+     label0:
+        $f1 = virtualinvoke this.<org.apache.lucene.search.BooleanQuery: float getBoost()>();
+        $f2 = virtualinvoke query.<org.apache.lucene.search.Query: float getBoost()>();
+        $f1 = $f1 * $f2;
+        virtualinvoke query.<org.apache.lucene.search.Query: void setBoost(float)>($f1);
+
+     label1:
+        return query;
+
+     label2:
+        clone = null;
+        i = 0;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_rewrite, "org.apache.lucene.search.BooleanQuery", 381, $r4);
+        $r4 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        $i2 = virtualinvoke $r4.<java.util.ArrayList: int size()>();
+        if i >= $i2 goto label6;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_rewrite, "org.apache.lucene.search.BooleanQuery", 382, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        $r1 = virtualinvoke $r0.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        c = (org.apache.lucene.search.BooleanClause) $r1;
+        $r2 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query getQuery()>();
+        query = virtualinvoke $r2.<org.apache.lucene.search.Query: org.apache.lucene.search.Query rewrite(org.apache.lucene.index.IndexReader)>(reader);
+        $r3 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query getQuery()>();
+        if query == $r3 goto label5;
+
+        if clone != null goto label4;
+
+        $r1 = virtualinvoke this.<org.apache.lucene.search.BooleanQuery: java.lang.Object clone()>();
+        clone = (org.apache.lucene.search.BooleanQuery) $r1;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(clone, 80, tid_rewrite, "org.apache.lucene.search.BooleanQuery", 387, $r0);
+        $r0 = clone.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        $r5 = new org.apache.lucene.search.BooleanClause;
+        $r6 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.BooleanClause$Occur getOccur()>();
+        specialinvoke $r5.<org.apache.lucene.search.BooleanClause: void <init>(org.apache.lucene.search.Query,org.apache.lucene.search.BooleanClause$Occur)>(query, $r6);
+        virtualinvoke $r0.<java.util.ArrayList: java.lang.Object set(int,java.lang.Object)>(i, $r5);
+
+     label5:
+        i = i + 1;
+        goto label3;
+
+     label6:
+        if clone == null goto label7;
+
+        return clone;
+
+     label7:
+        return this;
+    }
+
+    public void extractTerms(java.util.Set)
+    {
+        org.apache.lucene.search.BooleanQuery this;
+        java.util.Set terms;
+        java.util.Iterator i;
+        org.apache.lucene.search.BooleanClause clause;
+        java.util.ArrayList $r0;
+        boolean $z0;
+        java.lang.Object $r1;
+        org.apache.lucene.search.Query $r2;
+        long tid_extractTerms;
+        java.lang.Thread thread_extractTerms;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        terms := @parameter0: java.util.Set;
+        thread_extractTerms = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_extractTerms = virtualinvoke thread_extractTerms.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_extractTerms, "org.apache.lucene.search.BooleanQuery", 398, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        i = virtualinvoke $r0.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r1 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        clause = (org.apache.lucene.search.BooleanClause) $r1;
+        $r2 = virtualinvoke clause.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query getQuery()>();
+        virtualinvoke $r2.<org.apache.lucene.search.Query: void extractTerms(java.util.Set)>(terms);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    public java.lang.Object clone()
+    {
+        org.apache.lucene.search.BooleanQuery this, clone;
+        java.lang.Object $r0, $r2;
+        java.util.ArrayList $r1;
+        long tid_clone;
+        java.lang.Thread thread_clone;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        thread_clone = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clone = virtualinvoke thread_clone.<java.lang.Thread: long getId()>();
+        $r0 = specialinvoke this.<org.apache.lucene.search.Query: java.lang.Object clone()>();
+        clone = (org.apache.lucene.search.BooleanQuery) $r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_clone, "org.apache.lucene.search.BooleanQuery", 406, $r1);
+        $r1 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        $r2 = virtualinvoke $r1.<java.util.ArrayList: java.lang.Object clone()>();
+        $r1 = (java.util.ArrayList) $r2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(clone, 80, tid_clone, "org.apache.lucene.search.BooleanQuery", 406, $r1);
+        clone.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses> = $r1;
+        return clone;
+    }
+
+    public java.lang.String toString(java.lang.String)
+    {
+        org.apache.lucene.search.BooleanQuery this;
+        java.lang.String field, $r5, $r6;
+        java.lang.StringBuffer $r0, buffer;
+        boolean needParens, $z0;
+        int i, $i1, $i2;
+        org.apache.lucene.search.BooleanClause c;
+        org.apache.lucene.search.Query subQuery, $r4;
+        float $f0, $f1;
+        double $d0;
+        byte $b0;
+        java.util.ArrayList $r1, $r2;
+        java.lang.Object $r3;
+        long tid_toString;
+        java.lang.Thread thread_toString;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        field := @parameter0: java.lang.String;
+        thread_toString = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_toString = virtualinvoke thread_toString.<java.lang.Thread: long getId()>();
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buffer = $r0;
+        $f0 = virtualinvoke this.<org.apache.lucene.search.BooleanQuery: float getBoost()>();
+        $d0 = (double) $f0;
+        $b0 = $d0 cmpl 1.0;
+        if $b0 != 0 goto label0;
+
+        $i1 = virtualinvoke this.<org.apache.lucene.search.BooleanQuery: int getMinimumNumberShouldMatch()>();
+        if $i1 <= 0 goto label1;
+
+     label0:
+        $z0 = 1;
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        needParens = $z0;
+        if needParens == 0 goto label3;
+
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("(");
+
+     label3:
+        i = 0;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_toString, "org.apache.lucene.search.BooleanQuery", 418, $r1);
+        $r1 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        $i2 = virtualinvoke $r1.<java.util.ArrayList: int size()>();
+        if i >= $i2 goto label10;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_toString, "org.apache.lucene.search.BooleanQuery", 419, $r2);
+        $r2 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>(i);
+        c = (org.apache.lucene.search.BooleanClause) $r3;
+        $z0 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: boolean isProhibited()>();
+        if $z0 == 0 goto label5;
+
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("-");
+        goto label6;
+
+     label5:
+        $z0 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: boolean isRequired()>();
+        if $z0 == 0 goto label6;
+
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("+");
+
+     label6:
+        subQuery = virtualinvoke c.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query getQuery()>();
+        $z0 = subQuery instanceof org.apache.lucene.search.BooleanQuery;
+        if $z0 == 0 goto label7;
+
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("(");
+        $r4 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query getQuery()>();
+        $r5 = virtualinvoke $r4.<org.apache.lucene.search.Query: java.lang.String toString(java.lang.String)>(field);
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r5);
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(")");
+        goto label8;
+
+     label7:
+        $r4 = virtualinvoke c.<org.apache.lucene.search.BooleanClause: org.apache.lucene.search.Query getQuery()>();
+        $r5 = virtualinvoke $r4.<org.apache.lucene.search.Query: java.lang.String toString(java.lang.String)>(field);
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r5);
+
+     label8:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_toString, "org.apache.lucene.search.BooleanQuery", 433, $r1);
+        $r1 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        $i2 = virtualinvoke $r1.<java.util.ArrayList: int size()>();
+        $i2 = $i2 - 1;
+        if i == $i2 goto label9;
+
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" ");
+
+     label9:
+        i = i + 1;
+        goto label4;
+
+     label10:
+        if needParens == 0 goto label11;
+
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(")");
+
+     label11:
+        $i1 = virtualinvoke this.<org.apache.lucene.search.BooleanQuery: int getMinimumNumberShouldMatch()>();
+        if $i1 <= 0 goto label12;
+
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(126);
+        $i2 = virtualinvoke this.<org.apache.lucene.search.BooleanQuery: int getMinimumNumberShouldMatch()>();
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i2);
+
+     label12:
+        $f0 = virtualinvoke this.<org.apache.lucene.search.BooleanQuery: float getBoost()>();
+        $b0 = $f0 cmpl 1.0F;
+        if $b0 == 0 goto label13;
+
+        $f1 = virtualinvoke this.<org.apache.lucene.search.BooleanQuery: float getBoost()>();
+        $r5 = staticinvoke <org.apache.lucene.util.ToStringUtils: java.lang.String boost(float)>($f1);
+        virtualinvoke buffer.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r5);
+
+     label13:
+        $r6 = virtualinvoke buffer.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r6;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        org.apache.lucene.search.BooleanQuery this, other;
+        java.lang.Object o;
+        boolean $z0;
+        float $f0, $f1;
+        byte $b0;
+        java.util.ArrayList $r0, $r1;
+        int $i1, $i2;
+        long tid_equals;
+        java.lang.Thread thread_equals;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        o := @parameter0: java.lang.Object;
+        thread_equals = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_equals = virtualinvoke thread_equals.<java.lang.Thread: long getId()>();
+        $z0 = o instanceof org.apache.lucene.search.BooleanQuery;
+        if $z0 != 0 goto label0;
+
+        return 0;
+
+     label0:
+        other = (org.apache.lucene.search.BooleanQuery) o;
+        $f0 = virtualinvoke this.<org.apache.lucene.search.BooleanQuery: float getBoost()>();
+        $f1 = virtualinvoke other.<org.apache.lucene.search.BooleanQuery: float getBoost()>();
+        $b0 = $f0 cmpl $f1;
+        if $b0 != 0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 80, tid_equals, "org.apache.lucene.search.BooleanQuery", 459, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(other, 80, tid_equals, "org.apache.lucene.search.BooleanQuery", 459, $r1);
+        $r1 = other.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        $z0 = virtualinvoke $r0.<java.util.ArrayList: boolean equals(java.lang.Object)>($r1);
+        if $z0 == 0 goto label1;
+
+        $i1 = virtualinvoke this.<org.apache.lucene.search.BooleanQuery: int getMinimumNumberShouldMatch()>();
+        $i2 = virtualinvoke other.<org.apache.lucene.search.BooleanQuery: int getMinimumNumberShouldMatch()>();
+        if $i1 != $i2 goto label1;
+
+        $z0 = 1;
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public int hashCode()
+    {
+        org.apache.lucene.search.BooleanQuery this;
+        float $f0;
+        int $i0, $i1, $i2;
+        java.util.ArrayList $r0;
+
+        this := @this: org.apache.lucene.search.BooleanQuery;
+        $f0 = virtualinvoke this.<org.apache.lucene.search.BooleanQuery: float getBoost()>();
+        $i0 = staticinvoke <java.lang.Float: int floatToIntBits(float)>($f0);
+        $r0 = this.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        $i1 = virtualinvoke $r0.<java.util.ArrayList: int hashCode()>();
+        $i2 = virtualinvoke this.<org.apache.lucene.search.BooleanQuery: int getMinimumNumberShouldMatch()>();
+        $i1 = $i1 + $i2;
+        $i0 = $i0 ^ $i1;
+        return $i0;
+    }
+
+    static int access$000()
+    {
+        int $i0;
+        long tid_access$000;
+        java.lang.Thread thread_access$000;
+
+        thread_access$000 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_access$000 = virtualinvoke thread_access$000.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,int)>(79, tid_access$000, "org.apache.lucene.searchorg.apache.lucene.search.BooleanQuery", 31, $i0);
+        $i0 = <org.apache.lucene.search.BooleanQuery: int maxClauseCount>;
+        return $i0;
+    }
+
+    static java.util.ArrayList access$100(org.apache.lucene.search.BooleanQuery)
+    {
+        org.apache.lucene.search.BooleanQuery x0;
+        java.util.ArrayList $r0;
+        long tid_access$100;
+        java.lang.Thread thread_access$100;
+
+        x0 := @parameter0: org.apache.lucene.search.BooleanQuery;
+        thread_access$100 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_access$100 = virtualinvoke thread_access$100.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(x0, 80, tid_access$100, "org.apache.lucene.search.BooleanQuery", 31, $r0);
+        $r0 = x0.<org.apache.lucene.search.BooleanQuery: java.util.ArrayList clauses>;
+        return $r0;
+    }
+
+    static boolean access$200()
+    {
+        boolean $z0;
+        long tid_access$200;
+        java.lang.Thread thread_access$200;
+
+        thread_access$200 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_access$200 = virtualinvoke thread_access$200.<java.lang.Thread: long getId()>();
+        nop;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeStatic(int,long,java.lang.String,int,boolean)>(81, tid_access$200, "org.apache.lucene.searchorg.apache.lucene.search.BooleanQuery", 31, $z0);
+        $z0 = <org.apache.lucene.search.BooleanQuery: boolean allowDocsOutOfOrder>;
+        return $z0;
+    }
+
+    static void <clinit>()
+    {
+        <org.apache.lucene.search.BooleanQuery: int maxClauseCount> = 1024;
+        <org.apache.lucene.search.BooleanQuery: boolean allowDocsOutOfOrder> = 0;
+        return;
+    }
+}

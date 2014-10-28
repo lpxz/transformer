@@ -1,0 +1,53 @@
+public final class org.apache.lucene.search.BooleanClause$Occur extends org.apache.lucene.util.Parameter implements java.io.Serializable
+{
+    public static final org.apache.lucene.search.BooleanClause$Occur MUST;
+    public static final org.apache.lucene.search.BooleanClause$Occur SHOULD;
+    public static final org.apache.lucene.search.BooleanClause$Occur MUST_NOT;
+
+    private void <init>(java.lang.String)
+    {
+        org.apache.lucene.search.BooleanClause$Occur this;
+        java.lang.String name;
+
+        this := @this: org.apache.lucene.search.BooleanClause$Occur;
+        name := @parameter0: java.lang.String;
+        specialinvoke this.<org.apache.lucene.util.Parameter: void <init>(java.lang.String)>(name);
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        org.apache.lucene.search.BooleanClause$Occur this, $r0;
+
+        this := @this: org.apache.lucene.search.BooleanClause$Occur;
+        $r0 = <org.apache.lucene.search.BooleanClause$Occur: org.apache.lucene.search.BooleanClause$Occur MUST>;
+        if this != $r0 goto label0;
+
+        return "+";
+
+     label0:
+        $r0 = <org.apache.lucene.search.BooleanClause$Occur: org.apache.lucene.search.BooleanClause$Occur MUST_NOT>;
+        if this != $r0 goto label1;
+
+        return "-";
+
+     label1:
+        return "";
+    }
+
+    static void <clinit>()
+    {
+        org.apache.lucene.search.BooleanClause$Occur $r0;
+
+        $r0 = new org.apache.lucene.search.BooleanClause$Occur;
+        specialinvoke $r0.<org.apache.lucene.search.BooleanClause$Occur: void <init>(java.lang.String)>("MUST");
+        <org.apache.lucene.search.BooleanClause$Occur: org.apache.lucene.search.BooleanClause$Occur MUST> = $r0;
+        $r0 = new org.apache.lucene.search.BooleanClause$Occur;
+        specialinvoke $r0.<org.apache.lucene.search.BooleanClause$Occur: void <init>(java.lang.String)>("SHOULD");
+        <org.apache.lucene.search.BooleanClause$Occur: org.apache.lucene.search.BooleanClause$Occur SHOULD> = $r0;
+        $r0 = new org.apache.lucene.search.BooleanClause$Occur;
+        specialinvoke $r0.<org.apache.lucene.search.BooleanClause$Occur: void <init>(java.lang.String)>("MUST_NOT");
+        <org.apache.lucene.search.BooleanClause$Occur: org.apache.lucene.search.BooleanClause$Occur MUST_NOT> = $r0;
+        return;
+    }
+}

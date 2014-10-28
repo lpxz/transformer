@@ -1,0 +1,40 @@
+public abstract class org.apache.lucene.util.cache.Cache extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        org.apache.lucene.util.cache.Cache this;
+
+        this := @this: org.apache.lucene.util.cache.Cache;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public static org.apache.lucene.util.cache.Cache synchronizedCache(org.apache.lucene.util.cache.Cache)
+    {
+        org.apache.lucene.util.cache.Cache cache, $r0;
+
+        cache := @parameter0: org.apache.lucene.util.cache.Cache;
+        $r0 = virtualinvoke cache.<org.apache.lucene.util.cache.Cache: org.apache.lucene.util.cache.Cache getSynchronizedCache()>();
+        return $r0;
+    }
+
+    org.apache.lucene.util.cache.Cache getSynchronizedCache()
+    {
+        org.apache.lucene.util.cache.Cache this;
+        org.apache.lucene.util.cache.Cache$SynchronizedCache $r0;
+
+        this := @this: org.apache.lucene.util.cache.Cache;
+        $r0 = new org.apache.lucene.util.cache.Cache$SynchronizedCache;
+        specialinvoke $r0.<org.apache.lucene.util.cache.Cache$SynchronizedCache: void <init>(org.apache.lucene.util.cache.Cache)>(this);
+        return $r0;
+    }
+
+    public abstract void put(java.lang.Object, java.lang.Object);
+
+    public abstract java.lang.Object get(java.lang.Object);
+
+    public abstract boolean containsKey(java.lang.Object);
+
+    public abstract void close();
+}

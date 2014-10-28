@@ -1,0 +1,288 @@
+public class avrora.sim.CodeSegment extends avrora.sim.Segment
+{
+    protected final avrora.sim.AtmelInterpreter interpreter;
+    public static final byte DEFAULT_VALUE;
+    protected avrora.arch.legacy.LegacyInstr[] segment_instr;
+    protected final avrora.sim.CodeSegment$NoLegacyInstr NO_INSTR;
+    protected avrora.sim.CodeSegment$CodeSharer codeSharer;
+    static avrora.arch.legacy.LegacyInstrProperties NO_INSTR_PROPS;
+
+    protected void replaceInstr(int, avrora.arch.legacy.LegacyInstr)
+    {
+        avrora.sim.CodeSegment this;
+        int address;
+        avrora.arch.legacy.LegacyInstr i, instr;
+        avrora.sim.CodeSegment$ProbedLegacyInstr pi, $r0, $r1;
+        boolean $z0;
+
+        this := @this: avrora.sim.CodeSegment;
+        address := @parameter0: int;
+        i := @parameter1: avrora.arch.legacy.LegacyInstr;
+        instr = virtualinvoke this.<avrora.sim.CodeSegment: avrora.arch.legacy.LegacyInstr getInstr(int)>(address);
+        if instr == null goto label0;
+
+        $z0 = instr instanceof avrora.sim.CodeSegment$ProbedLegacyInstr;
+        if $z0 != 0 goto label1;
+
+     label0:
+        virtualinvoke this.<avrora.sim.CodeSegment: void writeInstr(int,avrora.arch.legacy.LegacyInstr)>(address, i);
+        goto label2;
+
+     label1:
+        $r0 = new avrora.sim.CodeSegment$ProbedLegacyInstr;
+        $r1 = (avrora.sim.CodeSegment$ProbedLegacyInstr) instr;
+        specialinvoke $r0.<avrora.sim.CodeSegment$ProbedLegacyInstr: void <init>(avrora.sim.CodeSegment,avrora.arch.legacy.LegacyInstr,avrora.sim.CodeSegment$ProbedLegacyInstr)>(this, i, $r1);
+        pi = $r0;
+        virtualinvoke this.<avrora.sim.CodeSegment: void writeInstr(int,avrora.arch.legacy.LegacyInstr)>(address, pi);
+
+     label2:
+        return;
+    }
+
+    public void <init>(java.lang.String, int, avrora.sim.AtmelInterpreter)
+    {
+        avrora.sim.CodeSegment this;
+        java.lang.String name;
+        int size;
+        avrora.sim.AtmelInterpreter bi;
+        avrora.sim.AtmelInterpreter$StateImpl $r0;
+        avrora.sim.CodeSegment$NoLegacyInstr $r1;
+        avrora.arch.legacy.LegacyInstr[] $r2;
+
+        this := @this: avrora.sim.CodeSegment;
+        name := @parameter0: java.lang.String;
+        size := @parameter1: int;
+        bi := @parameter2: avrora.sim.AtmelInterpreter;
+        $r0 = bi.<avrora.sim.AtmelInterpreter: avrora.sim.AtmelInterpreter$StateImpl state>;
+        specialinvoke this.<avrora.sim.Segment: void <init>(java.lang.String,int,byte,avrora.sim.State)>(name, size, -1, $r0);
+        $r1 = new avrora.sim.CodeSegment$NoLegacyInstr;
+        specialinvoke $r1.<avrora.sim.CodeSegment$NoLegacyInstr: void <init>(avrora.sim.CodeSegment)>(this);
+        this.<avrora.sim.CodeSegment: avrora.sim.CodeSegment$NoLegacyInstr NO_INSTR> = $r1;
+        this.<avrora.sim.CodeSegment: avrora.sim.AtmelInterpreter interpreter> = bi;
+        $r2 = newarray (avrora.arch.legacy.LegacyInstr)[size];
+        this.<avrora.sim.CodeSegment: avrora.arch.legacy.LegacyInstr[] segment_instr> = $r2;
+        return;
+    }
+
+    public void update()
+    {
+        avrora.sim.CodeSegment this;
+        cck.util.Util$InternalError $r0;
+
+        this := @this: avrora.sim.CodeSegment;
+        $r0 = staticinvoke <cck.util.Util: cck.util.Util$InternalError failure(java.lang.String)>("Update of flash memory not supported for this segment");
+        throw $r0;
+    }
+
+    public avrora.arch.legacy.LegacyInstr[] shareCode(avrora.sim.CodeSegment$CodeSharer)
+    {
+        avrora.sim.CodeSegment this;
+        avrora.sim.CodeSegment$CodeSharer s;
+        avrora.arch.legacy.LegacyInstr[] $r0;
+
+        this := @this: avrora.sim.CodeSegment;
+        s := @parameter0: avrora.sim.CodeSegment$CodeSharer;
+        this.<avrora.sim.CodeSegment: avrora.sim.CodeSegment$CodeSharer codeSharer> = s;
+        $r0 = this.<avrora.sim.CodeSegment: avrora.arch.legacy.LegacyInstr[] segment_instr>;
+        return $r0;
+    }
+
+    public void load(avrora.core.Program)
+    {
+        avrora.sim.CodeSegment this;
+        avrora.core.Program p;
+        int cntr, $i0;
+        avrora.arch.legacy.LegacyInstr i;
+        avrora.arch.legacy.LegacyInstr[] $r0;
+        avrora.sim.CodeSegment$NoLegacyInstr $r1;
+        avrora.arch.AbstractInstr $r2;
+        byte[] $r3;
+        byte $b1;
+        long tid_load;
+        java.lang.Thread thread_load;
+
+        this := @this: avrora.sim.CodeSegment;
+        p := @parameter0: avrora.core.Program;
+        thread_load = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_load = virtualinvoke thread_load.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.CodeSegment: avrora.arch.legacy.LegacyInstr[] segment_instr>;
+        $r1 = this.<avrora.sim.CodeSegment: avrora.sim.CodeSegment$NoLegacyInstr NO_INSTR>;
+        staticinvoke <java.util.Arrays: void fill(java.lang.Object[],java.lang.Object)>($r0, $r1);
+        cntr = p.<avrora.core.Program: int program_start>;
+
+     label0:
+        $i0 = p.<avrora.core.Program: int program_end>;
+        if cntr >= $i0 goto label3;
+
+        $r2 = virtualinvoke p.<avrora.core.Program: avrora.arch.AbstractInstr readInstr(int)>(cntr);
+        i = (avrora.arch.legacy.LegacyInstr) $r2;
+        if i == null goto label1;
+
+        $r0 = this.<avrora.sim.CodeSegment: avrora.arch.legacy.LegacyInstr[] segment_instr>;
+        $r0[cntr] = i;
+        $i0 = virtualinvoke i.<avrora.arch.legacy.LegacyInstr: int getSize()>();
+        cntr = cntr + $i0;
+        goto label2;
+
+     label1:
+        cntr = cntr + 2;
+
+     label2:
+        goto label0;
+
+     label3:
+        cntr = p.<avrora.core.Program: int program_start>;
+
+     label4:
+        $i0 = p.<avrora.core.Program: int program_end>;
+        if cntr >= $i0 goto label5;
+
+        $r3 = this.<avrora.sim.CodeSegment: byte[] segment_data>;
+        $b1 = virtualinvoke p.<avrora.core.Program: byte readProgramByte(int)>(cntr);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r3, 0, tid_load, "avrora.sim.CodeSegment", 163, cntr, $b1);
+        $r3[cntr] = $b1;
+        cntr = cntr + 1;
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    public avrora.arch.legacy.LegacyInstr readInstr(int)
+    {
+        avrora.sim.CodeSegment this;
+        int address;
+        java.lang.ArrayIndexOutOfBoundsException e, $r2;
+        avrora.arch.legacy.LegacyInstr[] $r0;
+        avrora.arch.legacy.LegacyInstr $r1;
+        avrora.sim.Segment$AddressOutOfBoundsException $r3;
+
+        this := @this: avrora.sim.CodeSegment;
+        address := @parameter0: int;
+
+     label0:
+        $r0 = this.<avrora.sim.CodeSegment: avrora.arch.legacy.LegacyInstr[] segment_instr>;
+        $r1 = $r0[address];
+        $r1 = virtualinvoke $r1.<avrora.arch.legacy.LegacyInstr: avrora.arch.legacy.LegacyInstr asInstr()>();
+
+     label1:
+        return $r1;
+
+     label2:
+        $r2 := @caughtexception;
+        e = $r2;
+        $r3 = new avrora.sim.Segment$AddressOutOfBoundsException;
+        specialinvoke $r3.<avrora.sim.Segment$AddressOutOfBoundsException: void <init>(avrora.sim.Segment,int)>(this, address);
+        throw $r3;
+
+        catch java.lang.ArrayIndexOutOfBoundsException from label0 to label1 with label2;
+    }
+
+    public avrora.arch.legacy.LegacyInstr getInstr(int)
+    {
+        avrora.sim.CodeSegment this;
+        int address;
+        java.lang.ArrayIndexOutOfBoundsException e, $r2;
+        avrora.arch.legacy.LegacyInstr[] $r0;
+        avrora.arch.legacy.LegacyInstr $r1;
+        avrora.sim.Segment$AddressOutOfBoundsException $r3;
+
+        this := @this: avrora.sim.CodeSegment;
+        address := @parameter0: int;
+
+     label0:
+        $r0 = this.<avrora.sim.CodeSegment: avrora.arch.legacy.LegacyInstr[] segment_instr>;
+        $r1 = $r0[address];
+
+     label1:
+        return $r1;
+
+     label2:
+        $r2 := @caughtexception;
+        e = $r2;
+        $r3 = new avrora.sim.Segment$AddressOutOfBoundsException;
+        specialinvoke $r3.<avrora.sim.Segment$AddressOutOfBoundsException: void <init>(avrora.sim.Segment,int)>(this, address);
+        throw $r3;
+
+        catch java.lang.ArrayIndexOutOfBoundsException from label0 to label1 with label2;
+    }
+
+    public void insertProbe(int, avrora.sim.Simulator$Probe)
+    {
+        avrora.sim.CodeSegment this;
+        int address;
+        avrora.sim.Simulator$Probe p;
+        avrora.arch.legacy.LegacyInstr instr;
+        avrora.sim.CodeSegment$ProbedLegacyInstr pri, $r0;
+        boolean $z0;
+
+        this := @this: avrora.sim.CodeSegment;
+        address := @parameter0: int;
+        p := @parameter1: avrora.sim.Simulator$Probe;
+        instr = virtualinvoke this.<avrora.sim.CodeSegment: avrora.arch.legacy.LegacyInstr getInstr(int)>(address);
+        $z0 = instr instanceof avrora.sim.CodeSegment$ProbedLegacyInstr;
+        if $z0 == 0 goto label0;
+
+        pri = (avrora.sim.CodeSegment$ProbedLegacyInstr) instr;
+        virtualinvoke pri.<avrora.sim.CodeSegment$ProbedLegacyInstr: void add(avrora.sim.Simulator$Probe)>(p);
+        goto label1;
+
+     label0:
+        $r0 = new avrora.sim.CodeSegment$ProbedLegacyInstr;
+        specialinvoke $r0.<avrora.sim.CodeSegment$ProbedLegacyInstr: void <init>(avrora.sim.CodeSegment,avrora.arch.legacy.LegacyInstr,int)>(this, instr, address);
+        pri = $r0;
+        virtualinvoke pri.<avrora.sim.CodeSegment$ProbedLegacyInstr: void add(avrora.sim.Simulator$Probe)>(p);
+        virtualinvoke this.<avrora.sim.CodeSegment: void writeInstr(int,avrora.arch.legacy.LegacyInstr)>(address, pri);
+
+     label1:
+        return;
+    }
+
+    public void removeProbe(int, avrora.sim.Simulator$Probe)
+    {
+        avrora.sim.CodeSegment this;
+        int address;
+        avrora.sim.Simulator$Probe p;
+        avrora.arch.legacy.LegacyInstr instr;
+        avrora.sim.CodeSegment$ProbedLegacyInstr pri;
+        boolean $z0;
+
+        this := @this: avrora.sim.CodeSegment;
+        address := @parameter0: int;
+        p := @parameter1: avrora.sim.Simulator$Probe;
+        instr = virtualinvoke this.<avrora.sim.CodeSegment: avrora.arch.legacy.LegacyInstr getInstr(int)>(address);
+        $z0 = instr instanceof avrora.sim.CodeSegment$ProbedLegacyInstr;
+        if $z0 == 0 goto label0;
+
+        pri = (avrora.sim.CodeSegment$ProbedLegacyInstr) instr;
+        virtualinvoke pri.<avrora.sim.CodeSegment$ProbedLegacyInstr: void remove(avrora.sim.Simulator$Probe)>(p);
+
+     label0:
+        return;
+    }
+
+    protected void writeInstr(int, avrora.arch.legacy.LegacyInstr)
+    {
+        avrora.sim.CodeSegment this;
+        int address;
+        avrora.arch.legacy.LegacyInstr i;
+        avrora.arch.legacy.LegacyInstr[] $r0;
+
+        this := @this: avrora.sim.CodeSegment;
+        address := @parameter0: int;
+        i := @parameter1: avrora.arch.legacy.LegacyInstr;
+        $r0 = this.<avrora.sim.CodeSegment: avrora.arch.legacy.LegacyInstr[] segment_instr>;
+        $r0[address] = i;
+        return;
+    }
+
+    static void <clinit>()
+    {
+        avrora.arch.legacy.LegacyInstrProperties $r0;
+
+        $r0 = new avrora.arch.legacy.LegacyInstrProperties;
+        specialinvoke $r0.<avrora.arch.legacy.LegacyInstrProperties: void <init>(java.lang.String,java.lang.String,int,int)>("<none>", "<none>", 2, 1);
+        <avrora.sim.CodeSegment: avrora.arch.legacy.LegacyInstrProperties NO_INSTR_PROPS> = $r0;
+        return;
+    }
+}

@@ -1,0 +1,40 @@
+public class avrora.monitors.PrintMonitor extends avrora.monitors.MonitorFactory
+{
+    protected final cck.util.Option$Str VARIABLENAME;
+    protected final cck.util.Option$Str MAX;
+    protected final cck.util.Option$Str LOG;
+    protected final cck.util.Option$Str BASEADDR;
+
+    public void <init>()
+    {
+        avrora.monitors.PrintMonitor this;
+        cck.util.Option$Str $r0;
+
+        this := @this: avrora.monitors.PrintMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"print\" monitor watches a dedicated range of SRAM for instructions to print a string or int to the screen.  Set the VariableName and avrora will look directly inside the map file the part of the SRAM to print");
+        $r0 = virtualinvoke this.<avrora.monitors.PrintMonitor: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("VariableName", "debugbuf1", "This option specifies the name of the variable to print");
+        this.<avrora.monitors.PrintMonitor: cck.util.Option$Str VARIABLENAME> = $r0;
+        $r0 = virtualinvoke this.<avrora.monitors.PrintMonitor: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("max", "30", "This option specifies the length of the variable to print");
+        this.<avrora.monitors.PrintMonitor: cck.util.Option$Str MAX> = $r0;
+        $r0 = virtualinvoke this.<avrora.monitors.PrintMonitor: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("printlogfile", "", "This option specifies whether the print monitor should log changes to each node\'s energy state. If this option is specified, then each node\'s print statements will be written to <option>.#, where \'#\' represents the node ID.");
+        this.<avrora.monitors.PrintMonitor: cck.util.Option$Str LOG> = $r0;
+        $r0 = virtualinvoke this.<avrora.monitors.PrintMonitor: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("base", "", "This option specifies the base direction of the SRAM to watch. ");
+        this.<avrora.monitors.PrintMonitor: cck.util.Option$Str BASEADDR> = $r0;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.PrintMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.PrintMonitor$Monitor tmp$546806948;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.PrintMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$546806948 = new avrora.monitors.PrintMonitor$Monitor;
+        specialinvoke tmp$546806948.<avrora.monitors.PrintMonitor$Monitor: void <init>(avrora.monitors.PrintMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$546806948;
+        return tmp;
+    }
+}

@@ -1,0 +1,66 @@
+class avrora.sim.mcu.SPI$SPDReg extends java.lang.Object implements avrora.sim.ActiveRegister
+{
+    protected final avrora.sim.RWRegister receiveReg;
+    protected final avrora.sim.mcu.SPI$SPDReg$TransmitRegister transmitReg;
+    final avrora.sim.mcu.SPI this$0;
+
+    void <init>(avrora.sim.mcu.SPI)
+    {
+        avrora.sim.mcu.SPI$SPDReg this;
+        avrora.sim.mcu.SPI l1;
+        avrora.sim.RWRegister $r0;
+        avrora.sim.mcu.SPI$SPDReg$TransmitRegister $r1;
+
+        this := @this: avrora.sim.mcu.SPI$SPDReg;
+        l1 := @parameter0: avrora.sim.mcu.SPI;
+        this.<avrora.sim.mcu.SPI$SPDReg: avrora.sim.mcu.SPI this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new avrora.sim.RWRegister;
+        specialinvoke $r0.<avrora.sim.RWRegister: void <init>()>();
+        this.<avrora.sim.mcu.SPI$SPDReg: avrora.sim.RWRegister receiveReg> = $r0;
+        $r1 = new avrora.sim.mcu.SPI$SPDReg$TransmitRegister;
+        specialinvoke $r1.<avrora.sim.mcu.SPI$SPDReg$TransmitRegister: void <init>(avrora.sim.mcu.SPI$SPDReg)>(this);
+        this.<avrora.sim.mcu.SPI$SPDReg: avrora.sim.mcu.SPI$SPDReg$TransmitRegister transmitReg> = $r1;
+        return;
+    }
+
+    public byte read()
+    {
+        avrora.sim.mcu.SPI$SPDReg this;
+        avrora.sim.mcu.SPI $r0;
+        boolean $z0;
+        avrora.sim.RWRegister $r1;
+        byte $b0;
+        long tid_read;
+        java.lang.Thread thread_read;
+
+        this := @this: avrora.sim.mcu.SPI$SPDReg;
+        thread_read = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_read = virtualinvoke thread_read.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.SPI$SPDReg: avrora.sim.mcu.SPI this$0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,boolean)>($r0, 109, tid_read, "avrora.sim.mcu.SPI$SPDReg", 199, $z0);
+        $z0 = $r0.<avrora.sim.mcu.SPI: boolean spifAccessed>;
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<avrora.sim.mcu.SPI$SPDReg: avrora.sim.mcu.SPI this$0>;
+        staticinvoke <avrora.sim.mcu.SPI: void access$100(avrora.sim.mcu.SPI)>($r0);
+
+     label0:
+        $r1 = this.<avrora.sim.mcu.SPI$SPDReg: avrora.sim.RWRegister receiveReg>;
+        $b0 = virtualinvoke $r1.<avrora.sim.RWRegister: byte read()>();
+        return $b0;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.mcu.SPI$SPDReg this;
+        byte val;
+        avrora.sim.mcu.SPI$SPDReg$TransmitRegister $r0;
+
+        this := @this: avrora.sim.mcu.SPI$SPDReg;
+        val := @parameter0: byte;
+        $r0 = this.<avrora.sim.mcu.SPI$SPDReg: avrora.sim.mcu.SPI$SPDReg$TransmitRegister transmitReg>;
+        virtualinvoke $r0.<avrora.sim.mcu.SPI$SPDReg$TransmitRegister: void write(byte)>(val);
+        return;
+    }
+}

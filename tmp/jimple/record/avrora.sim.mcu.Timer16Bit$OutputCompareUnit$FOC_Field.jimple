@@ -1,0 +1,52 @@
+class avrora.sim.mcu.Timer16Bit$OutputCompareUnit$FOC_Field extends avrora.sim.mcu.RegisterSet$Field
+{
+    final avrora.sim.mcu.Timer16Bit$OutputCompareUnit this$1;
+
+    void <init>(avrora.sim.mcu.Timer16Bit$OutputCompareUnit)
+    {
+        avrora.sim.mcu.Timer16Bit$OutputCompareUnit$FOC_Field this;
+        avrora.sim.mcu.Timer16Bit$OutputCompareUnit l1;
+
+        this := @this: avrora.sim.mcu.Timer16Bit$OutputCompareUnit$FOC_Field;
+        l1 := @parameter0: avrora.sim.mcu.Timer16Bit$OutputCompareUnit;
+        this.<avrora.sim.mcu.Timer16Bit$OutputCompareUnit$FOC_Field: avrora.sim.mcu.Timer16Bit$OutputCompareUnit this$1> = l1;
+        specialinvoke this.<avrora.sim.mcu.RegisterSet$Field: void <init>()>();
+        return;
+    }
+
+    public void update()
+    {
+        avrora.sim.mcu.Timer16Bit$OutputCompareUnit$FOC_Field this;
+        int $i0, $i1;
+        avrora.sim.mcu.Timer16Bit$OutputCompareUnit $r0, $r3;
+        avrora.sim.mcu.Timer16Bit $r1, $r4;
+        avrora.sim.RWRegister $r2;
+        avrora.sim.mcu.Timer16Bit$TCNTnRegister $r5;
+        long tid_update;
+        java.lang.Thread thread_update;
+
+        this := @this: avrora.sim.mcu.Timer16Bit$OutputCompareUnit$FOC_Field;
+        thread_update = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_update = virtualinvoke thread_update.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 89, tid_update, "avrora.sim.mcu.Timer16Bit$OutputCompareUnit$FOC_Field", 124, $i0);
+        $i0 = this.<avrora.sim.mcu.Timer16Bit$OutputCompareUnit$FOC_Field: int value>;
+        if $i0 != 1 goto label0;
+
+        $r0 = this.<avrora.sim.mcu.Timer16Bit$OutputCompareUnit$FOC_Field: avrora.sim.mcu.Timer16Bit$OutputCompareUnit this$1>;
+        $r1 = $r0.<avrora.sim.mcu.Timer16Bit$OutputCompareUnit: avrora.sim.mcu.Timer16Bit this$0>;
+        $r2 = $r1.<avrora.sim.mcu.Timer16Bit: avrora.sim.RWRegister TCNTnH_reg>;
+        $r3 = this.<avrora.sim.mcu.Timer16Bit$OutputCompareUnit$FOC_Field: avrora.sim.mcu.Timer16Bit$OutputCompareUnit this$1>;
+        $r4 = $r3.<avrora.sim.mcu.Timer16Bit$OutputCompareUnit: avrora.sim.mcu.Timer16Bit this$0>;
+        $r5 = $r4.<avrora.sim.mcu.Timer16Bit: avrora.sim.mcu.Timer16Bit$TCNTnRegister TCNTnL_reg>;
+        $i0 = staticinvoke <avrora.sim.mcu.AtmelInternalDevice: int read16(avrora.sim.RWRegister,avrora.sim.RWRegister)>($r2, $r5);
+        $r3 = this.<avrora.sim.mcu.Timer16Bit$OutputCompareUnit$FOC_Field: avrora.sim.mcu.Timer16Bit$OutputCompareUnit this$1>;
+        $i1 = virtualinvoke $r3.<avrora.sim.mcu.Timer16Bit$OutputCompareUnit: int read()>();
+        if $i0 != $i1 goto label0;
+
+        $r0 = this.<avrora.sim.mcu.Timer16Bit$OutputCompareUnit$FOC_Field: avrora.sim.mcu.Timer16Bit$OutputCompareUnit this$1>;
+        staticinvoke <avrora.sim.mcu.Timer16Bit$OutputCompareUnit: void access$000(avrora.sim.mcu.Timer16Bit$OutputCompareUnit)>($r0);
+
+     label0:
+        return;
+    }
+}

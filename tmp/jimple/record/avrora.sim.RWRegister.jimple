@@ -1,0 +1,99 @@
+public class avrora.sim.RWRegister extends java.lang.Object implements avrora.sim.ActiveRegister, avrora.sim.state.RegisterView
+{
+    public byte value;
+
+    public void <init>()
+    {
+        avrora.sim.RWRegister this;
+
+        this := @this: avrora.sim.RWRegister;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public byte read()
+    {
+        avrora.sim.RWRegister this;
+        byte $b0;
+        long tid_read;
+        java.lang.Thread thread_read;
+
+        this := @this: avrora.sim.RWRegister;
+        thread_read = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_read = virtualinvoke thread_read.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_read, "avrora.sim.RWRegister", 56, $b0);
+        $b0 = this.<avrora.sim.RWRegister: byte value>;
+        return $b0;
+    }
+
+    public void write(byte)
+    {
+        avrora.sim.RWRegister this;
+        byte val;
+        long tid_write;
+        java.lang.Thread thread_write;
+
+        this := @this: avrora.sim.RWRegister;
+        val := @parameter0: byte;
+        thread_write = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_write = virtualinvoke thread_write.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_write, "avrora.sim.RWRegister", 66, val);
+        this.<avrora.sim.RWRegister: byte value> = val;
+        return;
+    }
+
+    public boolean readBit(int)
+    {
+        avrora.sim.RWRegister this;
+        int num;
+        byte $b0;
+        boolean $z0;
+
+        this := @this: avrora.sim.RWRegister;
+        num := @parameter0: int;
+        $b0 = virtualinvoke this.<avrora.sim.RWRegister: byte read()>();
+        $z0 = staticinvoke <cck.util.Arithmetic: boolean getBit(byte,int)>($b0, num);
+        return $z0;
+    }
+
+    public int getWidth()
+    {
+        avrora.sim.RWRegister this;
+
+        this := @this: avrora.sim.RWRegister;
+        return 8;
+    }
+
+    public int getValue()
+    {
+        avrora.sim.RWRegister this;
+        byte $b0;
+        long tid_getValue;
+        java.lang.Thread thread_getValue;
+
+        this := @this: avrora.sim.RWRegister;
+        thread_getValue = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_getValue = virtualinvoke thread_getValue.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_getValue, "avrora.sim.RWRegister", 84, $b0);
+        $b0 = this.<avrora.sim.RWRegister: byte value>;
+        return $b0;
+    }
+
+    public void setValue(int)
+    {
+        avrora.sim.RWRegister this;
+        int val;
+        byte $b0;
+        long tid_setValue;
+        java.lang.Thread thread_setValue;
+
+        this := @this: avrora.sim.RWRegister;
+        val := @parameter0: int;
+        thread_setValue = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_setValue = virtualinvoke thread_setValue.<java.lang.Thread: long getId()>();
+        $b0 = (byte) val;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>(this, 17, tid_setValue, "avrora.sim.RWRegister", 88, $b0);
+        this.<avrora.sim.RWRegister: byte value> = $b0;
+        return;
+    }
+}

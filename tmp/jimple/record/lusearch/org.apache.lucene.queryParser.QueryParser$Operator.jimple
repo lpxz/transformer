@@ -1,0 +1,29 @@
+public final class org.apache.lucene.queryParser.QueryParser$Operator extends org.apache.lucene.util.Parameter
+{
+    public static final org.apache.lucene.queryParser.QueryParser$Operator OR;
+    public static final org.apache.lucene.queryParser.QueryParser$Operator AND;
+
+    private void <init>(java.lang.String)
+    {
+        org.apache.lucene.queryParser.QueryParser$Operator this;
+        java.lang.String name;
+
+        this := @this: org.apache.lucene.queryParser.QueryParser$Operator;
+        name := @parameter0: java.lang.String;
+        specialinvoke this.<org.apache.lucene.util.Parameter: void <init>(java.lang.String)>(name);
+        return;
+    }
+
+    static void <clinit>()
+    {
+        org.apache.lucene.queryParser.QueryParser$Operator $r0;
+
+        $r0 = new org.apache.lucene.queryParser.QueryParser$Operator;
+        specialinvoke $r0.<org.apache.lucene.queryParser.QueryParser$Operator: void <init>(java.lang.String)>("OR");
+        <org.apache.lucene.queryParser.QueryParser$Operator: org.apache.lucene.queryParser.QueryParser$Operator OR> = $r0;
+        $r0 = new org.apache.lucene.queryParser.QueryParser$Operator;
+        specialinvoke $r0.<org.apache.lucene.queryParser.QueryParser$Operator: void <init>(java.lang.String)>("AND");
+        <org.apache.lucene.queryParser.QueryParser$Operator: org.apache.lucene.queryParser.QueryParser$Operator AND> = $r0;
+        return;
+    }
+}

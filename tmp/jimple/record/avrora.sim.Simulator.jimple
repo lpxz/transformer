@@ -1,0 +1,346 @@
+public class avrora.sim.Simulator extends java.lang.Object
+{
+    protected final avrora.core.Program program;
+    protected final avrora.sim.mcu.Microcontroller microcontroller;
+    protected avrora.sim.Interpreter interpreter;
+    protected avrora.sim.clock.MainClock clock;
+    protected final int id;
+    protected final avrora.sim.Simulation simulation;
+    protected avrora.sim.output.EventBuffer events;
+
+    void <init>(int, avrora.sim.Simulation, avrora.sim.InterpreterFactory, avrora.sim.mcu.Microcontroller, avrora.core.Program)
+    {
+        avrora.sim.Simulator this;
+        int i;
+        avrora.sim.Simulation sim;
+        avrora.sim.InterpreterFactory f;
+        avrora.sim.mcu.Microcontroller mcu, $r3;
+        avrora.core.Program p, $r2;
+        avrora.sim.clock.ClockDomain $r0;
+        avrora.sim.clock.MainClock $r1;
+        avrora.sim.mcu.MCUProperties $r4;
+        avrora.sim.Interpreter $r5;
+        avrora.sim.output.EventBuffer $r6;
+
+        this := @this: avrora.sim.Simulator;
+        i := @parameter0: int;
+        sim := @parameter1: avrora.sim.Simulation;
+        f := @parameter2: avrora.sim.InterpreterFactory;
+        mcu := @parameter3: avrora.sim.mcu.Microcontroller;
+        p := @parameter4: avrora.core.Program;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.sim.Simulator: int id> = i;
+        this.<avrora.sim.Simulator: avrora.sim.mcu.Microcontroller microcontroller> = mcu;
+        this.<avrora.sim.Simulator: avrora.core.Program program> = p;
+        this.<avrora.sim.Simulator: avrora.sim.Simulation simulation> = sim;
+        $r0 = interfaceinvoke mcu.<avrora.sim.mcu.Microcontroller: avrora.sim.clock.ClockDomain getClockDomain()>();
+        $r1 = virtualinvoke $r0.<avrora.sim.clock.ClockDomain: avrora.sim.clock.MainClock getMainClock()>();
+        this.<avrora.sim.Simulator: avrora.sim.clock.MainClock clock> = $r1;
+        $r2 = this.<avrora.sim.Simulator: avrora.core.Program program>;
+        $r3 = this.<avrora.sim.Simulator: avrora.sim.mcu.Microcontroller microcontroller>;
+        $r4 = interfaceinvoke $r3.<avrora.sim.mcu.Microcontroller: avrora.sim.mcu.MCUProperties getProperties()>();
+        $r5 = virtualinvoke f.<avrora.sim.InterpreterFactory: avrora.sim.Interpreter newInterpreter(avrora.sim.Simulator,avrora.core.Program,avrora.sim.mcu.MCUProperties)>(this, $r2, $r4);
+        this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter> = $r5;
+        $r6 = new avrora.sim.output.EventBuffer;
+        specialinvoke $r6.<avrora.sim.output.EventBuffer: void <init>(avrora.sim.Simulator)>(this);
+        this.<avrora.sim.Simulator: avrora.sim.output.EventBuffer events> = $r6;
+        return;
+    }
+
+    public avrora.sim.mcu.Microcontroller getMicrocontroller()
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.mcu.Microcontroller $r0;
+
+        this := @this: avrora.sim.Simulator;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.mcu.Microcontroller microcontroller>;
+        return $r0;
+    }
+
+    public avrora.core.Program getProgram()
+    {
+        avrora.sim.Simulator this;
+        avrora.core.Program $r0;
+
+        this := @this: avrora.sim.Simulator;
+        $r0 = this.<avrora.sim.Simulator: avrora.core.Program program>;
+        return $r0;
+    }
+
+    public avrora.sim.clock.MainClock getClock()
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.clock.MainClock $r0;
+
+        this := @this: avrora.sim.Simulator;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.clock.MainClock clock>;
+        return $r0;
+    }
+
+    public avrora.sim.output.EventBuffer getEventBuffer()
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.output.EventBuffer $r0;
+
+        this := @this: avrora.sim.Simulator;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.output.EventBuffer events>;
+        return $r0;
+    }
+
+    public int getID()
+    {
+        avrora.sim.Simulator this;
+        int $i0;
+
+        this := @this: avrora.sim.Simulator;
+        $i0 = this.<avrora.sim.Simulator: int id>;
+        return $i0;
+    }
+
+    public avrora.sim.Interpreter getInterpreter()
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Interpreter $r0;
+
+        this := @this: avrora.sim.Simulator;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter>;
+        return $r0;
+    }
+
+    public avrora.sim.Simulation getSimulation()
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Simulation $r0;
+
+        this := @this: avrora.sim.Simulator;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Simulation simulation>;
+        return $r0;
+    }
+
+    public avrora.sim.output.SimPrinter getPrinter(java.lang.String)
+    {
+        avrora.sim.Simulator this;
+        java.lang.String category;
+        avrora.sim.Simulation $r0;
+        avrora.sim.output.SimPrinter $r1;
+
+        this := @this: avrora.sim.Simulator;
+        category := @parameter0: java.lang.String;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Simulation simulation>;
+        $r1 = virtualinvoke $r0.<avrora.sim.Simulation: avrora.sim.output.SimPrinter getPrinter(avrora.sim.Simulator,java.lang.String)>(this, category);
+        return $r1;
+    }
+
+    public avrora.sim.output.SimPrinter getPrinter()
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Simulation $r0;
+        avrora.sim.output.SimPrinter $r1;
+
+        this := @this: avrora.sim.Simulator;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Simulation simulation>;
+        $r1 = virtualinvoke $r0.<avrora.sim.Simulation: avrora.sim.output.SimPrinter getPrinter(avrora.sim.Simulator)>(this);
+        return $r1;
+    }
+
+    public avrora.sim.State getState()
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Interpreter $r0;
+        avrora.sim.State $r1;
+
+        this := @this: avrora.sim.Simulator;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter>;
+        $r1 = virtualinvoke $r0.<avrora.sim.Interpreter: avrora.sim.State getState()>();
+        return $r1;
+    }
+
+    public void start()
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Interpreter $r0;
+
+        this := @this: avrora.sim.Simulator;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter>;
+        virtualinvoke $r0.<avrora.sim.Interpreter: void start()>();
+        return;
+    }
+
+    public int step()
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Interpreter $r0;
+        int $i0;
+
+        this := @this: avrora.sim.Simulator;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter>;
+        $i0 = virtualinvoke $r0.<avrora.sim.Interpreter: int step()>();
+        return $i0;
+    }
+
+    public void stop()
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Interpreter $r0;
+
+        this := @this: avrora.sim.Simulator;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter>;
+        virtualinvoke $r0.<avrora.sim.Interpreter: void stop()>();
+        return;
+    }
+
+    public void insertProbe(avrora.sim.Simulator$Probe)
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Simulator$Probe p;
+        avrora.sim.Interpreter $r0;
+
+        this := @this: avrora.sim.Simulator;
+        p := @parameter0: avrora.sim.Simulator$Probe;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter>;
+        virtualinvoke $r0.<avrora.sim.Interpreter: void insertProbe(avrora.sim.Simulator$Probe)>(p);
+        return;
+    }
+
+    public void insertProbe(avrora.sim.Simulator$Probe, int)
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Simulator$Probe p;
+        int addr;
+        avrora.sim.Interpreter $r0;
+
+        this := @this: avrora.sim.Simulator;
+        p := @parameter0: avrora.sim.Simulator$Probe;
+        addr := @parameter1: int;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter>;
+        virtualinvoke $r0.<avrora.sim.Interpreter: void insertProbe(avrora.sim.Simulator$Probe,int)>(p, addr);
+        return;
+    }
+
+    public void removeProbe(avrora.sim.Simulator$Probe)
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Simulator$Probe b;
+        avrora.sim.Interpreter $r0;
+
+        this := @this: avrora.sim.Simulator;
+        b := @parameter0: avrora.sim.Simulator$Probe;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter>;
+        virtualinvoke $r0.<avrora.sim.Interpreter: void removeProbe(avrora.sim.Simulator$Probe)>(b);
+        return;
+    }
+
+    public void removeProbe(avrora.sim.Simulator$Probe, int)
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Simulator$Probe p;
+        int addr;
+        avrora.sim.Interpreter $r0;
+
+        this := @this: avrora.sim.Simulator;
+        p := @parameter0: avrora.sim.Simulator$Probe;
+        addr := @parameter1: int;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter>;
+        virtualinvoke $r0.<avrora.sim.Interpreter: void removeProbe(avrora.sim.Simulator$Probe,int)>(p, addr);
+        return;
+    }
+
+    public void insertWatch(avrora.sim.Simulator$Watch, int)
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Simulator$Watch p;
+        int data_addr;
+        avrora.sim.Interpreter $r0;
+
+        this := @this: avrora.sim.Simulator;
+        p := @parameter0: avrora.sim.Simulator$Watch;
+        data_addr := @parameter1: int;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter>;
+        virtualinvoke $r0.<avrora.sim.Interpreter: void insertWatch(avrora.sim.Simulator$Watch,int)>(p, data_addr);
+        return;
+    }
+
+    public void removeWatch(avrora.sim.Simulator$Watch, int)
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Simulator$Watch p;
+        int data_addr;
+        avrora.sim.Interpreter $r0;
+
+        this := @this: avrora.sim.Simulator;
+        p := @parameter0: avrora.sim.Simulator$Watch;
+        data_addr := @parameter1: int;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter>;
+        virtualinvoke $r0.<avrora.sim.Interpreter: void removeWatch(avrora.sim.Simulator$Watch,int)>(p, data_addr);
+        return;
+    }
+
+    public void forceInterrupt(int)
+    {
+        avrora.sim.Simulator this;
+        int num;
+        avrora.sim.Interpreter $r0;
+        avrora.sim.InterruptTable $r1;
+
+        this := @this: avrora.sim.Simulator;
+        num := @parameter0: int;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter>;
+        $r1 = virtualinvoke $r0.<avrora.sim.Interpreter: avrora.sim.InterruptTable getInterruptTable()>();
+        virtualinvoke $r1.<avrora.sim.InterruptTable: void force(int)>(num);
+        return;
+    }
+
+    public void insertEvent(avrora.sim.Simulator$Event, long)
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Simulator$Event e;
+        long cycles;
+        avrora.sim.clock.MainClock $r0;
+
+        this := @this: avrora.sim.Simulator;
+        e := @parameter0: avrora.sim.Simulator$Event;
+        cycles := @parameter1: long;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.clock.MainClock clock>;
+        virtualinvoke $r0.<avrora.sim.clock.MainClock: void insertEvent(avrora.sim.Simulator$Event,long)>(e, cycles);
+        return;
+    }
+
+    public void removeEvent(avrora.sim.Simulator$Event)
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Simulator$Event e;
+        avrora.sim.clock.MainClock $r0;
+
+        this := @this: avrora.sim.Simulator;
+        e := @parameter0: avrora.sim.Simulator$Event;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.clock.MainClock clock>;
+        virtualinvoke $r0.<avrora.sim.clock.MainClock: void removeEvent(avrora.sim.Simulator$Event)>(e);
+        return;
+    }
+
+    public void insertErrorWatch(avrora.sim.Simulator$Watch)
+    {
+        avrora.sim.Simulator this;
+        avrora.sim.Simulator$Watch watch;
+        avrora.sim.Interpreter $r0;
+
+        this := @this: avrora.sim.Simulator;
+        watch := @parameter0: avrora.sim.Simulator$Watch;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter>;
+        virtualinvoke $r0.<avrora.sim.Interpreter: void insertErrorWatch(avrora.sim.Simulator$Watch)>(watch);
+        return;
+    }
+
+    public void delay(long)
+    {
+        avrora.sim.Simulator this;
+        long cycles;
+        avrora.sim.Interpreter $r0;
+
+        this := @this: avrora.sim.Simulator;
+        cycles := @parameter0: long;
+        $r0 = this.<avrora.sim.Simulator: avrora.sim.Interpreter interpreter>;
+        virtualinvoke $r0.<avrora.sim.Interpreter: void delay(long)>(cycles);
+        return;
+    }
+}

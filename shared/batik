@@ -14,5 +14,5 @@ org.apache.batik.util.XMLResourceDescriptor.xmlParserClassName
 org.apache.batik.util.ParsedURL.handlersMap
 org.apache.batik.util.CleanerThread.queue
 org.apache.batik.util.CleanerThread.thread
-org.apache.batik.util.XMLResourceDescriptor.cssParserClassName
 org.apache.batik.ext.awt.image.spi.ImageTagRegistry.registry
+org.apache.batik.util.XMLResourceDescriptor.cssParserClassName

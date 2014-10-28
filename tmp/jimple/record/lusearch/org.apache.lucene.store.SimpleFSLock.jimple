@@ -1,0 +1,136 @@
+class org.apache.lucene.store.SimpleFSLock extends org.apache.lucene.store.Lock
+{
+    java.io.File lockFile;
+    java.io.File lockDir;
+
+    public void <init>(java.io.File, java.lang.String)
+    {
+        org.apache.lucene.store.SimpleFSLock this;
+        java.io.File lockDir, $r0;
+        java.lang.String lockFileName;
+
+        this := @this: org.apache.lucene.store.SimpleFSLock;
+        lockDir := @parameter0: java.io.File;
+        lockFileName := @parameter1: java.lang.String;
+        specialinvoke this.<org.apache.lucene.store.Lock: void <init>()>();
+        this.<org.apache.lucene.store.SimpleFSLock: java.io.File lockDir> = lockDir;
+        $r0 = new java.io.File;
+        specialinvoke $r0.<java.io.File: void <init>(java.io.File,java.lang.String)>(lockDir, lockFileName);
+        this.<org.apache.lucene.store.SimpleFSLock: java.io.File lockFile> = $r0;
+        return;
+    }
+
+    public boolean obtain() throws java.io.IOException
+    {
+        org.apache.lucene.store.SimpleFSLock this;
+        java.lang.StringBuffer $r0;
+        java.io.File $r1, $r3;
+        boolean $z0;
+        java.io.IOException $r2;
+        java.lang.String $r4, $r5;
+
+        this := @this: org.apache.lucene.store.SimpleFSLock;
+        $r1 = this.<org.apache.lucene.store.SimpleFSLock: java.io.File lockDir>;
+        $z0 = virtualinvoke $r1.<java.io.File: boolean exists()>();
+        if $z0 != 0 goto label0;
+
+        $r1 = this.<org.apache.lucene.store.SimpleFSLock: java.io.File lockDir>;
+        $z0 = virtualinvoke $r1.<java.io.File: boolean mkdirs()>();
+        if $z0 != 0 goto label1;
+
+        $r2 = new java.io.IOException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Cannot create directory: ");
+        $r3 = this.<org.apache.lucene.store.SimpleFSLock: java.io.File lockDir>;
+        $r4 = virtualinvoke $r3.<java.io.File: java.lang.String getAbsolutePath()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r5 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r5);
+        throw $r2;
+
+     label0:
+        $r1 = this.<org.apache.lucene.store.SimpleFSLock: java.io.File lockDir>;
+        $z0 = virtualinvoke $r1.<java.io.File: boolean isDirectory()>();
+        if $z0 != 0 goto label1;
+
+        $r2 = new java.io.IOException;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Found regular file where directory expected: ");
+        $r3 = this.<org.apache.lucene.store.SimpleFSLock: java.io.File lockDir>;
+        $r4 = virtualinvoke $r3.<java.io.File: java.lang.String getAbsolutePath()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r4);
+        $r5 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r5);
+        throw $r2;
+
+     label1:
+        $r1 = this.<org.apache.lucene.store.SimpleFSLock: java.io.File lockFile>;
+        $z0 = virtualinvoke $r1.<java.io.File: boolean createNewFile()>();
+        return $z0;
+    }
+
+    public void release() throws org.apache.lucene.store.LockReleaseFailedException
+    {
+        org.apache.lucene.store.SimpleFSLock this;
+        java.lang.StringBuffer $r0, tmp$550995953;
+        java.io.File $r1, $r3;
+        boolean $z0;
+        java.lang.String $r4;
+        org.apache.lucene.store.LockReleaseFailedException tmp$550996016;
+        java.lang.Throwable tmp;
+
+        this := @this: org.apache.lucene.store.SimpleFSLock;
+        $r1 = this.<org.apache.lucene.store.SimpleFSLock: java.io.File lockFile>;
+        $z0 = virtualinvoke $r1.<java.io.File: boolean exists()>();
+        if $z0 == 0 goto label0;
+
+        $r1 = this.<org.apache.lucene.store.SimpleFSLock: java.io.File lockFile>;
+        $z0 = virtualinvoke $r1.<java.io.File: boolean delete()>();
+        if $z0 != 0 goto label0;
+
+        tmp$550996016 = new org.apache.lucene.store.LockReleaseFailedException;
+        tmp$550995953 = new java.lang.StringBuffer;
+        specialinvoke tmp$550995953.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke tmp$550995953.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("failed to delete ");
+        $r3 = this.<org.apache.lucene.store.SimpleFSLock: java.io.File lockFile>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r3);
+        $r4 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        specialinvoke tmp$550996016.<org.apache.lucene.store.LockReleaseFailedException: void <init>(java.lang.String)>($r4);
+        tmp = (java.lang.Throwable) tmp$550996016;
+        throw tmp;
+
+     label0:
+        return;
+    }
+
+    public boolean isLocked()
+    {
+        org.apache.lucene.store.SimpleFSLock this;
+        java.io.File $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.store.SimpleFSLock;
+        $r0 = this.<org.apache.lucene.store.SimpleFSLock: java.io.File lockFile>;
+        $z0 = virtualinvoke $r0.<java.io.File: boolean exists()>();
+        return $z0;
+    }
+
+    public java.lang.String toString()
+    {
+        org.apache.lucene.store.SimpleFSLock this;
+        java.lang.StringBuffer $r0;
+        java.io.File $r1;
+        java.lang.String $r2;
+
+        this := @this: org.apache.lucene.store.SimpleFSLock;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("SimpleFSLock@");
+        $r1 = this.<org.apache.lucene.store.SimpleFSLock: java.io.File lockFile>;
+        $r0 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r1);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r2;
+    }
+}

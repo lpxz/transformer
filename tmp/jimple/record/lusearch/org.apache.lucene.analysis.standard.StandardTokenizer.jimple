@@ -1,0 +1,295 @@
+public class org.apache.lucene.analysis.standard.StandardTokenizer extends org.apache.lucene.analysis.Tokenizer
+{
+    private final org.apache.lucene.analysis.standard.StandardTokenizerImpl scanner;
+    public static final int ALPHANUM;
+    public static final int APOSTROPHE;
+    public static final int ACRONYM;
+    public static final int COMPANY;
+    public static final int EMAIL;
+    public static final int HOST;
+    public static final int NUM;
+    public static final int CJ;
+    public static final int ACRONYM_DEP;
+    public static final java.lang.String[] TOKEN_TYPES;
+    public static final java.lang.String[] tokenImage;
+    private boolean replaceInvalidAcronym;
+    private int maxTokenLength;
+    static final boolean $assertionsDisabled;
+    static java.lang.Class class$org$apache$lucene$analysis$standard$StandardTokenizer;
+
+    void setInput(java.io.Reader)
+    {
+        org.apache.lucene.analysis.standard.StandardTokenizer this;
+        java.io.Reader reader;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardTokenizer;
+        reader := @parameter0: java.io.Reader;
+        this.<org.apache.lucene.analysis.standard.StandardTokenizer: java.io.Reader input> = reader;
+        return;
+    }
+
+    public void setMaxTokenLength(int)
+    {
+        org.apache.lucene.analysis.standard.StandardTokenizer this;
+        int length;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardTokenizer;
+        length := @parameter0: int;
+        this.<org.apache.lucene.analysis.standard.StandardTokenizer: int maxTokenLength> = length;
+        return;
+    }
+
+    public int getMaxTokenLength()
+    {
+        org.apache.lucene.analysis.standard.StandardTokenizer this;
+        int $i0;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardTokenizer;
+        $i0 = this.<org.apache.lucene.analysis.standard.StandardTokenizer: int maxTokenLength>;
+        return $i0;
+    }
+
+    public void <init>(java.io.Reader)
+    {
+        org.apache.lucene.analysis.standard.StandardTokenizer this;
+        java.io.Reader input;
+        org.apache.lucene.analysis.standard.StandardTokenizerImpl $r0;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardTokenizer;
+        input := @parameter0: java.io.Reader;
+        specialinvoke this.<org.apache.lucene.analysis.Tokenizer: void <init>()>();
+        this.<org.apache.lucene.analysis.standard.StandardTokenizer: boolean replaceInvalidAcronym> = 0;
+        this.<org.apache.lucene.analysis.standard.StandardTokenizer: int maxTokenLength> = 255;
+        this.<org.apache.lucene.analysis.standard.StandardTokenizer: java.io.Reader input> = input;
+        $r0 = new org.apache.lucene.analysis.standard.StandardTokenizerImpl;
+        specialinvoke $r0.<org.apache.lucene.analysis.standard.StandardTokenizerImpl: void <init>(java.io.Reader)>(input);
+        this.<org.apache.lucene.analysis.standard.StandardTokenizer: org.apache.lucene.analysis.standard.StandardTokenizerImpl scanner> = $r0;
+        return;
+    }
+
+    public void <init>(java.io.Reader, boolean)
+    {
+        org.apache.lucene.analysis.standard.StandardTokenizer this;
+        java.io.Reader input;
+        boolean replaceInvalidAcronym;
+        org.apache.lucene.analysis.standard.StandardTokenizerImpl $r0;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardTokenizer;
+        input := @parameter0: java.io.Reader;
+        replaceInvalidAcronym := @parameter1: boolean;
+        specialinvoke this.<org.apache.lucene.analysis.Tokenizer: void <init>()>();
+        this.<org.apache.lucene.analysis.standard.StandardTokenizer: boolean replaceInvalidAcronym> = 0;
+        this.<org.apache.lucene.analysis.standard.StandardTokenizer: int maxTokenLength> = 255;
+        this.<org.apache.lucene.analysis.standard.StandardTokenizer: boolean replaceInvalidAcronym> = replaceInvalidAcronym;
+        this.<org.apache.lucene.analysis.standard.StandardTokenizer: java.io.Reader input> = input;
+        $r0 = new org.apache.lucene.analysis.standard.StandardTokenizerImpl;
+        specialinvoke $r0.<org.apache.lucene.analysis.standard.StandardTokenizerImpl: void <init>(java.io.Reader)>(input);
+        this.<org.apache.lucene.analysis.standard.StandardTokenizer: org.apache.lucene.analysis.standard.StandardTokenizerImpl scanner> = $r0;
+        return;
+    }
+
+    public org.apache.lucene.analysis.Token next(org.apache.lucene.analysis.Token) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.standard.StandardTokenizer this;
+        org.apache.lucene.analysis.Token reusableToken;
+        boolean $z0;
+        int posIncr, tokenType, start, $i0, $i1, $i2;
+        java.lang.AssertionError $r0;
+        org.apache.lucene.analysis.standard.StandardTokenizerImpl $r1;
+        java.lang.String[] $r2;
+        java.lang.String $r3;
+        long tid_next;
+        java.lang.Thread thread_next;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardTokenizer;
+        reusableToken := @parameter0: org.apache.lucene.analysis.Token;
+        thread_next = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_next = virtualinvoke thread_next.<java.lang.Thread: long getId()>();
+        $z0 = <org.apache.lucene.analysis.standard.StandardTokenizer: boolean $assertionsDisabled>;
+        if $z0 != 0 goto label0;
+
+        if reusableToken != null goto label0;
+
+        $r0 = new java.lang.AssertionError;
+        specialinvoke $r0.<java.lang.AssertionError: void <init>()>();
+        throw $r0;
+
+     label0:
+        posIncr = 1;
+
+     label1:
+        $r1 = this.<org.apache.lucene.analysis.standard.StandardTokenizer: org.apache.lucene.analysis.standard.StandardTokenizerImpl scanner>;
+        tokenType = virtualinvoke $r1.<org.apache.lucene.analysis.standard.StandardTokenizerImpl: int getNextToken()>();
+        if tokenType != -1 goto label2;
+
+        return null;
+
+     label2:
+        $r1 = this.<org.apache.lucene.analysis.standard.StandardTokenizer: org.apache.lucene.analysis.standard.StandardTokenizerImpl scanner>;
+        $i0 = virtualinvoke $r1.<org.apache.lucene.analysis.standard.StandardTokenizerImpl: int yylength()>();
+        $i1 = this.<org.apache.lucene.analysis.standard.StandardTokenizer: int maxTokenLength>;
+        if $i0 > $i1 goto label6;
+
+        virtualinvoke reusableToken.<org.apache.lucene.analysis.Token: void clear()>();
+        virtualinvoke reusableToken.<org.apache.lucene.analysis.Token: void setPositionIncrement(int)>(posIncr);
+        $r1 = this.<org.apache.lucene.analysis.standard.StandardTokenizer: org.apache.lucene.analysis.standard.StandardTokenizerImpl scanner>;
+        virtualinvoke $r1.<org.apache.lucene.analysis.standard.StandardTokenizerImpl: void getText(org.apache.lucene.analysis.Token)>(reusableToken);
+        $r1 = this.<org.apache.lucene.analysis.standard.StandardTokenizer: org.apache.lucene.analysis.standard.StandardTokenizerImpl scanner>;
+        start = virtualinvoke $r1.<org.apache.lucene.analysis.standard.StandardTokenizerImpl: int yychar()>();
+        virtualinvoke reusableToken.<org.apache.lucene.analysis.Token: void setStartOffset(int)>(start);
+        $i2 = virtualinvoke reusableToken.<org.apache.lucene.analysis.Token: int termLength()>();
+        $i1 = start + $i2;
+        virtualinvoke reusableToken.<org.apache.lucene.analysis.Token: void setEndOffset(int)>($i1);
+        if tokenType != 8 goto label4;
+
+        $z0 = this.<org.apache.lucene.analysis.standard.StandardTokenizer: boolean replaceInvalidAcronym>;
+        if $z0 == 0 goto label3;
+
+        $r2 = <org.apache.lucene.analysis.standard.StandardTokenizerImpl: java.lang.String[] TOKEN_TYPES>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r2, 10, tid_next, "org.apache.lucene.analysis.standard.StandardTokenizer", 158, 5, $r3);
+        $r3 = $r2[5];
+        virtualinvoke reusableToken.<org.apache.lucene.analysis.Token: void setType(java.lang.String)>($r3);
+        $i1 = virtualinvoke reusableToken.<org.apache.lucene.analysis.Token: int termLength()>();
+        $i1 = $i1 - 1;
+        virtualinvoke reusableToken.<org.apache.lucene.analysis.Token: void setTermLength(int)>($i1);
+        goto label5;
+
+     label3:
+        $r2 = <org.apache.lucene.analysis.standard.StandardTokenizerImpl: java.lang.String[] TOKEN_TYPES>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r2, 10, tid_next, "org.apache.lucene.analysis.standard.StandardTokenizer", 161, 2, $r3);
+        $r3 = $r2[2];
+        virtualinvoke reusableToken.<org.apache.lucene.analysis.Token: void setType(java.lang.String)>($r3);
+        goto label5;
+
+     label4:
+        $r2 = <org.apache.lucene.analysis.standard.StandardTokenizerImpl: java.lang.String[] TOKEN_TYPES>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r2, 10, tid_next, "org.apache.lucene.analysis.standard.StandardTokenizer", 164, tokenType, $r3);
+        $r3 = $r2[tokenType];
+        virtualinvoke reusableToken.<org.apache.lucene.analysis.Token: void setType(java.lang.String)>($r3);
+
+     label5:
+        return reusableToken;
+
+     label6:
+        posIncr = posIncr + 1;
+        goto label1;
+    }
+
+    public void reset() throws java.io.IOException
+    {
+        org.apache.lucene.analysis.standard.StandardTokenizer this;
+        org.apache.lucene.analysis.standard.StandardTokenizerImpl $r0;
+        java.io.Reader $r1;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardTokenizer;
+        specialinvoke this.<org.apache.lucene.analysis.Tokenizer: void reset()>();
+        $r0 = this.<org.apache.lucene.analysis.standard.StandardTokenizer: org.apache.lucene.analysis.standard.StandardTokenizerImpl scanner>;
+        $r1 = this.<org.apache.lucene.analysis.standard.StandardTokenizer: java.io.Reader input>;
+        virtualinvoke $r0.<org.apache.lucene.analysis.standard.StandardTokenizerImpl: void yyreset(java.io.Reader)>($r1);
+        return;
+    }
+
+    public void reset(java.io.Reader) throws java.io.IOException
+    {
+        org.apache.lucene.analysis.standard.StandardTokenizer this;
+        java.io.Reader reader;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardTokenizer;
+        reader := @parameter0: java.io.Reader;
+        this.<org.apache.lucene.analysis.standard.StandardTokenizer: java.io.Reader input> = reader;
+        virtualinvoke this.<org.apache.lucene.analysis.standard.StandardTokenizer: void reset()>();
+        return;
+    }
+
+    public boolean isReplaceInvalidAcronym()
+    {
+        org.apache.lucene.analysis.standard.StandardTokenizer this;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardTokenizer;
+        $z0 = this.<org.apache.lucene.analysis.standard.StandardTokenizer: boolean replaceInvalidAcronym>;
+        return $z0;
+    }
+
+    public void setReplaceInvalidAcronym(boolean)
+    {
+        org.apache.lucene.analysis.standard.StandardTokenizer this;
+        boolean replaceInvalidAcronym;
+
+        this := @this: org.apache.lucene.analysis.standard.StandardTokenizer;
+        replaceInvalidAcronym := @parameter0: boolean;
+        this.<org.apache.lucene.analysis.standard.StandardTokenizer: boolean replaceInvalidAcronym> = replaceInvalidAcronym;
+        return;
+    }
+
+    static java.lang.Class class$(java.lang.String)
+    {
+        java.lang.String x0;
+        java.lang.ClassNotFoundException x1, $r1;
+        java.lang.Class $r0;
+        java.lang.NoClassDefFoundError $r2;
+        java.lang.Throwable $r3;
+
+        x0 := @parameter0: java.lang.String;
+
+     label0:
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(x0);
+
+     label1:
+        return $r0;
+
+     label2:
+        $r1 := @caughtexception;
+        x1 = $r1;
+        $r2 = new java.lang.NoClassDefFoundError;
+        specialinvoke $r2.<java.lang.NoClassDefFoundError: void <init>()>();
+        $r3 = virtualinvoke $r2.<java.lang.NoClassDefFoundError: java.lang.Throwable initCause(java.lang.Throwable)>(x1);
+        throw $r3;
+
+        catch java.lang.ClassNotFoundException from label0 to label1 with label2;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        boolean $z0;
+        java.lang.String[] $r1;
+
+        $r0 = <org.apache.lucene.analysis.standard.StandardTokenizer: java.lang.Class class$org$apache$lucene$analysis$standard$StandardTokenizer>;
+        if $r0 != null goto label0;
+
+        $r0 = staticinvoke <org.apache.lucene.analysis.standard.StandardTokenizer: java.lang.Class class$(java.lang.String)>("org.apache.lucene.analysis.standard.StandardTokenizer");
+        <org.apache.lucene.analysis.standard.StandardTokenizer: java.lang.Class class$org$apache$lucene$analysis$standard$StandardTokenizer> = $r0;
+        goto label1;
+
+     label0:
+        $r0 = <org.apache.lucene.analysis.standard.StandardTokenizer: java.lang.Class class$org$apache$lucene$analysis$standard$StandardTokenizer>;
+
+     label1:
+        $z0 = virtualinvoke $r0.<java.lang.Class: boolean desiredAssertionStatus()>();
+        if $z0 != 0 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        <org.apache.lucene.analysis.standard.StandardTokenizer: boolean $assertionsDisabled> = $z0;
+        $r1 = newarray (java.lang.String)[9];
+        $r1[0] = "<ALPHANUM>";
+        $r1[1] = "<APOSTROPHE>";
+        $r1[2] = "<ACRONYM>";
+        $r1[3] = "<COMPANY>";
+        $r1[4] = "<EMAIL>";
+        $r1[5] = "<HOST>";
+        $r1[6] = "<NUM>";
+        $r1[7] = "<CJ>";
+        $r1[8] = "<ACRONYM_DEP>";
+        <org.apache.lucene.analysis.standard.StandardTokenizer: java.lang.String[] TOKEN_TYPES> = $r1;
+        $r1 = <org.apache.lucene.analysis.standard.StandardTokenizer: java.lang.String[] TOKEN_TYPES>;
+        <org.apache.lucene.analysis.standard.StandardTokenizer: java.lang.String[] tokenImage> = $r1;
+        return;
+    }
+}

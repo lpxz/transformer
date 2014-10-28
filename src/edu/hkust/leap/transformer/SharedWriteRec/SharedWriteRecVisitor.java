@@ -37,13 +37,12 @@ public class SharedWriteRecVisitor extends Visitor {
      * we still use the same SPE for them
      */
     public void visitInstanceInvokeExpr(SootMethod sm, Chain units, Stmt s, InstanceInvokeExpr invokeExpr, InvokeContext context) {
-    	// !!!!!!!!!!!!!
     	SootMethod callee = invokeExpr.getMethod();
     	if(AnalysisOptions.modelJDKcalls){
     		if(JDKOpType(callee).equals(Parameters.WRITE)  )// shared WRITE (write)!
         	{
         		Value base =invokeExpr.getBase();
-        		String sig=Util.getSig4JDKDataStructureFakedField(base);
+        		String sig=Util.getSig4DS(base);
         		 if(!Visitor.tlo.isObjectThreadLocal(base, sm))// judge the base, similar to the array
              	{
                  	sharedVariableWriteAccessSet.add(sig);            	

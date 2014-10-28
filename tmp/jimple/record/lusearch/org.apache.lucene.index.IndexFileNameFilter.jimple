@@ -1,0 +1,168 @@
+public class org.apache.lucene.index.IndexFileNameFilter extends java.lang.Object implements java.io.FilenameFilter
+{
+    static org.apache.lucene.index.IndexFileNameFilter singleton;
+    private java.util.HashSet extensions;
+    private java.util.HashSet extensionsInCFS;
+
+    public void <init>()
+    {
+        org.apache.lucene.index.IndexFileNameFilter this;
+        java.util.HashSet $r0, $r2;
+        int i, $i0;
+        java.lang.String[] $r1;
+        java.lang.String $r3;
+
+        this := @this: org.apache.lucene.index.IndexFileNameFilter;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new java.util.HashSet;
+        specialinvoke $r0.<java.util.HashSet: void <init>()>();
+        this.<org.apache.lucene.index.IndexFileNameFilter: java.util.HashSet extensions> = $r0;
+        i = 0;
+
+     label0:
+        $r1 = <org.apache.lucene.index.IndexFileNames: java.lang.String[] INDEX_EXTENSIONS>;
+        $i0 = lengthof $r1;
+        if i >= $i0 goto label1;
+
+        $r2 = this.<org.apache.lucene.index.IndexFileNameFilter: java.util.HashSet extensions>;
+        $r1 = <org.apache.lucene.index.IndexFileNames: java.lang.String[] INDEX_EXTENSIONS>;
+        $r3 = $r1[i];
+        virtualinvoke $r2.<java.util.HashSet: boolean add(java.lang.Object)>($r3);
+        i = i + 1;
+        goto label0;
+
+     label1:
+        $r0 = new java.util.HashSet;
+        specialinvoke $r0.<java.util.HashSet: void <init>()>();
+        this.<org.apache.lucene.index.IndexFileNameFilter: java.util.HashSet extensionsInCFS> = $r0;
+        i = 0;
+
+     label2:
+        $r1 = <org.apache.lucene.index.IndexFileNames: java.lang.String[] INDEX_EXTENSIONS_IN_COMPOUND_FILE>;
+        $i0 = lengthof $r1;
+        if i >= $i0 goto label3;
+
+        $r2 = this.<org.apache.lucene.index.IndexFileNameFilter: java.util.HashSet extensionsInCFS>;
+        $r1 = <org.apache.lucene.index.IndexFileNames: java.lang.String[] INDEX_EXTENSIONS_IN_COMPOUND_FILE>;
+        $r3 = $r1[i];
+        virtualinvoke $r2.<java.util.HashSet: boolean add(java.lang.Object)>($r3);
+        i = i + 1;
+        goto label2;
+
+     label3:
+        return;
+    }
+
+    public boolean accept(java.io.File, java.lang.String)
+    {
+        org.apache.lucene.index.IndexFileNameFilter this;
+        java.io.File dir;
+        java.lang.String name, extension;
+        int i, $i0;
+        java.util.HashSet $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.IndexFileNameFilter;
+        dir := @parameter0: java.io.File;
+        name := @parameter1: java.lang.String;
+        i = virtualinvoke name.<java.lang.String: int lastIndexOf(int)>(46);
+        if i == -1 goto label3;
+
+        $i0 = 1 + i;
+        extension = virtualinvoke name.<java.lang.String: java.lang.String substring(int)>($i0);
+        $r0 = this.<org.apache.lucene.index.IndexFileNameFilter: java.util.HashSet extensions>;
+        $z0 = virtualinvoke $r0.<java.util.HashSet: boolean contains(java.lang.Object)>(extension);
+        if $z0 == 0 goto label0;
+
+        return 1;
+
+     label0:
+        $z0 = virtualinvoke extension.<java.lang.String: boolean startsWith(java.lang.String)>("f");
+        if $z0 == 0 goto label1;
+
+        $z0 = virtualinvoke extension.<java.lang.String: boolean matches(java.lang.String)>("f\\d+");
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        $z0 = virtualinvoke extension.<java.lang.String: boolean startsWith(java.lang.String)>("s");
+        if $z0 == 0 goto label2;
+
+        $z0 = virtualinvoke extension.<java.lang.String: boolean matches(java.lang.String)>("s\\d+");
+        if $z0 == 0 goto label2;
+
+        return 1;
+
+     label2:
+        goto label5;
+
+     label3:
+        $z0 = virtualinvoke name.<java.lang.String: boolean equals(java.lang.Object)>("deletable");
+        if $z0 == 0 goto label4;
+
+        return 1;
+
+     label4:
+        $z0 = virtualinvoke name.<java.lang.String: boolean startsWith(java.lang.String)>("segments");
+        if $z0 == 0 goto label5;
+
+        return 1;
+
+     label5:
+        return 0;
+    }
+
+    public boolean isCFSFile(java.lang.String)
+    {
+        org.apache.lucene.index.IndexFileNameFilter this;
+        java.lang.String name, extension;
+        int i, $i0;
+        java.util.HashSet $r0;
+        boolean $z0;
+
+        this := @this: org.apache.lucene.index.IndexFileNameFilter;
+        name := @parameter0: java.lang.String;
+        i = virtualinvoke name.<java.lang.String: int lastIndexOf(int)>(46);
+        if i == -1 goto label1;
+
+        $i0 = 1 + i;
+        extension = virtualinvoke name.<java.lang.String: java.lang.String substring(int)>($i0);
+        $r0 = this.<org.apache.lucene.index.IndexFileNameFilter: java.util.HashSet extensionsInCFS>;
+        $z0 = virtualinvoke $r0.<java.util.HashSet: boolean contains(java.lang.Object)>(extension);
+        if $z0 == 0 goto label0;
+
+        return 1;
+
+     label0:
+        $z0 = virtualinvoke extension.<java.lang.String: boolean startsWith(java.lang.String)>("f");
+        if $z0 == 0 goto label1;
+
+        $z0 = virtualinvoke extension.<java.lang.String: boolean matches(java.lang.String)>("f\\d+");
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static org.apache.lucene.index.IndexFileNameFilter getFilter()
+    {
+        org.apache.lucene.index.IndexFileNameFilter $r0;
+
+        nop;
+        $r0 = <org.apache.lucene.index.IndexFileNameFilter: org.apache.lucene.index.IndexFileNameFilter singleton>;
+        return $r0;
+    }
+
+    static void <clinit>()
+    {
+        org.apache.lucene.index.IndexFileNameFilter $r0;
+
+        $r0 = new org.apache.lucene.index.IndexFileNameFilter;
+        specialinvoke $r0.<org.apache.lucene.index.IndexFileNameFilter: void <init>()>();
+        <org.apache.lucene.index.IndexFileNameFilter: org.apache.lucene.index.IndexFileNameFilter singleton> = $r0;
+        return;
+    }
+}

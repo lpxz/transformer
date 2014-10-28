@@ -1,0 +1,498 @@
+public class avrora.sim.mcu.ReprogrammableCodeSegment extends avrora.sim.CodeSegment
+{
+    private static final double ERASE_MS_MIN;
+    private static final double WRITE_MS_MIN;
+    private static final double ERASE_MS_MAX;
+    private static final double WRITE_MS_MAX;
+    private static final int SPM_TIMEOUT;
+    private static final int STATE_NONE;
+    private static final int STATE_PGERASE;
+    private static final int STATE_RWWSRE;
+    private static final int STATE_BLBSET;
+    private static final int STATE_FILL;
+    private static final int STATE_PGWRITE;
+    private static final int SPM_READY;
+    private static final int SPMCSR_LOWERBITS;
+    private static final byte DEFAULT_VALUE;
+    final avrora.sim.output.SimPrinter flashPrinter;
+    avrora.arch.legacy.LegacyDisassembler disassembler;
+    byte[] buffer;
+    final avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR;
+    final int ERASE_CYCLES;
+    final int WRITE_CYCLES;
+    final int pagesize;
+    final int addressMask;
+    final avrora.sim.clock.MainClock mainClock;
+
+    public void <init>(java.lang.String, int, avrora.sim.AtmelInterpreter, int)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment this;
+        java.lang.String name;
+        int size, pagesize, $i0, $i1;
+        avrora.sim.AtmelInterpreter bi;
+        avrora.sim.mcu.MCUProperties props;
+        avrora.arch.legacy.LegacyDisassembler $r0;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg $r1, $r5;
+        avrora.sim.clock.MainClock $r2;
+        avrora.sim.Simulator $r3, $r6;
+        avrora.sim.mcu.Microcontroller $r4;
+        long $l2;
+        double $d0;
+        avrora.sim.output.SimPrinter $r7;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment;
+        name := @parameter0: java.lang.String;
+        size := @parameter1: int;
+        bi := @parameter2: avrora.sim.AtmelInterpreter;
+        pagesize := @parameter3: int;
+        specialinvoke this.<avrora.sim.CodeSegment: void <init>(java.lang.String,int,avrora.sim.AtmelInterpreter)>(name, size, bi);
+        $r0 = new avrora.arch.legacy.LegacyDisassembler;
+        specialinvoke $r0.<avrora.arch.legacy.LegacyDisassembler: void <init>()>();
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.arch.legacy.LegacyDisassembler disassembler> = $r0;
+        $r1 = new avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg;
+        specialinvoke $r1.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: void <init>(avrora.sim.mcu.ReprogrammableCodeSegment,avrora.sim.mcu.ReprogrammableCodeSegment$1)>(this, null);
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR> = $r1;
+        $r2 = virtualinvoke bi.<avrora.sim.AtmelInterpreter: avrora.sim.clock.MainClock getMainClock()>();
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.clock.MainClock mainClock> = $r2;
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment: int pagesize> = pagesize;
+        $i0 = pagesize + 1;
+        $i1 = staticinvoke <cck.util.Arithmetic: int getBitRangeMask(int,int)>(1, $i0);
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment: int addressMask> = $i1;
+        virtualinvoke this.<avrora.sim.mcu.ReprogrammableCodeSegment: void resetBuffer()>();
+        $r3 = virtualinvoke bi.<avrora.sim.AtmelInterpreter: avrora.sim.Simulator getSimulator()>();
+        $r4 = virtualinvoke $r3.<avrora.sim.Simulator: avrora.sim.mcu.Microcontroller getMicrocontroller()>();
+        props = interfaceinvoke $r4.<avrora.sim.mcu.Microcontroller: avrora.sim.mcu.MCUProperties getProperties()>();
+        $i1 = virtualinvoke props.<avrora.sim.mcu.MCUProperties: int getIOReg(java.lang.String)>("SPMCSR");
+        $r5 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR>;
+        virtualinvoke bi.<avrora.sim.AtmelInterpreter: void installIOReg(int,avrora.sim.ActiveRegister)>($i1, $r5);
+        $r2 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.clock.MainClock mainClock>;
+        $l2 = virtualinvoke $r2.<avrora.sim.clock.MainClock: long getHZ()>();
+        $d0 = (double) $l2;
+        $d0 = $d0 * 4.5;
+        $d0 = $d0 / 1000.0;
+        $i1 = (int) $d0;
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment: int ERASE_CYCLES> = $i1;
+        $r2 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.clock.MainClock mainClock>;
+        $l2 = virtualinvoke $r2.<avrora.sim.clock.MainClock: long getHZ()>();
+        $d0 = (double) $l2;
+        $d0 = $d0 * 4.5;
+        $d0 = $d0 / 1000.0;
+        $i1 = (int) $d0;
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment: int WRITE_CYCLES> = $i1;
+        $r6 = virtualinvoke bi.<avrora.sim.AtmelInterpreter: avrora.sim.Simulator getSimulator()>();
+        $r7 = virtualinvoke $r6.<avrora.sim.Simulator: avrora.sim.output.SimPrinter getPrinter(java.lang.String)>("atmel.flash");
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.output.SimPrinter flashPrinter> = $r7;
+        return;
+    }
+
+    public void update()
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment this;
+        avrora.arch.legacy.LegacyRegister $r0;
+        int Z, pageoffset, pagenum, state, $i0, $i1, $i2, $i4;
+        avrora.sim.AtmelInterpreter $r1, $r2, $r3;
+        byte $b3;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg $r4, $r9;
+        avrora.sim.output.SimPrinter $r5;
+        java.lang.StringBuilder $r6;
+        java.lang.String $r7;
+        avrora.sim.clock.MainClock $r8;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent $r10;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment;
+        $r1 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.AtmelInterpreter interpreter>;
+        $r0 = <avrora.arch.legacy.LegacyRegister: avrora.arch.legacy.LegacyRegister Z>;
+        Z = virtualinvoke $r1.<avrora.sim.AtmelInterpreter: int getRegisterWord(avrora.arch.legacy.LegacyRegister)>($r0);
+        $i0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: int addressMask>;
+        pageoffset = Z & $i0;
+        $i0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: int pagesize>;
+        $i0 = $i0 + 1;
+        pagenum = Z >> $i0;
+        $r1 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.AtmelInterpreter interpreter>;
+        $i1 = $r1.<avrora.sim.AtmelInterpreter: int RAMPZ>;
+        if $i1 <= 0 goto label0;
+
+        $r2 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.AtmelInterpreter interpreter>;
+        $r3 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.AtmelInterpreter interpreter>;
+        $i2 = $r3.<avrora.sim.AtmelInterpreter: int RAMPZ>;
+        $b3 = virtualinvoke $r2.<avrora.sim.AtmelInterpreter: byte getIORegisterByte(int)>($i2);
+        $i4 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: int pagesize>;
+        $i2 = 16 - $i4;
+        $i2 = $i2 - 1;
+        $i0 = $b3 << $i2;
+        pagenum = pagenum + $i0;
+
+     label0:
+        $r4 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR>;
+        state = virtualinvoke $r4.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: int getState()>();
+        lookupswitch(state)
+        {
+            case 1: goto label7;
+            case 3: goto label1;
+            case 5: goto label9;
+            case 9: goto label5;
+            case 17: goto label3;
+            default: goto label11;
+        };
+
+     label1:
+        $r5 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.output.SimPrinter flashPrinter>;
+        if $r5 == null goto label2;
+
+        $r5 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.output.SimPrinter flashPrinter>;
+        $r6 = new java.lang.StringBuilder;
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("FLASH: page erase of page ");
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(pagenum);
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r5.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r7);
+
+     label2:
+        specialinvoke this.<avrora.sim.mcu.ReprogrammableCodeSegment: void pageErase(int,int)>(pagenum, pageoffset);
+        goto label11;
+
+     label3:
+        $r5 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.output.SimPrinter flashPrinter>;
+        if $r5 == null goto label4;
+
+        $r5 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.output.SimPrinter flashPrinter>;
+        virtualinvoke $r5.<avrora.sim.output.SimPrinter: void println(java.lang.String)>("FLASH: reset RWW section ");
+
+     label4:
+        specialinvoke this.<avrora.sim.mcu.ReprogrammableCodeSegment: void resetRWW()>();
+        goto label11;
+
+     label5:
+        $r5 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.output.SimPrinter flashPrinter>;
+        if $r5 == null goto label6;
+
+        $r5 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.output.SimPrinter flashPrinter>;
+        virtualinvoke $r5.<avrora.sim.output.SimPrinter: void println(java.lang.String)>("FLASH: boot lock bits set");
+
+     label6:
+        $r8 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.clock.MainClock mainClock>;
+        $r9 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR>;
+        $r10 = $r9.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent reset>;
+        virtualinvoke $r8.<avrora.sim.clock.MainClock: void removeEvent(avrora.sim.Simulator$Event)>($r10);
+        goto label11;
+
+     label7:
+        $r5 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.output.SimPrinter flashPrinter>;
+        if $r5 == null goto label8;
+
+        $r5 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.output.SimPrinter flashPrinter>;
+        $r6 = new java.lang.StringBuilder;
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("FLASH: fill buffer @ ");
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(pageoffset);
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r5.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r7);
+
+     label8:
+        specialinvoke this.<avrora.sim.mcu.ReprogrammableCodeSegment: void fillBuffer(int,int)>(pagenum, pageoffset);
+        goto label11;
+
+     label9:
+        $r5 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.output.SimPrinter flashPrinter>;
+        if $r5 == null goto label10;
+
+        $r5 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.output.SimPrinter flashPrinter>;
+        $r6 = new java.lang.StringBuilder;
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("FLASH: page write to page ");
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(pagenum);
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke $r5.<avrora.sim.output.SimPrinter: void println(java.lang.String)>($r7);
+
+     label10:
+        specialinvoke this.<avrora.sim.mcu.ReprogrammableCodeSegment: void pageWrite(int,int)>(pagenum, pageoffset);
+        goto label11;
+
+     label11:
+        return;
+    }
+
+    private void pageErase(int, int)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment this;
+        int pagenum, pageoffset, $i0;
+        avrora.sim.clock.MainClock $r0;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg $r1, $r3;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent $r2;
+        long $l1;
+        avrora.sim.mcu.ReprogrammableCodeSegment$EraseEvent tmp$549217424;
+        avrora.sim.Simulator$Event tmp;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment;
+        pagenum := @parameter0: int;
+        pageoffset := @parameter1: int;
+        $r0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.clock.MainClock mainClock>;
+        $r1 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR>;
+        $r2 = $r1.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent reset>;
+        virtualinvoke $r0.<avrora.sim.clock.MainClock: void removeEvent(avrora.sim.Simulator$Event)>($r2);
+        $r3 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR>;
+        virtualinvoke $r3.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: void setBusy()>();
+        $r0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.clock.MainClock mainClock>;
+        tmp$549217424 = new avrora.sim.mcu.ReprogrammableCodeSegment$EraseEvent;
+        specialinvoke tmp$549217424.<avrora.sim.mcu.ReprogrammableCodeSegment$EraseEvent: void <init>(avrora.sim.mcu.ReprogrammableCodeSegment,int)>(this, pagenum);
+        $i0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: int ERASE_CYCLES>;
+        $l1 = (long) $i0;
+        tmp = (avrora.sim.Simulator$Event) tmp$549217424;
+        virtualinvoke $r0.<avrora.sim.clock.MainClock: void insertEvent(avrora.sim.Simulator$Event,long)>(tmp, $l1);
+        return;
+    }
+
+    private void pageWrite(int, int)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment this;
+        int pagenum, pageoffset, $i0;
+        avrora.sim.clock.MainClock $r0;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg $r1, $r3;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent $r2;
+        byte[] $r5;
+        long $l1, tid_pageWrite;
+        avrora.sim.mcu.ReprogrammableCodeSegment$WriteEvent tmp$549493022;
+        avrora.sim.Simulator$Event tmp;
+        java.lang.Thread thread_pageWrite;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment;
+        pagenum := @parameter0: int;
+        pageoffset := @parameter1: int;
+        thread_pageWrite = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_pageWrite = virtualinvoke thread_pageWrite.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.clock.MainClock mainClock>;
+        $r1 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR>;
+        $r2 = $r1.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent reset>;
+        virtualinvoke $r0.<avrora.sim.clock.MainClock: void removeEvent(avrora.sim.Simulator$Event)>($r2);
+        $r3 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR>;
+        virtualinvoke $r3.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: void setBusy()>();
+        $r0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.clock.MainClock mainClock>;
+        tmp$549493022 = new avrora.sim.mcu.ReprogrammableCodeSegment$WriteEvent;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 31, tid_pageWrite, "avrora.sim.mcu.ReprogrammableCodeSegment", 277, $r5);
+        $r5 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: byte[] buffer>;
+        specialinvoke tmp$549493022.<avrora.sim.mcu.ReprogrammableCodeSegment$WriteEvent: void <init>(avrora.sim.mcu.ReprogrammableCodeSegment,int,byte[])>(this, pagenum, $r5);
+        $i0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: int WRITE_CYCLES>;
+        $l1 = (long) $i0;
+        tmp = (avrora.sim.Simulator$Event) tmp$549493022;
+        virtualinvoke $r0.<avrora.sim.clock.MainClock: void insertEvent(avrora.sim.Simulator$Event,long)>(tmp, $l1);
+        virtualinvoke this.<avrora.sim.mcu.ReprogrammableCodeSegment: void resetBuffer()>();
+        return;
+    }
+
+    private void resetRWW()
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment this;
+        avrora.sim.clock.MainClock $r0;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg $r1, $r3;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent $r2;
+        boolean $z0;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment;
+        $r0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.clock.MainClock mainClock>;
+        $r1 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR>;
+        $r2 = $r1.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent reset>;
+        virtualinvoke $r0.<avrora.sim.clock.MainClock: void removeEvent(avrora.sim.Simulator$Event)>($r2);
+        $r3 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR>;
+        $z0 = virtualinvoke $r3.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: boolean isBusy()>();
+        if $z0 != 0 goto label0;
+
+        $r3 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR>;
+        virtualinvoke $r3.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: void clearBusy()>();
+        $r3 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR>;
+        virtualinvoke $r3.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: void reset()>();
+
+     label0:
+        virtualinvoke this.<avrora.sim.mcu.ReprogrammableCodeSegment: void resetBuffer()>();
+        return;
+    }
+
+    private void fillBuffer(int, int)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment this;
+        int pagenum, pageoffset, $i0;
+        avrora.arch.legacy.LegacyRegister $r0;
+        byte r0, r1;
+        avrora.sim.AtmelInterpreter $r1;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg $r2, $r5;
+        byte[] $r3;
+        avrora.sim.clock.MainClock $r4;
+        avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent $r6;
+        long tid_fillBuffer;
+        java.lang.Thread thread_fillBuffer;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment;
+        pagenum := @parameter0: int;
+        pageoffset := @parameter1: int;
+        thread_fillBuffer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_fillBuffer = virtualinvoke thread_fillBuffer.<java.lang.Thread: long getId()>();
+        $r1 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.AtmelInterpreter interpreter>;
+        $r0 = <avrora.arch.legacy.LegacyRegister: avrora.arch.legacy.LegacyRegister R0>;
+        r0 = virtualinvoke $r1.<avrora.sim.AtmelInterpreter: byte getRegisterByte(avrora.arch.legacy.LegacyRegister)>($r0);
+        $r1 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.AtmelInterpreter interpreter>;
+        $r0 = <avrora.arch.legacy.LegacyRegister: avrora.arch.legacy.LegacyRegister R1>;
+        r1 = virtualinvoke $r1.<avrora.sim.AtmelInterpreter: byte getRegisterByte(avrora.arch.legacy.LegacyRegister)>($r0);
+        $r2 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR>;
+        virtualinvoke $r2.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: void reset()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 31, tid_fillBuffer, "avrora.sim.mcu.ReprogrammableCodeSegment", 295, $r3);
+        $r3 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: byte[] buffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r3, 0, tid_fillBuffer, "avrora.sim.mcu.ReprogrammableCodeSegment", 295, pageoffset, r0);
+        $r3[pageoffset] = r0;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 31, tid_fillBuffer, "avrora.sim.mcu.ReprogrammableCodeSegment", 296, $r3);
+        $r3 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: byte[] buffer>;
+        $i0 = pageoffset + 1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,byte)>($r3, 0, tid_fillBuffer, "avrora.sim.mcu.ReprogrammableCodeSegment", 296, $i0, r1);
+        $r3[$i0] = r1;
+        $r4 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.clock.MainClock mainClock>;
+        $r5 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg SPMCSR>;
+        $r6 = $r5.<avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg: avrora.sim.mcu.ReprogrammableCodeSegment$SPMCSR_reg$ResetEvent reset>;
+        virtualinvoke $r4.<avrora.sim.clock.MainClock: void removeEvent(avrora.sim.Simulator$Event)>($r6);
+        return;
+    }
+
+    protected void resetBuffer()
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment this;
+        int cntr, $i0;
+        byte[] $r0, $r1;
+        long tid_resetBuffer;
+        java.lang.Thread thread_resetBuffer;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment;
+        thread_resetBuffer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_resetBuffer = virtualinvoke thread_resetBuffer.<java.lang.Thread: long getId()>();
+        $i0 = specialinvoke this.<avrora.sim.mcu.ReprogrammableCodeSegment: int bufferSize()>();
+        $r0 = newarray (byte)[$i0];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 31, tid_resetBuffer, "avrora.sim.mcu.ReprogrammableCodeSegment", 364, $r0);
+        this.<avrora.sim.mcu.ReprogrammableCodeSegment: byte[] buffer> = $r0;
+        cntr = 0;
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 31, tid_resetBuffer, "avrora.sim.mcu.ReprogrammableCodeSegment", 365, $r0);
+        $r0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: byte[] buffer>;
+        $i0 = lengthof $r0;
+        if cntr >= $i0 goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 31, tid_resetBuffer, "avrora.sim.mcu.ReprogrammableCodeSegment", 366, $r1);
+        $r1 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: byte[] buffer>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,int)>($r1, 0, tid_resetBuffer, "avrora.sim.mcu.ReprogrammableCodeSegment", 366, cntr, -1);
+        $r1[cntr] = -1;
+        cntr = cntr + 1;
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    private int bufferSize()
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment this;
+        int $i0, $i1;
+
+        this := @this: avrora.sim.mcu.ReprogrammableCodeSegment;
+        $i0 = this.<avrora.sim.mcu.ReprogrammableCodeSegment: int pagesize>;
+        $i1 = 2 << $i0;
+        return $i1;
+    }
+
+    static avrora.sim.AtmelInterpreter access$000(avrora.sim.mcu.ReprogrammableCodeSegment)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment x0;
+        avrora.sim.AtmelInterpreter $r0;
+
+        x0 := @parameter0: avrora.sim.mcu.ReprogrammableCodeSegment;
+        $r0 = x0.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.AtmelInterpreter interpreter>;
+        return $r0;
+    }
+
+    static avrora.sim.AtmelInterpreter access$100(avrora.sim.mcu.ReprogrammableCodeSegment)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment x0;
+        avrora.sim.AtmelInterpreter $r0;
+
+        x0 := @parameter0: avrora.sim.mcu.ReprogrammableCodeSegment;
+        $r0 = x0.<avrora.sim.mcu.ReprogrammableCodeSegment: avrora.sim.AtmelInterpreter interpreter>;
+        return $r0;
+    }
+
+    static int access$300(avrora.sim.mcu.ReprogrammableCodeSegment)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment x0;
+        int $i0;
+
+        x0 := @parameter0: avrora.sim.mcu.ReprogrammableCodeSegment;
+        $i0 = specialinvoke x0.<avrora.sim.mcu.ReprogrammableCodeSegment: int bufferSize()>();
+        return $i0;
+    }
+
+    static void access$400(avrora.sim.mcu.ReprogrammableCodeSegment, int, avrora.arch.legacy.LegacyInstr)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment x0;
+        int x1;
+        avrora.arch.legacy.LegacyInstr x2;
+
+        x0 := @parameter0: avrora.sim.mcu.ReprogrammableCodeSegment;
+        x1 := @parameter1: int;
+        x2 := @parameter2: avrora.arch.legacy.LegacyInstr;
+        virtualinvoke x0.<avrora.sim.mcu.ReprogrammableCodeSegment: void replaceInstr(int,avrora.arch.legacy.LegacyInstr)>(x1, x2);
+        return;
+    }
+
+    static void access$500(avrora.sim.mcu.ReprogrammableCodeSegment, int, avrora.arch.legacy.LegacyInstr)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment x0;
+        int x1;
+        avrora.arch.legacy.LegacyInstr x2;
+
+        x0 := @parameter0: avrora.sim.mcu.ReprogrammableCodeSegment;
+        x1 := @parameter1: int;
+        x2 := @parameter2: avrora.arch.legacy.LegacyInstr;
+        virtualinvoke x0.<avrora.sim.mcu.ReprogrammableCodeSegment: void replaceInstr(int,avrora.arch.legacy.LegacyInstr)>(x1, x2);
+        return;
+    }
+
+    static byte[] access$600(avrora.sim.mcu.ReprogrammableCodeSegment)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment x0;
+        byte[] $r0;
+
+        x0 := @parameter0: avrora.sim.mcu.ReprogrammableCodeSegment;
+        $r0 = x0.<avrora.sim.mcu.ReprogrammableCodeSegment: byte[] segment_data>;
+        return $r0;
+    }
+
+    static void access$700(avrora.sim.mcu.ReprogrammableCodeSegment, int, avrora.arch.legacy.LegacyInstr)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment x0;
+        int x1;
+        avrora.arch.legacy.LegacyInstr x2;
+
+        x0 := @parameter0: avrora.sim.mcu.ReprogrammableCodeSegment;
+        x1 := @parameter1: int;
+        x2 := @parameter2: avrora.arch.legacy.LegacyInstr;
+        virtualinvoke x0.<avrora.sim.mcu.ReprogrammableCodeSegment: void replaceInstr(int,avrora.arch.legacy.LegacyInstr)>(x1, x2);
+        return;
+    }
+
+    static byte[] access$800(avrora.sim.mcu.ReprogrammableCodeSegment)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment x0;
+        byte[] $r0;
+
+        x0 := @parameter0: avrora.sim.mcu.ReprogrammableCodeSegment;
+        $r0 = x0.<avrora.sim.mcu.ReprogrammableCodeSegment: byte[] segment_data>;
+        return $r0;
+    }
+
+    static void access$900(avrora.sim.mcu.ReprogrammableCodeSegment, int, avrora.arch.legacy.LegacyInstr)
+    {
+        avrora.sim.mcu.ReprogrammableCodeSegment x0;
+        int x1;
+        avrora.arch.legacy.LegacyInstr x2;
+
+        x0 := @parameter0: avrora.sim.mcu.ReprogrammableCodeSegment;
+        x1 := @parameter1: int;
+        x2 := @parameter2: avrora.arch.legacy.LegacyInstr;
+        virtualinvoke x0.<avrora.sim.mcu.ReprogrammableCodeSegment: void replaceInstr(int,avrora.arch.legacy.LegacyInstr)>(x1, x2);
+        return;
+    }
+}

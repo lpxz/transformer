@@ -1,0 +1,99 @@
+final class org.apache.lucene.index.TermInfo extends java.lang.Object
+{
+    int docFreq;
+    long freqPointer;
+    long proxPointer;
+    int skipOffset;
+
+    void <init>()
+    {
+        org.apache.lucene.index.TermInfo this;
+
+        this := @this: org.apache.lucene.index.TermInfo;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.index.TermInfo: int docFreq> = 0;
+        this.<org.apache.lucene.index.TermInfo: long freqPointer> = 0L;
+        this.<org.apache.lucene.index.TermInfo: long proxPointer> = 0L;
+        return;
+    }
+
+    void <init>(int, long, long)
+    {
+        org.apache.lucene.index.TermInfo this;
+        int df;
+        long fp, pp;
+
+        this := @this: org.apache.lucene.index.TermInfo;
+        df := @parameter0: int;
+        fp := @parameter1: long;
+        pp := @parameter2: long;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.index.TermInfo: int docFreq> = 0;
+        this.<org.apache.lucene.index.TermInfo: long freqPointer> = 0L;
+        this.<org.apache.lucene.index.TermInfo: long proxPointer> = 0L;
+        this.<org.apache.lucene.index.TermInfo: int docFreq> = df;
+        this.<org.apache.lucene.index.TermInfo: long freqPointer> = fp;
+        this.<org.apache.lucene.index.TermInfo: long proxPointer> = pp;
+        return;
+    }
+
+    void <init>(org.apache.lucene.index.TermInfo)
+    {
+        org.apache.lucene.index.TermInfo this, ti;
+        int $i0;
+        long $l1;
+
+        this := @this: org.apache.lucene.index.TermInfo;
+        ti := @parameter0: org.apache.lucene.index.TermInfo;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<org.apache.lucene.index.TermInfo: int docFreq> = 0;
+        this.<org.apache.lucene.index.TermInfo: long freqPointer> = 0L;
+        this.<org.apache.lucene.index.TermInfo: long proxPointer> = 0L;
+        $i0 = ti.<org.apache.lucene.index.TermInfo: int docFreq>;
+        this.<org.apache.lucene.index.TermInfo: int docFreq> = $i0;
+        $l1 = ti.<org.apache.lucene.index.TermInfo: long freqPointer>;
+        this.<org.apache.lucene.index.TermInfo: long freqPointer> = $l1;
+        $l1 = ti.<org.apache.lucene.index.TermInfo: long proxPointer>;
+        this.<org.apache.lucene.index.TermInfo: long proxPointer> = $l1;
+        $i0 = ti.<org.apache.lucene.index.TermInfo: int skipOffset>;
+        this.<org.apache.lucene.index.TermInfo: int skipOffset> = $i0;
+        return;
+    }
+
+    final void set(int, long, long, int)
+    {
+        org.apache.lucene.index.TermInfo this;
+        int docFreq, skipOffset;
+        long freqPointer, proxPointer;
+
+        this := @this: org.apache.lucene.index.TermInfo;
+        docFreq := @parameter0: int;
+        freqPointer := @parameter1: long;
+        proxPointer := @parameter2: long;
+        skipOffset := @parameter3: int;
+        this.<org.apache.lucene.index.TermInfo: int docFreq> = docFreq;
+        this.<org.apache.lucene.index.TermInfo: long freqPointer> = freqPointer;
+        this.<org.apache.lucene.index.TermInfo: long proxPointer> = proxPointer;
+        this.<org.apache.lucene.index.TermInfo: int skipOffset> = skipOffset;
+        return;
+    }
+
+    final void set(org.apache.lucene.index.TermInfo)
+    {
+        org.apache.lucene.index.TermInfo this, ti;
+        int $i0;
+        long $l1;
+
+        this := @this: org.apache.lucene.index.TermInfo;
+        ti := @parameter0: org.apache.lucene.index.TermInfo;
+        $i0 = ti.<org.apache.lucene.index.TermInfo: int docFreq>;
+        this.<org.apache.lucene.index.TermInfo: int docFreq> = $i0;
+        $l1 = ti.<org.apache.lucene.index.TermInfo: long freqPointer>;
+        this.<org.apache.lucene.index.TermInfo: long freqPointer> = $l1;
+        $l1 = ti.<org.apache.lucene.index.TermInfo: long proxPointer>;
+        this.<org.apache.lucene.index.TermInfo: long proxPointer> = $l1;
+        $i0 = ti.<org.apache.lucene.index.TermInfo: int skipOffset>;
+        this.<org.apache.lucene.index.TermInfo: int skipOffset> = $i0;
+        return;
+    }
+}

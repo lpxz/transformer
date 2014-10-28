@@ -1,0 +1,381 @@
+public abstract class org.apache.lucene.store.IndexInput extends java.lang.Object implements java.lang.Cloneable
+{
+    private byte[] bytes;
+    private char[] chars;
+    private boolean preUTF8Strings;
+
+    public void <init>()
+    {
+        org.apache.lucene.store.IndexInput this;
+
+        this := @this: org.apache.lucene.store.IndexInput;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        return;
+    }
+
+    public abstract byte readByte() throws java.io.IOException;
+
+    public abstract void readBytes(byte[], int, int) throws java.io.IOException;
+
+    public void readBytes(byte[], int, int, boolean) throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexInput this;
+        byte[] b;
+        int offset, len;
+        boolean useBuffer;
+
+        this := @this: org.apache.lucene.store.IndexInput;
+        b := @parameter0: byte[];
+        offset := @parameter1: int;
+        len := @parameter2: int;
+        useBuffer := @parameter3: boolean;
+        virtualinvoke this.<org.apache.lucene.store.IndexInput: void readBytes(byte[],int,int)>(b, offset, len);
+        return;
+    }
+
+    public int readInt() throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexInput this;
+        byte $b0, $b3;
+        short $s1, $s4;
+        int $i2, $i5;
+
+        this := @this: org.apache.lucene.store.IndexInput;
+        $b0 = virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        $s1 = $b0 & 255;
+        $i2 = $s1 << 24;
+        $b3 = virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        $s4 = $b3 & 255;
+        $i5 = $s4 << 16;
+        $i2 = $i2 | $i5;
+        $b3 = virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        $s4 = $b3 & 255;
+        $i5 = $s4 << 8;
+        $i2 = $i2 | $i5;
+        $b3 = virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        $s4 = $b3 & 255;
+        $i2 = $i2 | $s4;
+        return $i2;
+    }
+
+    public int readVInt() throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexInput this;
+        byte b, $b1;
+        int i, shift, $i2;
+        short $s0;
+
+        this := @this: org.apache.lucene.store.IndexInput;
+        b = virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        i = b & 127;
+        shift = 7;
+
+     label0:
+        $s0 = b & 128;
+        if $s0 == 0 goto label1;
+
+        b = virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        $b1 = b & 127;
+        $i2 = $b1 << shift;
+        i = i | $i2;
+        shift = shift + 7;
+        goto label0;
+
+     label1:
+        return i;
+    }
+
+    public long readLong() throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexInput this;
+        int $i0, $i2;
+        long $l1, $l3;
+
+        this := @this: org.apache.lucene.store.IndexInput;
+        $i0 = virtualinvoke this.<org.apache.lucene.store.IndexInput: int readInt()>();
+        $l1 = (long) $i0;
+        $l1 = $l1 << 32;
+        $i2 = virtualinvoke this.<org.apache.lucene.store.IndexInput: int readInt()>();
+        $l3 = (long) $i2;
+        $l3 = $l3 & 4294967295L;
+        $l1 = $l1 | $l3;
+        return $l1;
+    }
+
+    public long readVLong() throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexInput this;
+        byte b, $b0;
+        long i, $l2;
+        int shift;
+        short $s1;
+
+        this := @this: org.apache.lucene.store.IndexInput;
+        b = virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        $b0 = b & 127;
+        i = (long) $b0;
+        shift = 7;
+
+     label0:
+        $s1 = b & 128;
+        if $s1 == 0 goto label1;
+
+        b = virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        $l2 = (long) b;
+        $l2 = $l2 & 127L;
+        $l2 = $l2 << shift;
+        i = i | $l2;
+        shift = shift + 7;
+        goto label0;
+
+     label1:
+        return i;
+    }
+
+    public void setModifiedUTF8StringsMode()
+    {
+        org.apache.lucene.store.IndexInput this;
+
+        this := @this: org.apache.lucene.store.IndexInput;
+        this.<org.apache.lucene.store.IndexInput: boolean preUTF8Strings> = 1;
+        return;
+    }
+
+    public java.lang.String readString() throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexInput this;
+        int length, $i0;
+        boolean $z0;
+        java.lang.String $r0;
+        byte[] $r1, $r2, $r3;
+        double $d0;
+        long tid_readString;
+        java.lang.Thread thread_readString;
+
+        this := @this: org.apache.lucene.store.IndexInput;
+        thread_readString = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_readString = virtualinvoke thread_readString.<java.lang.Thread: long getId()>();
+        $z0 = this.<org.apache.lucene.store.IndexInput: boolean preUTF8Strings>;
+        if $z0 == 0 goto label0;
+
+        $r0 = specialinvoke this.<org.apache.lucene.store.IndexInput: java.lang.String readModifiedUTF8String()>();
+        return $r0;
+
+     label0:
+        length = virtualinvoke this.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 23, tid_readString, "org.apache.lucene.store.IndexInput", 122, $r1);
+        $r1 = this.<org.apache.lucene.store.IndexInput: byte[] bytes>;
+        if $r1 == null goto label1;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 23, tid_readString, "org.apache.lucene.store.IndexInput", 122, $r2);
+        $r2 = this.<org.apache.lucene.store.IndexInput: byte[] bytes>;
+        $i0 = lengthof $r2;
+        if length <= $i0 goto label2;
+
+     label1:
+        $d0 = (double) length;
+        $d0 = $d0 * 1.25;
+        $i0 = (int) $d0;
+        $r2 = newarray (byte)[$i0];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 23, tid_readString, "org.apache.lucene.store.IndexInput", 123, $r2);
+        this.<org.apache.lucene.store.IndexInput: byte[] bytes> = $r2;
+
+     label2:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 23, tid_readString, "org.apache.lucene.store.IndexInput", 124, $r2);
+        $r2 = this.<org.apache.lucene.store.IndexInput: byte[] bytes>;
+        virtualinvoke this.<org.apache.lucene.store.IndexInput: void readBytes(byte[],int,int)>($r2, 0, length);
+        $r0 = new java.lang.String;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 23, tid_readString, "org.apache.lucene.store.IndexInput", 125, $r3);
+        $r3 = this.<org.apache.lucene.store.IndexInput: byte[] bytes>;
+        specialinvoke $r0.<java.lang.String: void <init>(byte[],int,int,java.lang.String)>($r3, 0, length, "UTF-8");
+        return $r0;
+    }
+
+    private java.lang.String readModifiedUTF8String() throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexInput this;
+        int length, $i0;
+        char[] $r0, $r1, $r3;
+        java.lang.String $r2;
+        long tid_readModifiedUTF8String;
+        java.lang.Thread thread_readModifiedUTF8String;
+
+        this := @this: org.apache.lucene.store.IndexInput;
+        thread_readModifiedUTF8String = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_readModifiedUTF8String = virtualinvoke thread_readModifiedUTF8String.<java.lang.Thread: long getId()>();
+        length = virtualinvoke this.<org.apache.lucene.store.IndexInput: int readVInt()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 24, tid_readModifiedUTF8String, "org.apache.lucene.store.IndexInput", 130, $r0);
+        $r0 = this.<org.apache.lucene.store.IndexInput: char[] chars>;
+        if $r0 == null goto label0;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 24, tid_readModifiedUTF8String, "org.apache.lucene.store.IndexInput", 130, $r1);
+        $r1 = this.<org.apache.lucene.store.IndexInput: char[] chars>;
+        $i0 = lengthof $r1;
+        if length <= $i0 goto label1;
+
+     label0:
+        $r1 = newarray (char)[length];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 24, tid_readModifiedUTF8String, "org.apache.lucene.store.IndexInput", 131, $r1);
+        this.<org.apache.lucene.store.IndexInput: char[] chars> = $r1;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 24, tid_readModifiedUTF8String, "org.apache.lucene.store.IndexInput", 132, $r1);
+        $r1 = this.<org.apache.lucene.store.IndexInput: char[] chars>;
+        virtualinvoke this.<org.apache.lucene.store.IndexInput: void readChars(char[],int,int)>($r1, 0, length);
+        $r2 = new java.lang.String;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 24, tid_readModifiedUTF8String, "org.apache.lucene.store.IndexInput", 133, $r3);
+        $r3 = this.<org.apache.lucene.store.IndexInput: char[] chars>;
+        specialinvoke $r2.<java.lang.String: void <init>(char[],int,int)>($r3, 0, length);
+        return $r2;
+    }
+
+    public void readChars(char[], int, int) throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexInput this;
+        char[] buffer;
+        int start, length, end, i, $i3, $i5;
+        byte b, $b1, $b4;
+        short $s0;
+        char $c2;
+        long tid_readChars;
+        java.lang.Thread thread_readChars;
+
+        this := @this: org.apache.lucene.store.IndexInput;
+        buffer := @parameter0: char[];
+        start := @parameter1: int;
+        length := @parameter2: int;
+        thread_readChars = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_readChars = virtualinvoke thread_readChars.<java.lang.Thread: long getId()>();
+        end = start + length;
+        i = start;
+
+     label0:
+        if i >= end goto label4;
+
+        b = virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        $s0 = b & 128;
+        if $s0 != 0 goto label1;
+
+        $b1 = b & 127;
+        $c2 = (char) $b1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(buffer, 25, tid_readChars, "org.apache.lucene.store.IndexInput", 152, i, $c2);
+        buffer[i] = $c2;
+        goto label3;
+
+     label1:
+        $s0 = b & 224;
+        if $s0 == 224 goto label2;
+
+        $b1 = b & 31;
+        $i3 = $b1 << 6;
+        $b4 = virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        $b4 = $b4 & 63;
+        $i3 = $i3 | $b4;
+        $c2 = (char) $i3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(buffer, 25, tid_readChars, "org.apache.lucene.store.IndexInput", 154, i, $c2);
+        buffer[i] = $c2;
+        goto label3;
+
+     label2:
+        $b1 = b & 15;
+        $i3 = $b1 << 12;
+        $b4 = virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        $b4 = $b4 & 63;
+        $i5 = $b4 << 6;
+        $i3 = $i3 | $i5;
+        $b4 = virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        $b4 = $b4 & 63;
+        $i3 = $i3 | $b4;
+        $c2 = (char) $i3;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,char)>(buffer, 25, tid_readChars, "org.apache.lucene.store.IndexInput", 157, i, $c2);
+        buffer[i] = $c2;
+
+     label3:
+        i = i + 1;
+        goto label0;
+
+     label4:
+        return;
+    }
+
+    public void skipChars(int) throws java.io.IOException
+    {
+        org.apache.lucene.store.IndexInput this;
+        int length, i;
+        byte b;
+        short $s0;
+
+        this := @this: org.apache.lucene.store.IndexInput;
+        length := @parameter0: int;
+        i = 0;
+
+     label0:
+        if i >= length goto label4;
+
+        b = virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        $s0 = b & 128;
+        if $s0 != 0 goto label1;
+
+        goto label3;
+
+     label1:
+        $s0 = b & 224;
+        if $s0 == 224 goto label2;
+
+        virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        goto label3;
+
+     label2:
+        virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+        virtualinvoke this.<org.apache.lucene.store.IndexInput: byte readByte()>();
+
+     label3:
+        i = i + 1;
+        goto label0;
+
+     label4:
+        return;
+    }
+
+    public abstract void close() throws java.io.IOException;
+
+    public abstract long getFilePointer();
+
+    public abstract void seek(long) throws java.io.IOException;
+
+    public abstract long length();
+
+    public java.lang.Object clone()
+    {
+        org.apache.lucene.store.IndexInput this, clone;
+        java.lang.CloneNotSupportedException e, $r1;
+        java.lang.Object $r0;
+        long tid_clone;
+        java.lang.Thread thread_clone;
+
+        this := @this: org.apache.lucene.store.IndexInput;
+        thread_clone = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_clone = virtualinvoke thread_clone.<java.lang.Thread: long getId()>();
+        clone = null;
+
+     label0:
+        $r0 = specialinvoke this.<java.lang.Object: java.lang.Object clone()>();
+        clone = (org.apache.lucene.store.IndexInput) $r0;
+
+     label1:
+        goto label3;
+
+     label2:
+        $r1 := @caughtexception;
+        e = $r1;
+
+     label3:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(clone, 23, tid_clone, "org.apache.lucene.store.IndexInput", 223, null);
+        clone.<org.apache.lucene.store.IndexInput: byte[] bytes> = null;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(clone, 24, tid_clone, "org.apache.lucene.store.IndexInput", 224, null);
+        clone.<org.apache.lucene.store.IndexInput: char[] chars> = null;
+        return clone;
+
+        catch java.lang.CloneNotSupportedException from label0 to label1 with label2;
+    }
+}

@@ -1,0 +1,25 @@
+public class avrora.monitors.LEDMonitor extends avrora.monitors.MonitorFactory
+{
+
+    public void <init>()
+    {
+        avrora.monitors.LEDMonitor this;
+
+        this := @this: avrora.monitors.LEDMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("This monitor records and traces each change to the state of the LEDs of a device.");
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.LEDMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.LEDMonitor$Mon $r0;
+
+        this := @this: avrora.monitors.LEDMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        $r0 = new avrora.monitors.LEDMonitor$Mon;
+        specialinvoke $r0.<avrora.monitors.LEDMonitor$Mon: void <init>(avrora.monitors.LEDMonitor,avrora.sim.Simulator)>(this, s);
+        return $r0;
+    }
+}

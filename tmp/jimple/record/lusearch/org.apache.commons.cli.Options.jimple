@@ -1,0 +1,296 @@
+public class org.apache.commons.cli.Options extends java.lang.Object implements java.io.Serializable
+{
+    private static final long serialVersionUID;
+    private java.util.Map shortOpts;
+    private java.util.Map longOpts;
+    private java.util.List requiredOpts;
+    private java.util.Map optionGroups;
+
+    public void <init>()
+    {
+        org.apache.commons.cli.Options this;
+        java.util.HashMap $r0;
+        java.util.ArrayList $r1;
+
+        this := @this: org.apache.commons.cli.Options;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        this.<org.apache.commons.cli.Options: java.util.Map shortOpts> = $r0;
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        this.<org.apache.commons.cli.Options: java.util.Map longOpts> = $r0;
+        $r1 = new java.util.ArrayList;
+        specialinvoke $r1.<java.util.ArrayList: void <init>()>();
+        this.<org.apache.commons.cli.Options: java.util.List requiredOpts> = $r1;
+        $r0 = new java.util.HashMap;
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+        this.<org.apache.commons.cli.Options: java.util.Map optionGroups> = $r0;
+        return;
+    }
+
+    public org.apache.commons.cli.Options addOptionGroup(org.apache.commons.cli.OptionGroup)
+    {
+        org.apache.commons.cli.Options this;
+        org.apache.commons.cli.OptionGroup group;
+        java.util.Iterator options;
+        org.apache.commons.cli.Option option;
+        java.util.Collection $r0;
+        boolean $z0;
+        java.util.List $r1;
+        java.lang.Object $r2;
+        java.util.Map $r4;
+        java.lang.String $r5;
+
+        this := @this: org.apache.commons.cli.Options;
+        group := @parameter0: org.apache.commons.cli.OptionGroup;
+        $r0 = virtualinvoke group.<org.apache.commons.cli.OptionGroup: java.util.Collection getOptions()>();
+        options = interfaceinvoke $r0.<java.util.Collection: java.util.Iterator iterator()>();
+        $z0 = virtualinvoke group.<org.apache.commons.cli.OptionGroup: boolean isRequired()>();
+        if $z0 == 0 goto label0;
+
+        $r1 = this.<org.apache.commons.cli.Options: java.util.List requiredOpts>;
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>(group);
+
+     label0:
+        $z0 = interfaceinvoke options.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r2 = interfaceinvoke options.<java.util.Iterator: java.lang.Object next()>();
+        option = (org.apache.commons.cli.Option) $r2;
+        virtualinvoke option.<org.apache.commons.cli.Option: void setRequired(boolean)>(0);
+        virtualinvoke this.<org.apache.commons.cli.Options: org.apache.commons.cli.Options addOption(org.apache.commons.cli.Option)>(option);
+        $r4 = this.<org.apache.commons.cli.Options: java.util.Map optionGroups>;
+        $r5 = virtualinvoke option.<org.apache.commons.cli.Option: java.lang.String getKey()>();
+        interfaceinvoke $r4.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r5, group);
+        goto label0;
+
+     label1:
+        return this;
+    }
+
+    java.util.Collection getOptionGroups()
+    {
+        org.apache.commons.cli.Options this;
+        java.util.HashSet $r0;
+        java.util.Map $r1;
+        java.util.Collection $r2;
+
+        this := @this: org.apache.commons.cli.Options;
+        $r0 = new java.util.HashSet;
+        $r1 = this.<org.apache.commons.cli.Options: java.util.Map optionGroups>;
+        $r2 = interfaceinvoke $r1.<java.util.Map: java.util.Collection values()>();
+        specialinvoke $r0.<java.util.HashSet: void <init>(java.util.Collection)>($r2);
+        return $r0;
+    }
+
+    public org.apache.commons.cli.Options addOption(java.lang.String, boolean, java.lang.String)
+    {
+        org.apache.commons.cli.Options this;
+        java.lang.String opt, description;
+        boolean hasArg;
+
+        this := @this: org.apache.commons.cli.Options;
+        opt := @parameter0: java.lang.String;
+        hasArg := @parameter1: boolean;
+        description := @parameter2: java.lang.String;
+        virtualinvoke this.<org.apache.commons.cli.Options: org.apache.commons.cli.Options addOption(java.lang.String,java.lang.String,boolean,java.lang.String)>(opt, null, hasArg, description);
+        return this;
+    }
+
+    public org.apache.commons.cli.Options addOption(java.lang.String, java.lang.String, boolean, java.lang.String)
+    {
+        org.apache.commons.cli.Options this;
+        java.lang.String opt, longOpt, description;
+        boolean hasArg;
+        org.apache.commons.cli.Option $r0;
+
+        this := @this: org.apache.commons.cli.Options;
+        opt := @parameter0: java.lang.String;
+        longOpt := @parameter1: java.lang.String;
+        hasArg := @parameter2: boolean;
+        description := @parameter3: java.lang.String;
+        $r0 = new org.apache.commons.cli.Option;
+        specialinvoke $r0.<org.apache.commons.cli.Option: void <init>(java.lang.String,java.lang.String,boolean,java.lang.String)>(opt, longOpt, hasArg, description);
+        virtualinvoke this.<org.apache.commons.cli.Options: org.apache.commons.cli.Options addOption(org.apache.commons.cli.Option)>($r0);
+        return this;
+    }
+
+    public org.apache.commons.cli.Options addOption(org.apache.commons.cli.Option)
+    {
+        org.apache.commons.cli.Options this;
+        org.apache.commons.cli.Option opt;
+        java.lang.String key, $r1;
+        boolean $z0;
+        java.util.Map $r0;
+        java.util.List $r3, $r4;
+        int $i0;
+
+        this := @this: org.apache.commons.cli.Options;
+        opt := @parameter0: org.apache.commons.cli.Option;
+        key = virtualinvoke opt.<org.apache.commons.cli.Option: java.lang.String getKey()>();
+        $z0 = virtualinvoke opt.<org.apache.commons.cli.Option: boolean hasLongOpt()>();
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<org.apache.commons.cli.Options: java.util.Map longOpts>;
+        $r1 = virtualinvoke opt.<org.apache.commons.cli.Option: java.lang.String getLongOpt()>();
+        interfaceinvoke $r0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r1, opt);
+
+     label0:
+        $z0 = virtualinvoke opt.<org.apache.commons.cli.Option: boolean isRequired()>();
+        if $z0 == 0 goto label2;
+
+        $r3 = this.<org.apache.commons.cli.Options: java.util.List requiredOpts>;
+        $z0 = interfaceinvoke $r3.<java.util.List: boolean contains(java.lang.Object)>(key);
+        if $z0 == 0 goto label1;
+
+        $r3 = this.<org.apache.commons.cli.Options: java.util.List requiredOpts>;
+        $r4 = this.<org.apache.commons.cli.Options: java.util.List requiredOpts>;
+        $i0 = interfaceinvoke $r4.<java.util.List: int indexOf(java.lang.Object)>(key);
+        interfaceinvoke $r3.<java.util.List: java.lang.Object remove(int)>($i0);
+
+     label1:
+        $r3 = this.<org.apache.commons.cli.Options: java.util.List requiredOpts>;
+        interfaceinvoke $r3.<java.util.List: boolean add(java.lang.Object)>(key);
+
+     label2:
+        $r0 = this.<org.apache.commons.cli.Options: java.util.Map shortOpts>;
+        interfaceinvoke $r0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>(key, opt);
+        return this;
+    }
+
+    public java.util.Collection getOptions()
+    {
+        org.apache.commons.cli.Options this;
+        java.util.List $r0;
+        java.util.Collection $r1;
+
+        this := @this: org.apache.commons.cli.Options;
+        $r0 = virtualinvoke this.<org.apache.commons.cli.Options: java.util.List helpOptions()>();
+        $r1 = staticinvoke <java.util.Collections: java.util.Collection unmodifiableCollection(java.util.Collection)>($r0);
+        return $r1;
+    }
+
+    java.util.List helpOptions()
+    {
+        org.apache.commons.cli.Options this;
+        java.util.ArrayList $r0;
+        java.util.Map $r1;
+        java.util.Collection $r2;
+
+        this := @this: org.apache.commons.cli.Options;
+        $r0 = new java.util.ArrayList;
+        $r1 = this.<org.apache.commons.cli.Options: java.util.Map shortOpts>;
+        $r2 = interfaceinvoke $r1.<java.util.Map: java.util.Collection values()>();
+        specialinvoke $r0.<java.util.ArrayList: void <init>(java.util.Collection)>($r2);
+        return $r0;
+    }
+
+    public java.util.List getRequiredOptions()
+    {
+        org.apache.commons.cli.Options this;
+        java.util.List $r0;
+
+        this := @this: org.apache.commons.cli.Options;
+        $r0 = this.<org.apache.commons.cli.Options: java.util.List requiredOpts>;
+        return $r0;
+    }
+
+    public org.apache.commons.cli.Option getOption(java.lang.String)
+    {
+        org.apache.commons.cli.Options this;
+        java.lang.String opt, opt;
+        java.util.Map $r0;
+        boolean $z0;
+        java.lang.Object $r1;
+        org.apache.commons.cli.Option $r2;
+
+        this := @this: org.apache.commons.cli.Options;
+        opt := @parameter0: java.lang.String;
+        opt = staticinvoke <org.apache.commons.cli.Util: java.lang.String stripLeadingHyphens(java.lang.String)>(opt);
+        $r0 = this.<org.apache.commons.cli.Options: java.util.Map shortOpts>;
+        $z0 = interfaceinvoke $r0.<java.util.Map: boolean containsKey(java.lang.Object)>(opt);
+        if $z0 == 0 goto label0;
+
+        $r0 = this.<org.apache.commons.cli.Options: java.util.Map shortOpts>;
+        $r1 = interfaceinvoke $r0.<java.util.Map: java.lang.Object get(java.lang.Object)>(opt);
+        $r2 = (org.apache.commons.cli.Option) $r1;
+        return $r2;
+
+     label0:
+        $r0 = this.<org.apache.commons.cli.Options: java.util.Map longOpts>;
+        $r1 = interfaceinvoke $r0.<java.util.Map: java.lang.Object get(java.lang.Object)>(opt);
+        $r2 = (org.apache.commons.cli.Option) $r1;
+        return $r2;
+    }
+
+    public boolean hasOption(java.lang.String)
+    {
+        org.apache.commons.cli.Options this;
+        java.lang.String opt, opt;
+        java.util.Map $r0;
+        boolean $z0;
+
+        this := @this: org.apache.commons.cli.Options;
+        opt := @parameter0: java.lang.String;
+        opt = staticinvoke <org.apache.commons.cli.Util: java.lang.String stripLeadingHyphens(java.lang.String)>(opt);
+        $r0 = this.<org.apache.commons.cli.Options: java.util.Map shortOpts>;
+        $z0 = interfaceinvoke $r0.<java.util.Map: boolean containsKey(java.lang.Object)>(opt);
+        if $z0 != 0 goto label0;
+
+        $r0 = this.<org.apache.commons.cli.Options: java.util.Map longOpts>;
+        $z0 = interfaceinvoke $r0.<java.util.Map: boolean containsKey(java.lang.Object)>(opt);
+        if $z0 == 0 goto label1;
+
+     label0:
+        $z0 = 1;
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    public org.apache.commons.cli.OptionGroup getOptionGroup(org.apache.commons.cli.Option)
+    {
+        org.apache.commons.cli.Options this;
+        org.apache.commons.cli.Option opt;
+        java.util.Map $r0;
+        java.lang.String $r1;
+        java.lang.Object $r2;
+        org.apache.commons.cli.OptionGroup $r3;
+
+        this := @this: org.apache.commons.cli.Options;
+        opt := @parameter0: org.apache.commons.cli.Option;
+        $r0 = this.<org.apache.commons.cli.Options: java.util.Map optionGroups>;
+        $r1 = virtualinvoke opt.<org.apache.commons.cli.Option: java.lang.String getKey()>();
+        $r2 = interfaceinvoke $r0.<java.util.Map: java.lang.Object get(java.lang.Object)>($r1);
+        $r3 = (org.apache.commons.cli.OptionGroup) $r2;
+        return $r3;
+    }
+
+    public java.lang.String toString()
+    {
+        org.apache.commons.cli.Options this;
+        java.lang.StringBuffer $r0, buf;
+        java.util.Map $r1;
+        java.lang.String $r2, $r3;
+
+        this := @this: org.apache.commons.cli.Options;
+        $r0 = new java.lang.StringBuffer;
+        specialinvoke $r0.<java.lang.StringBuffer: void <init>()>();
+        buf = $r0;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("[ Options: [ short ");
+        $r1 = this.<org.apache.commons.cli.Options: java.util.Map shortOpts>;
+        $r2 = virtualinvoke $r1.<java.lang.Object: java.lang.String toString()>();
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r2);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" ] [ long ");
+        $r1 = this.<org.apache.commons.cli.Options: java.util.Map longOpts>;
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.Object)>($r1);
+        virtualinvoke buf.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" ]");
+        $r3 = virtualinvoke buf.<java.lang.StringBuffer: java.lang.String toString()>();
+        return $r3;
+    }
+}

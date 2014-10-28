@@ -1,0 +1,47 @@
+public class avrora.monitors.SnifferMonitor extends avrora.monitors.MonitorFactory
+{
+    protected cck.util.Option$Bool TRANSMITTED;
+    protected cck.util.Option$Bool RECEIVED;
+    protected cck.util.Option$Bool PRINT;
+    protected cck.util.Option$Str FILENAME;
+    protected java.util.List monitors;
+    protected static int packetsTotal;
+
+    public void <init>()
+    {
+        avrora.monitors.SnifferMonitor this;
+        cck.util.Option$Bool $r0;
+        cck.util.Option$Str $r1;
+        java.util.LinkedList $r2;
+
+        this := @this: avrora.monitors.SnifferMonitor;
+        specialinvoke this.<avrora.monitors.MonitorFactory: void <init>(java.lang.String)>("The \"sniffer\" monitor logs packets in the format accepted by the Daintree Networks\u2019 Sensor Network Analyzer (SNA) software.");
+        $r0 = virtualinvoke this.<avrora.monitors.SnifferMonitor: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("Transmitted", 0, "This option enables/disables the printing of packets as they are transmitted.");
+        this.<avrora.monitors.SnifferMonitor: cck.util.Option$Bool TRANSMITTED> = $r0;
+        $r0 = virtualinvoke this.<avrora.monitors.SnifferMonitor: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("Received", 0, "This option enables/disables the printing of packets as they are received.");
+        this.<avrora.monitors.SnifferMonitor: cck.util.Option$Bool RECEIVED> = $r0;
+        $r0 = virtualinvoke this.<avrora.monitors.SnifferMonitor: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("Print", 0, "This option enables/disables the printing of the output.");
+        this.<avrora.monitors.SnifferMonitor: cck.util.Option$Bool PRINT> = $r0;
+        $r1 = virtualinvoke this.<avrora.monitors.SnifferMonitor: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("FileName", "out.dcf", "This option is used to give a name to the output file. Name of output is out.dcf as default");
+        this.<avrora.monitors.SnifferMonitor: cck.util.Option$Str FILENAME> = $r1;
+        $r2 = new java.util.LinkedList;
+        specialinvoke $r2.<java.util.LinkedList: void <init>()>();
+        this.<avrora.monitors.SnifferMonitor: java.util.List monitors> = $r2;
+        return;
+    }
+
+    public avrora.monitors.Monitor newMonitor(avrora.sim.Simulator)
+    {
+        avrora.monitors.SnifferMonitor this;
+        avrora.sim.Simulator s;
+        avrora.monitors.SnifferMonitor$Mon tmp$548676781;
+        avrora.monitors.Monitor tmp;
+
+        this := @this: avrora.monitors.SnifferMonitor;
+        s := @parameter0: avrora.sim.Simulator;
+        tmp$548676781 = new avrora.monitors.SnifferMonitor$Mon;
+        specialinvoke tmp$548676781.<avrora.monitors.SnifferMonitor$Mon: void <init>(avrora.monitors.SnifferMonitor,avrora.sim.Simulator)>(this, s);
+        tmp = (avrora.monitors.Monitor) tmp$548676781;
+        return tmp;
+    }
+}

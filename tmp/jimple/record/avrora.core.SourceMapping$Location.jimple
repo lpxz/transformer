@@ -1,0 +1,109 @@
+public class avrora.core.SourceMapping$Location extends java.lang.Object
+{
+    public final java.lang.String section;
+    public final java.lang.String name;
+    public final int vma_addr;
+    public final int lma_addr;
+    final avrora.core.SourceMapping this$0;
+
+    void <init>(avrora.core.SourceMapping, java.lang.String, java.lang.String, int, int)
+    {
+        avrora.core.SourceMapping$Location this;
+        avrora.core.SourceMapping l1;
+        java.lang.String s, n, $r0;
+        int vma_addr, lma_addr;
+
+        this := @this: avrora.core.SourceMapping$Location;
+        l1 := @parameter0: avrora.core.SourceMapping;
+        s := @parameter1: java.lang.String;
+        n := @parameter2: java.lang.String;
+        vma_addr := @parameter3: int;
+        lma_addr := @parameter4: int;
+        this.<avrora.core.SourceMapping$Location: avrora.core.SourceMapping this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        this.<avrora.core.SourceMapping$Location: java.lang.String section> = s;
+        if n != null goto label0;
+
+        $r0 = staticinvoke <cck.text.StringUtil: java.lang.String addrToString(int)>(lma_addr);
+        this.<avrora.core.SourceMapping$Location: java.lang.String name> = $r0;
+        goto label1;
+
+     label0:
+        this.<avrora.core.SourceMapping$Location: java.lang.String name> = n;
+
+     label1:
+        this.<avrora.core.SourceMapping$Location: int vma_addr> = vma_addr;
+        this.<avrora.core.SourceMapping$Location: int lma_addr> = lma_addr;
+        return;
+    }
+
+    public int hashCode()
+    {
+        avrora.core.SourceMapping$Location this;
+        java.lang.String $r0;
+        int $i0;
+
+        this := @this: avrora.core.SourceMapping$Location;
+        $r0 = this.<avrora.core.SourceMapping$Location: java.lang.String name>;
+        if $r0 != null goto label0;
+
+        $i0 = this.<avrora.core.SourceMapping$Location: int lma_addr>;
+        return $i0;
+
+     label0:
+        $r0 = this.<avrora.core.SourceMapping$Location: java.lang.String name>;
+        $i0 = virtualinvoke $r0.<java.lang.String: int hashCode()>();
+        return $i0;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        avrora.core.SourceMapping$Location this, l;
+        java.lang.Object o;
+        boolean $z0;
+        java.lang.String $r0, $r1;
+        int $i0, $i1;
+
+        this := @this: avrora.core.SourceMapping$Location;
+        o := @parameter0: java.lang.Object;
+        if o != this goto label0;
+
+        return 1;
+
+     label0:
+        $z0 = o instanceof avrora.core.SourceMapping$Location;
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        l = (avrora.core.SourceMapping$Location) o;
+        $r0 = l.<avrora.core.SourceMapping$Location: java.lang.String name>;
+        $r1 = this.<avrora.core.SourceMapping$Location: java.lang.String name>;
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+        if $z0 == 0 goto label2;
+
+        $i0 = l.<avrora.core.SourceMapping$Location: int lma_addr>;
+        $i1 = this.<avrora.core.SourceMapping$Location: int lma_addr>;
+        if $i0 != $i1 goto label2;
+
+        $z0 = 1;
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        return $z0;
+    }
+
+    public java.lang.String toString()
+    {
+        avrora.core.SourceMapping$Location this;
+        java.lang.String $r0;
+
+        this := @this: avrora.core.SourceMapping$Location;
+        $r0 = this.<avrora.core.SourceMapping$Location: java.lang.String name>;
+        return $r0;
+    }
+}

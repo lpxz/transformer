@@ -1,0 +1,899 @@
+public class avrora.actions.CFGAction extends avrora.actions.Action
+{
+    public static final java.lang.String HELP;
+    public final cck.util.Option$Bool COLOR_PROCEDURES;
+    public final cck.util.Option$Bool GROUP_PROCEDURES;
+    public final cck.util.Option$Bool COLLAPSE_PROCEDURES;
+    public final cck.util.Option$Str OUTPUT;
+    public final cck.util.Option$Str FILE;
+    protected avrora.core.ProcedureMap pmap;
+    protected avrora.core.ControlFlowGraph cfg;
+    protected avrora.core.Program program;
+    private int colorCounter;
+    private final java.util.HashMap BLOCK_COLORS;
+    private static final java.lang.String[] palette;
+    private boolean unknownExists;
+
+    public void <init>()
+    {
+        avrora.actions.CFGAction this;
+        cck.util.Option$Bool $r0;
+        cck.util.Option$Str $r1;
+        java.util.HashMap $r2;
+
+        this := @this: avrora.actions.CFGAction;
+        specialinvoke this.<avrora.actions.Action: void <init>(java.lang.String)>("The \"cfg\" action builds and displays a control flow graph of the given input program. This is useful for better program understanding and for optimizations. The graph can be outputted in a textual format, or the format supported by the \"dot\" graph tool.");
+        $r0 = virtualinvoke this.<avrora.actions.CFGAction: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("color-procedures", 1, "This option is used when outputting in the \"dot\" output format. When this option is true, the control flow graph utility will attempt to discover procedures and color them in the output.");
+        this.<avrora.actions.CFGAction: cck.util.Option$Bool COLOR_PROCEDURES> = $r0;
+        $r0 = virtualinvoke this.<avrora.actions.CFGAction: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("group-procedures", 1, "This option is used when outputting in the \"dot\" output format. When this option is true, the control flow graph utility will attempt to discover procedures and group them as subgraphs in the output.");
+        this.<avrora.actions.CFGAction: cck.util.Option$Bool GROUP_PROCEDURES> = $r0;
+        $r0 = virtualinvoke this.<avrora.actions.CFGAction: cck.util.Option$Bool newOption(java.lang.String,boolean,java.lang.String)>("collapse-procedures", 0, "This option is used when outputting in the \"dot\" output format. When this option is true, the control flow graph utility will attempt to discover procedures within the control flow graph and collapse whole procedures to a single node in the output.");
+        this.<avrora.actions.CFGAction: cck.util.Option$Bool COLLAPSE_PROCEDURES> = $r0;
+        $r1 = virtualinvoke this.<avrora.actions.CFGAction: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("output", "", "This option selects the output format for the control flow graph. When this option is set to \"dot\", then the control flow graph will be outputted in a format suitable for parsing by the dot graph rendering tool.");
+        this.<avrora.actions.CFGAction: cck.util.Option$Str OUTPUT> = $r1;
+        $r1 = virtualinvoke this.<avrora.actions.CFGAction: cck.util.Option$Str newOption(java.lang.String,java.lang.String,java.lang.String)>("file", "", "This option specifies the output file for the result of generating a\"dot\" format control flow graph. When this option is not set, a textual representation of the graph will be printed to the terminal.");
+        this.<avrora.actions.CFGAction: cck.util.Option$Str FILE> = $r1;
+        $r2 = new java.util.HashMap;
+        specialinvoke $r2.<java.util.HashMap: void <init>()>();
+        this.<avrora.actions.CFGAction: java.util.HashMap BLOCK_COLORS> = $r2;
+        return;
+    }
+
+    public void run(java.lang.String[]) throws java.lang.Exception
+    {
+        avrora.actions.CFGAction this;
+        java.lang.String[] args;
+        avrora.core.Program $r0;
+        avrora.core.ControlFlowGraph $r1;
+        java.lang.String $r2, $r4;
+        cck.util.Option$Str $r3;
+        boolean $z0;
+
+        this := @this: avrora.actions.CFGAction;
+        args := @parameter0: java.lang.String[];
+        $r0 = staticinvoke <avrora.Main: avrora.core.Program loadProgram(java.lang.String[])>(args);
+        this.<avrora.actions.CFGAction: avrora.core.Program program> = $r0;
+        $r0 = this.<avrora.actions.CFGAction: avrora.core.Program program>;
+        $r1 = virtualinvoke $r0.<avrora.core.Program: avrora.core.ControlFlowGraph getCFG()>();
+        this.<avrora.actions.CFGAction: avrora.core.ControlFlowGraph cfg> = $r1;
+        $r2 = "dot";
+        $r3 = this.<avrora.actions.CFGAction: cck.util.Option$Str OUTPUT>;
+        $r4 = virtualinvoke $r3.<cck.util.Option$Str: java.lang.String get()>();
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+        if $z0 == 0 goto label0;
+
+        $r1 = this.<avrora.actions.CFGAction: avrora.core.ControlFlowGraph cfg>;
+        specialinvoke this.<avrora.actions.CFGAction: void dumpDotCFG(avrora.core.ControlFlowGraph)>($r1);
+        goto label1;
+
+     label0:
+        $r1 = this.<avrora.actions.CFGAction: avrora.core.ControlFlowGraph cfg>;
+        specialinvoke this.<avrora.actions.CFGAction: void dumpCFG(avrora.core.ControlFlowGraph)>($r1);
+
+     label1:
+        return;
+    }
+
+    private void dumpCFG(avrora.core.ControlFlowGraph)
+    {
+        avrora.actions.CFGAction this;
+        avrora.core.ControlFlowGraph cfg;
+        java.util.Iterator biter, iiter, $r5;
+        avrora.core.SourceMapping sm;
+        avrora.core.ControlFlowGraph$Block block;
+        int address, $i0;
+        java.lang.String s, $r3, $r4;
+        avrora.arch.legacy.LegacyInstr instr;
+        avrora.core.Program $r0;
+        boolean $z0;
+        java.lang.Object $r1;
+        java.lang.StringBuilder $r2;
+
+        this := @this: avrora.actions.CFGAction;
+        cfg := @parameter0: avrora.core.ControlFlowGraph;
+        biter = virtualinvoke cfg.<avrora.core.ControlFlowGraph: java.util.Iterator getSortedBlockIterator()>();
+        $r0 = this.<avrora.actions.CFGAction: avrora.core.Program program>;
+        sm = virtualinvoke $r0.<avrora.core.Program: avrora.core.SourceMapping getSourceMapping()>();
+
+     label0:
+        $z0 = interfaceinvoke biter.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label3;
+
+        $r1 = interfaceinvoke biter.<java.util.Iterator: java.lang.Object next()>();
+        block = (avrora.core.ControlFlowGraph$Block) $r1;
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>("[");
+        address = virtualinvoke block.<avrora.core.ControlFlowGraph$Block: int getAddress()>();
+        s = virtualinvoke sm.<avrora.core.SourceMapping: java.lang.String getName(int)>(address);
+        staticinvoke <cck.text.Terminal: void printBrightCyan(java.lang.String)>(s);
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+        $i0 = virtualinvoke block.<avrora.core.ControlFlowGraph$Block: int getSize()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(93);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>($r3);
+        iiter = virtualinvoke block.<avrora.core.ControlFlowGraph$Block: java.util.Iterator getInstrIterator()>();
+
+     label1:
+        $z0 = interfaceinvoke iiter.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r1 = interfaceinvoke iiter.<java.util.Iterator: java.lang.Object next()>();
+        instr = (avrora.arch.legacy.LegacyInstr) $r1;
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("    ");
+        $r4 = virtualinvoke instr.<avrora.arch.legacy.LegacyInstr: java.lang.String getName()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.text.Terminal: void printBrightBlue(java.lang.String)>($r3);
+        $r2 = new java.lang.StringBuilder;
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+        $r4 = virtualinvoke instr.<avrora.arch.legacy.LegacyInstr: java.lang.String getOperands()>();
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>($r3);
+        goto label1;
+
+     label2:
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>("    [");
+        $r5 = virtualinvoke block.<avrora.core.ControlFlowGraph$Block: java.util.Iterator getEdgeIterator()>();
+        specialinvoke this.<avrora.actions.CFGAction: void dumpEdges(java.util.Iterator)>($r5);
+        staticinvoke <cck.text.Terminal: void println(java.lang.String)>("]");
+        goto label0;
+
+     label3:
+        return;
+    }
+
+    private void dumpDotCFG(avrora.core.ControlFlowGraph) throws java.io.IOException
+    {
+        avrora.actions.CFGAction this;
+        avrora.core.ControlFlowGraph cfg;
+        cck.text.Printer p, $r3;
+        java.io.PrintStream $r0;
+        java.io.FileOutputStream $r1;
+        cck.util.Option$Str $r2, $r4;
+        boolean $z0;
+        java.lang.String $r5;
+        cck.util.Option$Bool $r6;
+        avrora.core.ProcedureMap $r7;
+
+        this := @this: avrora.actions.CFGAction;
+        cfg := @parameter0: avrora.core.ControlFlowGraph;
+        $r2 = this.<avrora.actions.CFGAction: cck.util.Option$Str FILE>;
+        $z0 = virtualinvoke $r2.<cck.util.Option$Str: boolean isBlank()>();
+        if $z0 == 0 goto label0;
+
+        p = <cck.text.Printer: cck.text.Printer STDOUT>;
+        goto label1;
+
+     label0:
+        $r3 = new cck.text.Printer;
+        $r0 = new java.io.PrintStream;
+        $r1 = new java.io.FileOutputStream;
+        $r4 = this.<avrora.actions.CFGAction: cck.util.Option$Str FILE>;
+        $r5 = virtualinvoke $r4.<cck.util.Option$Str: java.lang.String get()>();
+        specialinvoke $r1.<java.io.FileOutputStream: void <init>(java.lang.String)>($r5);
+        specialinvoke $r0.<java.io.PrintStream: void <init>(java.io.OutputStream)>($r1);
+        specialinvoke $r3.<cck.text.Printer: void <init>(java.io.PrintStream)>($r0);
+        p = $r3;
+
+     label1:
+        virtualinvoke p.<cck.text.Printer: void startblock(java.lang.String)>("digraph G");
+        $r6 = this.<avrora.actions.CFGAction: cck.util.Option$Bool COLOR_PROCEDURES>;
+        $z0 = virtualinvoke $r6.<cck.util.Option$Bool: boolean get()>();
+        if $z0 != 0 goto label2;
+
+        $r6 = this.<avrora.actions.CFGAction: cck.util.Option$Bool GROUP_PROCEDURES>;
+        $z0 = virtualinvoke $r6.<cck.util.Option$Bool: boolean get()>();
+        if $z0 != 0 goto label2;
+
+        $r6 = this.<avrora.actions.CFGAction: cck.util.Option$Bool COLLAPSE_PROCEDURES>;
+        $z0 = virtualinvoke $r6.<cck.util.Option$Bool: boolean get()>();
+        if $z0 == 0 goto label3;
+
+     label2:
+        $r7 = virtualinvoke cfg.<avrora.core.ControlFlowGraph: avrora.core.ProcedureMap getProcedureMap()>();
+        this.<avrora.actions.CFGAction: avrora.core.ProcedureMap pmap> = $r7;
+
+     label3:
+        specialinvoke this.<avrora.actions.CFGAction: void dumpDotNodes(cck.text.Printer)>(p);
+        specialinvoke this.<avrora.actions.CFGAction: void dumpDotEdges(cck.text.Printer)>(p);
+        virtualinvoke p.<cck.text.Printer: void endblock()>();
+        return;
+    }
+
+    private void dumpDotNodes(cck.text.Printer)
+    {
+        avrora.actions.CFGAction this;
+        cck.text.Printer p;
+        java.util.Iterator blocks, block_iter, entry_iter;
+        avrora.core.ControlFlowGraph$Block block, entry;
+        int num, $i0;
+        cck.util.Option$Bool $r0;
+        boolean $z0;
+        avrora.core.ControlFlowGraph $r1;
+        java.lang.Object $r2;
+        avrora.core.ProcedureMap $r3;
+        java.util.Collection $r4;
+        java.lang.StringBuilder $r5;
+        java.lang.String $r6;
+
+        this := @this: avrora.actions.CFGAction;
+        p := @parameter0: cck.text.Printer;
+        $r0 = this.<avrora.actions.CFGAction: cck.util.Option$Bool COLOR_PROCEDURES>;
+        $z0 = virtualinvoke $r0.<cck.util.Option$Bool: boolean get()>();
+        if $z0 == 0 goto label0;
+
+        specialinvoke this.<avrora.actions.CFGAction: void assignProcedureColors()>();
+
+     label0:
+        $r0 = this.<avrora.actions.CFGAction: cck.util.Option$Bool COLLAPSE_PROCEDURES>;
+        $z0 = virtualinvoke $r0.<cck.util.Option$Bool: boolean get()>();
+        if $z0 == 0 goto label5;
+
+        $r1 = this.<avrora.actions.CFGAction: avrora.core.ControlFlowGraph cfg>;
+        blocks = virtualinvoke $r1.<avrora.core.ControlFlowGraph: java.util.Iterator getSortedBlockIterator()>();
+
+     label1:
+        $z0 = interfaceinvoke blocks.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label4;
+
+        $r2 = interfaceinvoke blocks.<java.util.Iterator: java.lang.Object next()>();
+        block = (avrora.core.ControlFlowGraph$Block) $r2;
+        $r3 = this.<avrora.actions.CFGAction: avrora.core.ProcedureMap pmap>;
+        entry = virtualinvoke $r3.<avrora.core.ProcedureMap: avrora.core.ControlFlowGraph$Block getProcedureContaining(avrora.core.ControlFlowGraph$Block)>(block);
+        if entry == null goto label2;
+
+        if entry != block goto label3;
+
+     label2:
+        specialinvoke this.<avrora.actions.CFGAction: void printBlock(avrora.core.ControlFlowGraph$Block,cck.text.Printer)>(block, p);
+
+     label3:
+        goto label1;
+
+     label4:
+        goto label15;
+
+     label5:
+        $r0 = this.<avrora.actions.CFGAction: cck.util.Option$Bool GROUP_PROCEDURES>;
+        $z0 = virtualinvoke $r0.<cck.util.Option$Bool: boolean get()>();
+        if $z0 == 0 goto label13;
+
+        $r1 = this.<avrora.actions.CFGAction: avrora.core.ControlFlowGraph cfg>;
+        block_iter = virtualinvoke $r1.<avrora.core.ControlFlowGraph: java.util.Iterator getSortedBlockIterator()>();
+
+     label6:
+        $z0 = interfaceinvoke block_iter.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label8;
+
+        $r2 = interfaceinvoke block_iter.<java.util.Iterator: java.lang.Object next()>();
+        block = (avrora.core.ControlFlowGraph$Block) $r2;
+        $r3 = this.<avrora.actions.CFGAction: avrora.core.ProcedureMap pmap>;
+        entry = virtualinvoke $r3.<avrora.core.ProcedureMap: avrora.core.ControlFlowGraph$Block getProcedureContaining(avrora.core.ControlFlowGraph$Block)>(block);
+        if entry != null goto label7;
+
+        specialinvoke this.<avrora.actions.CFGAction: void printBlock(avrora.core.ControlFlowGraph$Block,cck.text.Printer)>(block, p);
+
+     label7:
+        goto label6;
+
+     label8:
+        num = 0;
+        $r3 = this.<avrora.actions.CFGAction: avrora.core.ProcedureMap pmap>;
+        $r4 = virtualinvoke $r3.<avrora.core.ProcedureMap: java.util.Collection getProcedureEntrypoints()>();
+        entry_iter = interfaceinvoke $r4.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label9:
+        $z0 = interfaceinvoke entry_iter.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label12;
+
+        $r2 = interfaceinvoke entry_iter.<java.util.Iterator: java.lang.Object next()>();
+        entry = (avrora.core.ControlFlowGraph$Block) $r2;
+        $r5 = new java.lang.StringBuilder;
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("subgraph cluster");
+        $i0 = num;
+        num = num + 1;
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke p.<cck.text.Printer: void startblock(java.lang.String)>($r6);
+        $r3 = this.<avrora.actions.CFGAction: avrora.core.ProcedureMap pmap>;
+        $r4 = virtualinvoke $r3.<avrora.core.ProcedureMap: java.util.Collection getProcedureBlocks(avrora.core.ControlFlowGraph$Block)>(entry);
+        blocks = interfaceinvoke $r4.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label10:
+        $z0 = interfaceinvoke blocks.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label11;
+
+        $r2 = interfaceinvoke blocks.<java.util.Iterator: java.lang.Object next()>();
+        block = (avrora.core.ControlFlowGraph$Block) $r2;
+        specialinvoke this.<avrora.actions.CFGAction: void printBlock(avrora.core.ControlFlowGraph$Block,cck.text.Printer)>(block, p);
+        goto label10;
+
+     label11:
+        virtualinvoke p.<cck.text.Printer: void endblock()>();
+        goto label9;
+
+     label12:
+        goto label15;
+
+     label13:
+        $r1 = this.<avrora.actions.CFGAction: avrora.core.ControlFlowGraph cfg>;
+        blocks = virtualinvoke $r1.<avrora.core.ControlFlowGraph: java.util.Iterator getSortedBlockIterator()>();
+
+     label14:
+        $z0 = interfaceinvoke blocks.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label15;
+
+        $r2 = interfaceinvoke blocks.<java.util.Iterator: java.lang.Object next()>();
+        block = (avrora.core.ControlFlowGraph$Block) $r2;
+        specialinvoke this.<avrora.actions.CFGAction: void printBlock(avrora.core.ControlFlowGraph$Block,cck.text.Printer)>(block, p);
+        goto label14;
+
+     label15:
+        return;
+    }
+
+    private void assignProcedureColors()
+    {
+        avrora.actions.CFGAction this;
+        java.util.Iterator blocks;
+        avrora.core.ControlFlowGraph$Block block, entry;
+        java.lang.String c;
+        avrora.core.ControlFlowGraph $r0;
+        boolean $z0;
+        java.lang.Object $r1;
+        avrora.core.ProcedureMap $r2;
+        java.util.HashMap $r3;
+
+        this := @this: avrora.actions.CFGAction;
+        $r0 = this.<avrora.actions.CFGAction: avrora.core.ControlFlowGraph cfg>;
+        blocks = virtualinvoke $r0.<avrora.core.ControlFlowGraph: java.util.Iterator getBlockIterator()>();
+
+     label0:
+        $z0 = interfaceinvoke blocks.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label2;
+
+        $r1 = interfaceinvoke blocks.<java.util.Iterator: java.lang.Object next()>();
+        block = (avrora.core.ControlFlowGraph$Block) $r1;
+        $r2 = this.<avrora.actions.CFGAction: avrora.core.ProcedureMap pmap>;
+        entry = virtualinvoke $r2.<avrora.core.ProcedureMap: avrora.core.ControlFlowGraph$Block getProcedureContaining(avrora.core.ControlFlowGraph$Block)>(block);
+        if entry == null goto label1;
+
+        c = specialinvoke this.<avrora.actions.CFGAction: java.lang.String colorize(avrora.core.ControlFlowGraph$Block)>(entry);
+        $r3 = this.<avrora.actions.CFGAction: java.util.HashMap BLOCK_COLORS>;
+        virtualinvoke $r3.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(block, c);
+
+     label1:
+        goto label0;
+
+     label2:
+        return;
+    }
+
+    private void printBlock(avrora.core.ControlFlowGraph$Block, cck.text.Printer)
+    {
+        avrora.actions.CFGAction this;
+        avrora.core.ControlFlowGraph$Block block;
+        cck.text.Printer p;
+        java.lang.String bName, shape, color, $r1, $r2;
+        java.lang.StringBuilder $r0;
+        boolean $z0;
+
+        this := @this: avrora.actions.CFGAction;
+        block := @parameter0: avrora.core.ControlFlowGraph$Block;
+        p := @parameter1: cck.text.Printer;
+        bName = staticinvoke <avrora.actions.CFGAction: java.lang.String blockName(avrora.core.ControlFlowGraph$Block)>(block);
+        shape = specialinvoke this.<avrora.actions.CFGAction: java.lang.String getShape(avrora.core.ControlFlowGraph$Block)>(block);
+        color = specialinvoke this.<avrora.actions.CFGAction: java.lang.String getColor(avrora.core.ControlFlowGraph$Block)>(block);
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(bName);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" [shape=");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(shape);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke p.<cck.text.Printer: void print(java.lang.String)>($r1);
+        $r2 = "";
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>(color);
+        if $z0 != 0 goto label0;
+
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(",style=filled,fillcolor=");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(color);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke p.<cck.text.Printer: void print(java.lang.String)>($r1);
+
+     label0:
+        virtualinvoke p.<cck.text.Printer: void println(java.lang.String)>("];");
+        return;
+    }
+
+    private void dumpDotEdges(cck.text.Printer)
+    {
+        avrora.actions.CFGAction this;
+        cck.text.Printer p;
+        java.util.Iterator blocks, $r2;
+        avrora.core.ControlFlowGraph$Block block;
+        avrora.core.ControlFlowGraph $r0;
+        boolean $z0;
+        java.lang.Object $r1;
+
+        this := @this: avrora.actions.CFGAction;
+        p := @parameter0: cck.text.Printer;
+        $r0 = this.<avrora.actions.CFGAction: avrora.core.ControlFlowGraph cfg>;
+        blocks = virtualinvoke $r0.<avrora.core.ControlFlowGraph: java.util.Iterator getBlockIterator()>();
+
+     label0:
+        $z0 = interfaceinvoke blocks.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r1 = interfaceinvoke blocks.<java.util.Iterator: java.lang.Object next()>();
+        block = (avrora.core.ControlFlowGraph$Block) $r1;
+        $r2 = virtualinvoke block.<avrora.core.ControlFlowGraph$Block: java.util.Iterator getEdgeIterator()>();
+        specialinvoke this.<avrora.actions.CFGAction: void dumpDotEdges(java.util.Iterator,cck.text.Printer)>($r2, p);
+        goto label0;
+
+     label1:
+        return;
+    }
+
+    private java.lang.String getShape(avrora.core.ControlFlowGraph$Block)
+    {
+        avrora.actions.CFGAction this;
+        avrora.core.ControlFlowGraph$Block block, entry;
+        int addr, $i0;
+        java.util.Iterator edges;
+        avrora.core.ControlFlowGraph$Edge e;
+        java.lang.String type;
+        boolean $z0;
+        java.lang.Object $r0;
+
+        this := @this: avrora.actions.CFGAction;
+        block := @parameter0: avrora.core.ControlFlowGraph$Block;
+        entry = specialinvoke this.<avrora.actions.CFGAction: avrora.core.ControlFlowGraph$Block getEntryOf(avrora.core.ControlFlowGraph$Block)>(block);
+        if entry != block goto label0;
+
+        return "doubleoctagon";
+
+     label0:
+        addr = virtualinvoke block.<avrora.core.ControlFlowGraph$Block: int getAddress()>();
+        $i0 = addr % 4;
+        if $i0 != 0 goto label1;
+
+        if addr >= 140 goto label1;
+
+        return "box";
+
+     label1:
+        edges = virtualinvoke block.<avrora.core.ControlFlowGraph$Block: java.util.Iterator getEdgeIterator()>();
+
+     label2:
+        $z0 = interfaceinvoke edges.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label4;
+
+        $r0 = interfaceinvoke edges.<java.util.Iterator: java.lang.Object next()>();
+        e = (avrora.core.ControlFlowGraph$Edge) $r0;
+        type = virtualinvoke e.<avrora.core.ControlFlowGraph$Edge: java.lang.String getType()>();
+        $z0 = specialinvoke this.<avrora.actions.CFGAction: boolean isReturnEdge(java.lang.String)>(type);
+        if $z0 == 0 goto label3;
+
+        return "hexagon";
+
+     label3:
+        goto label2;
+
+     label4:
+        return "ellipse";
+    }
+
+    private java.lang.String colorize(avrora.core.ControlFlowGraph$Block)
+    {
+        avrora.actions.CFGAction this;
+        avrora.core.ControlFlowGraph$Block b;
+        java.lang.String color;
+        java.util.HashMap $r0;
+        java.lang.Object $r1;
+        java.lang.String[] $r2, $r3;
+        int $i0, $i1;
+        long tid_colorize;
+        java.lang.Thread thread_colorize;
+
+        this := @this: avrora.actions.CFGAction;
+        b := @parameter0: avrora.core.ControlFlowGraph$Block;
+        thread_colorize = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_colorize = virtualinvoke thread_colorize.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.actions.CFGAction: java.util.HashMap BLOCK_COLORS>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(b);
+        color = (java.lang.String) $r1;
+        if color == null goto label0;
+
+        return color;
+
+     label0:
+        $r2 = <avrora.actions.CFGAction: java.lang.String[] palette>;
+        $i0 = this.<avrora.actions.CFGAction: int colorCounter>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r2, 18, tid_colorize, "avrora.actions.CFGAction", 262, $i0, color);
+        color = $r2[$i0];
+        $i0 = this.<avrora.actions.CFGAction: int colorCounter>;
+        $i0 = $i0 + 1;
+        $r3 = <avrora.actions.CFGAction: java.lang.String[] palette>;
+        $i1 = lengthof $r3;
+        $i0 = $i0 % $i1;
+        this.<avrora.actions.CFGAction: int colorCounter> = $i0;
+        $r0 = this.<avrora.actions.CFGAction: java.util.HashMap BLOCK_COLORS>;
+        virtualinvoke $r0.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>(b, color);
+        return color;
+    }
+
+    private java.lang.String getColor(avrora.core.ControlFlowGraph$Block)
+    {
+        avrora.actions.CFGAction this;
+        avrora.core.ControlFlowGraph$Block block;
+        java.lang.String color;
+        java.util.HashMap $r0;
+        java.lang.Object $r1;
+
+        this := @this: avrora.actions.CFGAction;
+        block := @parameter0: avrora.core.ControlFlowGraph$Block;
+        $r0 = this.<avrora.actions.CFGAction: java.util.HashMap BLOCK_COLORS>;
+        $r1 = virtualinvoke $r0.<java.util.HashMap: java.lang.Object get(java.lang.Object)>(block);
+        color = (java.lang.String) $r1;
+        if color != null goto label0;
+
+        return "";
+
+     label0:
+        return color;
+    }
+
+    private boolean isReturnEdge(java.lang.String)
+    {
+        avrora.actions.CFGAction this;
+        java.lang.String type, $r0;
+        boolean $z0;
+
+        this := @this: avrora.actions.CFGAction;
+        type := @parameter0: java.lang.String;
+        if type == null goto label1;
+
+        $r0 = "RET";
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>(type);
+        if $z0 != 0 goto label0;
+
+        $r0 = "RETI";
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>(type);
+        if $z0 == 0 goto label1;
+
+     label0:
+        $z0 = 1;
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        return $z0;
+    }
+
+    private void dumpEdges(java.util.Iterator)
+    {
+        avrora.actions.CFGAction this;
+        java.util.Iterator edges;
+        avrora.core.SourceMapping sm;
+        avrora.core.ControlFlowGraph$Edge e;
+        avrora.core.ControlFlowGraph$Block t, $r5;
+        java.lang.String str, $r2, $r3;
+        avrora.core.Program $r0;
+        boolean $z0;
+        java.lang.Object $r1;
+        java.lang.StringBuilder $r4;
+        int $i0;
+
+        this := @this: avrora.actions.CFGAction;
+        edges := @parameter0: java.util.Iterator;
+        $r0 = this.<avrora.actions.CFGAction: avrora.core.Program program>;
+        sm = virtualinvoke $r0.<avrora.core.Program: avrora.core.SourceMapping getSourceMapping()>();
+
+     label0:
+        $z0 = interfaceinvoke edges.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label6;
+
+        $r1 = interfaceinvoke edges.<java.util.Iterator: java.lang.Object next()>();
+        e = (avrora.core.ControlFlowGraph$Edge) $r1;
+        t = virtualinvoke e.<avrora.core.ControlFlowGraph$Edge: avrora.core.ControlFlowGraph$Block getTarget()>();
+        $r2 = "";
+        $r3 = virtualinvoke e.<avrora.core.ControlFlowGraph$Edge: java.lang.String getType()>();
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+        if $z0 == 0 goto label1;
+
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>("--> ");
+        goto label2;
+
+     label1:
+        $r4 = new java.lang.StringBuilder;
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("--(");
+        $r3 = virtualinvoke e.<avrora.core.ControlFlowGraph$Edge: java.lang.String getType()>();
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")--> ");
+        $r2 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>($r2);
+
+     label2:
+        if t == null goto label3;
+
+        $r5 = virtualinvoke e.<avrora.core.ControlFlowGraph$Edge: avrora.core.ControlFlowGraph$Block getTarget()>();
+        $i0 = virtualinvoke $r5.<avrora.core.ControlFlowGraph$Block: int getAddress()>();
+        str = virtualinvoke sm.<avrora.core.SourceMapping: java.lang.String getName(int)>($i0);
+        staticinvoke <cck.text.Terminal: void printBrightGreen(java.lang.String)>(str);
+        goto label4;
+
+     label3:
+        staticinvoke <cck.text.Terminal: void printRed(java.lang.String)>("UNKNOWN");
+
+     label4:
+        $z0 = interfaceinvoke edges.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label5;
+
+        staticinvoke <cck.text.Terminal: void print(java.lang.String)>(", ");
+
+     label5:
+        goto label0;
+
+     label6:
+        return;
+    }
+
+    private void dumpDotEdges(java.util.Iterator, cck.text.Printer)
+    {
+        avrora.actions.CFGAction this;
+        java.util.Iterator edges;
+        cck.text.Printer p;
+        avrora.core.ControlFlowGraph$Edge e;
+        avrora.core.ControlFlowGraph$Block source, target, es, et, $r2;
+        java.lang.String type, sName;
+        boolean $z0;
+        java.lang.Object $r0;
+        cck.util.Option$Bool $r1;
+
+        this := @this: avrora.actions.CFGAction;
+        edges := @parameter0: java.util.Iterator;
+        p := @parameter1: cck.text.Printer;
+
+     label0:
+        $z0 = interfaceinvoke edges.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label9;
+
+        $r0 = interfaceinvoke edges.<java.util.Iterator: java.lang.Object next()>();
+        e = (avrora.core.ControlFlowGraph$Edge) $r0;
+        source = virtualinvoke e.<avrora.core.ControlFlowGraph$Edge: avrora.core.ControlFlowGraph$Block getSource()>();
+        target = virtualinvoke e.<avrora.core.ControlFlowGraph$Edge: avrora.core.ControlFlowGraph$Block getTarget()>();
+        type = virtualinvoke e.<avrora.core.ControlFlowGraph$Edge: java.lang.String getType()>();
+        $z0 = specialinvoke this.<avrora.actions.CFGAction: boolean isReturnEdge(java.lang.String)>(type);
+        if $z0 == 0 goto label1;
+
+        goto label0;
+
+     label1:
+        $r1 = this.<avrora.actions.CFGAction: cck.util.Option$Bool COLLAPSE_PROCEDURES>;
+        $z0 = virtualinvoke $r1.<cck.util.Option$Bool: boolean get()>();
+        if $z0 == 0 goto label6;
+
+        $r2 = specialinvoke this.<avrora.actions.CFGAction: avrora.core.ControlFlowGraph$Block getEntryOf(avrora.core.ControlFlowGraph$Block)>(source);
+        es = $r2;
+        if $r2 != null goto label2;
+
+        $r2 = source;
+        goto label3;
+
+     label2:
+        $r2 = es;
+
+     label3:
+        source = $r2;
+        $r2 = specialinvoke this.<avrora.actions.CFGAction: avrora.core.ControlFlowGraph$Block getEntryOf(avrora.core.ControlFlowGraph$Block)>(target);
+        et = $r2;
+        if $r2 != null goto label4;
+
+        $r2 = target;
+        goto label5;
+
+     label4:
+        $r2 = et;
+
+     label5:
+        target = $r2;
+        if es != et goto label6;
+
+        if et == null goto label6;
+
+        goto label0;
+
+     label6:
+        sName = staticinvoke <avrora.actions.CFGAction: java.lang.String blockName(avrora.core.ControlFlowGraph$Block)>(source);
+        if target != null goto label7;
+
+        specialinvoke this.<avrora.actions.CFGAction: void emitIndirectEdge(avrora.core.ControlFlowGraph$Block,java.lang.String,cck.text.Printer,java.lang.String)>(source, sName, p, type);
+        goto label8;
+
+     label7:
+        specialinvoke this.<avrora.actions.CFGAction: void emitEdge(avrora.core.ControlFlowGraph$Block,cck.text.Printer,java.lang.String,java.lang.String,boolean)>(target, p, sName, type, 1);
+
+     label8:
+        goto label0;
+
+     label9:
+        return;
+    }
+
+    private void emitIndirectEdge(avrora.core.ControlFlowGraph$Block, java.lang.String, cck.text.Printer, java.lang.String)
+    {
+        avrora.actions.CFGAction this;
+        avrora.core.ControlFlowGraph$Block source, target;
+        java.lang.String sName, type, $r2;
+        cck.text.Printer p;
+        java.util.List l;
+        java.util.Iterator i;
+        int taddr, $i0;
+        avrora.core.Program $r0;
+        boolean $z0;
+        java.lang.StringBuilder $r1;
+        java.lang.Object $r3;
+        java.lang.Integer $r4;
+        avrora.core.ControlFlowGraph $r5;
+
+        this := @this: avrora.actions.CFGAction;
+        source := @parameter0: avrora.core.ControlFlowGraph$Block;
+        sName := @parameter1: java.lang.String;
+        p := @parameter2: cck.text.Printer;
+        type := @parameter3: java.lang.String;
+        $r0 = this.<avrora.actions.CFGAction: avrora.core.Program program>;
+        $i0 = virtualinvoke source.<avrora.core.ControlFlowGraph$Block: int getLastAddress()>();
+        l = virtualinvoke $r0.<avrora.core.Program: java.util.List getIndirectEdges(int)>($i0);
+        if l != null goto label1;
+
+        $z0 = this.<avrora.actions.CFGAction: boolean unknownExists>;
+        if $z0 != 0 goto label0;
+
+        virtualinvoke p.<cck.text.Printer: void println(java.lang.String)>("UNKNOWN [shape=Msquare];");
+        this.<avrora.actions.CFGAction: boolean unknownExists> = 1;
+
+     label0:
+        $r1 = new java.lang.StringBuilder;
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(sName);
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" -> UNKNOWN [style=dotted];");
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke p.<cck.text.Printer: void println(java.lang.String)>($r2);
+        goto label3;
+
+     label1:
+        i = interfaceinvoke l.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke i.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label3;
+
+        $r3 = interfaceinvoke i.<java.util.Iterator: java.lang.Object next()>();
+        $r4 = (java.lang.Integer) $r3;
+        taddr = virtualinvoke $r4.<java.lang.Integer: int intValue()>();
+        $r5 = this.<avrora.actions.CFGAction: avrora.core.ControlFlowGraph cfg>;
+        target = virtualinvoke $r5.<avrora.core.ControlFlowGraph: avrora.core.ControlFlowGraph$Block getBlockStartingAt(int)>(taddr);
+        specialinvoke this.<avrora.actions.CFGAction: void emitEdge(avrora.core.ControlFlowGraph$Block,cck.text.Printer,java.lang.String,java.lang.String,boolean)>(target, p, sName, type, 0);
+        goto label2;
+
+     label3:
+        return;
+    }
+
+    private void emitEdge(avrora.core.ControlFlowGraph$Block, cck.text.Printer, java.lang.String, java.lang.String, boolean)
+    {
+        avrora.actions.CFGAction this;
+        avrora.core.ControlFlowGraph$Block target;
+        cck.text.Printer p;
+        java.lang.String sName, t, tName, $r1, $r2;
+        boolean direct, $z0;
+        java.lang.StringBuilder $r0;
+
+        this := @this: avrora.actions.CFGAction;
+        target := @parameter0: avrora.core.ControlFlowGraph$Block;
+        p := @parameter1: cck.text.Printer;
+        sName := @parameter2: java.lang.String;
+        t := @parameter3: java.lang.String;
+        direct := @parameter4: boolean;
+        tName = staticinvoke <avrora.actions.CFGAction: java.lang.String blockName(avrora.core.ControlFlowGraph$Block)>(target);
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(sName);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" -> ");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(tName);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        virtualinvoke p.<cck.text.Printer: void print(java.lang.String)>($r1);
+        virtualinvoke p.<cck.text.Printer: void print(java.lang.String)>(" [headport=n,tailport=s");
+        if direct != 0 goto label0;
+
+        virtualinvoke p.<cck.text.Printer: void print(java.lang.String)>(",style=dotted");
+
+     label0:
+        $r2 = "CALL";
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>(t);
+        if $z0 == 0 goto label1;
+
+        virtualinvoke p.<cck.text.Printer: void print(java.lang.String)>(",color=red");
+
+     label1:
+        virtualinvoke p.<cck.text.Printer: void println(java.lang.String)>("];");
+        return;
+    }
+
+    private avrora.core.ControlFlowGraph$Block getEntryOf(avrora.core.ControlFlowGraph$Block)
+    {
+        avrora.actions.CFGAction this;
+        avrora.core.ControlFlowGraph$Block b, $r1;
+        avrora.core.ProcedureMap $r0;
+
+        this := @this: avrora.actions.CFGAction;
+        b := @parameter0: avrora.core.ControlFlowGraph$Block;
+        $r0 = this.<avrora.actions.CFGAction: avrora.core.ProcedureMap pmap>;
+        if $r0 != null goto label0;
+
+        return null;
+
+     label0:
+        $r0 = this.<avrora.actions.CFGAction: avrora.core.ProcedureMap pmap>;
+        $r1 = virtualinvoke $r0.<avrora.core.ProcedureMap: avrora.core.ControlFlowGraph$Block getProcedureContaining(avrora.core.ControlFlowGraph$Block)>(b);
+        return $r1;
+    }
+
+    public static java.lang.String blockName(avrora.core.ControlFlowGraph$Block)
+    {
+        avrora.core.ControlFlowGraph$Block block;
+        java.lang.String start, end, $r1;
+        int $i0, $i1;
+        java.lang.StringBuilder $r0;
+
+        block := @parameter0: avrora.core.ControlFlowGraph$Block;
+        $i0 = virtualinvoke block.<avrora.core.ControlFlowGraph$Block: int getAddress()>();
+        start = staticinvoke <cck.text.StringUtil: java.lang.String addrToString(int)>($i0);
+        $i0 = virtualinvoke block.<avrora.core.ControlFlowGraph$Block: int getAddress()>();
+        $i1 = virtualinvoke block.<avrora.core.ControlFlowGraph$Block: int getSize()>();
+        $i0 = $i0 + $i1;
+        end = staticinvoke <cck.text.StringUtil: java.lang.String addrToString(int)>($i0);
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(start);
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" - \\n");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(end);
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        $r1 = staticinvoke <cck.text.StringUtil: java.lang.String quote(java.lang.Object)>($r1);
+        return $r1;
+    }
+
+    static void <clinit>()
+    {
+        java.lang.String[] $r0;
+
+        $r0 = newarray (java.lang.String)[13];
+        $r0[0] = "aquamarine";
+        $r0[1] = "blue2";
+        $r0[2] = "brown1";
+        $r0[3] = "cadetblue1";
+        $r0[4] = "chartreuse1";
+        $r0[5] = "cyan4";
+        $r0[6] = "darkgoldenrod1";
+        $r0[7] = "darkorchid3";
+        $r0[8] = "darkslateblue";
+        $r0[9] = "deeppink2";
+        $r0[10] = "yellow";
+        $r0[11] = "seagreen3";
+        $r0[12] = "orangered1";
+        <avrora.actions.CFGAction: java.lang.String[] palette> = $r0;
+        return;
+    }
+}

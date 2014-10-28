@@ -1,0 +1,71 @@
+public class avrora.sim.types.SingleSimulation extends avrora.sim.Simulation
+{
+    protected static final java.lang.String HELP;
+
+    public void <init>()
+    {
+        avrora.sim.types.SingleSimulation this;
+        java.lang.String $r1;
+        cck.util.Options $r2;
+        cck.util.Option$List $r3;
+        avrora.sim.clock.Synchronizer$Single tmp$554558672;
+        avrora.sim.clock.Synchronizer tmp;
+
+        this := @this: avrora.sim.types.SingleSimulation;
+        tmp$554558672 = new avrora.sim.clock.Synchronizer$Single;
+        specialinvoke tmp$554558672.<avrora.sim.clock.Synchronizer$Single: void <init>()>();
+        tmp = (avrora.sim.clock.Synchronizer) tmp$554558672;
+        specialinvoke this.<avrora.sim.Simulation: void <init>(java.lang.String,java.lang.String,avrora.sim.clock.Synchronizer)>("single", "The \"single\" simulation type corresponds to a standard simulation of a single microcontroller with a single program.", tmp);
+        $r1 = this.<avrora.sim.types.SingleSimulation: java.lang.String help>;
+        virtualinvoke this.<avrora.sim.types.SingleSimulation: void addSection(java.lang.String,java.lang.String)>("SINGLE NODE SIMULATION OVERVIEW", $r1);
+        $r2 = this.<avrora.sim.types.SingleSimulation: cck.util.Options options>;
+        virtualinvoke this.<avrora.sim.types.SingleSimulation: void addOptionSection(java.lang.String,cck.util.Options)>("The most basic type of simulation, the single node simulation, is designed to simulate a single microcontroller running a single program. Help for specific options relating to simulating a single node is below.", $r2);
+        $r3 = this.<avrora.sim.types.SingleSimulation: cck.util.Option$List MONITORS>;
+        virtualinvoke $r3.<cck.util.Option$List: void setNewDefault(java.lang.String)>("leds");
+        return;
+    }
+
+    public void process(cck.util.Options, java.lang.String[]) throws java.lang.Exception
+    {
+        avrora.sim.types.SingleSimulation this;
+        cck.util.Options o, $r0;
+        java.lang.String[] args;
+        avrora.core.LoadableProgram p, $r1;
+        avrora.sim.platform.PlatformFactory pf;
+        int $i0;
+        java.lang.String $r2;
+        long tid_process;
+        java.lang.Thread thread_process;
+
+        this := @this: avrora.sim.types.SingleSimulation;
+        o := @parameter0: cck.util.Options;
+        args := @parameter1: java.lang.String[];
+        thread_process = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_process = virtualinvoke thread_process.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.types.SingleSimulation: cck.util.Options options>;
+        virtualinvoke $r0.<cck.util.Options: void process(cck.util.Options)>(o);
+        virtualinvoke this.<avrora.sim.types.SingleSimulation: void processMonitorList()>();
+        $i0 = lengthof args;
+        if $i0 != 0 goto label0;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String,java.lang.String)>("Simulation error", "No program specified");
+
+     label0:
+        $i0 = lengthof args;
+        if $i0 <= 1 goto label1;
+
+        staticinvoke <cck.util.Util: void userError(java.lang.String,java.lang.String)>("Simulation error", "Single node simulation accepts only one program");
+
+     label1:
+        staticinvoke <avrora.Main: void checkFilesExist(java.lang.String[])>(args);
+        $r1 = new avrora.core.LoadableProgram;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>(args, 18, tid_process, "avrora.sim.types.SingleSimulation", 83, 0, $r2);
+        $r2 = args[0];
+        specialinvoke $r1.<avrora.core.LoadableProgram: void <init>(java.lang.String)>($r2);
+        p = $r1;
+        virtualinvoke p.<avrora.core.LoadableProgram: void load()>();
+        pf = virtualinvoke this.<avrora.sim.types.SingleSimulation: avrora.sim.platform.PlatformFactory getPlatform()>();
+        virtualinvoke this.<avrora.sim.types.SingleSimulation: avrora.sim.Simulation$Node createNode(avrora.sim.platform.PlatformFactory,avrora.core.LoadableProgram)>(pf, p);
+        return;
+    }
+}

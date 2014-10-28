@@ -1,0 +1,683 @@
+class org.apache.lucene.search.BooleanScorer2 extends org.apache.lucene.search.Scorer
+{
+    private java.util.ArrayList requiredScorers;
+    private java.util.ArrayList optionalScorers;
+    private java.util.ArrayList prohibitedScorers;
+    private final org.apache.lucene.search.BooleanScorer2$Coordinator coordinator;
+    private org.apache.lucene.search.Scorer countingSumScorer;
+    private final int minNrShouldMatch;
+    private boolean allowDocsOutOfOrder;
+    private static org.apache.lucene.search.Similarity defaultSimilarity;
+
+    public void <init>(org.apache.lucene.search.Similarity, int, boolean)
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        org.apache.lucene.search.Similarity similarity;
+        int minNrShouldMatch;
+        boolean allowDocsOutOfOrder;
+        java.util.ArrayList $r0;
+        java.lang.IllegalArgumentException $r1;
+        org.apache.lucene.search.BooleanScorer2$Coordinator $r2;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        similarity := @parameter0: org.apache.lucene.search.Similarity;
+        minNrShouldMatch := @parameter1: int;
+        allowDocsOutOfOrder := @parameter2: boolean;
+        specialinvoke this.<org.apache.lucene.search.Scorer: void <init>(org.apache.lucene.search.Similarity)>(similarity);
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+        this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList requiredScorers> = $r0;
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+        this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers> = $r0;
+        $r0 = new java.util.ArrayList;
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+        this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList prohibitedScorers> = $r0;
+        this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingSumScorer> = null;
+        if minNrShouldMatch >= 0 goto label0;
+
+        $r1 = new java.lang.IllegalArgumentException;
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Minimum number of optional scorers should not be negative");
+        throw $r1;
+
+     label0:
+        $r2 = new org.apache.lucene.search.BooleanScorer2$Coordinator;
+        specialinvoke $r2.<org.apache.lucene.search.BooleanScorer2$Coordinator: void <init>(org.apache.lucene.search.BooleanScorer2,org.apache.lucene.search.BooleanScorer2$1)>(this, null);
+        this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.BooleanScorer2$Coordinator coordinator> = $r2;
+        this.<org.apache.lucene.search.BooleanScorer2: int minNrShouldMatch> = minNrShouldMatch;
+        this.<org.apache.lucene.search.BooleanScorer2: boolean allowDocsOutOfOrder> = allowDocsOutOfOrder;
+        return;
+    }
+
+    public void <init>(org.apache.lucene.search.Similarity, int)
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        org.apache.lucene.search.Similarity similarity;
+        int minNrShouldMatch;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        similarity := @parameter0: org.apache.lucene.search.Similarity;
+        minNrShouldMatch := @parameter1: int;
+        specialinvoke this.<org.apache.lucene.search.BooleanScorer2: void <init>(org.apache.lucene.search.Similarity,int,boolean)>(similarity, minNrShouldMatch, 0);
+        return;
+    }
+
+    public void <init>(org.apache.lucene.search.Similarity)
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        org.apache.lucene.search.Similarity similarity;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        similarity := @parameter0: org.apache.lucene.search.Similarity;
+        specialinvoke this.<org.apache.lucene.search.BooleanScorer2: void <init>(org.apache.lucene.search.Similarity,int,boolean)>(similarity, 0, 0);
+        return;
+    }
+
+    public void add(org.apache.lucene.search.Scorer, boolean, boolean)
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        org.apache.lucene.search.Scorer scorer;
+        boolean required, prohibited;
+        org.apache.lucene.search.BooleanScorer2$Coordinator $r0;
+        int $i0;
+        java.lang.IllegalArgumentException $r1;
+        java.util.ArrayList $r2;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        scorer := @parameter0: org.apache.lucene.search.Scorer;
+        required := @parameter1: boolean;
+        prohibited := @parameter2: boolean;
+        if prohibited != 0 goto label0;
+
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.BooleanScorer2$Coordinator coordinator>;
+        $i0 = $r0.<org.apache.lucene.search.BooleanScorer2$Coordinator: int maxCoord>;
+        $i0 = $i0 + 1;
+        $r0.<org.apache.lucene.search.BooleanScorer2$Coordinator: int maxCoord> = $i0;
+
+     label0:
+        if required == 0 goto label2;
+
+        if prohibited == 0 goto label1;
+
+        $r1 = new java.lang.IllegalArgumentException;
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("scorer cannot be required and prohibited");
+        throw $r1;
+
+     label1:
+        $r2 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList requiredScorers>;
+        virtualinvoke $r2.<java.util.ArrayList: boolean add(java.lang.Object)>(scorer);
+        goto label4;
+
+     label2:
+        if prohibited == 0 goto label3;
+
+        $r2 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList prohibitedScorers>;
+        virtualinvoke $r2.<java.util.ArrayList: boolean add(java.lang.Object)>(scorer);
+        goto label4;
+
+     label3:
+        $r2 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        virtualinvoke $r2.<java.util.ArrayList: boolean add(java.lang.Object)>(scorer);
+
+     label4:
+        return;
+    }
+
+    private void initCountingSumScorer() throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        org.apache.lucene.search.BooleanScorer2$Coordinator $r0;
+        org.apache.lucene.search.Scorer $r1;
+        long tid_initCountingSumScorer;
+        java.lang.Thread thread_initCountingSumScorer;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        thread_initCountingSumScorer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_initCountingSumScorer = virtualinvoke thread_initCountingSumScorer.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.BooleanScorer2$Coordinator coordinator>;
+        virtualinvoke $r0.<org.apache.lucene.search.BooleanScorer2$Coordinator: void init()>();
+        $r1 = specialinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer makeCountingSumScorer()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 82, tid_initCountingSumScorer, "org.apache.lucene.search.BooleanScorer2", 144, $r1);
+        this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingSumScorer> = $r1;
+        return;
+    }
+
+    private org.apache.lucene.search.Scorer countingDisjunctionSumScorer(java.util.List, int)
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        java.util.List scorers;
+        int minNrShouldMatch;
+        org.apache.lucene.search.BooleanScorer2$1 $r0;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        scorers := @parameter0: java.util.List;
+        minNrShouldMatch := @parameter1: int;
+        $r0 = new org.apache.lucene.search.BooleanScorer2$1;
+        specialinvoke $r0.<org.apache.lucene.search.BooleanScorer2$1: void <init>(org.apache.lucene.search.BooleanScorer2,java.util.List,int)>(this, scorers, minNrShouldMatch);
+        return $r0;
+    }
+
+    private org.apache.lucene.search.Scorer countingConjunctionSumScorer(java.util.List) throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        java.util.List requiredScorers;
+        int requiredNrMatchers;
+        org.apache.lucene.search.Similarity $r0;
+        org.apache.lucene.search.BooleanScorer2$2 $r1;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        requiredScorers := @parameter0: java.util.List;
+        requiredNrMatchers = interfaceinvoke requiredScorers.<java.util.List: int size()>();
+        $r1 = new org.apache.lucene.search.BooleanScorer2$2;
+        $r0 = <org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Similarity defaultSimilarity>;
+        specialinvoke $r1.<org.apache.lucene.search.BooleanScorer2$2: void <init>(org.apache.lucene.search.BooleanScorer2,org.apache.lucene.search.Similarity,java.util.Collection,int)>(this, $r0, requiredScorers, requiredNrMatchers);
+        return $r1;
+    }
+
+    private org.apache.lucene.search.Scorer dualConjunctionSumScorer(org.apache.lucene.search.Scorer, org.apache.lucene.search.Scorer) throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        org.apache.lucene.search.Scorer req1, req2;
+        org.apache.lucene.search.ConjunctionScorer $r0;
+        org.apache.lucene.search.Similarity $r1;
+        org.apache.lucene.search.Scorer[] $r2;
+        long tid_dualConjunctionSumScorer;
+        java.lang.Thread thread_dualConjunctionSumScorer;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        req1 := @parameter0: org.apache.lucene.search.Scorer;
+        req2 := @parameter1: org.apache.lucene.search.Scorer;
+        thread_dualConjunctionSumScorer = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_dualConjunctionSumScorer = virtualinvoke thread_dualConjunctionSumScorer.<java.lang.Thread: long getId()>();
+        $r0 = new org.apache.lucene.search.ConjunctionScorer;
+        $r1 = <org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Similarity defaultSimilarity>;
+        $r2 = newarray (org.apache.lucene.search.Scorer)[2];
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r2, 83, tid_dualConjunctionSumScorer, "org.apache.lucene.search.BooleanScorer2", 216, 0, req1);
+        $r2[0] = req1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeArrayElem(java.lang.Object,int,long,java.lang.String,int,int,java.lang.Object)>($r2, 83, tid_dualConjunctionSumScorer, "org.apache.lucene.search.BooleanScorer2", 216, 1, req2);
+        $r2[1] = req2;
+        specialinvoke $r0.<org.apache.lucene.search.ConjunctionScorer: void <init>(org.apache.lucene.search.Similarity,org.apache.lucene.search.Scorer[])>($r1, $r2);
+        return $r0;
+    }
+
+    private org.apache.lucene.search.Scorer makeCountingSumScorer() throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        java.util.ArrayList $r0;
+        int $i0;
+        org.apache.lucene.search.Scorer $r1;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList requiredScorers>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        if $i0 != 0 goto label0;
+
+        $r1 = specialinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer makeCountingSumScorerNoReq()>();
+        goto label1;
+
+     label0:
+        $r1 = specialinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer makeCountingSumScorerSomeReq()>();
+
+     label1:
+        return $r1;
+    }
+
+    private org.apache.lucene.search.Scorer makeCountingSumScorerNoReq() throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        int nrOptRequired, $i0;
+        org.apache.lucene.search.Scorer requiredCountingSumScorer, $r3, $r6;
+        java.util.ArrayList $r0, $r2, $r4;
+        java.lang.Object $r5;
+        org.apache.lucene.search.NonMatchingScorer tmp$554514453, tmp$554514516;
+        org.apache.lucene.search.BooleanScorer2$SingleMatchScorer tmp$554514579;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        if $i0 != 0 goto label0;
+
+        tmp$554514453 = new org.apache.lucene.search.NonMatchingScorer;
+        specialinvoke tmp$554514453.<org.apache.lucene.search.NonMatchingScorer: void <init>()>();
+        return tmp$554514453;
+
+     label0:
+        $i0 = this.<org.apache.lucene.search.BooleanScorer2: int minNrShouldMatch>;
+        if $i0 >= 1 goto label1;
+
+        $i0 = 1;
+        goto label2;
+
+     label1:
+        $i0 = this.<org.apache.lucene.search.BooleanScorer2: int minNrShouldMatch>;
+
+     label2:
+        nrOptRequired = $i0;
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        if $i0 >= nrOptRequired goto label3;
+
+        tmp$554514516 = new org.apache.lucene.search.NonMatchingScorer;
+        specialinvoke tmp$554514516.<org.apache.lucene.search.NonMatchingScorer: void <init>()>();
+        return tmp$554514516;
+
+     label3:
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        if $i0 <= nrOptRequired goto label4;
+
+        $r2 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        $r3 = specialinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingDisjunctionSumScorer(java.util.List,int)>($r2, nrOptRequired);
+        goto label6;
+
+     label4:
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        if $i0 != 1 goto label5;
+
+        tmp$554514579 = new org.apache.lucene.search.BooleanScorer2$SingleMatchScorer;
+        $r3 = tmp$554514579;
+        $r4 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>(0);
+        $r6 = (org.apache.lucene.search.Scorer) $r5;
+        specialinvoke tmp$554514579.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: void <init>(org.apache.lucene.search.BooleanScorer2,org.apache.lucene.search.Scorer)>(this, $r6);
+        goto label6;
+
+     label5:
+        $r2 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        $r3 = specialinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingConjunctionSumScorer(java.util.List)>($r2);
+
+     label6:
+        requiredCountingSumScorer = $r3;
+        $r3 = specialinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer addProhibitedScorers(org.apache.lucene.search.Scorer)>(requiredCountingSumScorer);
+        return $r3;
+    }
+
+    private org.apache.lucene.search.Scorer makeCountingSumScorerSomeReq() throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        java.util.ArrayList allReq, $r0, $r2, $r3, $r6, $r9, $r13, tmp$555116316;
+        org.apache.lucene.search.Scorer requiredCountingSumScorer, $r4, $r5, $r8, $r12, $r15;
+        int $i0, $i1, $i2, $i3;
+        java.lang.Object $r7, $r14;
+        org.apache.lucene.search.NonMatchingScorer tmp$555116253;
+        org.apache.lucene.search.BooleanScorer2$SingleMatchScorer tmp$555116379, tmp$555116442;
+        org.apache.lucene.search.ReqOptSumScorer tmp$555116507;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        $i1 = this.<org.apache.lucene.search.BooleanScorer2: int minNrShouldMatch>;
+        if $i0 >= $i1 goto label0;
+
+        tmp$555116253 = new org.apache.lucene.search.NonMatchingScorer;
+        specialinvoke tmp$555116253.<org.apache.lucene.search.NonMatchingScorer: void <init>()>();
+        return tmp$555116253;
+
+     label0:
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        $i1 = this.<org.apache.lucene.search.BooleanScorer2: int minNrShouldMatch>;
+        if $i0 != $i1 goto label1;
+
+        tmp$555116316 = new java.util.ArrayList;
+        $r2 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList requiredScorers>;
+        specialinvoke tmp$555116316.<java.util.ArrayList: void <init>(java.util.Collection)>($r2);
+        allReq = tmp$555116316;
+        $r3 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        virtualinvoke allReq.<java.util.ArrayList: boolean addAll(java.util.Collection)>($r3);
+        $r4 = specialinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingConjunctionSumScorer(java.util.List)>(allReq);
+        $r5 = specialinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer addProhibitedScorers(org.apache.lucene.search.Scorer)>($r4);
+        return $r5;
+
+     label1:
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList requiredScorers>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        if $i0 != 1 goto label2;
+
+        tmp$555116379 = new org.apache.lucene.search.BooleanScorer2$SingleMatchScorer;
+        $r5 = tmp$555116379;
+        $r6 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList requiredScorers>;
+        $r7 = virtualinvoke $r6.<java.util.ArrayList: java.lang.Object get(int)>(0);
+        $r8 = (org.apache.lucene.search.Scorer) $r7;
+        specialinvoke tmp$555116379.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: void <init>(org.apache.lucene.search.BooleanScorer2,org.apache.lucene.search.Scorer)>(this, $r8);
+        goto label3;
+
+     label2:
+        $r3 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList requiredScorers>;
+        $r5 = specialinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingConjunctionSumScorer(java.util.List)>($r3);
+
+     label3:
+        requiredCountingSumScorer = $r5;
+        $i0 = this.<org.apache.lucene.search.BooleanScorer2: int minNrShouldMatch>;
+        if $i0 <= 0 goto label4;
+
+        $r9 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        $i2 = this.<org.apache.lucene.search.BooleanScorer2: int minNrShouldMatch>;
+        $r8 = specialinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingDisjunctionSumScorer(java.util.List,int)>($r9, $i2);
+        $r4 = specialinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer dualConjunctionSumScorer(org.apache.lucene.search.Scorer,org.apache.lucene.search.Scorer)>(requiredCountingSumScorer, $r8);
+        $r5 = specialinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer addProhibitedScorers(org.apache.lucene.search.Scorer)>($r4);
+        return $r5;
+
+     label4:
+        tmp$555116507 = new org.apache.lucene.search.ReqOptSumScorer;
+        $r12 = specialinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer addProhibitedScorers(org.apache.lucene.search.Scorer)>(requiredCountingSumScorer);
+        $r6 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        $i3 = virtualinvoke $r6.<java.util.ArrayList: int size()>();
+        if $i3 != 1 goto label5;
+
+        tmp$555116442 = new org.apache.lucene.search.BooleanScorer2$SingleMatchScorer;
+        $r8 = tmp$555116442;
+        $r13 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        $r14 = virtualinvoke $r13.<java.util.ArrayList: java.lang.Object get(int)>(0);
+        $r15 = (org.apache.lucene.search.Scorer) $r14;
+        specialinvoke tmp$555116442.<org.apache.lucene.search.BooleanScorer2$SingleMatchScorer: void <init>(org.apache.lucene.search.BooleanScorer2,org.apache.lucene.search.Scorer)>(this, $r15);
+        goto label6;
+
+     label5:
+        $r9 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        $r8 = specialinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingDisjunctionSumScorer(java.util.List,int)>($r9, 1);
+
+     label6:
+        specialinvoke tmp$555116507.<org.apache.lucene.search.ReqOptSumScorer: void <init>(org.apache.lucene.search.Scorer,org.apache.lucene.search.Scorer)>($r12, $r8);
+        return tmp$555116507;
+    }
+
+    private org.apache.lucene.search.Scorer addProhibitedScorers(org.apache.lucene.search.Scorer)
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        org.apache.lucene.search.Scorer requiredCountingSumScorer, $r3, $r6;
+        java.util.ArrayList $r2, $r4, $r7;
+        int $i0, $i1;
+        java.lang.Object $r5;
+        org.apache.lucene.search.DisjunctionSumScorer tmp$555510257;
+        org.apache.lucene.search.ReqExclScorer tmp$555510322;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        requiredCountingSumScorer := @parameter0: org.apache.lucene.search.Scorer;
+        $r2 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList prohibitedScorers>;
+        $i0 = virtualinvoke $r2.<java.util.ArrayList: int size()>();
+        if $i0 != 0 goto label0;
+
+        $r3 = requiredCountingSumScorer;
+        goto label3;
+
+     label0:
+        tmp$555510322 = new org.apache.lucene.search.ReqExclScorer;
+        $r3 = tmp$555510322;
+        $r4 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList prohibitedScorers>;
+        $i1 = virtualinvoke $r4.<java.util.ArrayList: int size()>();
+        if $i1 != 1 goto label1;
+
+        $r4 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList prohibitedScorers>;
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>(0);
+        $r6 = (org.apache.lucene.search.Scorer) $r5;
+        goto label2;
+
+     label1:
+        tmp$555510257 = new org.apache.lucene.search.DisjunctionSumScorer;
+        $r6 = tmp$555510257;
+        $r7 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList prohibitedScorers>;
+        specialinvoke tmp$555510257.<org.apache.lucene.search.DisjunctionSumScorer: void <init>(java.util.List)>($r7);
+
+     label2:
+        specialinvoke tmp$555510322.<org.apache.lucene.search.ReqExclScorer: void <init>(org.apache.lucene.search.Scorer,org.apache.lucene.search.Scorer)>(requiredCountingSumScorer, $r6);
+
+     label3:
+        return $r3;
+    }
+
+    public void score(org.apache.lucene.search.HitCollector) throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        org.apache.lucene.search.HitCollector hc;
+        org.apache.lucene.search.BooleanScorer bs, $r1;
+        java.util.Iterator si;
+        boolean $z0;
+        java.util.ArrayList $r0;
+        int $i0, $i1, $i2;
+        org.apache.lucene.search.Similarity $r2;
+        java.lang.Object $r3;
+        org.apache.lucene.search.Scorer $r4, $r5;
+        float $f0;
+        long tid_score;
+        java.lang.Thread thread_score;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        hc := @parameter0: org.apache.lucene.search.HitCollector;
+        thread_score = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_score = virtualinvoke thread_score.<java.lang.Thread: long getId()>();
+        $z0 = this.<org.apache.lucene.search.BooleanScorer2: boolean allowDocsOutOfOrder>;
+        if $z0 == 0 goto label4;
+
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList requiredScorers>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        if $i0 != 0 goto label4;
+
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList prohibitedScorers>;
+        $i0 = virtualinvoke $r0.<java.util.ArrayList: int size()>();
+        if $i0 >= 32 goto label4;
+
+        $r1 = new org.apache.lucene.search.BooleanScorer;
+        $r2 = virtualinvoke this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Similarity getSimilarity()>();
+        $i1 = this.<org.apache.lucene.search.BooleanScorer2: int minNrShouldMatch>;
+        specialinvoke $r1.<org.apache.lucene.search.BooleanScorer: void <init>(org.apache.lucene.search.Similarity,int)>($r2, $i1);
+        bs = $r1;
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList optionalScorers>;
+        si = virtualinvoke $r0.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label0:
+        $z0 = interfaceinvoke si.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label1;
+
+        $r3 = interfaceinvoke si.<java.util.Iterator: java.lang.Object next()>();
+        $r4 = (org.apache.lucene.search.Scorer) $r3;
+        virtualinvoke bs.<org.apache.lucene.search.BooleanScorer: void add(org.apache.lucene.search.Scorer,boolean,boolean)>($r4, 0, 0);
+        goto label0;
+
+     label1:
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: java.util.ArrayList prohibitedScorers>;
+        si = virtualinvoke $r0.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke si.<java.util.Iterator: boolean hasNext()>();
+        if $z0 == 0 goto label3;
+
+        $r3 = interfaceinvoke si.<java.util.Iterator: java.lang.Object next()>();
+        $r4 = (org.apache.lucene.search.Scorer) $r3;
+        virtualinvoke bs.<org.apache.lucene.search.BooleanScorer: void add(org.apache.lucene.search.Scorer,boolean,boolean)>($r4, 0, 1);
+        goto label2;
+
+     label3:
+        virtualinvoke bs.<org.apache.lucene.search.BooleanScorer: void score(org.apache.lucene.search.HitCollector)>(hc);
+        goto label6;
+
+     label4:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 82, tid_score, "org.apache.lucene.search.BooleanScorer2", 316, $r5);
+        $r5 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingSumScorer>;
+        if $r5 != null goto label5;
+
+        specialinvoke this.<org.apache.lucene.search.BooleanScorer2: void initCountingSumScorer()>();
+
+     label5:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 82, tid_score, "org.apache.lucene.search.BooleanScorer2", 319, $r5);
+        $r5 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingSumScorer>;
+        $z0 = virtualinvoke $r5.<org.apache.lucene.search.Scorer: boolean next()>();
+        if $z0 == 0 goto label6;
+
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 82, tid_score, "org.apache.lucene.search.BooleanScorer2", 320, $r4);
+        $r4 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingSumScorer>;
+        $i2 = virtualinvoke $r4.<org.apache.lucene.search.Scorer: int doc()>();
+        $f0 = virtualinvoke this.<org.apache.lucene.search.BooleanScorer2: float score()>();
+        virtualinvoke hc.<org.apache.lucene.search.HitCollector: void collect(int,float)>($i2, $f0);
+        goto label5;
+
+     label6:
+        return;
+    }
+
+    protected boolean score(org.apache.lucene.search.HitCollector, int) throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        org.apache.lucene.search.HitCollector hc;
+        int max, docNr;
+        org.apache.lucene.search.Scorer $r0;
+        float $f0;
+        boolean $z0;
+        long tid_score;
+        java.lang.Thread thread_score;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        hc := @parameter0: org.apache.lucene.search.HitCollector;
+        max := @parameter1: int;
+        thread_score = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_score = virtualinvoke thread_score.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 82, tid_score, "org.apache.lucene.search.BooleanScorer2", 335, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingSumScorer>;
+        docNr = virtualinvoke $r0.<org.apache.lucene.search.Scorer: int doc()>();
+
+     label0:
+        if docNr >= max goto label2;
+
+        $f0 = virtualinvoke this.<org.apache.lucene.search.BooleanScorer2: float score()>();
+        virtualinvoke hc.<org.apache.lucene.search.HitCollector: void collect(int,float)>(docNr, $f0);
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 82, tid_score, "org.apache.lucene.search.BooleanScorer2", 338, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingSumScorer>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: boolean next()>();
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 82, tid_score, "org.apache.lucene.search.BooleanScorer2", 341, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingSumScorer>;
+        docNr = virtualinvoke $r0.<org.apache.lucene.search.Scorer: int doc()>();
+        goto label0;
+
+     label2:
+        return 1;
+    }
+
+    public int doc()
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        org.apache.lucene.search.Scorer $r0;
+        int $i0;
+        long tid_doc;
+        java.lang.Thread thread_doc;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        thread_doc = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_doc = virtualinvoke thread_doc.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 82, tid_doc, "org.apache.lucene.search.BooleanScorer2", 346, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingSumScorer>;
+        $i0 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: int doc()>();
+        return $i0;
+    }
+
+    public boolean next() throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        org.apache.lucene.search.Scorer $r0;
+        boolean $z0;
+        long tid_next;
+        java.lang.Thread thread_next;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        thread_next = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_next = virtualinvoke thread_next.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 82, tid_next, "org.apache.lucene.search.BooleanScorer2", 349, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingSumScorer>;
+        if $r0 != null goto label0;
+
+        specialinvoke this.<org.apache.lucene.search.BooleanScorer2: void initCountingSumScorer()>();
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 82, tid_next, "org.apache.lucene.search.BooleanScorer2", 352, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingSumScorer>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: boolean next()>();
+        return $z0;
+    }
+
+    public float score() throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        float sum, $f0, $f1;
+        org.apache.lucene.search.BooleanScorer2$Coordinator $r0, $r2;
+        org.apache.lucene.search.Scorer $r1;
+        long tid_score;
+        java.lang.Thread thread_score;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        thread_score = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_score = virtualinvoke thread_score.<java.lang.Thread: long getId()>();
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.BooleanScorer2$Coordinator coordinator>;
+        virtualinvoke $r0.<org.apache.lucene.search.BooleanScorer2$Coordinator: void initDoc()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 82, tid_score, "org.apache.lucene.search.BooleanScorer2", 357, $r1);
+        $r1 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingSumScorer>;
+        sum = virtualinvoke $r1.<org.apache.lucene.search.Scorer: float score()>();
+        $r2 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.BooleanScorer2$Coordinator coordinator>;
+        $f0 = virtualinvoke $r2.<org.apache.lucene.search.BooleanScorer2$Coordinator: float coordFactor()>();
+        $f1 = sum * $f0;
+        return $f1;
+    }
+
+    public boolean skipTo(int) throws java.io.IOException
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        int target;
+        org.apache.lucene.search.Scorer $r0;
+        boolean $z0;
+        long tid_skipTo;
+        java.lang.Thread thread_skipTo;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        target := @parameter0: int;
+        thread_skipTo = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_skipTo = virtualinvoke thread_skipTo.<java.lang.Thread: long getId()>();
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 82, tid_skipTo, "org.apache.lucene.search.BooleanScorer2", 370, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingSumScorer>;
+        if $r0 != null goto label0;
+
+        specialinvoke this.<org.apache.lucene.search.BooleanScorer2: void initCountingSumScorer()>();
+
+     label0:
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,java.lang.Object)>(this, 82, tid_skipTo, "org.apache.lucene.search.BooleanScorer2", 373, $r0);
+        $r0 = this.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Scorer countingSumScorer>;
+        $z0 = virtualinvoke $r0.<org.apache.lucene.search.Scorer: boolean skipTo(int)>(target);
+        return $z0;
+    }
+
+    public org.apache.lucene.search.Explanation explain(int)
+    {
+        org.apache.lucene.search.BooleanScorer2 this;
+        int doc;
+        java.lang.UnsupportedOperationException $r0;
+
+        this := @this: org.apache.lucene.search.BooleanScorer2;
+        doc := @parameter0: int;
+        $r0 = new java.lang.UnsupportedOperationException;
+        specialinvoke $r0.<java.lang.UnsupportedOperationException: void <init>()>();
+        throw $r0;
+    }
+
+    static org.apache.lucene.search.BooleanScorer2$Coordinator access$100(org.apache.lucene.search.BooleanScorer2)
+    {
+        org.apache.lucene.search.BooleanScorer2 x0;
+        org.apache.lucene.search.BooleanScorer2$Coordinator $r0;
+
+        x0 := @parameter0: org.apache.lucene.search.BooleanScorer2;
+        $r0 = x0.<org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.BooleanScorer2$Coordinator coordinator>;
+        return $r0;
+    }
+
+    static void <clinit>()
+    {
+        org.apache.lucene.search.DefaultSimilarity $r0;
+
+        $r0 = new org.apache.lucene.search.DefaultSimilarity;
+        specialinvoke $r0.<org.apache.lucene.search.DefaultSimilarity: void <init>()>();
+        <org.apache.lucene.search.BooleanScorer2: org.apache.lucene.search.Similarity defaultSimilarity> = $r0;
+        return;
+    }
+}

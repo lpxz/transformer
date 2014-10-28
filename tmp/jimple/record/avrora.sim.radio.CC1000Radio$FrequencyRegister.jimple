@@ -1,0 +1,117 @@
+public class avrora.sim.radio.CC1000Radio$FrequencyRegister extends java.lang.Object
+{
+    protected final avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister reg2;
+    protected final avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister reg1;
+    protected final avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister reg0;
+    int frequency;
+    final avrora.sim.radio.CC1000Radio this$0;
+
+    void <init>(avrora.sim.radio.CC1000Radio, java.lang.String)
+    {
+        avrora.sim.radio.CC1000Radio$FrequencyRegister this;
+        avrora.sim.radio.CC1000Radio l1;
+        java.lang.String subId, $r2;
+        java.lang.StringBuilder $r0;
+        avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister $r1;
+
+        this := @this: avrora.sim.radio.CC1000Radio$FrequencyRegister;
+        l1 := @parameter0: avrora.sim.radio.CC1000Radio;
+        subId := @parameter1: java.lang.String;
+        this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: avrora.sim.radio.CC1000Radio this$0> = l1;
+        specialinvoke this.<java.lang.Object: void <init>()>();
+        $r1 = new avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("FREQ2");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(subId);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke $r1.<avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister: void <init>(avrora.sim.radio.CC1000Radio$FrequencyRegister,java.lang.String)>(this, $r2);
+        this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister reg2> = $r1;
+        $r1 = new avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("FREQ1");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(subId);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke $r1.<avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister: void <init>(avrora.sim.radio.CC1000Radio$FrequencyRegister,java.lang.String)>(this, $r2);
+        this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister reg1> = $r1;
+        $r1 = new avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister;
+        $r0 = new java.lang.StringBuilder;
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("FREQ0");
+        $r0 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(subId);
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+        specialinvoke $r1.<avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister: void <init>(avrora.sim.radio.CC1000Radio$FrequencyRegister,java.lang.String)>(this, $r2);
+        this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister reg0> = $r1;
+        virtualinvoke this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: void setFrequency(int)>(7708875);
+        return;
+    }
+
+    protected void updateFrequency()
+    {
+        avrora.sim.radio.CC1000Radio$FrequencyRegister this;
+        avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister $r0, $r2;
+        byte $b0, $b3;
+        int $i1, $i2, $i4;
+        short $s5;
+        long tid_updateFrequency;
+        java.lang.Thread thread_updateFrequency;
+
+        this := @this: avrora.sim.radio.CC1000Radio$FrequencyRegister;
+        thread_updateFrequency = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+        tid_updateFrequency = virtualinvoke thread_updateFrequency.<java.lang.Thread: long getId()>();
+        $r0 = this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister reg2>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>($r0, 64, tid_updateFrequency, "avrora.sim.radio.CC1000Radio$FrequencyRegister", 381, $b0);
+        $b0 = $r0.<avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister: byte value>;
+        $i1 = $b0 << 16;
+        $i2 = 16711680 & $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 38, tid_updateFrequency, "avrora.sim.radio.CC1000Radio$FrequencyRegister", 381, $i2);
+        this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: int frequency> = $i2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 38, tid_updateFrequency, "avrora.sim.radio.CC1000Radio$FrequencyRegister", 382, $i2);
+        $i2 = this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: int frequency>;
+        $r2 = this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister reg1>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>($r2, 64, tid_updateFrequency, "avrora.sim.radio.CC1000Radio$FrequencyRegister", 382, $b3);
+        $b3 = $r2.<avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister: byte value>;
+        $i4 = $b3 << 8;
+        $i1 = 65280 & $i4;
+        $i2 = $i2 | $i1;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 38, tid_updateFrequency, "avrora.sim.radio.CC1000Radio$FrequencyRegister", 382, $i2);
+        this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: int frequency> = $i2;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 38, tid_updateFrequency, "avrora.sim.radio.CC1000Radio$FrequencyRegister", 383, $i2);
+        $i2 = this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: int frequency>;
+        $r2 = this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister reg0>;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void readBeforeInstance(java.lang.Object,int,long,java.lang.String,int,byte)>($r2, 64, tid_updateFrequency, "avrora.sim.radio.CC1000Radio$FrequencyRegister", 383, $b3);
+        $b3 = $r2.<avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister: byte value>;
+        $s5 = 255 & $b3;
+        $i2 = $i2 | $s5;
+        staticinvoke <edu.hkust.leap.monitor.RecordMonitor: void writeBeforeInstance(java.lang.Object,int,long,java.lang.String,int,int)>(this, 38, tid_updateFrequency, "avrora.sim.radio.CC1000Radio$FrequencyRegister", 383, $i2);
+        this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: int frequency> = $i2;
+        return;
+    }
+
+    protected void setFrequency(int)
+    {
+        avrora.sim.radio.CC1000Radio$FrequencyRegister this;
+        int frequency, $i0;
+        avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister $r0;
+        byte $b1;
+
+        this := @this: avrora.sim.radio.CC1000Radio$FrequencyRegister;
+        frequency := @parameter0: int;
+        $r0 = this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister reg2>;
+        $i0 = 16711680 & frequency;
+        $i0 = $i0 >> 16;
+        $b1 = (byte) $i0;
+        virtualinvoke $r0.<avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister: void write(byte)>($b1);
+        $r0 = this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister reg1>;
+        $i0 = 65280 & frequency;
+        $i0 = $i0 >> 8;
+        $b1 = (byte) $i0;
+        virtualinvoke $r0.<avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister: void write(byte)>($b1);
+        $r0 = this.<avrora.sim.radio.CC1000Radio$FrequencyRegister: avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister reg0>;
+        $i0 = 255 & frequency;
+        $b1 = (byte) $i0;
+        virtualinvoke $r0.<avrora.sim.radio.CC1000Radio$FrequencyRegister$FrequencySubRegister: void write(byte)>($b1);
+        return;
+    }
+}

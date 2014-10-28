@@ -1,0 +1,25 @@
+public final class org.apache.lucene.analysis.LowerCaseTokenizer extends org.apache.lucene.analysis.LetterTokenizer
+{
+
+    public void <init>(java.io.Reader)
+    {
+        org.apache.lucene.analysis.LowerCaseTokenizer this;
+        java.io.Reader in;
+
+        this := @this: org.apache.lucene.analysis.LowerCaseTokenizer;
+        in := @parameter0: java.io.Reader;
+        specialinvoke this.<org.apache.lucene.analysis.LetterTokenizer: void <init>(java.io.Reader)>(in);
+        return;
+    }
+
+    protected char normalize(char)
+    {
+        org.apache.lucene.analysis.LowerCaseTokenizer this;
+        char c, $c0;
+
+        this := @this: org.apache.lucene.analysis.LowerCaseTokenizer;
+        c := @parameter0: char;
+        $c0 = staticinvoke <java.lang.Character: char toLowerCase(char)>(c);
+        return $c0;
+    }
+}
